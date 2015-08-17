@@ -477,6 +477,11 @@ header h2 {
   letter-spacing: 0;
 }
 
+header img{
+	margin-bottom: -25px;
+	zoom:0.25;
+}
+
 .inner {
   position: relative;
   width: 940px;
@@ -612,8 +617,7 @@ form {
 /* GENERAL ELEMENT TYPE STYLES */
 
 #main-content h1 {
-  margin-top: 0;
-  margin-bottom: 0;
+	margin: 0.75em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 2.8em;
   font-weight: normal;
@@ -622,15 +626,8 @@ form {
   letter-spacing: -1px;
 }
 
-#main-content h1:before {
-  padding-right: 0.3em;
-  margin-left: -0.9em;
-  color: #9ddcff;
-  content: "/";
-}
-
 #main-content h2 {
-  margin-bottom: 8px;
+  margin: 0.75em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 22px;
   font-weight: bold;
@@ -639,14 +636,13 @@ form {
 }
 #main-content h2:before {
   padding-right: 0.3em;
-  margin-left: -1.5em;
-  content: "//";
-  color: #9ddcff;
+  margin-left: 1em;
+  content: "--";
+  color: #474747;
 }
 
 #main-content h3 {
-  margin-top: 24px;
-  margin-bottom: 8px;
+    margin: 0.75em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 18px;
   font-weight: bold;
@@ -656,13 +652,13 @@ form {
 
 #main-content h3:before {
   padding-right: 0.3em;
-  margin-left: -2em;
-  content: "///";
+  margin-left: 1.25em;
+  content: "--";
   color: #9ddcff;
 }
 
 #main-content h4 {
-  margin-bottom: 8px;
+    margin: 0.75em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
   font-size: 15px;
   font-weight: bold;
@@ -672,8 +668,8 @@ form {
 
 h4:before {
   padding-right: 0.3em;
-  margin-left: -2.8em;
-  content: "////";
+  margin-left: 3.5em;
+  content: "--";
   color: #9ddcff;
 }
 
@@ -687,7 +683,7 @@ h4:before {
 h5:before {
   padding-right: 0.3em;
   margin-left: -3.2em;
-  content: "/////";
+  content: "--";
   color: #9ddcff;
 }
 
@@ -701,7 +697,7 @@ h5:before {
 h6:before {
   padding-right: 0.3em;
   margin-left: -3.7em;
-  content: "//////";
+  content: "--";
   color: #9ddcff;
 }
 
@@ -789,6 +785,9 @@ footer a:hover {
   }
   header h2 {
     font-size: 30px;
+  }
+  header img{
+	  display:none;
   }
   #main-content {
     width: 490px;

@@ -1,3 +1,8 @@
+---
+layout: content
+title: Chapter 0 - Lua
+---
+
 ## Section 1.2 – Differences between Lua 5.0 and Lua 5.1
 
 SM3.95 used [Lua 5.0](http://www.lua.org/versions.html\#5.0), while SM5 currently uses [Lua 5.1](http://www.lua.org/versions.html\#5.1).

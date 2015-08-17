@@ -1,3 +1,8 @@
+---
+layout: content
+title: Chapter 0 – About
+---
+
 ## Section 1.1 – From **<>** To **{}**
 
 
