@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset='utf-8'>
+	    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+	    <link rel="stylesheet" type="text/css" href="../../stylesheets/stylesheet.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="../../stylesheets/github-light.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="../../stylesheets/print.css" media="print">
+
+	    <!--[if lt IE 9]>
+	    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+
+	    <title>Lua for SM5: Chapter 0 – About</title>
+	</head>
+	
+	<body>
+	
+	<header>
+	<div class="inner">
+		<div class="title">
+			<a href="/">
+				<h1>
+					Lua for SM5
+					<img src="/images/sm5-logo.png">
+				</h1>
+			</a>
+			<h2>Lua Scripting for StepMania 5</h2>
+			
+		</div>
+		<a href="https://github.com/dguzek/Lua-For-SM5" class="button">
+			 <small>View project on</small> GitHub
+		</a>
+	</div>
+</header>	
+	<div id="content-wrapper">
+		<div class="inner clearfix">
+			<section id="main-content">
+				<h2 id="section-11--from--to-">Section 1.1 – From <strong>&lt;&gt;</strong> To <strong>{}</strong></h2>
+
+<p>In StepMania theming/scripting, things drawn to the screen are <em>Actors</em>.  This was true
+in SM3.95 and remains true in SM5.</p>
+
+<p>A typical SM3.95 XML file would feature an ActorFrame element which would contain
+various children Actors.  This model is conceptually the same in SM5, but uses <code>.lua</code>
+files instead of <code>.xml</code> files.  So, where Actors were represented by <em>XML elements</em> in
+SM3.95, they are <strong>Lua tables</strong> in SM5.</p>
+
+<h3 id="tables-within-tables-within">Tables Within Tables Within…</h3>
+
+<p>An Actor is the most basic unit of StepMania scripting.  Virtually everything else that you work
+with in SM5 Lua, be it a Sprite, a BitmapText, or an ActorMultiVertex, is built on top of the
+foundation that Actor provides.</p>
+
+<p>From a scripter’s perspective, an Actor is a Lua table with a few special properties
+that the StepMania engine will look for.  Other StepMania elements that derive from
+Actor are also really just Lua tables as well.  So if you are familiar with <em>ActorFrames</em>,
+the StepMania element that serves as a container for manipulating multiple Actors
+simultaneously within itself, you can start to appreciate how an ActorFrame is a table
+that contains Actors which are tables.</p>
+
+<p>It’s tables all the way down. :)</p>
+
+<h3 id="an-example-sm395-xml-file">An Example SM3.95 XML File</h3>
+
+<p>SM3.95 had 17 unique Actor classes, each of which could be invoked with a
+corresponding XML element.  These SM3.95 Actor classes have been documented
+by Matt Gardner at the rhythmarcade.com wiki <a href="http://rhythmarcade.com/wiki/stepmania/sm_395/theming/actorclasses">Actor Classes page</a>.</p>
+
+<p>A simple XML file containing some Actors commonly used in SM3.95 might look like:</p>
+
+<p>```xml
+<!-- ActorFrame is an Actor --></p>
+<actorframe oncommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999">
+	<children>
+
+		<!-- Quad is an Actor -->
+		<quad initcommand="zoomto,50,137" />
+
+		<!-- BitmapText is also an Actor -->
+		<bitmaptext file="_eurostile normal" text="Eat Poptarts." />
+
+		<!-- Sprite is, that's right, an Actor -->
+		<sprite texture="chrismarks.png" frame0000="0" />
+
+	</children>
+</actorframe>
+<p>```</p>
+
+<h3 id="the-example-file-converted-to-sm5-lua">The Example File Converted to SM5 Lua</h3>
+
+<p>In SM5, these same Actors exist (and quite a few more; 43 in total!), but the means of invoking
+them has changed since pure Lua files have replaced XML.  For a complete list of SM5 Actors,
+see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
+
+<p>The most commonly used Actors will each be discussed in detail in the following sections.  For
+now, we’ll start by looking at the <em>SimpleExample.xml</em> if we were to convert it to SM5 Lua:</p>
+
+<p>```lua
+– start by defining an ActorFrame
+– we’ll call it ExampleAF (example ActorFrame)
+local ExampleAF = Def.ActorFrame{
+	OnCommand=cmd(Center; sleep,9999),</p>
+
+<pre><code>-- since Actors are just Lua tables
+-- we can nest them directly inside
+-- the parent ActorFrame table like this
+Def.Quad{
+	InitCommand=cmd(zoomto,50,137)
+},
+
+-- note that since these are elements in
+-- a Lua table, everything is comma-delimited
+Def.BitmapText{
+	Font="_common normal",
+	Text="Eat Poptarts."
+} }
+</code></pre>
+
+<p>– since ExampleAF is an indexed Lua table, we can also
+– add elements to its next index externally like this:
+ExampleAF[#ExampleAF + 1] = Def.Sprite{
+	Texture=”chrismarks.png”
+}</p>
+
+<p>– Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
+– sort of Actor. Typically, we end up returning an ActorFrame.
+return ExampleAF
+```</p>
+
+			</section>
+
+    		<aside id="sidebar">
+				<a href="https://github.com/dguzek/Lua-For-SM5/zipball/master" class="button">
+					<small>Download</small>
+					.zip file
+				</a>
+				<a href="https://github.com/dguzek/Lua-For-SM5/tarball/master" class="button">
+					<small>Download</small>
+					.tar.gz file
+				</a>
+
+      			<p class="repo-owner">
+					Project maintained by <a href="https://github.com/dguzek">dguzek</a>.
+				</p>
+
+      			<p>
+					This page was generated by <a href="https://pages.github.com">GitHub Pages</a>
+					using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+	  			</p>
+  			</aside>
+		</div>
+	</div>
+			
+</body>
+	
+</html>
