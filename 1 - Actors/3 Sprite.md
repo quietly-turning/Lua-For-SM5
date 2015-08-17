@@ -1,1 +1,0 @@
-## Section 2.3 – Sprite
