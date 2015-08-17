@@ -1,8 +1,3 @@
-# Chapter 1 – Introduction
-
-> "I'm only getting started."
-> -Breathe Carolina
-
 ## Section 1.1 – From **<>** To **{}**
 
 

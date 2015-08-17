@@ -1,8 +1,3 @@
-# Chapter 2 – Actors
-
-> "All the world's a stage"
-> William Shakespeare
-
 ## Section 2.1 – Quads
 
 *Quad* Actors haven't changed notably since SM3.95.  They are programmatically
