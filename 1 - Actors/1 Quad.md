@@ -15,7 +15,7 @@ return Def.ActorFrame{
 	OnCommand=cmd(sleep,9999),
 
 	-- a red quad that accelerates from offscreen-left to offscreen-right
-	-- this makes use of the \_screen and Color aliases
+	-- this makes use of the _screen and Color aliases
 	Def.Quad{
 		Name="RedQuad",
 		InitCommand=cmd(zoomto,100,100; diffuse, Color.Red),
