@@ -72,22 +72,31 @@ by Matt Gardner at the rhythmarcade.com wiki <a href="http://rhythmarcade.com/wi
 <p>A simple XML file containing some Actors commonly used in SM3.95 might look like:</p>
 
 <p>```xml
-<!-- ActorFrame is an Actor --></p>
+<!-- ActorFrame is an Actor -->
 <actorframe oncommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999">
-	<children>
+	<children></children></actorframe></p>
 
-		<!-- Quad is an Actor -->
-		<quad initcommand="zoomto,50,137" />
+<pre><code>	&lt;!-- Quad is an Actor --&gt;
+	&lt;Quad
+		 InitCommand="zoomto,50,137"
+	/&gt;
 
-		<!-- BitmapText is also an Actor -->
-		<bitmaptext file="_eurostile normal" text="Eat Poptarts." />
+	&lt;!-- BitmapText is also an Actor --&gt;
+	&lt;BitmapText
+		File="_eurostile normal"
+		Text="Eat Poptarts."
+	/&gt;
 
-		<!-- Sprite is, that's right, an Actor -->
-		<sprite texture="chrismarks.png" frame0000="0" />
+	&lt;!-- Sprite is, that's right, an Actor --&gt;
+	&lt;Sprite
+		Texture="chrismarks.png"
+		Frame0000="0"
+	/&gt;
 
-	</children>
-</actorframe>
-<p>```</p>
+&lt;/children&gt;
+</code></pre>
+<p>&lt;/ActorFrame&gt;
+```</p>
 
 <h3 id="the-example-file-converted-to-sm5-lua">The Example File Converted to SM5 Lua</h3>
 
