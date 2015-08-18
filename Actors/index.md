@@ -11,4 +11,4 @@ title: Chapter 1 – Actors
 
 ## Content
 
-{% include 1-content.md %}
+{% include 1-content.html %}

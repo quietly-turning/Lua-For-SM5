@@ -11,4 +11,4 @@ title: Chapter 0 – Introduction
 
 ## Content
 
-{% include 0-content.md %}
+{% include 0-content.html %}
