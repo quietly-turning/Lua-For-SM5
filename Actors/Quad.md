@@ -5,11 +5,9 @@ title: Chapter 1 – Quad
 
 # Section 1.1 – Quad
 
-*Quad* Actors haven't changed notably since SM3.95.  They are programmatically
-drawn *quad*rilaterals that can have properties like size, position, and color.
+*Quad* Actors haven't changed notably since SM3.95.  They are programmatically drawn *quad*rilaterals that can have properties like size, position, and color.
 
-Since Quads are fairly simple, we'll also use this example to demonstrate a
-few new-to-SM5 features and shortcuts.
+Since Quads are fairly simple, we'll also use this example to demonstrate a few new-to-SM5 features and shortcuts.
 
 {% highlight lua linenos=table %}
 -- let's assume this file is being called via FGCHANGES from a simfile.
@@ -60,18 +58,11 @@ return Def.ActorFrame{
 
 There are three things worth pointing out here.
 
-First, this example features three unique Quads acting independently within a
-single ActorFrame.  Because StepMania expects one actor to be returned per
-file, we return the primary ActorFrame, which includes the Quads inside.
+First, this example features three unique Quads acting independently within a single ActorFrame.  Because StepMania expects one actor to be returned per file, we return the primary ActorFrame, which includes the Quads inside.
 
 Second, this example also uses a few helper tables defined in SM5's *_fallback* theme such as the
 `Color` table and the `_screen` table which are defined in [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02\%20Colors.lua)  and [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01\%20alias.lua) respectively
 
-Finally, this example introduces a new way to apply multiple commands to the
-same Actor via **command chaining**.  We see this in the example above on
-lines 24, 40, and 41.
+Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 40, and 41.
 
- While commands *can* be chained ad infinitum, an appropriate rule of thumb is
- to chain contextually-related commands together, and start a new line when a
- new context arises.  For example, consider starting with a tween command and
- hen successively chaining the commands that are to be tweened.
+ While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and hen successively chaining the commands that are to be tweened.

@@ -897,7 +897,10 @@ table.highlighttable, table.highlighttable td{
 }
 
 /* code body styling */
-div.highlight pre { background-color:#222 }
+div.highlight pre {
+	background-color:#222;
+	tab-size: 4;
+}
 
 /* line numbers styling */
 div.linenodiv pre, div.linenodiv pre code {
