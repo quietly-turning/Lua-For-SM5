@@ -1,2 +1,1 @@
-_sites/*
-Gemfile.lock
+!_site/*
