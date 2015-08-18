@@ -1,9 +1,9 @@
 ---
-layout: content
+layout: default
 title: Chapter 1 – Quad
 ---
 
-## Section 1.1 – Quad
+# Section 1.1 – Quad
 
 *Quad* Actors haven't changed notably since SM3.95.  They are programmatically
 drawn *quad*rilaterals that can have properties like size, position, and color.
@@ -11,7 +11,7 @@ drawn *quad*rilaterals that can have properties like size, position, and color.
 Since Quads are fairly simple, we'll also use this example to demonstrate a
 few new-to-SM5 features and shortcuts.
 
-```lua
+{% highlight lua linenos=table %}
 -- let's assume this file is being called via FGCHANGES from a simfile.
 -- Like in SM3.95, Actors from FGCHANGES disappear immediately unless
 -- they, or their parent ActorFrame, are slept for some length of time.
@@ -56,7 +56,7 @@ return Def.ActorFrame{
 		endx
 	}
 }
-```
+{% endhighlight %}
 
 There are three things worth pointing out here.
 

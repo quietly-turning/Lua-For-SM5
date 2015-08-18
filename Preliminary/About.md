@@ -1,10 +1,10 @@
 ---
-layout: content
+layout: default
 title: Chapter 0 – About
 ---
 
-## Section 1.1 – From **<>** To **{}**
-
+  
+# Section 0.1 – From &lt;<span class="nt">xml</span>&gt; To { <span class="kd" >lua</span> }
 
 In StepMania theming/scripting, things drawn to the screen are *Actors*.  This was true
 in SM3.95 and remains true in SM5.
@@ -37,7 +37,7 @@ by Matt Gardner at the rhythmarcade.com wiki [Actor Classes page](http://rhythma
 
 A simple XML file containing some Actors commonly used in SM3.95 might look like:
 
-```xml
+ {% highlight XML linenos=table %}
 <!-- ActorFrame is an Actor -->
 <ActorFrame OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999">
 	<children>
@@ -61,7 +61,7 @@ A simple XML file containing some Actors commonly used in SM3.95 might look like
 
 	</children>
 </ActorFrame>
-```
+{% endhighlight %}
 
 ### The Example File Converted to SM5 Lua
 
@@ -73,7 +73,7 @@ see [./Docs/ThemerDocs/actordef.txt](https://github.com/stepmania/stepmania/blob
 The most commonly used Actors will each be discussed in detail in the following sections.  For
 now, we'll start by looking at the *SimpleExample.xml* if we were to convert it to SM5 Lua:
 
-```lua
+{% highlight Lua linenos=table %}
 -- start by defining an ActorFrame
 -- we'll call it ExampleAF (example ActorFrame)
 local ExampleAF = Def.ActorFrame{
@@ -104,4 +104,4 @@ ExampleAF[#ExampleAF + 1] = Def.Sprite{
 -- Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
 -- sort of Actor. Typically, we end up returning an ActorFrame.
 return ExampleAF
-```
+{% endhighlight %}

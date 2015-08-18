@@ -1,5 +1,5 @@
 ---
-layout: content
+layout: default
 title: Chapter 1 – Actor
 ---
 
@@ -16,10 +16,10 @@ broadcast by the engine but an ActorFrame isn't necessary.
 
 See: [Simply Love/BGAnimations/ScreenOptionsService in.lua](https://github.com/dguzek/Simply-Love-SM5/blob/master/BGAnimations/ScreenOptionsService%20in.lua)
 
-```lua
+{% highlight lua linenos=table %}
 return Def.Actor{
 	StartTransitioningCommand=function(self)
 		ThemePrefs.Save()
 	end
 }
-```
+{% endhighlight %}

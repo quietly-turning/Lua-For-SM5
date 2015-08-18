@@ -1,3 +1,13 @@
+baseurl: "/Lua-for-SM5"
+
+# Dependencies
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+
 defaults:
   -
     scope:

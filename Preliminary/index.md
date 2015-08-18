@@ -1,5 +1,5 @@
 ---
-layout: content
+layout: default
 title: Chapter 0 – Introduction
 ---
 
@@ -11,4 +11,6 @@ title: Chapter 0 – Introduction
 
 ## Content
 
-{% include 0-content.html %}
+<h3>0.1 <a href="./Preliminary/About.html">About</a></h3>
+
+<h3>0.2 <a href="./Preliminary/Lua.html">Lua</a></h3>

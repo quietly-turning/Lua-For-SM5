@@ -1,5 +1,5 @@
 ---
-layout: content
+layout: default
 title: Chapter 1 – BitmapText
 ---
 
@@ -13,7 +13,7 @@ be set to a string value, but it can be left empty or not declared at all if you
 to programmatically set the text later with the `settext()` method.
 
 
-```lua
+{% highlight lua linenos=table %}
 -- In SM5, it is possible (and encouraged!) to create local variables
 -- that have scope over the current file, like this.
 local phrases = {
@@ -56,7 +56,7 @@ return Def.ActorFrame{
 		end
 	}
 }
-```
+{% endhighlight %}
 
 The example above is admittedly rather artificial for the sake of demonstrating how to pass
 variables when issuing a `playcommand()` call.  The random index `i` could have just

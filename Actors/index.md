@@ -1,5 +1,5 @@
 ---
-layout: content
+layout: default
 title: Chapter 1 – Actors
 ---
 
@@ -11,4 +11,3 @@ title: Chapter 1 – Actors
 
 ## Content
 
-{% include 1-content.html %}

@@ -478,8 +478,8 @@ header h2 {
 }
 
 header img{
-	margin-bottom: -25px;
-	zoom:0.25;
+	margin-bottom: -0.1em;
+	height: 0.9em;
 }
 
 .inner {
@@ -559,7 +559,7 @@ code, pre {
 
 code {
   padding: 0 3px;
-  background-color: #f2f8fc;
+/*  background-color: #f2f8fc;*/
   border: solid 1px #dbe7f3;
 }
 
@@ -567,13 +567,13 @@ pre {
   padding: 20px;
   overflow: auto;
   text-shadow: none;
-  background: #fff;
+/*  background: #fff;*/
   border: solid 1px #f2f2f2;
 }
 pre code {
   padding: 0;
   color: #2879d0;
-  background-color: #fff;
+  /*background-color: #fff*/;
   border: none;
 }
 
@@ -606,6 +606,13 @@ td {
   text-align: center;
   border: 1px solid #ebebeb;
 }
+td.linenos{
+	text-align: right;
+}
+td.code{
+	text-align: left;
+}
+
 
 form {
   padding: 20px;
@@ -617,61 +624,61 @@ form {
 /* GENERAL ELEMENT TYPE STYLES */
 
 #main-content h1 {
-	margin: 0.75em;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
-  font-size: 2.8em;
-  font-weight: normal;
-  color: #474747;
-  text-indent: 6px;
-  letter-spacing: -1px;
+	margin: 0em;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
+	font-size: 2.8em;
+	font-weight: normal;
+	color: #474747;
+	text-indent: 6px;
+	letter-spacing: -1px;
 }
 
 #main-content h2 {
-  margin: 0.75em;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
-  font-size: 22px;
-  font-weight: bold;
-  color: #474747;
-  text-indent: 4px;
+	margin: 0.25em 0em 0.5em 0em;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
+	font-size: 1.8em;
+	font-weight: normal;
+	color: #474747;
+	text-indent: 4px;
 }
-#main-content h2:before {
+/*#main-content h2:before {
   padding-right: 0.3em;
   margin-left: 1em;
   content: "--";
   color: #474747;
-}
+}*/
 
 #main-content h3 {
-    margin: 0.75em;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
-  font-size: 18px;
-  font-weight: bold;
-  color: #474747;
-  text-indent: 3px;
+	margin: 0.25em 0em 0em 0em;
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
+	font-size: 1.4em;
+	font-weight: normal;
+	color: #474747;
+	text-indent: 3px;
 }
 
-#main-content h3:before {
+/*#main-content h3:before {
   padding-right: 0.3em;
   margin-left: 1.25em;
   content: "--";
   color: #9ddcff;
-}
+}*/
 
 #main-content h4 {
-    margin: 0.75em;
+  margin: 0.4em 0em 0.4em 2em;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, serif;
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 1.2em;
+  font-weight: normal;
   color: #474747;
   text-indent: 3px;
 }
 
-h4:before {
+/*h4:before {
   padding-right: 0.3em;
   margin-left: 3.5em;
   content: "--";
   color: #9ddcff;
-}
+}*/
 
 #main-content h5 {
   margin-bottom: 8px;
@@ -680,12 +687,12 @@ h4:before {
   color: #474747;
   text-indent: 3px;
 }
-h5:before {
+/*h5:before {
   padding-right: 0.3em;
   margin-left: -3.2em;
   content: "--";
   color: #9ddcff;
-}
+}*/
 
 #main-content h6 {
   margin-bottom: 8px;
@@ -694,12 +701,12 @@ h5:before {
   color: #474747;
   text-indent: 3px;
 }
-h6:before {
+/*h6:before {
   padding-right: 0.3em;
   margin-left: -3.7em;
   content: "--";
   color: #9ddcff;
-}
+}*/
 
 p {
   margin-bottom: 20px;
@@ -738,16 +745,14 @@ dl dd {
 }
 
 footer {
-  padding-top: 20px;
-  padding-bottom: 30px;
-  margin-top: 40px;
-  font-size: 13px;
-  color: #aaa;
-  background: transparent url('../images/hr.png') 0 0 no-repeat;
+	line-height: 1;
+	text-align:center;
+	font-size: 13px;
+	color: #666;
 }
 
 footer a {
-  color: #666;
+  color: #2879d0;
 }
 footer a:hover {
   color: #444;
@@ -778,7 +783,7 @@ footer a:hover {
     width: 740px;
   }
   header h1, header h2 {
-    width: 340px;
+    width:410px;
   }
   header h1 {
     font-size: 60px;
@@ -786,11 +791,9 @@ footer a:hover {
   header h2 {
     font-size: 30px;
   }
-  header img{
-	  display:none;
-  }
+
   #main-content {
-    width: 490px;
+    width: 700px;
   }
   #main-content h1:before,
   #main-content h2:before,
@@ -878,3 +881,97 @@ footer a:hover {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) { }
 
+
+
+
+/* --------------------------------------------------- */
+/* copy/pate because I can't get any other way to work */
+
+/*table.highlighttable {
+	margin: 0px;
+}*/
+
+table.highlighttable, table.highlighttable td{
+	line-height: 1.4;
+	border: 0px;
+}
+
+/* code body styling */
+div.highlight pre { background-color:#222 }
+
+/* line numbers styling */
+div.linenodiv pre, div.linenodiv pre code {
+	background-color:#555;
+	padding: 20px 10px;
+}
+div.linenodiv pre code {
+	color: #fff;
+	padding:0px;
+	margin: 0px;
+}
+
+
+span.hll { background-color: #49483e }
+span.c { color: #86826f } /* Comment */
+span.err { color: #960050; background-color: #1e0010 } /* Error */
+span.k { color: #66d9ef } /* Keyword */
+span.l { color: #ae81ff } /* Literal */
+span.n { color: #f8f8f2 } /* Name */
+span.o { color: #f92672 } /* Operator */
+span.p { color: #f8f8f2 } /* Punctuation */
+span.cm { color: #75715e } /* Comment.Multiline */
+span.cp { color: #75715e } /* Comment.Preproc */
+span.c1 { color: #75715e } /* Comment.Single */
+span.cs { color: #75715e } /* Comment.Special */
+span.ge { font-style: italic } /* Generic.Emph */
+span.gs { font-weight: bold } /* Generic.Strong */
+span.kc { color: #66d9ef } /* Keyword.Constant */
+span.kd { color: #66d9ef } /* Keyword.Declaration */
+span.kn { color: #f92672 } /* Keyword.Namespace */
+span.kp { color: #66d9ef } /* Keyword.Pseudo */
+span.kr { color: #66d9ef } /* Keyword.Reserved */
+span.kt { color: #66d9ef } /* Keyword.Type */
+span.ld { color: #e6db74 } /* Literal.Date */
+span.m { color: #ae81ff } /* Literal.Number */
+span.s { color: #e6db74 } /* Literal.String */
+span.na { color: #a6e22e } /* Name.Attribute */
+span.nb { color: #f8f8f2 } /* Name.Builtin */
+span.nc { color: #a6e22e } /* Name.Class */
+span.no { color: #66d9ef } /* Name.Constant */
+span.nd { color: #a6e22e } /* Name.Decorator */
+span.ni { color: #f8f8f2 } /* Name.Entity */
+span.ne { color: #a6e22e } /* Name.Exception */
+span.nf { color: #a6e22e } /* Name.Function */
+span.nl { color: #f8f8f2 } /* Name.Label */
+span.nn { color: #f8f8f2 } /* Name.Namespace */
+span.nx { color: #a6e22e } /* Name.Other */
+span.py { color: #f8f8f2 } /* Name.Property */
+span.nt { color: #f92672 } /* Name.Tag */
+span.nv { color: #f8f8f2 } /* Name.Variable */
+span.ow { color: #f92672 } /* Operator.Word */
+span.w { color: #f8f8f2 } /* Text.Whitespace */
+span.mf { color: #ae81ff } /* Literal.Number.Float */
+span.mh { color: #ae81ff } /* Literal.Number.Hex */
+span.mi { color: #ae81ff } /* Literal.Number.Integer */
+span.mo { color: #ae81ff } /* Literal.Number.Oct */
+span.sb { color: #e6db74 } /* Literal.String.Backtick */
+span.sc { color: #e6db74 } /* Literal.String.Char */
+span.sd { color: #e6db74 } /* Literal.String.Doc */
+span.s2 { color: #e6db74 } /* Literal.String.Double */
+span.se { color: #ae81ff } /* Literal.String.Escape */
+span.sh { color: #e6db74 } /* Literal.String.Heredoc */
+span.si { color: #e6db74 } /* Literal.String.Interpol */
+span.sx { color: #e6db74 } /* Literal.String.Other */
+span.sr { color: #e6db74 } /* Literal.String.Regex */
+span.s1 { color: #e6db74 } /* Literal.String.Single */
+span.ss { color: #e6db74 } /* Literal.String.Symbol */
+span.bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+span.vc { color: #f8f8f2 } /* Name.Variable.Class */
+span.vg { color: #f8f8f2 } /* Name.Variable.Global */
+span.vi { color: #f8f8f2 } /* Name.Variable.Instance */
+span.il { color: #ae81ff } /* Literal.Number.Integer.Long */
+
+span.gh { } /* Generic Heading & Diff Header */
+span.gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
+span.gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
+span.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
