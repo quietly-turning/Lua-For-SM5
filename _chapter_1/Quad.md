@@ -53,7 +53,7 @@ return Def.ActorFrame{
 			self:Center()
 			self:effectmagnitude(0,0,1):spin()
 			self:linear(5):effectmagnitude(0,0,10):zoomto(_screen.w, _screen.w)
-		endx
+		end
 	}
 }
 {% endhighlight %}
