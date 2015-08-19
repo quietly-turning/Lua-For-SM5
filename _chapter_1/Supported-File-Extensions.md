@@ -1,6 +1,9 @@
 ---
 layout: default
-title: Chapter 1 – Support File Extensions
+title: Supported File Extensions
+chapter: 1
+section: 4
+subsection: 2
 ---
 
 

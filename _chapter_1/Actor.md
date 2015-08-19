@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 1 – Actor
+title: Actor
+chapter: 1
+section: 4
 ---
 
 ## Section 1.4 – Actor

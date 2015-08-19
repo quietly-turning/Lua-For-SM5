@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 0 – About
+title: About
+chapter: 0
+section: 1
 ---
 
   

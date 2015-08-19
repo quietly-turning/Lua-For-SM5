@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 1 – Quad
+title: Quad
+chapter: 1
+section: 1
 ---
 
 # Section 1.1 – Quad
@@ -61,7 +63,7 @@ There are three things worth pointing out here.
 First, this example features three unique Quads acting independently within a single ActorFrame.  Because StepMania expects one actor to be returned per file, we return the primary ActorFrame, which includes the Quads inside.
 
 Second, this example also uses a few helper tables defined in SM5's *_fallback* theme such as the
-`Color` table and the `_screen` table which are defined in [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02\%20Colors.lua)  and [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01\%20alias.lua) respectively
+`Color` table and the `_screen` table which are defined in [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua) respectively
 
 Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 40, and 41.
 

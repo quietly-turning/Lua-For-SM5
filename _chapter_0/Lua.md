@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 0 - Lua
+title: Lua
+chapter: 0
+section: 2
 ---
 
 # Section 0.2

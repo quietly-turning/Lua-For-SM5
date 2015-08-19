@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 1 – BitmapText
+title: BitmapText
+chapter: 1
+section: 2
 ---
 
 

@@ -1,4 +1,6 @@
-baseurl: "/Lua-For-SM5"
+---
+name: Lua For SM5
+baseurl: /Lua-For-SM5
 
 # Dependencies
 markdown: kramdown
@@ -7,6 +9,12 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
 
+
+collections:
+  chapter_0:
+    output: true
+  chapter_1:
+    output: true
 
 defaults:
   -

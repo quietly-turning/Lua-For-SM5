@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Chapter 1 – Sprite
+title: Sprite
+chapter: 1
+section: 3
 ---
 
 
