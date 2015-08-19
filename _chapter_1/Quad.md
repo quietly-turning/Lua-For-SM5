@@ -60,11 +60,14 @@ return Def.ActorFrame{
 
 There are three things worth pointing out here.
 
+### Only one Actor can be returned per file.
 First, this example features three unique Quads acting independently within a single ActorFrame.  Because StepMania expects one actor to be returned per file, we return the primary ActorFrame, which includes the Quads inside.
 
+### The *_fallback* theme has some helpful aliases.
 Second, this example also uses a few helper tables defined in SM5's *_fallback* theme such as the
-`Color` table and the `_screen` table which are defined in [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua) respectively
+`Color` table from [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and the `_screen` table from [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua).
 
+### Commands can be chained.
 Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 40, and 41.
 
  While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and hen successively chaining the commands that are to be tweened.

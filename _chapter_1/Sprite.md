@@ -6,4 +6,4 @@ section: 3
 ---
 
 
-## Section 1.3 – Sprite
+# Section 1.3 – Sprite

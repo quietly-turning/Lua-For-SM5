@@ -6,7 +6,7 @@ section: 2
 ---
 
 
-## Section 1.2 – BitmapText
+# Section 1.2 – BitmapText
 
 *BitmapText* Actors are used to display text on the screen. As Lua tables, they
 have two unique elements, `Font` and `Text`.  `Font` should be set to
