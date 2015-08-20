@@ -7,7 +7,7 @@ subsection: 2
 ---
 
 
-## Section 1.4.2 – Supported File Extensions
+## Section 1.4.2 &mdash; Supported File Extensions
 
 In StepMania 5, the supported file extensions are listed in [/src/ActorUtil.cpp](https://github.com/stepmania/stepmania/blob/master/src/ActorUtil.cpp):
 
@@ -22,17 +22,18 @@ In StepMania 5, the supported file extensions are listed in [/src/ActorUtil.cpp]
 
 ### Extra Notes on Filetypes:
 
-**Images:** *.png* files with even dimensions are still strongly preferred.
+##### Images:
+*.png* files with even dimensions are strongly preferred.
 
-**Audio:** *.ogg* files are strong preferred; variable-bitrate mp3 files are still very buggy.
+##### Audio:
+ *.ogg* files are strong preferred; variable-bitrate mp3 files are very buggy.
 
-**Video:** It is no longer necessary to shrink to 320x240 using the mpeg1 codec!  Yay!
+##### Video:
+SM5 supports a broad array of codecs and containers via [ffmpeg](https://www.ffmpeg.org/).
 
-You are generally safe to use HD video without performance issues if the computer
-is from the last six or seven years. The *.mp4* and *.avi* containers in
-conjunction with the .h264 codec works great. [Handbrake](https://handbrake.fr/)
-is a useful, free application you can use to resize your videos and convert them to
-one of the aforementioned formats with the .h264 codec.
+You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The *.mp4* and *.avi* containers in conjunction with the .h264 codec works great.
 
-**3D Models:** Models still rely on MilkShape 3D ASCII text and documentation
-is scarce at best.  Sorry.
+[Handbrake](https://handbrake.fr/) is a useful, free application you can use to resize your videos and convert them to one of the aforementioned formats with the .h264 codec.
+
+##### 3D Models:
+3D Models still rely on MilkShape 3D ASCII text as they have since StepMania 3.9.  Documentation is scarce at best.  Sorry.

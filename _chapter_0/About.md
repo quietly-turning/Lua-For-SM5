@@ -1,6 +1,6 @@
 ---
 layout: default
-title: About
+title: Foreword for those coming from SM3.95
 chapter: 0
 section: 1
 ---

@@ -6,13 +6,11 @@ section: 2
 ---
 
 
-# Section 1.2 – BitmapText
+# Section 1.2 &mdash; BitmapText
 
-*BitmapText* Actors are used to display text on the screen. As Lua tables, they
-have two unique elements, `Font` and `Text`.  `Font` should be set to
-any font in the current or *_fallback* theme's *./Font* directory. `Text` should
-be set to a string value, but it can be left empty or not declared at all if you intend
-to programmatically set the text later with the `settext()` method.
+*BitmapText* Actors are used to display text on the screen.
+
+As Lua tables, they have two unique elements, `Font` and `Text`.  `Font` should be set to any font in the current or *_fallback* theme's *./Font* directory. `Text` should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the `settext()` method.
 
 
 {% highlight lua linenos=table %}

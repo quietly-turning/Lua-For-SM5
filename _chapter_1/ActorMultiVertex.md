@@ -5,7 +5,7 @@ chapter: 1
 section: 6
 ---
 
-# Section 1.6 ActorMultiVertex
+# Section 1.6 &mdash; ActorMultiVertex
 
 What Def.Quad{} does for quadrilaterals, ActorMultiVertex does for arbitrary polygons.
 

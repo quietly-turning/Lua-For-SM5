@@ -7,4 +7,4 @@ subsection: 1
 ---
 
 
-## Section 1.4.1 – `LoadActor()`
+## Section 1.4.1 &mdash; LoadActor()

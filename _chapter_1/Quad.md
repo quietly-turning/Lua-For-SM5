@@ -5,26 +5,47 @@ chapter: 1
 section: 1
 ---
 
-# Section 1.1 – Quad
+# Section 1.1 &mdash; Quad
 
-*Quad* Actors haven't changed notably since SM3.95.  They are programmatically drawn *quad*rilaterals that can have properties like size, position, and color.
+*Quad* actors are programmatically drawn *quad*rilaterals that can have properties like size, position, and color.  If you don't specify, Quad actors are white and have a height and width of 0 by default.
 
-Since Quads are fairly simple, we'll also use this example to demonstrate a few new-to-SM5 features and shortcuts.
+<span class="CodeExample-Title">A very simple Quad example:</span>
+{% highlight lua linenos=table %}
+-- a white quad with height and width of 100px
+Def.Quad{
+	Name="WhiteQuad",
+	InitCommand=function(self)
+		self:zoomto(100,100)
+	end
+}
+{% endhighlight %}
 
+Since Quads are fairly simple, let's use another example to animate some Quads and demonstrate a few new-to-SM5 features and shortcuts along the way.
+
+<span class="CodeExample-Title">Three Quads with animation:</span>
 {% highlight lua linenos=table %}
 -- let's assume this file is being called via FGCHANGES from a simfile.
 -- Like in SM3.95, Actors from FGCHANGES disappear immediately unless
 -- they, or their parent ActorFrame, are slept for some length of time.
 return Def.ActorFrame{
 	-- the OnCommand here applies to the primary ActorFrame
-	OnCommand=cmd(sleep,9999),
+	OnCommand=function(self)
+		self:sleep(9999)
+	end,
 
 	-- a red quad that accelerates from offscreen-left to offscreen-right
 	-- this makes use of the _screen and Color aliases
 	Def.Quad{
 		Name="RedQuad",
-		InitCommand=cmd(zoomto,100,100; diffuse, Color.Red),
-		OnCommand=cmd(xy, -100, _screen.cy;  accelerate, 2; x, _screen.w + 100)
+		InitCommand=funciton(self)
+			self:zoomto(100,100)
+			self:diffuse(Color.Red)
+		end,
+		OnCommand=function(self)
+			self:xy( -100, _screen.cy )
+			self:accelerate( 2 )
+			self:x( _screen.w + 100 )
+		end
 	},
 
 	-- a blue quad that decelerates from offscreen-top to offscreen-bottom
@@ -32,28 +53,45 @@ return Def.ActorFrame{
 	-- as well as command-chaining (read more on the next page!)
 	Def.Quad{
 		Name="BlueQuad",
-		InitCommand=cmd(zoomto,100,100; diffuse, Color.Blue),
+		InitCommand=function(self)
+			self:zoomto( 100, 100 )
+			self:diffuse( Color.Blue )
+		end,
 		OnCommand=function(self)
 			self:xy( _screen.cx, -100)
-			self:decelerate(2):y(_screen.h + 100)
+			self:decelerate( 2 ):y( _screen.h + 100 )
 			self:queuecommand( "TriggerSpin" )
 		end,
 		TriggerSpinCommand=function(self)
-			self:GetChild("GreenQuad"):queuecommand("Spin")
+			local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
+			greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
 		end
 	},
 
 	-- a green quad that waits for the two quads above to finish tweening,
 	-- then grows out of the center of the screen while spinning
-	-- this makes use of the Center() command, which is new to SM5
-	Def.Quad{
-		Name="GreenQuad",
-		InitCommand=cmd(zoomto,0,0; diffuse, Color.Green),
-		SpinCommand=function(self)
+	--
+	-- NOTE: We can't apply tween-based commands and actor effets like spin() simultaneously.
+	-- zoomto() will override spin() for the duration of its linear tween.
+	-- The way to achive the effect of spinning toward the viewer is to
+	-- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
+	Def.ActorFrame{
+		Name="GreenQuadAF",
+		InitCommand=function(self)
 			self:Center()
 			self:effectmagnitude(0,0,1):spin()
-			self:linear(5):effectmagnitude(0,0,10):zoomto(_screen.w, _screen.w)
-		end
+		end,
+
+		Def.Quad{
+			Name="GreenQuad",
+			InitCommand=function(self)
+				self:zoomto(0,0)
+				self:diffuse(Color.Green)
+			end,
+			GrowCommand=function(self)
+				self:linear(5):zoomto(_screen.w, _screen.h)
+			end,
+		}
 	}
 }
 {% endhighlight %}
@@ -68,6 +106,6 @@ Second, this example also uses a few helper tables defined in SM5's *_fallback* 
 `Color` table from [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and the `_screen` table from [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua).
 
 ### Commands can be chained.
-Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 40, and 41.
+Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 44, and 54.
 
  While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and hen successively chaining the commands that are to be tweened.

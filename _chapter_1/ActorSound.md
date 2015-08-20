@@ -5,7 +5,7 @@ chapter: 1
 section: 5
 ---
 
-# Section 1.5 - ActorSound
+# Section 1.5 &mdash; ActorSound
 
 An ActorSound can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects (*not* music samples that need to be looped).
 
