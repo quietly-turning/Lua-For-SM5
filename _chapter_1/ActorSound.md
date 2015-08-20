@@ -7,7 +7,12 @@ section: 5
 
 # Section 1.5 &mdash; ActorSound
 
-An ActorSound can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects (*not* music samples that need to be looped).
+An ActorSound can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.
+
+<div class="panel callout radius">
+If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you'll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which I haven't documented yet!
+</div>
+
 
 ActorSound actors have three unique attributes: `SupportPan`, `SupportRateChanging`, and `IsAction`
 
@@ -59,8 +64,10 @@ local current_pitch = 1
 -- this ActorSound will play the same audio file
 -- three times sequentially, each time with a higher pitch
 Def.ActorSound{
-	File=THEME:GetPathS("common", "start",
+	File=THEME:GetPathS("common", "start"),
 	Name="SFX_With_Pitch",
+	SupportRateChanging=true,
+
 	OnCommand=function(self)
 		self:queuecommand("Play")
 	end,
@@ -87,8 +94,3 @@ Def.ActorSound{
 	end
 }
 {% endhighlight %}
-
-
-
-
-If you need to play an audio file that you want to be cleanly looped, you'll have better luck using the `SOUND:PlayMusicPart()` singleton method which I haven't documented yet!

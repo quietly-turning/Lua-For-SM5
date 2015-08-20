@@ -5,7 +5,7 @@ chapter: 0
 section: 1
 ---
 
-  
+
 # Section 0.1 – From &lt;<span class="nt">xml</span>&gt; To { <span class="kd" >lua</span> }
 
 In StepMania theming/scripting, things drawn to the screen are *Actors*.  This was true in SM3.95 and remains true in SM5.
