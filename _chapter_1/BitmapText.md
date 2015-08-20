@@ -58,19 +58,10 @@ return Def.ActorFrame{
 }
 {% endhighlight %}
 
-The example above is admittedly rather artificial for the sake of demonstrating how to pass
-variables when issuing a `playcommand()` call.  The random index `i` could have just
-as easily been generated at the top of the file next to `local phrases` and not needed to
-be passed between the Actors' functions.
+The example above is admittedly rather artificial for the sake of demonstrating how to pass variables when issuing a `playcommand()` call.  The random index `i` could have just as easily been generated at the top of the file next to `local phrases` and not needed to be passed between the Actors' functions.
 
-Still, it is good to know that this can be done.  Keeping variables local (to a file, to a function,
-etc.) is good practice to mitigate polluting the global Lua namespace with an abundance of
-single-use variables.  In this regard, it can be helpful to know as many ways to pass those
-local variables (between files, between functions, etc.) as possible.
+Still, it is good to know that this can be done.  Keeping variables local (to a file, to a function, etc.) is good practice to mitigate polluting the global Lua namespace with an abundance of single-use variables.  In this regard, it can be helpful to know as many ways to pass those local variables (between files, between functions, etc.) as possible.
 
 <hr>
 
-Finally, if you sift through enough SM5 theme code, you'll likely encounter a helper function
-`LoadFont()`.  It was essentially a wrapper method for Def.BitmapText{} that served to
-workaround some of BitmapText's quirks/bugs that have since been fixed.  There should be
-no need to use it any longer.
+Finally, if you sift through enough SM5 theme code, you'll likely encounter a helper function `LoadFont()`.  It was essentially a wrapper method for Def.BitmapText{} that served to workaround some of BitmapText's quirks/bugs that have since been fixed.  There should be no need to use it any longer.

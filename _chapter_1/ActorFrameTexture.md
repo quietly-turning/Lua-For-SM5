@@ -11,4 +11,4 @@ ActorFrameTexture actors can be used to take what would otherwise be an ActorFra
 
 This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.
 
-For now, please refer to Matt Gardner's writeup: <https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua>
+For now, please refer to [Matt Gardner's writeup](https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua).
