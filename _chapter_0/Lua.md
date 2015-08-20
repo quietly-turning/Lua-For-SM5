@@ -15,6 +15,7 @@ The primary differences that will likely impact your scripting experience are:
 ### Modulus Operator as %
 Lua 5.0 required `math.mod()` to perform modulo operations, while Lua 5.1 introduced a proper modulus operator.
 
+<span class="CodeExample-Title">Modulus operator example:</span>
 {% highlight Lua linenos=table %}
 local teamdragonforce = 3 % 2
 print(teamdragonforce)
@@ -24,6 +25,7 @@ print(teamdragonforce)
 ### Table Size Operator as &#35;
 Lua 5.0 required the  `table.getn()` function to determine the size of an indexed table, while Lua 5.1 introduced a simple operator for this common task.
 
+<span class="CodeExample-Title">Indexed table size operator:</span>
 {% highlight Lua linenos=table %}
 -- this table is indexed, so the # operator works
 local StomperZ = { "fast", "brutal", "bearlike" }

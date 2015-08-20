@@ -28,6 +28,7 @@ SM3.95 had 17 unique Actor classes, each of which could be invoked with a corres
 
 A simple XML file containing some Actors commonly used in SM3.95 might look like:
 
+<span class="CodeExample-Title">A typical SM3.95 XML script:</span>
  {% highlight XML linenos=table %}
 <!-- ActorFrame is an Actor -->
 <ActorFrame OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999">
@@ -61,6 +62,8 @@ In SM5, these same Actors exist (and quite a few more; 43 in total!), but the me
 
 The most commonly used Actors will each be discussed in detail in the following sections.  For now, we'll start by looking at the *SimpleExample.xml* if we were to convert it to SM5 Lua:
 
+
+<span class="CodeExample-Title">The same script written in SM5 Lua:</span>
 {% highlight Lua linenos=table %}
 -- start by defining an ActorFrame
 -- we'll call it ExampleAF (example ActorFrame)

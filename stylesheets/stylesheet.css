@@ -897,7 +897,8 @@ span.CodeExample-Title{
 	background-color: #555;
 	color: #fff;
 	padding: 6px;
-	font-size: 1em;
+	font-size: 14px;
+	text-shadow:none;
 	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 }
 
