@@ -1018,10 +1018,10 @@ span.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
   .panel.callout {
     border-style: solid;
     border-width: 1px;
-    border-color: #d8d8d8;
+    border-color: #c5c5c5;
     margin-bottom: 1.25rem;
     padding: 1.25rem;
-    background: #f2fafc;
+    background: #dfcfcf;
     color: #333333; }
     .panel.callout > :first-child {
       margin-top: 0; }
