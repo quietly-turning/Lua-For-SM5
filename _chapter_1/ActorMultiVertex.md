@@ -12,4 +12,4 @@ What Def.Quad{} does for quadrilaterals, ActorMultiVertex does for arbitrary pol
 
 For a complex example, see the TitleScreen from kyzentun's consensual theme.
 
-For documentation, please refer to [Matt Gardner's writeup](https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua).
+For documentation, please refer to [Kyzentun's writeup](https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua).
