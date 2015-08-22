@@ -1029,7 +1029,7 @@ span.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
     border-color: #c5c5c5;
     margin-bottom: 1.25rem;
     padding: 1.25rem;
-    background: #dfcfcf;
+    background: #fab;
     color: #333333; }
     .panel.callout > :first-child {
       margin-top: 0; }
@@ -1048,3 +1048,7 @@ span.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
         color: #258faf; }
   .panel.radius {
     border-radius: 3px; }
+	.panel.callout a:not(.button){
+		color: #000;
+		text-decoration: underline;
+	}
