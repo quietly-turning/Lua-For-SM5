@@ -26,14 +26,17 @@ ActorSound actors have three unique attributes: `SupportPan`, `SupportRateChangi
 	Set this to `true` if you are want this ActorSound to be muted as a *theme action* via **F3**+**A**.  This can be useful to keep themers sane while they are repeatedly debugging a single screen over and over again.
 
 
+Oddly, you can't currently use ActorSounds via `Def.ActorSound{}` like every other actor (ActorSound isn't a registered Actor class).  This is likely a bug that will be fixed in the future.
+
+For now, you can still access them via the `LoadActor()` helper function.  If you pass it a path to a sound, it will infer that you want an ActorSound.
+
 <span class="CodeExample-Title">SupportPan Example:</span>
 {% highlight lua linenos=table %}
 -- this ActorSound will play the current theme's
 -- "common start" sound first for PLAYER_1, then
 -- wait two seconds, and then play it for PLAYER_2
 
-Def.ActorSound{
-	File=THEME:GetPathS("common", "start",
+LoadActor(THEME:GetPathS("common", "start"))..{
 	Name="SFX_With_Pan",
 
 	SupportPan=true,
@@ -63,8 +66,7 @@ local current_pitch = 1
 
 -- this ActorSound will play the same audio file
 -- three times sequentially, each time with a higher pitch
-Def.ActorSound{
-	File=THEME:GetPathS("common", "start"),
+LoadActor(THEME:GetPathS("common", "start"))..{
 	Name="SFX_With_Pitch",
 	SupportRateChanging=true,
 
