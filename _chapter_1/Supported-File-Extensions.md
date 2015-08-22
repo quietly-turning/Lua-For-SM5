@@ -4,6 +4,7 @@ title: Supported File Extensions
 chapter: 1
 section: 4
 subsection: 2
+
 ---
 
 

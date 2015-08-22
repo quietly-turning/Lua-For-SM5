@@ -884,7 +884,15 @@ footer a:hover {
 @media only screen and (max-width: 479px) { }
 
 
+span.advanced{
+	zoom: 65%;
+	color: #c00;
+}
 
+span.intermediate{
+	zoom: 65%;
+	color: #a3a;
+}
 
 /* --------------------------------------------------- */
 /* copy/pate because I can't get any other way to work */

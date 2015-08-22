@@ -24,11 +24,74 @@ title: Home
 			<h3>
 				{{ section.chapter }}.{{ section.section }}
 				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+				{% if section.difficulty != null %}
+					<span class="{{ section.difficulty }}">({{ section.difficulty }})</span>
+				{% endif %}
 			</h3>
 		{% else %}
 			<h4>
 				{{ section.chapter }}.{{ section.section }}.{{ section.subsection }}
 				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+				{% if section.difficulty != null %}
+					<span class="{{ section.difficulty }}">({{ section.difficulty }})</span>
+				{% endif %}
 			</h4>
 		{% endif %}
 {% endfor %}
+
+
+
+
+
+
+
+<!--	CHAPTER 2	 -->
+
+<h1>Chapter 2 &mdash; Singletons</h1>
+
+<h3>
+	2.1
+	SCREENMAN
+</h3>
+
+	<h4>
+		2.1.2
+		AddNewScreenToTop()
+	</h4>
+
+<h3>
+	2.2
+	FILEMAN
+</h3>
+
+
+<h3>
+	2.3
+	SOUND
+</h3>
+
+
+<!--	CHAPTER 3	 -->
+
+<h1>Chapter 3 &mdash; NameSpaces</h1>
+
+<h3>
+	3.1.1
+	RageFileUtil
+</h3>
+
+<h3>
+	3.1.2
+	Enum
+</h3>
+
+
+<!--	CHAPTER 3	 -->
+
+<h1>Chapter 4 &mdash; Examples</h1>
+
+<h3>
+	4.1
+	How to capture arbitrary input with Screen:AddInputCallback()
+</h3>
+

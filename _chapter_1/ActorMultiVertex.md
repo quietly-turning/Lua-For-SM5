@@ -3,6 +3,7 @@ layout: default
 title: ActorMultiVertex
 chapter: 1
 section: 6
+difficulty: advanced
 ---
 
 # Section 1.6 &mdash; ActorMultiVertex

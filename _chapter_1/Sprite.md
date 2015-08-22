@@ -3,6 +3,7 @@ layout: default
 title: Sprite
 chapter: 1
 section: 3
+
 ---
 
 
