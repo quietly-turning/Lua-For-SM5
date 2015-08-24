@@ -80,7 +80,7 @@ local ExampleAF = Def.ActorFrame{
 	-- note that since these are elements in
 	-- a Lua table, everything is comma-delimited
 	Def.BitmapText{
-		Font="_common normal",
+		Font="Common Normal",
 		Text="Eat Poptarts."
 	}
 }

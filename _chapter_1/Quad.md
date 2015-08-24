@@ -26,8 +26,10 @@ Since Quads are fairly simple, let's use another example to animate some Quads a
 <span class="CodeExample-Title">Three Quads with animation:</span>
 {% highlight lua linenos=table %}
 -- let's assume this file is being called via FGCHANGES from a simfile.
--- Like in SM3.95, Actors from FGCHANGES disappear immediately unless
--- they, or their parent ActorFrame, are slept for some length of time.
+-- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
+-- are cleared from memory as the engine assumes they are "done."
+-- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
+
 return Def.ActorFrame{
 	-- the OnCommand here applies to the primary ActorFrame
 	OnCommand=function(self)
@@ -72,7 +74,7 @@ return Def.ActorFrame{
 	-- a green quad that waits for the two quads above to finish tweening,
 	-- then grows out of the center of the screen while spinning
 	--
-	-- NOTE: We can't apply tween-based commands and actor effets like spin() simultaneously.
+	-- NOTE: We can't apply tween-based commands and actor effects like spin() simultaneously.
 	-- zoomto() will override spin() for the duration of its linear tween.
 	-- The way to achive the effect of spinning toward the viewer is to
 	-- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
@@ -109,4 +111,4 @@ Second, this example also uses a few helper tables defined in SM5's *_fallback* 
 ### Commands can be chained.
 Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 56, and 66.
 
- While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and hen successively chaining the commands that are to be tweened.
+ While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.

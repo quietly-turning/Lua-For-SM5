@@ -90,7 +90,7 @@ LoadActor(THEME:GetPathS("common", "start"))..{
 		current_pitch = current_pitch + 1
 
 		-- prevent infinite looping
-		if current_pitch > 4 then
+		if current_pitch < 4 then
 			-- sleep for two seconds and do it again
 			self:sleep(2):queuecommand("Play")
 		end
