@@ -64,7 +64,12 @@
 				This project is maintained by <a href="https://github.com/dguzek">Dan Guzek</a> and is hosted through  <a href="https://pages.github.com">GitHub Pages</a>.
 			</p>
 			<p>
-				This site was <a href="https://github.com/dguzek/Lua-For-SM5/commits/gh-pages">last updated</a> on {{ site.time | date: "%B %d, %Y" }} at {% if (site.time | date: "%H" <= 12) %} {{ site.time | date: "%H:%M" }}am {% else %} {{ site.time | date: "%H:%M" }}pm {% endif %}
+				This site was <a href="https://github.com/dguzek/Lua-For-SM5/commits/gh-pages">last updated</a> on
+				{{ site.time | date: "%B %d, %Y" }} at
+				{% capture hour %}{{ site.time | date: "%H" }}{% endcapture %}
+				{% capture minute %}{{ site.time | date: "%M" }}{% endcapture %}
+				{{ hour}}:{{minute}}{% if hour > 12) %}pm {% else %}am {% endif %} EST.
+
 			</p>
 		</footer>
 

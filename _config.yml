@@ -1,6 +1,8 @@
 ---
 name: Lua For SM5
 baseurl: /Lua-For-SM5
+timezone: America/New_York
+
 
 # Dependencies
 markdown: kramdown
