@@ -21,22 +21,20 @@ title: A Guide
 <h1>Chapter 1 &mdash; Actors</h1>
 {% assign sections = (site.collections.chapter_1.docs | sort: 'section' ) %}
 {% for section in sections %}
-		{% if section.subsection == nil %}
-			<h3>
-				{{ section.chapter }}.{{ section.section }}
-				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-				{% if section.difficulty != null %}
-					<span class="{{ section.difficulty }}">({{ section.difficulty }})</span>
-				{% endif %}
-			</h3>
-		{% else %}
+		{% if section.subsection %}
 			<h4>
-				{{ section.chapter }}.{{ section.section }}.{{ section.subsection }}
-				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-				{% if section.difficulty != null %}
-					<span class="{{ section.difficulty }}">({{ section.difficulty }})</span>
-				{% endif %}
+		{% else %}
+			<h3>
+		{% endif %}
+
+		{{ section.chapter }}.{{ section.section }}
+		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
+
+		{% if section.subsection %}
 			</h4>
+		{% else %}
+			</h3>
 		{% endif %}
 {% endfor %}
 
@@ -96,12 +94,14 @@ title: A Guide
 	How to capture arbitrary input with Screen:AddInputCallback()
 </h3>
 
+
+
 <br><br>
 
 <div class="panel callout radius">
 <p>This is not exhaustive documentation on <em>every</em> feature StepMania 5 offers.  This is a collection of writings by one person on topics he found especially helpful or interesting.</p>
 
-<p>The closest thing to proper API documentation that SM5 currently has is its <strong>Lua.xml</strong> file, which comes with StepMania 5 in the <em>./Docs/Luadoc/</em> directory and can be viewed in Firefox.  I have also hosted a copy here: <a href="{{ site.baseurl }}/API/Lua.xml">Lua For SM5: Lua API</a>.</p
+<p>The closest thing to proper API documentation that SM5 currently has is its <strong>Lua.xml</strong> file, which comes with StepMania 5 in the <em>./Docs/Luadoc/</em> directory and can be viewed in Firefox.  I have also hosted a copy here: <a href="{{ site.baseurl }}/API/Lua.xml">Lua For SM5: Lua API</a>.</p>
 
 <p>-dbk2<br>August 22, 2015</p>
 </div>

@@ -2,9 +2,8 @@
 layout: default
 title: Supported File Extensions
 chapter: 1
-section: 4
+section: 4.2
 subsection: 2
-
 ---
 
 

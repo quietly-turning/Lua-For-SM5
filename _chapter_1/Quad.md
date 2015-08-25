@@ -3,7 +3,6 @@ layout: default
 title: Quad
 chapter: 1
 section: 1
-
 ---
 
 # Section 1.1 &mdash; Quad
