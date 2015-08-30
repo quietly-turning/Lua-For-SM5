@@ -19,7 +19,8 @@ As Lua tables, Sprite actors have one unique attributes that is worth knowing ab
 <span class="CodeExample-Title">A very simple Sprite example:</span>
 {% highlight lua linenos=table %}
 Def.Sprite{
-	Name="OverlayAttachedGirlfriend.png",
+	Name="Girlfriend",
+	Texture="OverlayAttachedGirlfriend.png",
 	InitCommand=function(self)
 		self:zoom(0.5):Center()
 	end
