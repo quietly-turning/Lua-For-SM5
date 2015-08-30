@@ -13,9 +13,9 @@ kramdown:
 
 
 collections:
-  chapter_0:
+  chapter-0:
     output: true
-  chapter_1:
+  chapter-1:
     output: true
 
 defaults:

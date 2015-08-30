@@ -12,10 +12,12 @@ section: 2
 
 As Lua tables, they have two unique elements, `Font` and `Text`.  `Font` should be set to any font in the current or *_fallback* theme's *./Font* directory. `Text` should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the `settext()` method.
 
-
+<span class="CodeExample-Title">Display one randomly selected string from a table:</span>
 {% highlight lua linenos=table %}
--- In SM5, it is possible (and encouraged!) to create local variables
--- that have scope over the current file, like this.
+-- This "phrases" table contains a list of strings.  We're going to randomly
+-- select one and display it in the BitmapText actor below. In SM5, it is
+-- possible (and encouraged!) to create local variables that have scope over
+-- the current file, like this.
 local phrases = {
 	"There's the boys.",
 	"Just move faster.",

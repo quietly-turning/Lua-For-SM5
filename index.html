@@ -7,7 +7,7 @@ title: A Guide
 <!--	CHAPTER 0 	-->
 
 <h1>Chapter 0 &mdash; Considerations</h1>
-{% assign sorted = (site.collections.chapter_0.docs | sort: 'section') %}
+{% assign sorted = (site.collections.chapter-0.docs | sort: 'section') %}
 {% for section in sorted %}
 	<h3>
 		{{ section.chapter }}.{{ section.section }}
@@ -19,7 +19,7 @@ title: A Guide
 <!--	CHAPTER 1	 -->
 
 <h1>Chapter 1 &mdash; Actors</h1>
-{% assign sections = (site.collections.chapter_1.docs | sort: 'section' ) %}
+{% assign sections = (site.collections.chapter-1.docs | sort: 'section' ) %}
 {% for section in sections %}
 		{% if section.subsection %}
 			<h4>
