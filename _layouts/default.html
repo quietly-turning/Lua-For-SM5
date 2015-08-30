@@ -65,10 +65,11 @@
 			</p>
 			<p>
 				This site was <a href="https://github.com/dguzek/Lua-For-SM5/commits/gh-pages">last updated</a> on
+
 				{{ site.time | date: "%B %d, %Y" }} at
 				{% capture hour %}{{ site.time | date: "%H" }}{% endcapture %}
 				{% capture minute %}{{ site.time | date: "%M" }}{% endcapture %}
-				{{ hour}}:{{minute}}{% if hour > 12) %}pm {% else %}am {% endif %} EST.
+				{{hour}}:{{minute}}	EST.
 
 			</p>
 		</footer>
