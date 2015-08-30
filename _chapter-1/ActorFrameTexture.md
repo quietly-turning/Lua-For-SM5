@@ -8,7 +8,7 @@ difficulty: advanced
 
 # Section 1.7 &mdash; ActorFrameTexture
 
-ActorFrameTexture actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a hibernate command, and StepMania will have that many fewer actors to process every draw cycle.
+*ActorFrameTexture* actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a `hibernate()` command, and StepMania will have that many fewer actors to process every draw cycle.
 
 This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.
 

@@ -5,7 +5,7 @@ chapter: 1
 section: 4
 ---
 
-## Section 1.4 – Actor
+# Section 1.4 – Actor
 
 The *Actor* class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually).  Using *Actor* objects directly to load an image or sound can be somewhat cumbersome; the `LoadActor()` helper function discussed later is often easier to use and more flexible.
 
