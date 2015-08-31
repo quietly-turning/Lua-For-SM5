@@ -14,12 +14,13 @@ difficulty: intermediate
 
 ### First Argument - A file path to Load
 
-The function itself requires at least one argument, a string value of the file to load.  Let's consider a simple example, the code from the page on Def.Sprite, now rewritten to use *LoadActor()*:
+The function itself requires at least one argument, a string value of the file to load.  Let's consider a simple example, the code from [the page on Def.Sprite]({{site.baseurl}}/chapter-1/Sprite.html)  , now rewritten to use *LoadActor()*:
 
 <span class="CodeExample-Title">A very simple LoadActor example:</span>
 {% highlight lua linenos=table %}
 
--- pass the function a path to an image file and append a table with the relevant commands
+-- pass the function a path to an image file
+-- and append a table with the relevant commands
 LoadActor( "OverlayAttachedGirlfriend.png" )..{
 	Name="Girlfriend",
 	InitCommand=function(self)
@@ -30,13 +31,13 @@ LoadActor( "OverlayAttachedGirlfriend.png" )..{
 
 As [its definition in the _fallback theme demonstrates ](https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159), *LoadActor()* can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use Def.Sprite{} or Def.Model{} or Def.Actor{}.
 
-Since there currently is no Def.ActorSound{}, *LoadActor()* is the only way to work with [ActorSound actors]({{site.baseurl}}/chapter-1/ActorSound.html)).  If you pass *LoadActor()* a sound file, it will infer that you want an ActorSound, and you'll be able to use ActorSound's special methods.
+Since there currently is no Def.ActorSound{}, *LoadActor()* is the only way to work with [ActorSound actors]({{site.baseurl}}/chapter-1/ActorSound.html).  If you pass *LoadActor()* a sound file, it will infer that you want an ActorSound, and you'll be able to use ActorSound's special methods.
 
 ### Second Argument - A table to pass into the loaded file
 
 The optional second argument of LoadActor() is where it really shines, however.  Let's look at this slightly more complex example which uses two Lua files.
 
-**Primary.lua** will load **Box.lua** once for each available human player and pass in unique properties to each.
+**Primary.lua** will load **Box.lua** once for each available human player and pass in unique properties to each.  This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.
 
 <img src="{{ site.baseurl }}/images/loadactor.png">
 
@@ -79,10 +80,6 @@ for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
 	-- The contents of Box.lua return a Quad.  Keep reading!
 	-- Pass the specific box values we want into the file.
 	af[#af+1] = LoadActor( "./Box.lua", box_values[ pn ] )
-
-	-- This sort of setup allows us to keep generic code definitions
-	-- in files like Box.lua, and load them as needed from the
-	-- primary file with specific values passed in.
 end
 
 return af
@@ -103,4 +100,3 @@ return Def.Quad{
 	end
 }
 {% endhighlight %}
-
