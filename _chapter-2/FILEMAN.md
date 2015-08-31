@@ -6,4 +6,4 @@ section: 3
 difficulty: intermediate
 ---
 
-## Section 2.2 &mdash; FILEMAN Singleton
+## Section 2.3 &mdash; FILEMAN Singleton

@@ -37,9 +37,11 @@ Since there currently is no Def.ActorSound{}, *LoadActor()* is the only way to w
 
 The optional second argument of LoadActor() is where it really shines, however.  Let's look at this slightly more complex example which uses two Lua files.
 
-**Primary.lua** will load **Box.lua** once for each available human player and pass in unique properties to each.  This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.
+**Primary.lua** will load **Box.lua** once for each available human player and pass in unique properties to each.  If only PLAYER_1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER_2 is available, only the blue quadrilateral on the right will be drawn.
 
 <img src="{{ site.baseurl }}/images/loadactor.png">
+
+This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.
 
 <span class="CodeExample-Title">Primary.lua</span>
 {% highlight lua linenos=table %}
