@@ -201,7 +201,8 @@ af[#af+1] = Def.Sprite{
 
 			-- The Sprite has tweened, so queue a command to stop the
 			-- animation. We can't call animate(false) in here because
-			-- it will terminate the animtate(true) early.
+			-- it will terminate the call to animate(true) early and the
+			-- sprite will never animate.
 			self:queuecommand("StopAnimating")
 		end
 	end,
