@@ -101,7 +101,7 @@ If we want the *Sprite* actor to appear to be facing downward, then we'd only wa
 <span class="CodeExample-Title">A complex Sprite example:</span>
 {% highlight lua linenos=table %}
 -- duration between frames, in seconds
-local duration_in_seconds = 0.15
+local duration_between_frames = 0.15
 
 -- We want SM5 to think of this as a single Sprite actor that sometimes
 -- displays frames 0-3, and other times displays frames 8-11, so we're
@@ -111,38 +111,39 @@ local duration_in_seconds = 0.15
 -- the "guy 4x4.png" sprite sheet image shown above.
 local frames = {
 	Down = {
-		{ Frame=0,	Delay=duration_in_seconds},
-		{ Frame=1,	Delay=duration_in_seconds},
-		{ Frame=2,	Delay=duration_in_seconds},
-		{ Frame=3,	Delay=duration_in_seconds}
+		{ Frame=0,	Delay=duration_between_frames},
+		{ Frame=1,	Delay=duration_between_frames},
+		{ Frame=2,	Delay=duration_between_frames},
+		{ Frame=3,	Delay=duration_between_frames}
 	},
 	Left = {
-		{ Frame=4,	Delay=duration_in_seconds},
-		{ Frame=5,	Delay=duration_in_seconds},
-		{ Frame=6,	Delay=duration_in_seconds},
-		{ Frame=7,	Delay=duration_in_seconds}
+		{ Frame=4,	Delay=duration_between_frames},
+		{ Frame=5,	Delay=duration_between_frames},
+		{ Frame=6,	Delay=duration_between_frames},
+		{ Frame=7,	Delay=duration_between_frames}
 	},
 	Right = {
-		{ Frame=8,	Delay=duration_in_seconds},
-		{ Frame=9,	Delay=duration_in_seconds},
-		{ Frame=10,	Delay=duration_in_seconds},
-		{ Frame=11,	Delay=duration_in_seconds}
+		{ Frame=8,	Delay=duration_between_frames},
+		{ Frame=9,	Delay=duration_between_frames},
+		{ Frame=10,	Delay=duration_between_frames},
+		{ Frame=11,	Delay=duration_between_frames}
 	},
 	Up = {
-		{ Frame=12,	Delay=duration_in_seconds},
-		{ Frame=13,	Delay=duration_in_seconds},
-		{ Frame=14,	Delay=duration_in_seconds},
-		{ Frame=15,	Delay=duration_in_seconds}
+		{ Frame=12,	Delay=duration_between_frames},
+		{ Frame=13,	Delay=duration_between_frames},
+		{ Frame=14,	Delay=duration_between_frames},
+		{ Frame=15,	Delay=duration_between_frames}
 	}
 }
 
 
-local af = ActorFrame{
-	InitCommand=function(self) self:sleep(math.huge) end
+local af = Def.ActorFrame{
+	OnCommand=function(self) self:sleep(999):Center() end
 }
 
 af[#af+1] = Def.Sprite{
-	Texture="guy 4x4.png" ),
+	Texture="guy 4x4.png",
+
 	InitCommand=function(self)
 		-- when not actively tweening across the screen, the Sprite should
 		-- not animate, so as to appear to be "standing" in place
@@ -150,8 +151,6 @@ af[#af+1] = Def.Sprite{
 
 		-- align to left and v-middle
 		self:halign(0):valign(0.5)
-
-		-- initialize the position
 		self:Center()
 
 		-- initialize the sprite state so that the sprite
@@ -166,13 +165,13 @@ af[#af+1] = Def.Sprite{
 
 		-- As an artibtrary decision for the sake of this example
 		-- let's only pay attention to steps from PLAYER_1
-		if params.PlayerNumber == PLAYER_1
+		if params.PlayerNumber == PLAYER_1 then
 
 			-- turn animation back on for a brief moment
 			self:animate(true)
 
 			-- apply a linear tween to move the sprite one directional unit
-			self:linear(duration_in_seconds * 4)
+			self:linear(0.25)
 
 			-- the "Column" param will match up with a Gameplay arrow column
 			-- dance has 4 columns, pump has 5, etc.
@@ -200,9 +199,17 @@ af[#af+1] = Def.Sprite{
 
 			end
 
-			-- the Sprite has tweened, so stop animating it
-			self:animate(false)
+			-- The Sprite has tweened, so queue a command to stop the
+			-- animation. We can't call animate(false) in here because
+			-- it will terminate the animtate(true) early.
+			self:queuecommand("StopAnimating")
 		end
+	end,
+	StopAnimatingCommand=function(self)
+
+		-- stop animating and set the sprite's frame to 0,
+		-- regardless of direction the sprite is "facing".
+		self:animate(false):setstate(0)
 	end
 }
 
