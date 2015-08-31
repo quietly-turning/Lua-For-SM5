@@ -17,6 +17,8 @@ collections:
     output: true
   chapter-1:
     output: true
+  chapter-2:
+    output: true
 
 defaults:
   -

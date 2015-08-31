@@ -47,27 +47,24 @@ title: A Guide
 <!--	CHAPTER 2	 -->
 
 <h1>Chapter 2 &mdash; Singletons</h1>
+{% assign sections = (site.collections.chapter-2.docs | sort: 'section' ) %}
+{% for section in sections %}
+		{% if section.subsection %}
+			<h4>
+		{% else %}
+			<h3>
+		{% endif %}
 
-<h3>
-	2.1
-	SCREENMAN
-</h3>
+		{{ section.chapter }}.{{ section.section }}
+		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
 
-	<h4>
-		2.1.2
-		AddNewScreenToTop()
-	</h4>
-
-<h3>
-	2.2
-	FILEMAN
-</h3>
-
-
-<h3>
-	2.3
-	SOUND
-</h3>
+		{% if section.subsection %}
+			</h4>
+		{% else %}
+			</h3>
+		{% endif %}
+{% endfor %}
 
 
 <!--	CHAPTER 3	 -->
