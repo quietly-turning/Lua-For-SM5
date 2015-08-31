@@ -42,7 +42,7 @@ return Def.Actor{
 	LowerPlaybackVolumeCommand=function(self)
 
 		-- Lower the volume to 33% for a duration of 10 seconds.
-		SOUND:DimMusic("0.33", 10)
+		SOUND:DimMusic(0.33, 10)
 	end,
 	OffCommand=function(self)
 
