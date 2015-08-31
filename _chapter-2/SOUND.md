@@ -5,13 +5,14 @@ chapter: 2
 section: 2
 ---
 
-## Section 2.2 &mdash; SOUND Singleton
+# Section 2.2 &mdash; SOUND Singleton
 
-The SOUND singleton can be used to play audio files from a theme or simfile and has some capabilities that ActorSound lacks.
+The SOUND singleton can be used to play audio files from a theme or simfile and has some capabilities that <a href="{{site.baseurl}}/chapter-1/ActorSound.html">ActorSound</a> lacks.
 
-Namely, SOUND can be used to easily and cleanly loop audio files via the `PlayMusicPart()` method.  Additionally, SOUND has some helpful methods like `DimMusic()` and `StopMusic( )` that make it especially interesting from the perspective of a simfile mini-game.
+### SOUND can be used to loop audio files cleanly
+Namely, SOUND can be used to easily and cleanly loop audio files via the `PlayMusicPart()` method.  Additionally, SOUND has some helpful methods like `DimMusic()` and `StopMusic()` that make it especially interesting from the perspective of a simfile mini-game.
 
-Here's a simple example that could be called from with a simfile's BG or FGCHANGE script.  It assumes that there is a file *love-is-war.ogg* located in the root of the song directory.  This example uses `PlayMusicPart()` which accepts eight arguments:
+Here's a simple example that could be called from within a simfile's BGCHANGE or FGCHANGE script.  It assumes that there is a file *love-is-war.ogg* located in the root of the song directory.  This example uses `PlayMusicPart()` which accepts eight arguments:
 
 + **music_path** (string) – the path to the audio file you want to load
 + **music_start** (float) – how many seconds into the file you want playback to start
@@ -53,4 +54,8 @@ return Def.Actor{
 }
 {% endhighlight %}
 
-Of course, the SOUND singleton lacks some of the special features that an ActorSound possesses.  Only one sound can be played via SOUND at any given moment, while there can be multiple ActorSounds loaded simultaneously.  Furthermore, SOUND has no control over playback pitch or stereo panning.  Thus, both SOUND and ActorSound have unique and valid use cases.
+
+### SOUND or Def.ActorSound{} ?
+Of course, the SOUND singleton lacks some of the special features that an <a href="{{site.baseurl}}/chapter-1/ActorSound.html">ActorSound</a> possesses.
+
+Only one sound can be played via SOUND at any given moment, while there can be multiple ActorSounds loaded simultaneously.  Furthermore, SOUND has no control over playback pitch or stereo panning.  Thus, both SOUND and ActorSound have unique and valid use cases.
