@@ -109,6 +109,11 @@ local duration_between_frames = 0.15
 
 -- The sequence of frames here corresponds with the physical layout of
 -- the "guy 4x4.png" sprite sheet image shown above.
+
+-- Yes, this "frames" table could be programmatically generated with
+-- a nested loop but I'm explicitly writing it out here so it's
+-- easier to see how what it contains for this example.
+
 local frames = {
 	Down = {
 		{ Frame=0,	Delay=duration_between_frames},

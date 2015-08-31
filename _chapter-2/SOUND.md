@@ -13,14 +13,14 @@ Namely, SOUND can be used to easily and cleanly loop audio files via the `PlayMu
 
 Here's a simple example that could be called from with a simfile's BG or FGCHANGE script.  It assumes that there is a file *love-is-war.ogg* located in the root of the song directory.  This example uses `PlayMusicPart()` which accepts eight arguments:
 
-+ music_path (string) – the path to the audio file you want to load
-+ music_start (float) – how many seconds into the file you want playback to start
-+ music_length (float) – how many seconds of the file you want to play
-+ fade_in (float) – how many seconds should the file fade in over
-+ fade_out (float) – how many seconds should the file fade out over
-+ loop (boolean) – set to *true* if you want the audio file to loop until told to stop
-+ apply_rate (boolean) – should this audio file follow the engine's internal sense of music rate?
-+ align_beat (boolean) – if `true` or `nil`, the playback duration is automatically adjusted to cover an integer number of beats
++ **music_path** (string) – the path to the audio file you want to load
++ **music_start** (float) – how many seconds into the file you want playback to start
++ **music_length** (float) – how many seconds of the file you want to play
++ **fade_in** (float) – how many seconds should the file fade in over
++ **fade_out** (float) – how many seconds should the file fade out over
++ **loop** (boolean) – set to *true* if you want the audio file to loop until told to stop
++ **apply_rate** (boolean) – should this audio file follow the engine's internal sense of music rate?
++ **align_beat** (boolean) – if `true` or `nil`, the playback duration is automatically adjusted to cover an integer number of beats
 
 <span class="CodeExample-Title">Simple usage of SOUND singleton:</span>
 {% highlight lua linenos=table %}
@@ -32,7 +32,7 @@ return Def.Actor{
 
 		-- love-is-war.ogg is 4 minutes and 10 seconds in duration.
 		-- We want it to loop.
-		SOUND:PlayMusicPart(path, 0, 250.4, 0, 0, true, true, true )
+		SOUND:PlayMusicPart(path, 0, 250.4, 0, 0, true, true, true)
 
 		-- Wait 10 seconds, then queue a command where we'll
 		-- lower the playback volume
