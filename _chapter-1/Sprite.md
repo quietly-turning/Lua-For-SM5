@@ -112,7 +112,7 @@ local duration_between_frames = 0.15
 
 -- Yes, this "frames" table could be programmatically generated with
 -- a nested loop but I'm explicitly writing it out here so it's
--- easier to see how what it contains for this example.
+-- easier to see what it contains for this example.
 
 local frames = {
 	Down = {
