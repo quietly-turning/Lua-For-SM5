@@ -7,7 +7,7 @@ title: A Guide
 <!--	CHAPTER 0 	-->
 
 <h1>Chapter 0 &mdash; Considerations</h1>
-{% assign sorted = (site.collections.chapter-0.docs | sort: 'section') %}
+{% assign sorted = (site.collections.Considerations.docs | sort: 'section') %}
 {% for section in sorted %}
 	<h3>
 		{{ section.chapter }}.{{ section.section }}
@@ -19,7 +19,7 @@ title: A Guide
 <!--	CHAPTER 1	 -->
 
 <h1>Chapter 1 &mdash; Actors</h1>
-{% assign sections = (site.collections.chapter-1.docs | sort: 'section' ) %}
+{% assign sections = (site.collections.Actors.docs | sort: 'section' ) %}
 {% for section in sections %}
 		{% if section.subsection %}
 			<h4>
@@ -47,7 +47,7 @@ title: A Guide
 <!--	CHAPTER 2	 -->
 
 <h1>Chapter 2 &mdash; Singletons</h1>
-{% assign sections = (site.collections.chapter-2.docs | sort: 'section' ) %}
+{% assign sections = (site.collections.Singletons.docs | sort: 'section' ) %}
 {% for section in sections %}
 		{% if section.subsection %}
 			<h4>
@@ -100,6 +100,6 @@ title: A Guide
 
 <p>The closest thing to proper API documentation that SM5 currently has is its <strong>Lua.xml</strong> file, which comes with StepMania 5 in the <em>./Docs/Luadoc/</em> directory and can be viewed in Firefox.  I have also hosted a copy here: <a href="{{ site.baseurl }}/API/Lua.xml">Lua For SM5: Lua API</a>.</p>
 
-<p>-dbk2<br>August 22, 2015</p>
+<p>-dguzek<br>August 22, 2015</p>
 </div>
 

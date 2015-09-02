@@ -11,14 +11,14 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
 
-
 collections:
-  chapter-0:
+  Considerations:
     output: true
-  chapter-1:
+  Actors:
     output: true
-  chapter-2:
+  Singletons:
     output: true
+
 
 defaults:
   -
