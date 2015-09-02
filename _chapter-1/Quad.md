@@ -39,7 +39,7 @@ return Def.ActorFrame{
 	-- this makes use of the _screen and Color aliases
 	Def.Quad{
 		Name="RedQuad",
-		InitCommand=funciton(self)
+		InitCommand=function(self)
 			self:zoomto(100,100)
 			self:diffuse(Color.Red)
 		end,

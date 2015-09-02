@@ -165,18 +165,22 @@ af[#af+1] = Def.Sprite{
 
 	-- In SM5, the StepMessage is broadcast whenever either player
 	-- steps on a game button during gameplay.
-	-- This doens't handle buttons like START or SELECT.
+	-- This doesn't handle buttons like START or SELECT.
 	StepMessageCommand=function(self, params)
 
-		-- As an artibtrary decision for the sake of this example
+		-- As an arbitrary decision for the sake of this example
 		-- let's only pay attention to steps from PLAYER_1
 		if params.PlayerNumber == PLAYER_1 then
 
 			-- turn animation back on for a brief moment
 			self:animate(true)
 
-			-- apply a linear tween to move the sprite one directional unit
-			self:linear(0.25)
+			-- people can hit panels faster than every 0.25 seconds, so it's
+			-- possible to queue so many tweens that SM5 complains about a tween
+			-- overflow. Mitigate this by canceling the previous linear tween, if
+			-- one is still running, via the stoptweening() command.  Then
+			-- apply a new linear tween to move the sprite one directional unit.
+			self:stoptweening():linear(0.25)
 
 			-- the "Column" param will match up with a Gameplay arrow column
 			-- dance has 4 columns, pump has 5, etc.

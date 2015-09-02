@@ -72,7 +72,7 @@ local box_values ={
 -- and load a Box.lua to the ActorFrame for each.
 for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
 
-	-- Tranform a player enum string valu into the part after
+	-- Tranform a player enum string value into the part after
 	-- the underscore with the ToEnumShortString() helper function.
 
 	-- In this case "PlayerNumber_P1" becomes "P1"
