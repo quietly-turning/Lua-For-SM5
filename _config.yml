@@ -18,7 +18,8 @@ collections:
     output: true
   Singletons:
     output: true
-
+  Examples:
+    output: true
 
 defaults:
   -

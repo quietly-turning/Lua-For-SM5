@@ -3,7 +3,7 @@ layout: default
 title: A Guide
 ---
 
-
+<!--	#########################################################	 -->
 <!--	CHAPTER 0 	-->
 
 <h1>Chapter 0 &mdash; Considerations</h1>
@@ -16,6 +16,8 @@ title: A Guide
 {% endfor %}
 
 
+
+<!--	#########################################################	 -->
 <!--	CHAPTER 1	 -->
 
 <h1>Chapter 1 &mdash; Actors</h1>
@@ -40,10 +42,7 @@ title: A Guide
 
 
 
-
-
-
-
+<!--	#########################################################	 -->
 <!--	CHAPTER 2	 -->
 
 <h1>Chapter 2 &mdash; Singletons</h1>
@@ -67,6 +66,8 @@ title: A Guide
 {% endfor %}
 
 
+
+<!--	#########################################################	 -->
 <!--	CHAPTER 3	 -->
 
 <h1>Chapter 3 &mdash; NameSpaces</h1>
@@ -82,17 +83,38 @@ title: A Guide
 </h3>
 
 
-<!--	CHAPTER 3	 -->
+
+<!--	#########################################################	 -->
+<!--	CHAPTER 4	 -->
 
 <h1>Chapter 4 &mdash; Examples</h1>
 
-<h3>
-	4.1
-	How to capture arbitrary input with Screen:AddInputCallback()
-</h3>
+{% assign sections = (site.collections.Examples.docs | sort: 'section' ) %}
+{% for section in sections %}
+		{% if section.subsection %}
+			<h4>
+		{% else %}
+			<h3>
+		{% endif %}
+
+		{{ section.chapter }}.{{ section.section }}
+		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
+
+		{% if section.subsection %}
+			</h4>
+		{% else %}
+			</h3>
+		{% endif %}
+{% endfor %}
 
 
 
+
+
+
+
+<!--	#########################################################	 -->
 <br><br>
 
 <div class="panel callout radius">
