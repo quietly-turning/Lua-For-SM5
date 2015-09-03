@@ -5,7 +5,7 @@ chapter: 4
 section: 1
 ---
 
-## Section 2.1 &mdash; Capturing Arbitrary Input
+## Section 4.1 &mdash; Capturing Arbitrary Input
 
 Arbitrary input (from game buttons, menu buttons, coin buttons, etc.) can be detected and handled by using the `AddInputCallback()` method of any screen.
 
@@ -25,7 +25,7 @@ Def.ActorFrame{
 {% endhighlight %}
 
 
-This adds the lua function `InputHandler` to the list of functions the screen will pass input to.  Whenever an input event occurs, `InputHandler` will be passed a table with the details of the event.
+This adds the lua function `InputHandler()` to the list of functions the screen will pass input to.  Whenever an input event occurs, `InputHandler()` will be passed a table with the details of the event.
 
 <div class="panel callout radius">
 Note that this method should <strong>not</strong> be used to handle text input from the user because it would not handle localization or different keyboard layouts.
@@ -33,7 +33,7 @@ Note that this method should <strong>not</strong> be used to handle text input f
 
 The screen and your own callback function will both be passed input events, so be aware of what input the current screen responds to and consider the effects.
 
-Details of the table containing the event data is as follows.  In the very simple example above, this table would be the `event` table that is passed into the `InputHandler` function on *every* input event.
+Details of the table containing the event data is as follows.  In the very simple example above, this table would be the `event` table that is passed into the `InputHandler()` function on *every* input event.
 
 <span class="CodeExample-Title">An input event table:</span>
 {% highlight lua linenos=table %}
