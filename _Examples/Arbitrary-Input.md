@@ -38,6 +38,37 @@ Details of the table containing the event data is as follows.  In the very simpl
 <span class="CodeExample-Title">An input event table:</span>
 {% highlight lua linenos=table %}
 {
+	-- The semi-raw button that was pressed.
+	-- This is what the button was mapped to by
+	-- the keymap settings, but without the
+	-- conversions that occur when
+	-- OnlyDedicatedMenuButtons is true.
+	-- Will be empty if the button was not mapped.
+	button = string,
+
+	-- The type of event.  One of three possible values:
+	--		"InputEventType_FirstPress"
+	--		"InputEventType_Repeat"
+	--		"InputEventType_Release".
+	type = string,
+
+	-- The cooked button that was pressed.
+	-- This is button with mapping that occurs when
+	-- OnlyDedicatedMenuButtons is true applied.
+	-- This is nil for unmapped buttons.
+	GameButton = string,
+
+	-- The player that the controller is mapped to, or nil.
+	PlayerNumber = PlayerNumber,
+
+	-- The game controller this event was mapped to.
+	-- "GameController_1" or "GameController_2"
+	-- or nil if the event wasn't mapped to either controller.
+	controller = string,
+
+	-- Unknown purpose.  Probably related to Netplay.
+	MultiPlayer = string,
+	
 	-- The raw details of the event.
 	-- Most of the time, this will be "lower level"
 	-- than anything you might want themeside.
@@ -71,38 +102,7 @@ Details of the table containing the event data is as follows.  In the very simpl
 		-- True if the device is a mouse.
 		is_mouse = bool
 
-	}, -- This ends the list of things inside the DeviceInput part of the table.
-
-	-- The game controller this event was mapped to.
-	-- "GameController_1" or "GameController_2"
-	-- or nil if the event wasn't mapped to either controller.
-	controller = string,
-
-	-- The semi-raw button that was pressed.
-	-- This is what the button was mapped to by
-	-- the keymap settings, but without the
-	-- conversions that occur when
-	-- OnlyDedicatedMenuButtons is true.
-	-- Will be empty if the button was not mapped.
-	button = string,
-
-	-- The type of event.  One of three possible values:
-	--		"InputEventType_FirstPress"
-	--		"InputEventType_Repeat"
-	--		"InputEventType_Release".
-	type = string,
-
-	-- The cooked button that was pressed.
-	-- This is button with mapping that occurs when
-	-- OnlyDedicatedMenuButtons is true applied.
-	-- This is nil for unmapped buttons.
-	GameButton = string,
-
-	-- The player that the controller is mapped to, or nil.
-	PlayerNumber = PlayerNumber,
-
-	-- Unknown purpose.  Probably related to Netplay.
-	MultiPlayer = string,
+	},
 }
 {% endhighlight %}
 
