@@ -3,7 +3,6 @@ layout: default
 title: ActorSound
 chapter: 1
 section: 5
-difficulty: intermediate
 ---
 
 # Section 1.5 &mdash; ActorSound

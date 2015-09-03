@@ -3,6 +3,7 @@ layout: default
 title: Capturing Arbitrary Input
 chapter: 4
 section: 1
+difficulty: intermediate
 ---
 
 ## Section 4.1 &mdash; Capturing Arbitrary Input
