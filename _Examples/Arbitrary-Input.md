@@ -112,7 +112,7 @@ Here is a well-commented example, courtesy of Kyzentun.   It consists of a few v
 
 Note that this example only displays information from the *most recent* button press because new input events (first_press, repeat, release) are triggered on a per-button basis.   It is possible to maintain a list of which buttons are being held in a Lua table, but this is left as an exercise for the reader for now. :)
 
-<span class="CodeExample-Title">Simple usage of SOUND singleton:</span>
+<span class="CodeExample-Title">A more practical Input Callback example:</span>
 {% highlight lua linenos=table %}
 -- button_text and game_button_text will be set to actors when those actors
 -- are created. These local variables exist to skip the hassle of calling
