@@ -68,13 +68,17 @@ The most commonly used Actors will each be discussed in detail in the following 
 -- start by defining an ActorFrame
 -- we'll call it ExampleAF (example ActorFrame)
 local ExampleAF = Def.ActorFrame{
-	OnCommand=cmd(Center; sleep,9999),
+	OnCommand=function(self)
+		self:Center():sleep(9999)
+	end,
 
 	-- since Actors are just Lua tables
 	-- we can nest them directly inside
 	-- the parent ActorFrame table like this
 	Def.Quad{
-		InitCommand=cmd(zoomto,50,137)
+		InitCommand=function(self) 
+			self:zoomto(50,137)
+		end
 	},
 
 	-- note that since these are elements in
