@@ -81,7 +81,7 @@ return Def.ActorFrame{
 		Name="GreenQuadAF",
 		InitCommand=function(self)
 			self:Center()
-			self:effectmagnitude(0,0,1):spin()
+			self:spin():effectmagnitude(0,0,180)
 		end,
 
 		Def.Quad{
