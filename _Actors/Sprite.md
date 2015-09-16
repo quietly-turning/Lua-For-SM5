@@ -11,7 +11,7 @@ section: 3
 *Sprite* actors can be used to load, display, and manipulate image and video data in StepMania 5.  If want to load a png graphic and move it around, or animate a character from a sprite sheet, or play a video file, then the *Sprite* actor is what you're looking for.
 
 
-See the page on [Supported File Extensions]({{site.baseurl}}/chapter-1/Supported-File-Extensions.html) for a complete list of which filetypes are supported.
+See the page on [Supported File Extensions]({{site.baseurl}}/Actors/Supported-File-Extensions.html) for a complete list of which filetypes are supported.
 
 
 As Lua tables, Sprite actors have one unique attributes that is worth knowing about, `Texture`.  Let's start with a very simple example of Sprite usage.

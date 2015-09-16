@@ -7,7 +7,7 @@ section: 2
 
 # Section 2.2 &mdash; SOUND Singleton
 
-The SOUND singleton can be used to play audio files from a theme or simfile and has some capabilities that <a href="{{site.baseurl}}/chapter-1/ActorSound.html">ActorSound</a> lacks.
+The SOUND singleton can be used to play audio files from a theme or simfile and has some capabilities that a <a href="{{site.baseurl}}/Actors/Sound.html">Sound actor</a>  lacks.
 
 ### SOUND can be used to loop audio files cleanly
 Namely, SOUND can be used to easily and cleanly loop audio files via the `PlayMusicPart()` method.  Additionally, SOUND has some helpful methods like `DimMusic()` and `StopMusic()` that make it especially interesting from the perspective of a simfile mini-game.
@@ -55,7 +55,7 @@ return Def.Actor{
 {% endhighlight %}
 
 
-### SOUND or Def.ActorSound{} ?
-Of course, the SOUND singleton lacks some of the special features that an <a href="{{site.baseurl}}/chapter-1/ActorSound.html">ActorSound</a> possesses.
+### SOUND or Def.Sound{} ?
+Of course, the SOUND singleton lacks some of the special features that a <a href="{{site.baseurl}}/Actors/Sound.html">Sound actor</a> possesses.
 
-Only one sound can be played via SOUND at any given moment, while there can be multiple ActorSounds loaded simultaneously.  Furthermore, SOUND has no control over playback pitch or stereo panning.  Thus, both SOUND and ActorSound have unique and valid use cases.
+Only one sound can be played via SOUND at any given moment, while there can be multiple *Sound* actors loaded simultaneously.  Furthermore, SOUND has no control over playback pitch or stereo panning.  Thus, both the SOUND singleton and *Sound* actors have unique and valid use cases.
