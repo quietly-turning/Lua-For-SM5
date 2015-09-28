@@ -27,15 +27,9 @@ return Actor{
 	-- InitCommand happens before the screen we want is the TopScreen,
 	-- so calling GetTopScreen() during an InitCommand would fetch the
 	-- screen being transitioned out of that is about to be destroyed.
-	InitCommand=function(self)
-		-- So, we queue a secondary command, and call GetTopScreen()
-		-- from there.
-		self:queuecommand("CaptureTopScreen")
-	end,
-	CaptureTopScreenCommand=function(self)
-		-- When this function is called, StepMania's engine will be one
-		-- frame past InitCommand.  By now, the screen we want will be ready.
-		
+	-- It WILL be ready by the time OnCommand is called, however.
+	OnCommand=function(self)
+
 		-- Since this Lua is being called on ScreenSelectMusic
 		-- the topscreen variable will be a screen object of ScreenSelectMusic.
 		local topscreen = SCREENMAN:GetTopScreen()
@@ -94,7 +88,7 @@ return Actor{
 
 The function defined in **SL-Utilities.lua** that is relevant here is `SM()`  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme's Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.
 
-<span class="CodeExample-Title">using SM() to display a small Lua table</span>
+<span class="CodeExample-Title">Using SM() to display a small Lua table</span>
 {% highlight lua linenos=table %}
 return Actor{
 	JudgmentMessageCommand=function(self, params)
