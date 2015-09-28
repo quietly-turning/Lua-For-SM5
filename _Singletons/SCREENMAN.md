@@ -76,7 +76,13 @@ return Actor{
 			-- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
 			-- would display "TapNoteScore_W1".
 			-- (Note that the "W" is for window, as in "timing window.") 
-			SCREENMAN:SystemMessage( params.TapNoteScore )
+			--
+			-- Hold notes have their own, separate judgment system.
+			-- So, when a hold note is judged, a JudgmentMessage will be
+			-- broadcast, but the TapNoteScore parameter will be nil.
+			-- Account for that here with a logical or statement that tries
+			-- params.HoldNoteScore if params.TapNoteScore is nil.
+			SCREENMAN:SystemMessage( params.TapNoteScore or params.HoldNoteScore )
 		end
 	end
 }
@@ -105,5 +111,21 @@ The screenshot below shows that columns 4 and 1 (a left-right jump) were just mi
 
 <img src="{{ site.baseurl }}/images/using-SM-to-debug-table.png">
 
- Please note that this debugging approach has limited usefulness as large Lua tables can easily contain more data than StepMania's window can reasonably display.  In such situations, a proper Lua `Trace()` is preferred.  Output from `Trace()` is written to *Logs/Log.txt*
+### Knowing when to use Trace()
+
+ Please note that `SystemMessage()` is not the only debugging tool available in StepMania.  SystemMessage() actually has a rather limited usefulness because large Lua tables can easily contain more data than StepMania's window can reasonably display.  In such situations, a proper Lua `Trace()` is preferred.  Output from `Trace()` is written to *Logs/Log.txt*
+ 
+ StepMania's *_fallback* theme includes a  `rec_print_table()` function to assist with recursively printing deeply nested Lua tables to the Log.txt file.  Here is the example from above, reworked to to use `rec_print_table()` to write the entire params table to file.
+ 
+ <span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
+ {% highlight lua linenos=table %}
+ return Actor{
+ 	JudgmentMessageCommand=function(self, params)
+		-- recursive print the entire table of JudgmentMessage parameters
+		-- to Logs/Log.txt.  This would be more information than could fit
+		-- onscreen at a single moment.
+		rec_print_table( params )
+	end
+ }
+ {% endhighlight %}
  
