@@ -46,7 +46,7 @@ return Actor{
 }
 {% endhighlight %}
 
-Again, there are many custom methods that belong to the many different classes of screens, more than can be reasonable documented here.  For a full list, please refer to the various screen classes documented in the <a href="{{ site.baseurl }}/API/Lua.xml">SM5 Lua API</a>.  This currently includes everything from **Class Screen**:*ActorFrame* down to **Class ScreenWithMenuElementsSimple**:*ScreenWithMenuElements* (with the exception of ScreenManager itself, of course!).
+Again, there are many custom methods that belong to the many different classes of screens, more than can be reasonably documented here.  For a full list, please refer to the various screen classes documented in the <a href="{{ site.baseurl }}/API/Lua.xml">SM5 Lua API</a>.  This currently includes everything from **Class Screen**:*ActorFrame* down to **Class ScreenWithMenuElementsSimple**:*ScreenWithMenuElements* (with the exception of ScreenManager itself, of course!).
 
 ### Debugging with SystemMessage()
 
