@@ -10,7 +10,7 @@ difficulty: intermediate
 
 ## Section 1.4.1 &mdash; LoadActor()
 
-*LoadActor()* is a helper function with some extremely useful properties that make a staple of any SM5 Lua scripting endeavor.
+*LoadActor()* is a helper function with some extremely useful properties that make it a staple of any SM5 Lua scripting endeavor.
 
 ### First Argument - A file path to Load
 
@@ -29,7 +29,7 @@ LoadActor( "OverlayAttachedGirlfriend.png" )..{
 }
 {% endhighlight %}
 
-As [its definition in the _fallback theme demonstrates ](https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159), *LoadActor()* can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use Def.Sprite{} or Def.Model{} or Def.Actor{}.
+As [its definition in the _fallback theme demonstrates ](https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159), *LoadActor()* can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use `Def.Sprite{}`, `Def.Sound{}`, `Def.Model{}` or `Def.Actor`.
 
 ### Second Argument - A table to pass into the loaded file
 
