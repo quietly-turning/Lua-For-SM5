@@ -26,11 +26,12 @@ local phrases = {
 }
 
 return Def.ActorFrame{
-	InitCommand=cmd(sleep, 9999),
+	InitCommand=function(self)
+		-- Remember that queuecommand() waits until the next tick of the engine's
+		-- game loop to execute whatever command we are queueing.
+		self:queuecommand("ChooseAPhrase"):sleep(9999)
+	end,
 
-	-- Remember that queuecommand() waits until the next tick of the engine's
-	-- game loop to execute whatever command we are queueing.
-	OnCommand=cmd(queuecommand, "ChooseAPhrase"),
 	ChooseAPhraseCommand=function(self)
 		-- When passed an integer, math.random() returns a random
 		-- integer that is no greater than the number you pass it,
