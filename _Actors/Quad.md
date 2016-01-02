@@ -108,6 +108,31 @@ Second, this example also uses a few helper tables defined in SM5's *_fallback* 
 `Color` table from [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and the `_screen` table from [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua).
 
 ### Commands can be chained.
-Finally, this example introduces a new way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above on lines 24, 56, and 66.
+Finally, this example introduces a way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above in the third quad's *GrowCommand*.
+
+The following two syntaxes produce the same results:
+
+<span class="CodeExample-Title">Long Form</span>
+{% highlight lua linenos=table %}
+Def.Quad{
+	OnCommand=function(self)
+		self:zoomto(100,200)
+		self:xy(_screen.cx, 100)
+		self:diffuse(Color.Green)
+		self:linear(1)
+		self:y(screen.h-100)
+	end
+}
+{% endhighlight %}
+
+<span class="CodeExample-Title">Condensed Via Command Chaining</span>
+{% highlight lua linenos=table %}
+Def.Quad{
+	OnCommand=function(self)
+		self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
+			:linear(1):y(screen.h-100)
+	end
+}
+{% endhighlight %}
 
  While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.
