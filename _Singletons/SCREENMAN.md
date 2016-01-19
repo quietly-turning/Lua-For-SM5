@@ -3,6 +3,7 @@ layout: default
 title: SCREENMAN
 chapter: 2
 section: 1
+description: secure a handle onto the current screen object
 ---
 
 # Section 2.1 &mdash; SCREENMAN Singleton

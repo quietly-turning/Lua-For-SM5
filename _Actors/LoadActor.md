@@ -5,6 +5,7 @@ chapter: 1
 section: 4.1
 subsection: 1
 difficulty: intermediate
+description: a helper function that can be used in place of Sprite, Sound, or Actor
 ---
 
 
@@ -44,7 +45,7 @@ This sort of setup allows us to keep generic code definitions in files like Box.
 <span class="CodeExample-Title">Primary.lua</span>
 {% highlight lua linenos=table %}
 local af = Def.ActorFrame{
-	InitCommand=function(self) self:sleep(9999):Center() end
+	InitCommand=function(self) self:Center():sleep(9999) end
 }
 
 local box_values ={

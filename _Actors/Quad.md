@@ -3,6 +3,7 @@ layout: default
 title: Quad
 chapter: 1
 section: 1
+description: programmatically draw and manipulate quadrilaterals
 ---
 
 # Section 1.1 &mdash; Quad
@@ -19,6 +20,14 @@ Def.Quad{
 	end
 }
 {% endhighlight %}
+
+A common question that people new to StepMania scripting have is:
+
+**Where are those commands like** `zoomto()` **coming from?**
+
+Keeping in mind that a *Quad* is a specific type of StepMania *Actor*, we can look to StepMania's Lua API for a complete list of methods available to all <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor objects</a>.  (Note that in your web-browser, you may need to click to expand the list of methods linked to.)
+
+## A More Advanced Example
 
 Since Quads are fairly simple, let's use another example to animate some Quads and demonstrate a few new-to-SM5 features and shortcuts along the way.
 

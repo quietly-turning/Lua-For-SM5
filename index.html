@@ -15,6 +15,7 @@ title: A Guide
 	</h3>
 {% endfor %}
 
+<br><hr><br>
 
 
 <!--	#########################################################	 -->
@@ -23,6 +24,7 @@ title: A Guide
 <h1>Chapter 1 &mdash; Actors</h1>
 {% assign sections = (site.collections.Actors.docs | sort: 'section' ) %}
 {% for section in sections %}
+	<p>
 		{% if section.subsection %}
 			<h4>
 		{% else %}
@@ -38,9 +40,14 @@ title: A Guide
 		{% else %}
 			</h3>
 		{% endif %}
+
+		{%  if section.description %}
+			<span class="section-description">{{ section.description }}</span>
+		{% endif %}
+	</p>
 {% endfor %}
 
-
+<br><hr><br>
 
 <!--	#########################################################	 -->
 <!--	CHAPTER 2	 -->
@@ -48,6 +55,7 @@ title: A Guide
 <h1>Chapter 2 &mdash; Singletons</h1>
 {% assign sections = (site.collections.Singletons.docs | sort: 'section' ) %}
 {% for section in sections %}
+	<p>
 		{% if section.subsection %}
 			<h4>
 		{% else %}
@@ -63,9 +71,14 @@ title: A Guide
 		{% else %}
 			</h3>
 		{% endif %}
+
+		{%  if section.description %}
+			<span class="section-description">{{ section.description }}</span>
+		{% endif %}
+	</p>
 {% endfor %}
 
-
+<br><hr><br>
 
 <!--	#########################################################	 -->
 <!--	CHAPTER 3	 -->
@@ -82,7 +95,7 @@ title: A Guide
 	Enum
 </h3>
 
-
+<br><hr><br>
 
 <!--	#########################################################	 -->
 <!--	CHAPTER 4	 -->

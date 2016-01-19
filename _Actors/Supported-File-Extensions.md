@@ -4,6 +4,7 @@ title: Supported File Extensions
 chapter: 1
 section: 4.2
 subsection: 2
+description: a list of what file extensions StepMania 5 supports
 ---
 
 
@@ -31,7 +32,7 @@ In StepMania 5, the supported file extensions are listed in [/src/ActorUtil.cpp]
 ##### Video:
 SM5 supports a broad array of codecs and containers via [ffmpeg](https://www.ffmpeg.org/).
 
-You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The *.mp4* and *.avi* containers in conjunction with the .h264 codec works great.
+You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The *.avi* container in conjunction with the .h264 codec works great.
 
 [Handbrake](https://handbrake.fr/) is a useful, free application you can use to resize your videos and convert them to one of the aforementioned formats with the .h264 codec.
 

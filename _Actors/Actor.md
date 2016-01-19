@@ -3,11 +3,12 @@ layout: default
 title: Actor
 chapter: 1
 section: 4
+description: the foundation from which all other Actors inherit from
 ---
 
 # Section 1.4 – Actor
 
-The *Actor* class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually).  Using *Actor* objects directly to load an image or sound can be somewhat cumbersome; the `LoadActor()` helper function discussed later is often easier to use and more flexible.
+The *Actor* class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually).  Using *Actor* objects directly to load an image or sound can be somewhat cumbersome; the `LoadActor()` helper function <a href="/Lua-For-SM5/Actors/LoadActor.html">discussed later</a> is often easier to use and more flexible.
 
 Still, there are times when *Actor* objects can be useful.  For example, the Simply Love SM5 port uses them when we need a hook to some message broadcast by the engine but an ActorFrame isn't necessary.
 

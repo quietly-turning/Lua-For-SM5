@@ -3,6 +3,7 @@ layout: default
 title: Sprite
 chapter: 1
 section: 3
+description: display and manipulate graphical assets like PNG and MP4 files
 ---
 
 
@@ -14,7 +15,7 @@ section: 3
 See the page on [Supported File Extensions]({{site.baseurl}}/Actors/Supported-File-Extensions.html) for a complete list of which filetypes are supported.
 
 
-As Lua tables, Sprite actors have one unique attributes that is worth knowing about, `Texture`.  Let's start with a very simple example of Sprite usage.
+As Lua tables, Sprite actors have one unique attribute that is worth knowing about, `Texture`.  Let's start with a very simple example of Sprite usage.
 
 <span class="CodeExample-Title">A very simple Sprite example:</span>
 {% highlight lua linenos=table %}
@@ -28,6 +29,14 @@ Def.Sprite{
 {% endhighlight %}
 
 This example will load a file titled *OverlayAttachedGirlfriend.png* in the same directory as the current Lua file, `Center()` it within its parent ActorFrame, and apply a 50% zoom (make it half as large).
+
+A common question that people new to StepMania scripting have is:
+
+**Where are those commands like** `zoom()` **and** `Center()` **coming from?**
+
+Keeping in mind that a *Sprite* is a specific type of StepMania *Actor*, we can look to StepMania's Lua API for a complete list of methods available first to all <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor</a> and then to <a href="/Lua-For-SM5/API/Lua.xml#Sprite">Sprite</a> specifically.  (Note that in your web-browser, you may need to click to expand the list of methods linked to.)
+
+## Animated Spritesheets
 
 What about sprite sheets for animated sprites?  StepMania's engine is hardcoded to look for patterns in the filename with Sprite actors.  If you are loading a sprite sheet that you intend to animate through, you'll want to ensure that the filename of the png you are loading ends with the pattern: *(columns)*x*(rows)*
 
@@ -94,7 +103,7 @@ Since the the time between each frame of animation is set globally using the `Se
 
 It is worth noting that in the above, animated examples, StepMania's engine will start with the first frame and progress to the last one in order.  There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:
 
-<img src="{{ site.baseurl }}/images/guy 4x4.png">
+<img src="{{ site.baseurl }}/images/Reen 4x4.png">
 
 If we want the *Sprite* actor to appear to be facing downward, then we'd only want StepMania to be animating through the first row of the sprite sheet.  Here's a way to handle that.
 
@@ -147,7 +156,7 @@ local af = Def.ActorFrame{
 }
 
 af[#af+1] = Def.Sprite{
-	Texture="guy 4x4.png",
+	Texture="Reen 4x4.png",
 
 	InitCommand=function(self)
 		-- when not actively tweening across the screen, the Sprite should

@@ -3,6 +3,7 @@ layout: default
 title: SOUND
 chapter: 2
 section: 2
+description: tap directly into the engine's core Audio handling; supports looping of audio files
 ---
 
 # Section 2.2 &mdash; SOUND Singleton

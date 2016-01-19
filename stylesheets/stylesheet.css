@@ -670,7 +670,6 @@ form {
   font-size: 1.2em;
   font-weight: normal;
   color: #474747;
-  text-indent: 3px;
 }
 
 /*h4:before {
@@ -1052,3 +1051,9 @@ span.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
 		color: #000;
 		text-decoration: underline;
 	}
+
+/* --------------------------------------------------- */
+
+span.section-description{
+	margin-left:2.5em;
+}
