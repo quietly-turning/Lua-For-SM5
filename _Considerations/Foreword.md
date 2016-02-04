@@ -64,7 +64,7 @@ The most commonly used Actors will each be discussed in detail in the following 
 
 
 <span class="CodeExample-Title">The same script written in SM5 Lua:</span>
-{% highlight Lua linenos=table %}
+{% highlight Lua linenos %}
 -- start by defining an ActorFrame
 -- we'll call it ExampleAF (example ActorFrame)
 local ExampleAF = Def.ActorFrame{

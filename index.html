@@ -6,122 +6,39 @@ title: A Guide
 <!--	#########################################################	 -->
 <!--	CHAPTER 0 	-->
 
-<h1>Chapter 0 &mdash; Considerations</h1>
-{% assign sorted = (site.collections.Considerations.docs | sort: 'section') %}
-{% for section in sorted %}
-	<h3>
-		{{ section.chapter }}.{{ section.section }}
-		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-	</h3>
+
+
+{% for collection in site.collections %}
+	{% if collection.label != "posts" %}
+		<h1>Chapter {{ forloop.index | minus: 1 }} &mdash; {{ collection.label }}</h1>
+
+		{% assign sorted = (collection.docs | sort: 'section') %}
+		{% for section in sorted %}
+			<p>
+				{% if section.subsection %}
+					<h4>
+				{% else %}
+					<h3>
+				{% endif %}
+
+				{{ section.chapter }}.{{ section.section }}
+				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
+				{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
+
+				{% if section.subsection %}
+					</h4>
+				{% else %}
+					</h3>
+				{% endif %}
+
+				{%  if section.description %}
+					<span class="section-description">{{ section.description }}</span>
+				{% endif %}
+			</p>
+		{% endfor %}
+	{% endif %}
 {% endfor %}
-
 <br><hr><br>
-
-
-<!--	#########################################################	 -->
-<!--	CHAPTER 1	 -->
-
-<h1>Chapter 1 &mdash; Actors</h1>
-{% assign sections = (site.collections.Actors.docs | sort: 'section' ) %}
-{% for section in sections %}
-	<p>
-		{% if section.subsection %}
-			<h4>
-		{% else %}
-			<h3>
-		{% endif %}
-
-		{{ section.chapter }}.{{ section.section }}
-		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
-
-		{% if section.subsection %}
-			</h4>
-		{% else %}
-			</h3>
-		{% endif %}
-
-		{%  if section.description %}
-			<span class="section-description">{{ section.description }}</span>
-		{% endif %}
-	</p>
-{% endfor %}
-
-<br><hr><br>
-
-<!--	#########################################################	 -->
-<!--	CHAPTER 2	 -->
-
-<h1>Chapter 2 &mdash; Singletons</h1>
-{% assign sections = (site.collections.Singletons.docs | sort: 'section' ) %}
-{% for section in sections %}
-	<p>
-		{% if section.subsection %}
-			<h4>
-		{% else %}
-			<h3>
-		{% endif %}
-
-		{{ section.chapter }}.{{ section.section }}
-		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
-
-		{% if section.subsection %}
-			</h4>
-		{% else %}
-			</h3>
-		{% endif %}
-
-		{%  if section.description %}
-			<span class="section-description">{{ section.description }}</span>
-		{% endif %}
-	</p>
-{% endfor %}
-
-<br><hr><br>
-
-<!--	#########################################################	 -->
-<!--	CHAPTER 3	 -->
-
-<h1>Chapter 3 &mdash; NameSpaces</h1>
-
-<h3>
-	3.1.1
-	RageFileUtil
-</h3>
-
-<h3>
-	3.1.2
-	Enum
-</h3>
-
-<br><hr><br>
-
-<!--	#########################################################	 -->
-<!--	CHAPTER 4	 -->
-
-<h1>Chapter 4 &mdash; Examples</h1>
-
-{% assign sections = (site.collections.Examples.docs | sort: 'section' ) %}
-{% for section in sections %}
-		{% if section.subsection %}
-			<h4>
-		{% else %}
-			<h3>
-		{% endif %}
-
-		{{ section.chapter }}.{{ section.section }}
-		<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
-		{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
-
-		{% if section.subsection %}
-			</h4>
-		{% else %}
-			</h3>
-		{% endif %}
-{% endfor %}
-
-
 
 
 
