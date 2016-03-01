@@ -24,7 +24,7 @@ Here is a small example that uses `GetTopScreen()` on ScreenSelectMusic to get a
 <span class="CodeExample-Title">Using SCREENMAN:GetTopScreen() to get ScreenSelectMusic</span>
 {% highlight lua linenos=table %}
 return Actor{
-	
+
 	-- InitCommand happens before the screen we want is the TopScreen,
 	-- so calling GetTopScreen() during an InitCommand would fetch the
 	-- screen being transitioned out of that is about to be destroyed.
@@ -34,11 +34,11 @@ return Actor{
 		-- Since this Lua is being called on ScreenSelectMusic
 		-- the topscreen variable will be a screen object of ScreenSelectMusic.
 		local topscreen = SCREENMAN:GetTopScreen()
-		
+
 		-- Get a Lua reference to the engine's MusicWheel
 		-- This is a Lua object of type "MusicWheel"
 		local MusicWheel = topscreen:GetMusicWheel()
-		
+
 		-- Change the current sort of the MusicWheel.
 		-- Fot a full list of available sorts, check the SortOrder enum
 		-- as documented in the Lua API.
@@ -62,21 +62,21 @@ Let's jump into a simple example from ScreenGameplay where we listen for and pri
 -- this example only makes sense and does anything in ScreenGameplay.
 
 return Actor{
-	
+
 	JudgmentMessageCommand=function(self, params)
 		-- Note that JudgementMessages will be broadcast for any human players,
 		-- but to keep this example simple, we'll limit it to PLAYER_1.
 		if params.Player == PLAYER_1 then
-			
+
 			-- This SystemMessage will display each judgment in string
 			-- form at the top of the screen as it occurs.
 			-- So, if a note passes and the player misses it,
 			-- "TapNoteScore_Miss"  would be displayed at the
-			-- top of the screen. 
+			-- top of the screen.
 			--
 			-- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
 			-- would display "TapNoteScore_W1".
-			-- (Note that the "W" is for window, as in "timing window.") 
+			-- (Note that the "W" is for window, as in "timing window.")
 			--
 			-- Hold notes have their own, separate judgment system.
 			-- So, when a hold note is judged, a JudgmentMessage will be
@@ -99,11 +99,12 @@ The function defined in **SL-Utilities.lua** that is relevant here is `SM()`  wh
 {% highlight lua linenos=table %}
 return Actor{
 	JudgmentMessageCommand=function(self, params)
-	-- Again, limit to  PLAYER_1 for a more simple example.
-	if params.Player == PLAYER_1 then
-		-- SystemMessage a stringified table of note columns 
-		-- as each judgment occurs
-		SM( params.Notes )
+		-- Again, limit to  PLAYER_1 for a more simple example.
+		if params.Player == PLAYER_1 then
+			-- SystemMessage a stringified table of note columns
+			-- as each judgment occurs
+			SM( params.Notes )
+		end
 	end
 }
 {% endhighlight %}
@@ -115,9 +116,9 @@ The screenshot below shows that columns 4 and 1 (a left-right jump) were just mi
 ### Knowing when to use Trace()
 
  Please note that `SystemMessage()` is not the only debugging tool available in StepMania.  SystemMessage() actually has a rather limited usefulness because large Lua tables can easily contain more data than StepMania's window can reasonably display.  In such situations, a proper Lua `Trace()` is preferred.  Output from `Trace()` is written to *Logs/Log.txt*
- 
+
  StepMania's *_fallback* theme includes a  `rec_print_table()` function to assist with recursively printing deeply nested Lua tables to the Log.txt file.  Here is the example from above, reworked to to use `rec_print_table()` to write the entire params table to file.
- 
+
  <span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
  {% highlight lua linenos=table %}
  return Actor{
@@ -129,4 +130,3 @@ The screenshot below shows that columns 4 and 1 (a left-right jump) were just mi
 	end
  }
  {% endhighlight %}
- 
