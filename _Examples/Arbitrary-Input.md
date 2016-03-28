@@ -2,11 +2,11 @@
 layout: default
 title: Capturing Arbitrary Input
 chapter: 3
-section: 1
+section: 2
 difficulty: intermediate
 ---
 
-## Section 4.1 &mdash; Capturing Arbitrary Input
+## Section 3.2 &mdash; Capturing Arbitrary Input
 
 Arbitrary input (from game buttons, menu buttons, coin buttons, etc.) can be detected and handled by using the `AddInputCallback()` method of any screen.
 
@@ -60,6 +60,8 @@ Details of the table containing the event data is as follows.  In the very simpl
 	GameButton = string,
 
 	-- The player that the controller is mapped to, or nil.
+	-- "PlayerNumber_P1" or "PlayerNumber_P2"
+	-- or nil if the event wasn't mapped to either player. 
 	PlayerNumber = PlayerNumber,
 
 	-- The game controller this event was mapped to.
