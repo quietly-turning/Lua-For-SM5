@@ -29,7 +29,7 @@ Keeping in mind that a *Quad* is a specific type of StepMania *Actor*, we can lo
 
 ## A More Advanced Example
 
-Since Quads are fairly simple, let's use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth <a href="{{site.baseurl}}/BestPractices/CommandChaining.html">in Chapter 3.2</a>.
+Since Quads are fairly simple, let's use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth <a href="{{site.baseurl}}/Best_Practices/CommandChaining.html">in Chapter 3.2</a>.
 
 <span class="CodeExample-Title">Three Quads with animation:</span>
 {% highlight lua linenos=table %}
