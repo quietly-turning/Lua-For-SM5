@@ -29,7 +29,7 @@ Keeping in mind that a *Quad* is a specific type of StepMania *Actor*, we can lo
 
 ## A More Advanced Example
 
-Since Quads are fairly simple, let's use another example to animate some Quads and demonstrate a few new-to-SM5 features and shortcuts along the way.
+Since Quads are fairly simple, let's use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth <a href="{{site.baseurl}}/BestPractices/CommandChaining.html">in Chapter 3.2</a>.
 
 <span class="CodeExample-Title">Three Quads with animation:</span>
 {% highlight lua linenos=table %}
@@ -49,13 +49,11 @@ return Def.ActorFrame{
 	Def.Quad{
 		Name="RedQuad",
 		InitCommand=function(self)
-			self:zoomto(100,100)
-			self:diffuse(Color.Red)
+			self:zoomto(100,100):diffuse(Color.Red)
 		end,
 		OnCommand=function(self)
 			self:xy( -100, _screen.cy )
-			self:accelerate( 2 )
-			self:x( _screen.w + 100 )
+				:accelerate( 2 ):x( _screen.w + 100 )
 		end
 	},
 
@@ -65,13 +63,12 @@ return Def.ActorFrame{
 	Def.Quad{
 		Name="BlueQuad",
 		InitCommand=function(self)
-			self:zoomto( 100, 100 )
-			self:diffuse( Color.Blue )
+			self:zoomto( 100, 100 ):diffuse( Color.Blue )
 		end,
 		OnCommand=function(self)
 			self:xy( _screen.cx, -100)
-			self:decelerate( 2 ):y( _screen.h + 100 )
-			self:queuecommand( "TriggerSpin" )
+				:decelerate( 2 ):y( _screen.h + 100 )
+				:queuecommand( "TriggerSpin" )
 		end,
 		TriggerSpinCommand=function(self)
 			local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
@@ -90,14 +87,13 @@ return Def.ActorFrame{
 		Name="GreenQuadAF",
 		InitCommand=function(self)
 			self:Center()
-			self:spin():effectmagnitude(0,0,180)
+				:spin():effectmagnitude(0,0,180)
 		end,
 
 		Def.Quad{
 			Name="GreenQuad",
 			InitCommand=function(self)
-				self:zoomto(0,0)
-				self:diffuse(Color.Green)
+				self:zoomto(0,0):diffuse(Color.Green)
 			end,
 			GrowCommand=function(self)
 				self:linear(5):zoomto(_screen.w, _screen.h)
@@ -107,41 +103,8 @@ return Def.ActorFrame{
 }
 {% endhighlight %}
 
-There are three things worth pointing out here.
 
-### Only one Actor can be returned per file.
-First, this example features three unique Quads acting independently within a single ActorFrame.  Because StepMania expects one actor to be returned per file, we return the primary ActorFrame, which includes the Quads inside.
 
 ### The *_fallback* theme has some helpful aliases.
-Second, this example also uses a few helper tables defined in SM5's *_fallback* theme such as the
+This example also uses a few helper tables defined in SM5's *_fallback* theme such as the
 `Color` table from [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and the `_screen` table from [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua).
-
-### Commands can be chained.
-Finally, this example introduces a way to apply multiple commands to the same Actor via **command chaining**.  We see this in the example above in the third quad's *GrowCommand*.
-
-The following two syntaxes produce the same results:
-
-<span class="CodeExample-Title">Long Form</span>
-{% highlight lua linenos=table %}
-Def.Quad{
-	OnCommand=function(self)
-		self:zoomto(100,200)
-		self:xy(_screen.cx, 100)
-		self:diffuse(Color.Green)
-		self:linear(1)
-		self:y(screen.h-100)
-	end
-}
-{% endhighlight %}
-
-<span class="CodeExample-Title">Condensed Via Command Chaining</span>
-{% highlight lua linenos=table %}
-Def.Quad{
-	OnCommand=function(self)
-		self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
-			:linear(1):y(screen.h-100)
-	end
-}
-{% endhighlight %}
-
- While commands *can* be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.

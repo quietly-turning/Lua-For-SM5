@@ -18,6 +18,8 @@ collections:
     output: true
   Singletons:
     output: true
+  Best_Practices:
+    output: true
   Examples:
     output: true
 

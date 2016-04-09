@@ -6,7 +6,7 @@ title: A Guide
 
 {% for collection in site.collections %}
 	{% if collection.label != "posts" %}
-		<h1>Chapter {{ forloop.index | minus: 1 }} &mdash; {{ collection.label }}</h1>
+		<h1>Chapter {{ forloop.index | minus: 1 }} &mdash; {{ collection.label | replace: "_", " " }}</h1>
 
 		{% assign sorted = (collection.docs | sort: 'section') %}
 		{% for section in sorted %}

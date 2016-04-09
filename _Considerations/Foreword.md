@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Foreword for those coming from SM3.95
+title: What Are Actors?
 chapter: 0
 section: 1
 ---
 
 
-# Section 0.1 – From &lt;<span class="nt">xml</span>&gt; To { <span class="kd" >lua</span> }
+# Section 0.1 – Actors From &lt;<span class="nt">xml</span>&gt; To { <span class="kd" >lua</span> }
 
 In StepMania theming/scripting, things drawn to the screen are *Actors*.  This was true in SM3.95 and remains true in SM5.
 
@@ -76,7 +76,7 @@ local ExampleAF = Def.ActorFrame{
 	-- we can nest them directly inside
 	-- the parent ActorFrame table like this
 	Def.Quad{
-		InitCommand=function(self) 
+		InitCommand=function(self)
 			self:zoomto(50,137)
 		end
 	},
@@ -100,3 +100,20 @@ ExampleAF[#ExampleAF + 1] = Def.Sprite{
 -- sort of Actor. Typically, we end up returning an ActorFrame.
 return ExampleAF
 {% endhighlight %}
+
+
+### Only one Actor can be returned per file.
+The StepMania engine expects one Actor to be returned per Lua file, yet this example features four Actors:
+
+* 1 ActorFrame
+* 1 Quad
+* 1 BitmapText
+* 1 Sprite
+
+How do we make this work?
+
+The solution reveals a prominent design paradigm in StepMania scripting – put all other Actors inside the ActorFrame and return the ActorFrame.  An ActorFrame is just one type of Actor, and any valid Actor may be returned.
+
+If your Lua file is *very* simple, you may only have one Actor, maybe a Sprite or a Quad.  In such situations, it is not necessary to wrap the single Actor in an ActorFrame; *any valid StepMania Actor may be returned.*
+
+Still, most files end up being complex enough to warrant using an ActorFrame.

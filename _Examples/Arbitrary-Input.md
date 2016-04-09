@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Capturing Arbitrary Input
-chapter: 3
-section: 2
+chapter: 4
+section: 1
 difficulty: intermediate
 ---
 
-## Section 3.2 &mdash; Capturing Arbitrary Input
+## Section 4.1 &mdash; Capturing Arbitrary Input
 
 Arbitrary input (from game buttons, menu buttons, coin buttons, etc.) can be detected and handled by using the `AddInputCallback()` method of any screen.
 
