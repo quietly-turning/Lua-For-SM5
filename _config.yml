@@ -12,7 +12,7 @@ kramdown:
   syntax_highlighter: rouge
 
 collections:
-  Considerations:
+  Introduction:
     output: true
   Actors:
     output: true
