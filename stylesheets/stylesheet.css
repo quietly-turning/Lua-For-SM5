@@ -885,7 +885,7 @@ span.section-description{
 .top-bar{
 	margin-top:-1px;
 	height: 46px;
-	padding: 5px;
+	padding: 5px 0px;
 	border-bottom: 1px solid #c0c0c0;
 }
 

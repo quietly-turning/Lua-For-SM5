@@ -7,12 +7,10 @@
 
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
 
-	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/syntax-highlight.css" media="screen">
-	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/github-light.css" media="screen">
-	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/print.css" media="print">
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/foundation.min.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/syntax-highlight.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/print.css" media="print">
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/stylesheet.css" media="screen">
-
 
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 	    <script src="{{ site.baseurl }}/javascripts/vendor/foundation.min.js"></script>
@@ -52,63 +50,69 @@
 		</header>
 
 
-		<div id="content-wrapper">
+		<div data-sticky-container>
+			<div class="sticky" data-sticky data-anchor="main-content" data-margin-top="0" style="width:100%;">
 
-			<div data-sticky-container>
-				<div class="sticky" data-sticky data-anchor="main-content" data-margin-top="0" style="width:100%;">
-					<div class="top-bar">
+				<nav class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+					<button class="menu-icon" type="button" data-toggle></button>
+					<div class="title-bar-title">Menu</div>
+				</nav>
 
-						<div class="top-bar-left">
-							<ul class="dropdown menu" data-dropdown-menu>
-								<li class="menu-text"><a href="{{ site.baseurl }}/">Lua for SM5</a></li>
-								<li class="divider"></li>
+				<div class="top-bar" id="main-menu">
 
-								<li>
-									<a href="#">Chapters</a>
-									<ul class="menu vertical submenu">
-									{% assign collections = site.collections | sort: "sequence" %}
-									{% for collection in collections %}
-										{% if collection.label != "posts" %}
+					<div class="top-bar-left">
+						<ul class="dropdown menu" data-responsive-menu="drilldown medium-dropdown">
+							<li class="menu-text"><a href="{{ site.baseurl }}/">Lua for SM5</a></li>
+							<li class="divider"></li>
 
-										<li>
-											<a href="#">{{ collection.sequence }} &mdash; {{ collection.label | replace: "_", " " }}</a>
+							<li>
+								<a href="#">Chapters</a>
+								<ul class="menu vertical submenu">
+								{% assign collections = site.collections | sort: "sequence" %}
+								{% for collection in collections %}
+									{% if collection.label != "posts" %}
 
-											<ul class="menu vertical subsubmenu">
-											{% assign sorted = (collection.docs | sort: 'section') %}
-											{% for section in sorted %}
-												<li><a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a></li>
-												<li class="divider"></li>
-											{% endfor %}
-											</ul>
-										</li>
-										<li class="divider"></li>
+									<li>
+										<a href="#">{{ collection.sequence }} &mdash; {{ collection.label | replace: "_", " " }}</a>
 
-										{% endif %}
-									{% endfor %}
-									</ul>
-								</li>
-								<li class="divider"></li>
+										<ul class="menu vertical subsubmenu">
+										{% assign sorted = (collection.docs | sort: 'section') %}
+										{% for section in sorted %}
+											<li><a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a></li>
+											<li class="divider"></li>
+										{% endfor %}
+										</ul>
+									</li>
+									<li class="divider"></li>
 
-								<li><a href="{{ site.baseurl }}/API/Lua.xml">Full API</a></li>
-								<li class="divider"></li>
+									{% endif %}
+								{% endfor %}
+								</ul>
+							</li>
+							<li class="divider"></li>
 
-								<li><a href="{{ site.baseurl }}/resources.html">Other Resources</a></li>
-								<li class="divider"></li>
+							<li><a href="{{ site.baseurl }}/API/Lua.xml">Full API</a></li>
+							<li class="divider"></li>
 
-							</ul>
-						</div>
+							<li><a href="{{ site.baseurl }}/resources.html">Other Resources</a></li>
+							<li class="divider"></li>
 
-						<div class="top-bar-right"></div>
+						</ul>
 					</div>
+
+					<div class="top-bar-right"></div>
 				</div>
 			</div>
+		</div>
 
-			<div class="row">
-				<div class="columns small-12 clearfix">
-					<section id="main-content">
-						{{ content }}
-					</section>
-				</div>
+
+
+
+		<div class="row">
+			<div class="columns small-12">
+				<section id="main-content">
+					{{ content }}
+				</section>
 			</div>
 		</div>
 
