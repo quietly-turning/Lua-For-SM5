@@ -28,7 +28,7 @@ Def.ActorFrame{
 
 This adds the lua function `InputHandler()` to the list of functions the screen will pass input to.  Whenever an input event occurs, `InputHandler()` will be passed a table with the details of the event.
 
-<div class="panel callout radius">
+<div class="callout alert radius">
 Note that this method should <strong>not</strong> be used to handle text input from the user because it would not handle localization or different keyboard layouts.
 </div>
 

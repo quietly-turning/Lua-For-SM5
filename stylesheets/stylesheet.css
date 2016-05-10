@@ -478,8 +478,8 @@ header h2 {
 }
 
 header img{
-	margin-bottom: -0.1em;
-	height: 0.9em;
+	margin-top: -0.1em;
+	height: 0.85em;
 }
 
 .inner {
@@ -495,7 +495,11 @@ header img{
 
 #main-content {
   float: left;
-  width: 690px;
+  width: 800px;
+}
+
+#main-content p{
+	width: 690px;
 }
 
 #main-content img {
@@ -873,175 +877,6 @@ span.intermediate{
 	color: #a3a;
 }
 
-/* --------------------------------------------------- */
-/* copy/pate because I can't get any other way to work */
-
-
-span.CodeExample-Title{
-	background-color: #555;
-	color: #fff;
-	padding: 6px;
-	font-size: 14px;
-	text-shadow: none;
-	font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-	border-bottom: 1px solid white;
-}
-
-.highlight, .highlight td{
-	margin: -15px 0px 0px 0px;
-	line-height: 1.5;
-}
-
-code table, code table td{
-	border: 0px;
-}
-
-/* code body styling */
-.highlight pre {
-	background-color:#222;
-	tab-size: 4;
-	border: 0px;
-	padding: 0px;
-}
-
-/* indent the code a little */
-td.code{
-	padding-left: 1em;
-}
-
-/* style the gutter that contains the line numbers */
-td.gutter{
-	background-color:#555;
-	border-right: 1px solid white;
-}
-
-/* line numbers styling */
-pre.lineno{
-	background-color:#555;
-	padding: 0px 10px;
-	color: #fff;
-}
-
-
-.hll { background-color: #49483e }
-.c { color: #75715e } /* Comment */
-.err { color: #960050; background-color: #1e0010 } /* Error */
-.k { color: #66d9ef } /* Keyword */
-.l { color: #ae81ff } /* Literal */
-.n { color: #f8f8f2 } /* Name */
-.o { color: #f92672 } /* Operator */
-.p { color: #f8f8f2 } /* Punctuation */
-.cm { color: #75715e } /* Comment.Multiline */
-.cp { color: #75715e } /* Comment.Preproc */
-.c1 { color: #75715e } /* Comment.Single */
-.cs { color: #75715e } /* Comment.Special */
-.ge { font-style: italic } /* Generic.Emph */
-.gs { font-weight: bold } /* Generic.Strong */
-.kc { color: #66d9ef } /* Keyword.Constant */
-.kd { color: #66d9ef } /* Keyword.Declaration */
-.kn { color: #f92672 } /* Keyword.Namespace */
-.kp { color: #66d9ef } /* Keyword.Pseudo */
-.kr { color: #66d9ef } /* Keyword.Reserved */
-.kt { color: #66d9ef } /* Keyword.Type */
-.ld { color: #e6db74 } /* Literal.Date */
-.m { color: #ae81ff } /* Literal.Number */
-.s { color: #e6db74 } /* Literal.String */
-.na { color: #a6e22e } /* Name.Attribute */
-.nb { color: #f8f8f2 } /* Name.Builtin */
-.nc { color: #a6e22e } /* Name.Class */
-.no { color: #66d9ef } /* Name.Constant */
-.nd { color: #a6e22e } /* Name.Decorator */
-.ni { color: #f8f8f2 } /* Name.Entity */
-.ne { color: #a6e22e } /* Name.Exception */
-.nf { color: #a6e22e } /* Name.Function */
-.nl { color: #f8f8f2 } /* Name.Label */
-.nn { color: #f8f8f2 } /* Name.Namespace */
-.nx { color: #a6e22e } /* Name.Other */
-.py { color: #f8f8f2 } /* Name.Property */
-.nt { color: #f92672 } /* Name.Tag */
-.nv { color: #f8f8f2 } /* Name.Variable */
-.ow { color: #f92672 } /* Operator.Word */
-.w { color: #f8f8f2 } /* Text.Whitespace */
-.mf { color: #ae81ff } /* Literal.Number.Float */
-.mh { color: #ae81ff } /* Literal.Number.Hex */
-.mi { color: #ae81ff } /* Literal.Number.Integer */
-.mo { color: #ae81ff } /* Literal.Number.Oct */
-.sb { color: #e6db74 } /* Literal.String.Backtick */
-.sc { color: #e6db74 } /* Literal.String.Char */
-.sd { color: #e6db74 } /* Literal.String.Doc */
-.s2 { color: #e6db74 } /* Literal.String.Double */
-.se { color: #ae81ff } /* Literal.String.Escape */
-.sh { color: #e6db74 } /* Literal.String.Heredoc */
-.si { color: #e6db74 } /* Literal.String.Interpol */
-.sx { color: #e6db74 } /* Literal.String.Other */
-.sr { color: #e6db74 } /* Literal.String.Regex */
-.s1 { color: #e6db74 } /* Literal.String.Single */
-.ss { color: #e6db74 } /* Literal.String.Symbol */
-.bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
-.vc { color: #f8f8f2 } /* Name.Variable.Class */
-.vg { color: #f8f8f2 } /* Name.Variable.Global */
-.vi { color: #f8f8f2 } /* Name.Variable.Instance */
-.il { color: #ae81ff } /* Literal.Number.Integer.Long */
-
-.gh { } /* Generic Heading & Diff Header */
-.gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
-.gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
-.gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
-/* ---------------------------------------------------
-	Copy/pate from Zurb Foundation 5 UI because I can't
-	any other way to get Jekyll to use this CSS.
-*/
-
-.panel {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #d8d8d8;
-  margin-bottom: 1.25rem;
-  padding: 1.25rem;
-  background: #f2f2f2;
-  color: #333333; }
-  .panel > :first-child {
-    margin-top: 0; }
-  .panel > :last-child {
-    margin-bottom: 0; }
-  .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p, .panel li, .panel dl {
-    color: #333333; }
-  .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6 {
-    line-height: 1;
-    margin-bottom: 0.625rem; }
-    .panel h1.subheader, .panel h2.subheader, .panel h3.subheader, .panel h4.subheader, .panel h5.subheader, .panel h6.subheader {
-      line-height: 1.4; }
-  .panel.callout {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #c5c5c5;
-    margin-bottom: 1.25rem;
-    padding: 1.25rem;
-    background: #fcd;
-    color: #333333; }
-    .panel.callout > :first-child {
-      margin-top: 0; }
-    .panel.callout > :last-child {
-      margin-bottom: 0; }
-    .panel.callout h1, .panel.callout h2, .panel.callout h3, .panel.callout h4, .panel.callout h5, .panel.callout h6, .panel.callout p, .panel.callout li, .panel.callout dl {
-      color: #333333; }
-    .panel.callout h1, .panel.callout h2, .panel.callout h3, .panel.callout h4, .panel.callout h5, .panel.callout h6 {
-      line-height: 1;
-      margin-bottom: 0.625rem; }
-      .panel.callout h1.subheader, .panel.callout h2.subheader, .panel.callout h3.subheader, .panel.callout h4.subheader, .panel.callout h5.subheader, .panel.callout h6.subheader {
-        line-height: 1.4; }
-    .panel.callout a:not(.button) {
-      color: #2ba6cb; }
-      .panel.callout a:not(.button):hover, .panel.callout a:not(.button):focus {
-        color: #258faf; }
-  .panel.radius {
-    border-radius: 3px; }
-	.panel.callout a:not(.button){
-		color: #000;
-		text-decoration: underline;
-	}
-
-/* --------------------------------------------------- */
 
 span.section-description{
 	margin-left:2.5em;

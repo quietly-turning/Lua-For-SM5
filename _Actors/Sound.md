@@ -10,7 +10,7 @@ description: play one-shot sound effects; supports stereo panning
 
 A *Sound* actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.
 
-<div class="panel callout radius">
+<div class="callout alert radius">
 If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you'll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <a href="{{site.baseurl}}/Singletons/SOUND.html">Section 2.2 – SOUND</a>.
 </div>
 

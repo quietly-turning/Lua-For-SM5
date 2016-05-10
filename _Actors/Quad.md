@@ -105,6 +105,6 @@ return Def.ActorFrame{
 
 
 
-### The *_fallback* theme has some helpful aliases.
+## The *_fallback* theme has some helpful aliases.
 This example also uses a few helper tables defined in SM5's *_fallback* theme such as the
 `Color` table from [02 Colors.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua)  and the `_screen` table from [01 alias.lua](https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua).

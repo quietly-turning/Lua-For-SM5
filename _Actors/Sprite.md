@@ -184,7 +184,7 @@ af[#af+1] = Def.Sprite{
 			-- turn animation back on for a brief moment
 			self:animate(true)
 
-			-- people can hit panels faster than every 0.25 seconds, so it's
+			-- people can hit buttons faster than every 0.25 seconds, so it's
 			-- possible to queue so many tweens that SM5 complains about a tween
 			-- overflow. Mitigate this by canceling the previous linear tween, if
 			-- one is still running, via the stoptweening() command.  Then
