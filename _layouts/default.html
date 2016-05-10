@@ -8,11 +8,15 @@
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
 
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/syntax-highlight.css" media="screen">
-	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/stylesheet.css" media="screen">
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/github-light.css" media="screen">
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/print.css" media="print">
 	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/foundation.min.css" media="screen">
+	    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/stylesheet.css" media="screen">
 
+
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+	    <script src="{{ site.baseurl }}/javascripts/vendor/foundation.min.js"></script>
+	    <script src="{{ site.baseurl }}/javascripts/vendor/what-input.js"></script>
 
 	    <!--[if lt IE 9]>
 	    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -34,26 +38,77 @@
 	</head>
 
 	<body>
-		<header>
+
+		<header id="header">
 			<div class="inner">
 				<div class="title">
 					<a href="{{ site.baseurl }}/">
 						<h1>
-							Lua for SM5
-							<img src="{{ site.baseurl }}/images/sm5-logo.png">
+							Lua Scripting for StepMania 5 <img src="{{ site.baseurl }}/images/sm5-logo.png">
 						</h1>
 					</a>
-					<h2>Lua Scripting for StepMania 5</h2>
-
 				</div>
 			</div>
 		</header>
 
+
 		<div id="content-wrapper">
-			<div class="inner clearfix">
-				<section id="main-content">
-					{{ content }}
-				</section>
+
+			<div data-sticky-container>
+				<div class="sticky" data-sticky data-anchor="main-content" data-margin-top="0" style="width:100%;">
+					<div class="top-bar">
+
+						<div class="top-bar-left">
+							<ul class="dropdown menu" data-dropdown-menu>
+								<li class="menu-text"><a href="{{ site.baseurl }}/">Lua for SM5</a></li>
+								<li class="divider"></li>
+
+								<li>
+									<a href="#">Chapters</a>
+									<ul class="menu vertical submenu">
+									{% assign collections = site.collections | sort: "sequence" %}
+									{% for collection in collections %}
+										{% if collection.label != "posts" %}
+
+										<li>
+											<a href="#">{{ collection.sequence }} &mdash; {{ collection.label | replace: "_", " " }}</a>
+
+											<ul class="menu vertical subsubmenu">
+											{% assign sorted = (collection.docs | sort: 'section') %}
+											{% for section in sorted %}
+												<li><a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a></li>
+												<li class="divider"></li>
+											{% endfor %}
+											</ul>
+										</li>
+										<li class="divider"></li>
+
+										{% endif %}
+									{% endfor %}
+									</ul>
+								</li>
+								<li class="divider"></li>
+
+								<li><a href="{{ site.baseurl }}/API/Lua.xml">Full API</a></li>
+								<li class="divider"></li>
+
+								<li><a href="{{ site.baseurl }}/resources.html">Other Resources</a></li>
+								<li class="divider"></li>
+
+							</ul>
+						</div>
+
+						<div class="top-bar-right"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="columns small-12 clearfix">
+					<section id="main-content">
+						{{ content }}
+					</section>
+				</div>
 			</div>
 		</div>
 
@@ -75,6 +130,8 @@
 			</p>
 		</footer>
 
-
+		<script>
+			$(document).foundation();
+		</script>
 	</body>
 </html>

@@ -456,10 +456,10 @@ header {
 }
 
 header h1 {
-  width: 540px;
+  width: 750px;
   margin-top: 0;
   margin-bottom: 0.2em;
-  font-size: 72px;
+  font-size: 3.5em;
   font-weight: normal;
   line-height: 1;
   color: #fff;
@@ -473,7 +473,7 @@ header h2 {
   font-size: 2.15em;
   font-weight: normal;
   line-height: 1;
-  color: #9ddcff;
+  color: #fff;
   letter-spacing: 0.025em;
 }
 
@@ -489,7 +489,6 @@ header img{
 }
 
 #content-wrapper {
-  padding-top: 30px;
   border-top: solid 1px #fff;
 }
 
@@ -880,4 +879,48 @@ span.intermediate{
 
 span.section-description{
 	margin-left:2.5em;
+}
+
+.top-bar{
+	margin-top:-1px;
+	height: 46px;
+	padding: 5px;
+	border-bottom: 1px solid #c0c0c0;
+}
+
+.top-bar li.divider{
+	border-right: 1px solid #bbb;
+	border-bottom: 1px solid #bbb;
+}
+
+.menu.submenu{
+	padding:0px;
+}
+
+
+.top-bar .menu-text{
+	font-weight: 600;
+}
+
+.top-bar .menu-text a{
+	padding: 0px;
+}
+
+.top-bar, .top-bar ul, .top-bar ul li, .top-bar ul li a{
+	background: #ddd;
+	background-color: #ddd;
+	color: #000;
+}
+
+
+.top-bar ul.submenu li:hover, .top-bar ul.submenu li:hover a{
+	color: #2879d0;
+}
+
+.top-bar ul.submenu li:hover ul.subsubmenu li a {
+	color: #000;
+}
+
+.top-bar ul.submenu li:hover ul.subsubmenu li:hover a {
+	color: #2879d0;
 }
