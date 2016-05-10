@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Quad
-chapter: 1
 section: 1
 description: programmatically draw and manipulate quadrilaterals
 ---

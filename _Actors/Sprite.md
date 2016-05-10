@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Sprite
-chapter: 1
 section: 3
 description: display and manipulate graphical assets like PNG and MP4 files
 ---

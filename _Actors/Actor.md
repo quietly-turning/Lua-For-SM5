@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Actor
-chapter: 1
 section: 4
 description: the foundation from which all other Actors inherit from
 ---

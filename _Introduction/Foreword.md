@@ -1,7 +1,6 @@
 ---
 layout: default
 title: What Are Actors?
-chapter: 0
 section: 1
 ---
 

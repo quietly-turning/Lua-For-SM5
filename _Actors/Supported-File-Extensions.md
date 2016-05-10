@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Supported File Extensions
-chapter: 1
 section: 4.2
 subsection: 2
 description: a list of what file extensions StepMania 5 supports

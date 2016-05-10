@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Sound
-chapter: 1
 section: 5
 description: play one-shot sound effects; supports stereo panning
 ---

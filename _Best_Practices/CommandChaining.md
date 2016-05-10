@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Command Chaining
-chapter: 3
 section: 2
 description: chain actor commands to save keystrokes
 ---

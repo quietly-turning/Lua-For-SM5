@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Capturing Arbitrary Input
-chapter: 4
 section: 1
 difficulty: intermediate
 ---

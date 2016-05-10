@@ -1,7 +1,6 @@
 ---
 layout: default
 title: ActorFrameTexture
-chapter: 1
 section: 7
 difficulty: advanced
 description: render the multiple visual Actors within an ActorFrame to a single Sprite

@@ -1,7 +1,6 @@
 ---
 layout: default
 title: BitmapText
-chapter: 1
 section: 2
 description: display text in-game
 ---

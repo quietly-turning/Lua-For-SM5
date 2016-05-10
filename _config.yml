@@ -14,14 +14,19 @@ kramdown:
 collections:
   Introduction:
     output: true
+    sequence: 0
   Actors:
     output: true
+    sequence: 1
   Singletons:
     output: true
+    sequence: 2
   Best_Practices:
     output: true
+    sequence: 3
   Examples:
     output: true
+    sequence: 4
 
 defaults:
   -

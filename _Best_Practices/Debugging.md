@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Debugging
-chapter: 3
 section: 1
 ---
 

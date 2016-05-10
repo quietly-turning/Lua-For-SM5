@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Lua for those coming from SM3.95
-chapter: 0
 section: 2
 ---
 

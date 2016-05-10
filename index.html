@@ -3,10 +3,11 @@ layout: default
 title: A Guide
 ---
 
+{% assign collections = site.collections | sort: "sequence" %}
 
-{% for collection in site.collections %}
+{% for collection in collections %}
 	{% if collection.label != "posts" %}
-		<h1>Chapter {{ forloop.index | minus: 1 }} &mdash; {{ collection.label | replace: "_", " " }}</h1>
+		<h1>Chapter {{ collection.sequence }} &mdash; {{ collection.label | replace: "_", " " }}</h1>
 
 		{% assign sorted = (collection.docs | sort: 'section') %}
 		{% for section in sorted %}
@@ -17,7 +18,7 @@ title: A Guide
 					<h3>
 				{% endif %}
 
-				{{ section.chapter }}.{{ section.section }}
+				{{ collection.sequence }}.{{ section.section }}
 				<a href="{{ site.baseurl }}{{ section.url }}">{{ section.title }}</a>
 				{% if section.difficulty %} <span class="{{ section.difficulty }}">({{ section.difficulty }})</span> {% endif %}
 
