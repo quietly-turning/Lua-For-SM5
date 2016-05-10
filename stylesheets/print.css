@@ -235,6 +235,13 @@ footer a {
 
 
 /* --------------------------------------------------- */
+/* hide Zurb topbar when formatting for printing */
+
+.top-bar{
+	display: none;
+}
+
+/* --------------------------------------------------- */
 span.CodeExample-Title{
 	color: #555;
 	padding: 6px;
