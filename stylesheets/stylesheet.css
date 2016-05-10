@@ -493,8 +493,9 @@ header img{
 }
 
 #main-content {
-  float: left;
-  width: 800px;
+	padding-top: 1.75em;
+	float: left;
+	width: 800px;
 }
 
 #main-content p{
