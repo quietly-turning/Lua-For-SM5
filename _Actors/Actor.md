@@ -2,7 +2,7 @@
 layout: default
 title: Actor
 section: 4
-description: the foundation from which all other Actors inherit from
+description: the foundation from which all other Actors inherit
 ---
 
 # Section 1.4 – Actor
