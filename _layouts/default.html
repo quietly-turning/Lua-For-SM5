@@ -106,8 +106,6 @@
 		</div>
 
 
-
-
 		<div class="row">
 			<div class="columns small-12">
 				<section id="main-content">
@@ -118,21 +116,26 @@
 
 		<hr>
 
-		<footer>
-  			<p class="repo-owner">
-				This project is maintained by <a href="https://github.com/dguzek">Dan Guzek</a>
-				and is hosted through  <a href="https://pages.github.com">GitHub Pages</a>.
-			</p>
-			<p>
-				This site was <a href="https://github.com/dguzek/Lua-For-SM5/commits/gh-pages">last updated</a> on
 
-				{{ site.time | date: "%B %d, %Y" }} at
-				{% capture hour %}{{ site.time | date: "%H" }}{% endcapture %}
-				{% capture minute %}{{ site.time | date: "%M" }}{% endcapture %}
-				{{hour}}:{{minute}}	EST.
+		<div class="row">
+			<div class="columns small-12">
+				<footer>
+		  			<p class="repo-owner">
+						This project is maintained by <a href="https://github.com/dguzek">Dan Guzek</a>
+						and is hosted through  <a href="https://pages.github.com">GitHub Pages</a>.
+					</p>
+					<p>
+						This site was <a href="https://github.com/dguzek/Lua-For-SM5/commits/gh-pages">last updated</a> on
 
-			</p>
-		</footer>
+						{{ site.time | date: "%B %d, %Y" }} at
+						{% capture hour %}{{ site.time | date: "%H" }}{% endcapture %}
+						{% capture minute %}{{ site.time | date: "%M" }}{% endcapture %}
+						{{hour}}:{{minute}}	EST.
+
+					</p>
+				</footer>
+			</div>
+		</div>
 
 		<script>
 			$(document).foundation();
