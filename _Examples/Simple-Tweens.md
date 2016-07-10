@@ -41,7 +41,7 @@ If you are interested in learning more about `bezier()` tweens, you can inspect 
 
 ## How to Use Tweens
 
-Knowing <em>what</em> we can use is great, but it's only half the picture.  If you apply a tween to an Actor without any further commands, it won't <em>do</em> anything.  Tweens need to additional commands to execute over the course of their duration in order to animate in any meaningful way.
+Knowing <em>what</em> we can use is great, but it's only half the picture.  If you apply a tween to an Actor without any further commands, it won't <em>do</em> anything.  Tweens need additional commands to execute over the course of their duration in order to animate in any meaningful way.
 
 Let's illustrate what we mean by this with some examples.
 
