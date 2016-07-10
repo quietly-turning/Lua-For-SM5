@@ -11,13 +11,13 @@ A <em>tween</em> is a process in computer animation in which an object is manipu
 
 As a Lua scripter, you can use tweens for any number of tasks, including (but not limited to):
 
-* make a Quad actor grow to be twice as large by tweening its zoom() value to 2
-* making the entire screen appear to "fade out" by tweening its diffuse() to <em>Color.Black</em>
-* gradually fade out an image Actor by tweening its diffusealpha() to 0
-* moving the Player's receptor arrows somewhere else on the screen by tweening the x and y values
+* make a Quad actor grow to be twice as large by tweening its `zoom()` value to 2
+* make the entire screen appear to "fade out" by tweening its `diffuse()` to <em>Color.Black</em>
+* gradually fade out an image Actor by tweening its `diffusealpha()` to 0
+* moving the Player's receptor arrows somewhere else on the screen by tweening the `x()` and `y()` values
 * etc.
 
-This tutorial will cover <em>types of simple tweens</em> available in StepMania, discuss <em>how to use tweens</em>, and conclude with a full example.
+This tutorial will cover <em>types of simple tweens</em> available in StepMania, discuss <em>how to use tweens</em>, and concludes with a full example.
 
 ## Tweens Defined by the Engine
 The StepMania engine defines four simple tweens directly: <em>linear</em>, <em>accelerate</em>, <em>decelerate</em>, and <em>spring</em>.  
