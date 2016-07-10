@@ -719,7 +719,11 @@ a {
 }
 
 p a {
-  font-weight: 400;
+  font-weight: 500;
+}
+
+footer p a {
+	font-weight: 400;
 }
 
 blockquote {
