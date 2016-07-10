@@ -9,7 +9,7 @@ description: secure a handle onto the current screen object
 
 The SCREENMAN (short for *Screen Manager*) singleton is primarily used in conjunction with its `GetTopScreen()` method to do just that – get the screen that is currently on the top of StepMania's screen stack.  (This typically means the current screen.)
 
-SCREENMAN also has a some other methods which are worth knowing, namely `SystemMessage()`.   As we'll demonstrate in <a href="{{site.baseurl}}/Examples/Debugging.html">Chapter 3.1</a>, `SystemMessage()`  can be handy for quick debugging.
+SCREENMAN also has a some other methods which are worth knowing, namely `SystemMessage()`.   As we'll demonstrate in <a href="{{site.baseurl}}/Best_Practices/Debugging.html">Chapter 3.1</a>, `SystemMessage()`  can be handy for quick debugging.
 
 ### GetTopScreen()
 

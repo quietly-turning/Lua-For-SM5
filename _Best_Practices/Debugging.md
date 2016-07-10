@@ -49,7 +49,7 @@ return Actor{
 
 `SystemMessage()` display strings, not tables, so if in our debugging endeavors we want such functionality, we'll have to enhance SystemMessage some with custom Lua.  The *Simply Love* theme for SM5 <a href="https://github.com/dguzek/Simply-Love-SM5/blob/master/Scripts/SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of **SL-Utilities.lua** in the *./Scripts* directory of your current theme.
 
-The function defined in **SL-Utilities.lua** that is relevant here is `SM()`  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme's Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.
+The function defined in **SL-Utilities.lua** that is relevant here is `SM()`  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme's Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.
 
 <span class="CodeExample-Title">Using SM() to display a small Lua table</span>
 {% highlight lua linenos=table %}
