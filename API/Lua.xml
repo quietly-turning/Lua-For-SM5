@@ -191,7 +191,6 @@
 		<Function name='Trace'/>
 		<Function name='TrailToCustomDifficulty'/>
 		<Function name='URLEncode'/>
-		<Function name='UndocumentedFeature'/>
 		<Function name='UnlockRewardTypeToLocalizedString'/>
 		<Function name='update_centering'/>
 		<Function name='Var'/>
@@ -2716,6 +2715,6 @@
 		<Constant name='right' value='&apos;HorizAlign_Right&apos;'/>
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
-	<Version>StepMania v5.0.11</Version>
-	<Date>2016-04-04</Date>
+	<Version>StepMania v5.0.12</Version>
+	<Date>2016-08-16</Date>
 </Lua>
