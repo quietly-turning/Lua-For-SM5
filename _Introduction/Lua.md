@@ -53,7 +53,7 @@ A typical SM3.95 XML file would feature an ActorFrame element which would contai
 
 ### An Example SM3.95 XML File
 
-SM3.95 had 17 unique Actor classes, each of which could be invoked with a corresponding XML element.  These SM3.95 Actor classes have been documented by Matt Gardner at the rhythmarcade.com wiki [Actor Classes page](http://rhythmarcade.com/wiki/stepmania/sm_395/theming/actorclasses).
+SM3.95 had 17 unique Actor classes, each of which could be invoked with a corresponding XML element.
 
 A simple XML file containing some Actors commonly used in SM3.95 might look like:
 
