@@ -19,7 +19,7 @@ Def.Quad{
 		self:xy(_screen.cx, 100)
 		self:diffuse(Color.Green)
 		self:linear(1)
-		self:y(screen.h-100)
+		self:y(_screen.h-100)
 	end
 }
 {% endhighlight %}
@@ -29,7 +29,7 @@ Def.Quad{
 Def.Quad{
 	OnCommand=function(self)
 		self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
-			:linear(1):y(screen.h-100)
+			:linear(1):y(_screen.h-100)
 	end
 }
 {% endhighlight %}
