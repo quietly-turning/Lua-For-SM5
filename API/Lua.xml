@@ -2467,14 +2467,26 @@
 	</Namespaces>
 	<Singletons>
 		<Singleton class='AnnouncerManager' name='ANNOUNCER'/>
+		<Singleton class='CharacterManager' name='CHARMAN'/>
+		<Singleton class='CryptManager' name='CRYPTMAN'/>
+		<Singleton class='RageDisplay' name='DISPLAY'/>
 		<Singleton class='RageFileManager' name='FILEMAN'/>
 		<Singleton class='GameManager' name='GAMEMAN'/>
 		<Singleton class='GameState' name='GAMESTATE'/>
 		<Singleton class='ArchHooks' name='HOOKS'/>
+		<Singleton class='InputFilter' name='INPUTFILTER'/>
+		<Singleton class='RageInput' name='INPUTMAN'/>
+		<Singleton class='MemoryCardManager' name='MEMCARDMAN'/>
 		<Singleton class='MessageManager' name='MESSAGEMAN'/>
 		<Singleton class='NoteSkinManager' name='NOTESKIN'/>
 		<Singleton class='PrefsManager' name='PREFSMAN'/>
+		<Singleton class='ProfileManager' name='PROFILEMAN'/>
+		<Singleton class='ScreenManager' name='SCREENMAN'/>
+		<Singleton class='SongManager' name='SONGMAN'/>
+		<Singleton class='GameSoundManager' name='SOUND'/>
+		<Singleton class='StatsManager' name='STATSMAN'/>
 		<Singleton class='ThemeManager' name='THEME'/>
+		<Singleton class='UnlockManager' name='UNLOCKMAN'/>
 	</Singletons>
 	<Enums>
 		<Enum name='AllowW1'>
