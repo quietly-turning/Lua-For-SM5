@@ -14,8 +14,8 @@ class ModChartSetup extends Component {
 			<p>The FGCHANGES field in your .sm file accepts several arguments delimited by equals signs.  The first two are the most important:</p>
 			<ul>
 				<li>the beat in Gameplay at which you want the lua file to be activated</li>
-				<li>a path to Lua file where you will be writing your code</li>
-			</ul>default
+				<li>a path to the Lua file where you will be writing your code</li>
+			</ul>
 
 			<p>The remaining arguments (the <code>1.000</code> and the <code>0</code>s and <code>1</code>s) are various flags that are basically vestiges from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
 
