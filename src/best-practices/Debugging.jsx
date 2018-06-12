@@ -73,7 +73,7 @@ return Actor{
 
 			<p>The screenshot below shows that columns 4 and 1 (a left-right jump) were just missed.</p>
 
-			<p><img src="/img/using-SM-to-debug-table.png" alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"/></p>
+			<p><img src="/Lua-For-SM5/img/using-SM-to-debug-table.png" alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"/></p>
 
 			<h3>Knowing when to use Trace()</h3>
 

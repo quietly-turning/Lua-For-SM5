@@ -38,7 +38,7 @@ LoadActor( "OverlayAttachedGirlfriend.png" )..{
 
 			<p><strong>Primary.lua</strong> will load <strong>Box.lua</strong> once for each available human player and pass in unique properties to each.  If only PLAYER<em>1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER</em>2 is available, only the blue quadrilateral on the right will be drawn.</p>
 
-			<p><img alt="" className="img-fluid" src="/img/loadactor.png" /></p>
+			<p><img alt="" className="img-fluid" src="/Lua-For-SM5/img/loadactor.png" /></p>
 
 			<p>This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.</p>
 

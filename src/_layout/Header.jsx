@@ -7,7 +7,7 @@ class Header extends Component {
     return (
 			<nav id="topbar" className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 
-				<img className="navbar-brand" alt="SM5 Logo" width="25" src="/img/stepmania.png" />
+				<img src="/Lua-For-SM5/img/stepmania.png" className="navbar-brand" alt="SM5 Logo" width="25" />
 		 		<span className="navbar-brand">
 		 			Lua for SM5
 				</span>

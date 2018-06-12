@@ -41,7 +41,7 @@ Def.Sprite{
 
 			<p>For example. this sprite of Dr. WIly has 6 columns across 1 row.</p>
 
-			<p><img alt="a 6 by 1 spritesheet of Dr. Wily" src="./img/wily 6x1.png" /></p>
+			<p><img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily 6x1.png" /></p>
 
 			<p>For StepMania to recognize it properly as a sprite sheet, you would want to append <strong>6x1</strong> to the end of the filename, resulting in something like <strong>Wily 6x1.png</strong>.</p>
 
@@ -106,7 +106,7 @@ Def.Sprite {
 
 			<p>It is worth noting that in the above, animated examples, StepMania&apos;s engine will start with the first frame and progress to the last one in order.  There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:</p>
 
-			<p><img alt="a 4 by 4 spritesheet of SteveReen" src="./img/Reen 4x4.png" /></p>
+			<p><img alt="a 4 by 4 spritesheet of SteveReen" src="/Lua-For-SM5/img/Reen 4x4.png" /></p>
 
 			<p>If we want the <em>Sprite</em> actor to appear to be facing downward, then we&apos;d only want StepMania to be animating through the first row of the sprite sheet.  Here&apos;s a way to handle that.</p>
 
