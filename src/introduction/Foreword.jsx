@@ -34,7 +34,7 @@ class Foreword extends Component {
 
 			<h2>An Example SM5 Lua Script</h2>
 
-			<p>The most commonly used Actors will each be discussed in detail across Chapter 1.  For now, we&#8217;ll start by looking at a simple Lua script for StepMania 5.</p>
+			<p>The most commonly used Actors will each be discussed in detail in the chapters under <strong>Actors</strong> in the navigation menu.  For now, we&#8217;ll start by looking at a simple Lua script for StepMania 5.</p>
 
 
 			<span className="CodeExample-Title">A Simple SM5 Lua Script:</span>

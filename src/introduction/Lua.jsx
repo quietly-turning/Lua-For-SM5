@@ -5,7 +5,7 @@ class Lua extends Component {
 	render() {
 		return (
 		<div>
-			<h2>Differences between Lua 5.0 and Lua 5.1</h2>
+			<h1>Differences between Lua 5.0 and Lua 5.1</h1>
 
 			<p>SM3.95 used <a href="http://www.lua.org/versions.html#5.0">Lua 5.0</a>, while SM5 currently uses <a href="http://www.lua.org/versions.html#5.1">Lua 5.1</a>.
 			The primary differences that will likely impact your scripting experience are:</p>
@@ -67,26 +67,26 @@ print(#NotIndexed)
 {`
 <!-- ActorFrame is an Actor -->
 <ActorFrame OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999">
-    <children></p>
+    <children>
 
-    <!-- Quad is an Actor -->
-    <Quad
-         InitCommand="zoomto,50,137"
-    />
+	    <!-- Quad is an Actor -->
+	    <Quad
+	         InitCommand="zoomto,50,137"
+	    />
 
-    <!-- BitmapText is also an Actor -->
-    <BitmapText
-        File="_eurostile normal"
-        Text="Eat Poptarts."
-    />
+	    <!-- BitmapText is also an Actor -->
+	    <BitmapText
+	        File="_eurostile normal"
+	        Text="Eat Poptarts."
+	    />
 
-    <!-- Sprite is, that&apos;s right, an Actor -->
-    <Sprite
-        Texture="chrismarks.png"
-        Frame0000="0"
-    />
+	    <!-- Sprite is, that's right, an Actor -->
+	    <Sprite
+	        Texture="chrismarks.png"
+	        Frame0000="0"
+	    />
 
-</children>
+	</children>
 </ActorFrame>
 `}
 			</Highlight>
@@ -104,9 +104,9 @@ print(#NotIndexed)
 local ExampleAF = Def.ActorFrame{
     OnCommand=function(self)
         self:Center():sleep(9999)
-    end,</p>
+    end,
 
-	<pre><code>-- since Actors are just Lua tables
+	-- since Actors are just Lua tables
 	-- we can nest them directly inside
 	-- the parent ActorFrame table like this
 	Def.Quad{

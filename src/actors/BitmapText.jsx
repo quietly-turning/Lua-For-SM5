@@ -11,6 +11,19 @@ class BitmapText extends Component {
 
 			<p>As Lua tables, they have two unique elements, <code>Font</code> and <code>Text</code>.  <code>Font</code> should be set to any font in the current or <em>_fallback</em> theme&apos;s <em>./Font</em> directory. <code>Text</code> should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the <code>settext()</code> method.</p>
 
+			<p>Here is a very simple example that would display the text "Hello SM5!"</p>
+			<span className="CodeExample-Title">Display one randomly selected string from a table:</span>
+			<Highlight className="lua">
+{`return Def.BitmapText{
+	Font="Common normal",
+	Text="Hello SM5!",
+	InitCommand=function(self) self:Center() end
+}
+`}
+			</Highlight>
+
+			<p>Here is a more complex exmaple that display a randomly selected string out of a Lua table of possibilities.</p>
+
 			<span className="CodeExample-Title">Display one randomly selected string from a table:</span>
 			<Highlight className="lua">
 {`
@@ -29,7 +42,7 @@ return Def.ActorFrame{
 	InitCommand=function(self)
 		-- Remember that queuecommand() waits until the next tick of the engine's
 		-- game loop to execute whatever command we are queueing.
-		self:queuecommand("ChooseAPhrase"):sleep(9999)
+		self:queuecommand("ChooseAPhrase")
 	end,
 
 	ChooseAPhraseCommand=function(self)
@@ -68,7 +81,7 @@ return Def.ActorFrame{
 
 			<hr />
 
-			<p>Finally, if you sift through enough SM5 theme code, you&apos;ll likely encounter a helper function <code>LoadFont()</code>.  It was essentially a wrapper method for Def.BitmapText{} that served to workaround some of BitmapText&apos;s quirks/bugs that have since been fixed.  There should be no need to use it any longer.</p>
+			<p>Finally, if you sift through enough SM5 theme code, you&apos;ll likely encounter a helper function <code>LoadFont()</code>.  It is essentially a wrapper method for Def.BitmapText{} that served to workaround some of BitmapText&apos;s quirks/bugs that have since been fixed.</p>
 			</div>
 		);
 	}
