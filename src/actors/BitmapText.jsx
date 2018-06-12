@@ -12,7 +12,7 @@ class BitmapText extends Component {
 			<p>As Lua tables, they have two unique elements, <code>Font</code> and <code>Text</code>.  <code>Font</code> should be set to any font in the current or <em>_fallback</em> theme&apos;s <em>./Font</em> directory. <code>Text</code> should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the <code>settext()</code> method.</p>
 
 			<p>Here is a very simple example that would display the text "Hello SM5!"</p>
-			<span className="CodeExample-Title">Display one randomly selected string from a table:</span>
+			<span className="CodeExample-Title">Simple BitmapText example:</span>
 			<Highlight className="lua">
 {`return Def.BitmapText{
 	Font="Common normal",
