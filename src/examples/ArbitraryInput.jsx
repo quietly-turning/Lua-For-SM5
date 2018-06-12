@@ -16,7 +16,7 @@ class ArbitraryInput extends Component {
 {`
 local function InputHandler( event )
 	-- do stuff with the event table in here
-	-- the attribtues of the event tables are documented below
+	-- the attributes of the event table are documented below
 end
 
 Def.ActorFrame{
