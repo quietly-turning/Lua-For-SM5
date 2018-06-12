@@ -10,7 +10,7 @@ class SimpleTweens extends Component {
 			<h1>Simple Tweens</h1>
 			<h3 className="subtitle">Animate things from one state to another</h3>
 
-			<p>A <em>tween</em> is a process in computer animation in which an object is manipulated (translated, transformed, altered, etc.) from a starting state to an ending state.  StepMania has several simple tweens that can be used to animate virtually any aspect of StepMania&#apos;s visual interface.</p>
+			<p>A <em>tween</em> is a process in computer animation in which an object is manipulated (translated, transformed, altered, etc.) from a starting state to an ending state.  StepMania has several simple tweens that can be used to animate virtually any aspect of StepMania&apos;s visual interface.</p>
 
 			<p>As a Lua scripter, you can use tweens for any number of tasks, including (but not limited to):</p>
 
@@ -18,7 +18,7 @@ class SimpleTweens extends Component {
 				<li>make a Quad actor grow to be twice as large by tweening its <code>zoom()</code> value to 2</li>
 				<li>make the entire screen appear to &#8220;fade out&#8221; by tweening its <code>diffuse()</code> to <em>Color.Black</em></li>
 				<li>gradually fade out an image Actor by tweening its <code>diffusealpha()</code> to 0</li>
-				<li>moving the Player&#apos;s receptor arrows somewhere else on the screen by tweening the <code>x()</code> and <code>y()</code> values</li>
+				<li>moving the Player&apos;s receptor arrows somewhere else on the screen by tweening the <code>x()</code> and <code>y()</code> values</li>
 				<li>etc.</li>
 			</ul>
 
@@ -35,7 +35,7 @@ class SimpleTweens extends Component {
 				<li><code>spring()</code> - Rapidly shoots beyond the desired end state, then springs back into place.</li>
 			</ul>
 
-			<p>For completion&#apos;s sake, it is worth noting here that <code>sleep()</code> is also a tween, even though most Lua scripters working with StepMania don&#apos;t think of it as such.  <code>sleep()</code> will wait for the specified duration, then execute all following commands at once.</p>
+			<p>For completion&apos;s sake, it is worth noting here that <code>sleep()</code> is also a tween, even though most Lua scripters working with StepMania don&apos;t think of it as such.  <code>sleep()</code> will wait for the specified duration, then execute all following commands at once.</p>
 
 			<h2>Tweens Defined by the <em>_fallback</em> theme</h2>
 
@@ -48,13 +48,13 @@ class SimpleTweens extends Component {
 				<li><code>drop()</code> - Slows as it approaches its end state, then briefly accelerates the final few frames.</li>
 			</ul>
 
-			<p>If you are interested in learning more about <code>bezier()</code> tweens, you can inspect <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong> in the _fallback theme&#apos;s Scripts directory to see how <em>smooth</em>, <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.</p>
+			<p>If you are interested in learning more about <code>bezier()</code> tweens, you can inspect <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong> in the _fallback theme&apos;s Scripts directory to see how <em>smooth</em>, <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.</p>
 
 			<h2>How to Use Tweens</h2>
 
-			<p>Knowing <em>what</em> we can use is great, but it&#apos;s only half the picture.  If you apply a tween to an Actor without any further commands, it won&#apos;t <em>do</em> anything.  Tweens need additional commands to execute over the course of their duration in order to animate in any meaningful way.</p>
+			<p>Knowing <em>what</em> we can use is great, but it&apos;s only half the picture.  If you apply a tween to an Actor without any further commands, it won&apos;t <em>do</em> anything.  Tweens need additional commands to execute over the course of their duration in order to animate in any meaningful way.</p>
 
-			<p>Let&#apos;s illustrate what we mean by this with some examples.</p>
+			<p>Let&apos;s illustrate what we mean by this with some examples.</p>
 
 			<span className="CodeExample-Title">Tween a quad to become twice as large:</span>
 			<Highlight className="lua">
@@ -138,7 +138,7 @@ Def.Quad{
 
 			<h2>Tweens in Motion</h2>
 
-			<p>Reading about tweens is well and good, but seeing is believing.  I&#apos;ve put together a scripted simfile that briefly demonstrates each of these tweens, one after another.</p>
+			<p>Reading about tweens is well and good, but seeing is believing.  I&apos;ve put together a scripted simfile that briefly demonstrates each of these tweens, one after another.</p>
 
 			<p>You can download that here!  <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a></p>
 
