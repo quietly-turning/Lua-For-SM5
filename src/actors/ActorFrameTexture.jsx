@@ -1,0 +1,21 @@
+import React, { Component } from "react";
+
+class ActorFrameTexture extends Component {
+	render() {
+		return (
+			<div>
+
+				<h1>ActorFrameTexture</h1>
+
+				<p><em>ActorFrameTexture</em> actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a <code>{`visible(false)`}</code> command, and StepMania will have that many fewer actors to process every draw cycle.</p>
+
+				<p>This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.</p>
+
+				<p>For now, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua">Matt Gardner&apos;s writeup</a>.</p>
+
+			</div>
+		);
+	}
+}
+
+export default ActorFrameTexture;

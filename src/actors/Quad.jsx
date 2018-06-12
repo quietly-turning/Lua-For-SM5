@@ -1,0 +1,118 @@
+import React, { Component } from "react";
+import Highlight from 'react-highlight';
+
+class Quad extends Component {
+	render() {
+		return (
+			<div>
+			<h1>Quad</h1>
+
+			<p><em>Quad</em> actors are programmatically drawn <em>quad</em>rilaterals that can have properties like size, position, and color.  If you don&apos;t specify, Quad actors are white and have a height and width of 0 by default.</p>
+
+			<span className="CodeExample-Title">A very simple Quad example:</span>
+			<Highlight className="lua">
+{`
+-- a white quad with height and width of 100px
+Def.Quad{
+    Name="WhiteQuad",
+    InitCommand=function(self)
+        self:zoomto(100,100)
+    end
+}
+`}
+			</Highlight>
+
+			<p>A common question that people new to StepMania scripting have is:</p>
+
+			<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
+
+			<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor objects</a>.  (Note that in your web-browser, you may need to click to expand the list of methods linked to.)</p>
+
+			<h2>A More Advanced Example</h2>
+
+			<p>Since Quads are fairly simple, let&apos;s use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth in the Command Chaining section.</p>
+
+		<span className="CodeExample-Title">Three Quads with animation:</span>
+		<Highlight className="lua">
+{`
+-- let's assume this file is being called via FGCHANGES from a simfile.
+-- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
+-- are cleared from memory as the engine assumes they are "done."
+-- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
+
+return Def.ActorFrame{
+	-- the OnCommand here applies to the primary ActorFrame
+	OnCommand=function(self)
+		self:sleep(9999)
+	end,
+
+	-- a red quad that accelerates from offscreen-left to offscreen-right
+	-- this makes use of the _screen and Color aliases
+	Def.Quad{
+		Name="RedQuad",
+		InitCommand=function(self)
+			self:zoomto(100,100):diffuse(Color.Red)
+		end,
+		OnCommand=function(self)
+			self:xy( -100, _screen.cy )
+				:accelerate( 2 ):x( _screen.w + 100 )
+		end
+	},
+
+	-- a blue quad that decelerates from offscreen-top to offscreen-bottom
+	-- this makes use of the xy() command, which is new to SM5
+	-- as well as command-chaining (read more on the next page!)
+	Def.Quad{
+		Name="BlueQuad",
+		InitCommand=function(self)
+			self:zoomto( 100, 100 ):diffuse( Color.Blue )
+		end,
+		OnCommand=function(self)
+			self:xy( _screen.cx, -100)
+				:decelerate( 2 ):y( _screen.h + 100 )
+				:queuecommand( "TriggerSpin" )
+		end,
+		TriggerSpinCommand=function(self)
+			local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
+			greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
+		end
+	},
+
+	-- a green quad that waits for the two quads above to finish tweening,
+	-- then grows out of the center of the screen while spinning
+	--
+	-- NOTE: We can't apply tween-based commands and actor effects like spin()
+	-- simultaneously.
+	-- zoomto() will override spin() for the duration of its linear tween.
+	-- The way to achive the effect of spinning toward the viewer is to
+	-- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
+	Def.ActorFrame{
+		Name="GreenQuadAF",
+		InitCommand=function(self)
+			self:Center()
+				:spin():effectmagnitude(0,0,180)
+		end,
+
+		Def.Quad{
+			Name="GreenQuad",
+			InitCommand=function(self)
+				self:zoomto(0,0):diffuse(Color.Green)
+			end,
+			GrowCommand=function(self)
+				self:linear(5):zoomto(_screen.w, _screen.h)
+			end,
+		}
+	}
+}
+`}
+			</Highlight>
+
+			<h2>The <em>_fallback</em> theme has some helpful aliases.</h2>
+
+<p>This example also uses a few helper tables defined in SM5&apos;s <em>_fallback</em> theme such as the <code>Color</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua">02 Colors.lua</a>  and the <code>_screen</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua">01 alias.lua</a>.</p>
+			</div>
+		);
+	}
+}
+
+export default Quad;
