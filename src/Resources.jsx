@@ -26,7 +26,7 @@ class Resources extends Component {
 				<h2>Theming for StepMania 5.2</h2>
 
 				<p>
-					SM5.2 will offer many new features and many are documented here:
+					SM5.2 will offer lots of new features and many are documented here:
 				</p>
 
 				<ul>
