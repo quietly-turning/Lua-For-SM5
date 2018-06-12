@@ -140,7 +140,7 @@ Def.Quad{
 
 			<p>Reading about tweens is well and good, but seeing is believing.  I&apos;ve put together a scripted simfile that briefly demonstrates each of these tweens, one after another.</p>
 
-			<p>You can download that here!  <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a></p>
+			<p>You can download that here!  <a href="/Lua-For-SM5/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a></p>
 
 			</div>
 		);
