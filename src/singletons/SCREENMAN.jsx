@@ -18,7 +18,7 @@ class SCREENMAN extends Component {
 			<p>Within the context of theming and simfile scripting, calling <code>SCREENMAN:GetTopScreen()</code> will return the screen currently being displayed in the form of a <em>screen</em> object.
 			 For example, calling it on ScreenGameplay will get you the gameplay screen in the form of a screen object.  Calling it on ScreenPlayerOptions wil do similarly but return the player options screen.</p>
 
-			<p>While there are some methods available to <em>all</em> <Link to="/API/Lua.xml#Screen">screen objects</Link> (like <code>AddInputCallback()</code> which is covered in <Link to="/Arbitrary-Input">Handling Arbitrary Input</Link>), there are many more that depend on the class of the current Screen.  A screen object of class <em>ScreenGameplay</em> will have the method <code>GetLifeMeter()</code> which returns a <Link to="/API/Lua.xml#LifeMeter">LifeMeter</Link> object.  A screen object of class <em>ScreenSelectMusic</em> will have the method <code>GetMusicWheel()</code> which returns a <Link to="/API/Lua.xml#MusicWheel">MusicWheel</Link> ojbect.</p>
+			<p>While there are some methods available to <em>all</em> <Link to="/Lua-For-SM5/API/Lua.xml#Screen">screen objects</Link> (like <code>AddInputCallback()</code> which is covered in <Link to="/Arbitrary-Input">Handling Arbitrary Input</Link>), there are many more that depend on the class of the current Screen.  A screen object of class <em>ScreenGameplay</em> will have the method <code>GetLifeMeter()</code> which returns a <Link to="/Lua-For-SM5/API/Lua.xml#LifeMeter">LifeMeter</Link> object.  A screen object of class <em>ScreenSelectMusic</em> will have the method <code>GetMusicWheel()</code> which returns a <Link to="/Lua-For-SM5/API/Lua.xml#MusicWheel">MusicWheel</Link> ojbect.</p>
 
 			<p>Here is a small example that uses <code>GetTopScreen()</code> on ScreenSelectMusic to get a Lua reference to the MusicWheel and change the current sort of that MusicWheel.  In order for this code to work, it must be called from a theme&apos;s ScreenSelectMusic.</p>
 
@@ -52,7 +52,7 @@ return Actor{
 
 			</Highlight>
 
-			<p>Again, there are many custom methods that belong to the many different classes of screens, more than can be reasonably documented here.  For a full list, please refer to the various screen classes documented in the <Link to="/API/Lua.xml">SM5 Lua API</Link>.  This currently includes everything from <strong>Class Screen</strong>:<em>ActorFrame</em> down to <strong>Class ScreenWithMenuElementsSimple</strong>:<em>ScreenWithMenuElements</em> (with the exception of ScreenManager itself, of course!).</p>
+			<p>Again, there are many custom methods that belong to the many different classes of screens, more than can be reasonably documented here.  For a full list, please refer to the various screen classes documented in the <Link to="/Lua-For-SM5/API/Lua.xml">SM5 Lua API</Link>.  This currently includes everything from <strong>Class Screen</strong>:<em>ActorFrame</em> down to <strong>Class ScreenWithMenuElementsSimple</strong>:<em>ScreenWithMenuElements</em> (with the exception of ScreenManager itself, of course!).</p>
 			</div>
 		);
 	}
