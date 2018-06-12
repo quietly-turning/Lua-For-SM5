@@ -10,6 +10,7 @@ import Resources from "./Resources";
 import Foreword  from "./introduction/Foreword";
 import Lua  from "./introduction/Lua";
 import SupportedFileExtensions from "./introduction/Supported-File-Extensions";
+import ModChartSetup from "./introduction/Mod-Chart-Setup";
 
 import Quad from "./actors/Quad";
 import BitmapText from "./actors/BitmapText";
@@ -20,14 +21,14 @@ import Sound from "./actors/Sound";
 import ActorMultiVertex from "./actors/ActorMultiVertex";
 import ActorFrameTexture from "./actors/ActorFrameTexture";
 
-import SCREENMAN from "./singletons/SCREENMAN"
-import SOUND from "./singletons/SOUND"
+import SCREENMAN from "./singletons/SCREENMAN";
+import SOUND from "./singletons/SOUND";
 
-import Debugging from "./best-practices/Debugging"
-import CommandChaining from "./best-practices/Command-Chaining"
+import Debugging from "./best-practices/Debugging";
+import CommandChaining from "./best-practices/Command-Chaining";
 
-import ArbitraryInput from "./examples/ArbitraryInput"
-import SimpleTweens from "./examples/SimpleTweens"
+import ArbitraryInput from "./examples/ArbitraryInput";
+import SimpleTweens from "./examples/SimpleTweens";
 
 class App extends Component {
 
@@ -49,6 +50,7 @@ class App extends Component {
 								<Route path="/foreword"		component={Foreword}/>
 								<Route path="/lua"			component={Lua} />
 								<Route path="/Supported-File-Extensions"	component={SupportedFileExtensions} />
+								<Route path="/Mod-Chart-Setup"	component={ModChartSetup} />
 
 								<Route path="/Def.Quad"			component={Quad} />
 								<Route path="/Def.BitmapText"	component={BitmapText} />

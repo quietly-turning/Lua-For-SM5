@@ -55,6 +55,7 @@ class Sidebar extends Component {
 							<li><NavLink to="/foreword">What Are Actors?</NavLink></li>
 							<li><NavLink to="/lua">Lua changes from SM3.95</NavLink></li>
 							<li><NavLink to="/Supported-File-Extensions">Supported File Extensions</NavLink></li>
+							<li><NavLink to="/Mod-Chart-Setup">Setting Up a "Mod" Chart</NavLink></li>
 						</ul>
 					</div>
 				</div>
