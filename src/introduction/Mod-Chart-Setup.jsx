@@ -11,11 +11,19 @@ class ModChartSetup extends Component {
 
 			<p className="alert alert-warning">This chapter is a work-in-progress!</p>
 
-			<p>The FGCHANGES field in your .sm file should match the name of the Lua file where you will be writing your code.  For exmaple, if you named your file <em>default.lua</em>, you would need to change your .sm file to include:</p>
+			<p>The FGCHANGES field in your .sm file accepts several arguments delimited by equals signs.  The first two are the most important:</p>
+			<ul>
+				<li>the beat in Gameplay at which you want the lua file to be activated</li>
+				<li>a path to Lua file where you will be writing your code</li>
+			</ul>default
+
+			<p>The remaining arguments (the <code>1.000</code> and the <code>0</code>s and <code>1</code>s) are various flags that are basically vestiges from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
+
+			<p>So, for exmaple, if you named your file <em>default.lua</em>, you would need to change your .sm (or .ssc) file to include:</p>
 
 			<Highlight>#FGCHANGES: 1.000=./default.lua=1.000=0=0=1=====;</Highlight>
 
-			<p>Any Lua-based actors loaded as FGChanges will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively tweening in some way, it will be cleared from memory.</p>
+			<p>Any Lua-based actors loaded as FGCHANGES will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively tweening in some way, it will be cleared from memory.</p>
 
 			<p>  A common strategy is to ensure that this doesn&apos;t occur prematurely is to add a dummy keep-alive Actor that does nothing but sleep for as long as you want the overall Lua file to persist for. That might look like:</p>
 
@@ -43,7 +51,7 @@ return Def.ActorFrame{
 
 			<p>If you are testing this in SM5's editor, you'll need to ensure that you have <strong>Show Background Changes</strong> enabled, otherwise neither BGChanges nor FGChanges will appear.</p>
 
-			<p>SM5&apos;s Lua error reporting interface is invaluable when scripting thing like this. You can toggle it on/off by holding <kbd>F3</kbd> and tapping <kbd>F6</kbd> then tapping <kbd>8</kbd></p>
+			<p>SM5&apos;s Lua error reporting interface is invaluable when scripting things like this. You can toggle it on/off by holding <kbd>F3</kbd> and tapping <kbd>F6</kbd> then tapping <kbd>8</kbd></p>
 
 			<p>Finally, if there are no Lua errors, and still can&apos;t get anything to appear, you may need to reload your simfiles.</p>
 		</div>

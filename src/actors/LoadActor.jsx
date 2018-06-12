@@ -14,7 +14,7 @@ class LoadActor extends Component {
 
 			<h3>First Argument - A file path to Load</h3>
 
-			<p>The function itself requires at least one argument, a string value of the file to load.  Let&apos;s consider a simple example, the code from <Link to="/Sprite">the page on Def.Sprite</Link>, now rewritten to use <code>LoadActor()</code>:</p>
+			<p>The function itself requires at least one argument, a string value of the file to load.  Let&apos;s consider a simple example, the code from <Link to="/Def.Sprite">the page on Def.Sprite</Link>, now rewritten to use <code>LoadActor()</code>:</p>
 
 			<span className="CodeExample-Title">A very simple LoadActor example:</span>
 			<Highlight className="lua">
