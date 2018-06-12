@@ -13,15 +13,15 @@ class ModChartSetup extends Component {
 
 			<p>The FGCHANGES field in your .sm file accepts several arguments delimited by equals signs.  The first two are the most important:</p>
 			<ul>
-				<li>the beat in Gameplay at which you want the lua file to be activated</li>
+				<li>the beat in Gameplay at which you want the Lua file to be activated</li>
 				<li>a path to the Lua file where you will be writing your code</li>
 			</ul>
 
-			<p>The remaining arguments (the <code>1.000</code> and the <code>0</code>s and <code>1</code>s) are various flags that are basically vestiges from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
+			<p>So, for exmaple, if you named your file <em>default.lua</em> and wanted it to trigger at beat 4, you would need to change your .sm (or .ssc) file to include:</p>
 
-			<p>So, for exmaple, if you named your file <em>default.lua</em>, you would need to change your .sm (or .ssc) file to include:</p>
+			<Highlight>#FGCHANGES: 4.000=./default.lua=1.000=0=0=1=====;</Highlight>
 
-			<Highlight>#FGCHANGES: 1.000=./default.lua=1.000=0=0=1=====;</Highlight>
+			<p>The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and <code>1</code>s) are various flags that are basically vestiges from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
 
 			<p>Any Lua-based actors loaded as FGCHANGES will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively tweening in some way, it will be cleared from memory.</p>
 
@@ -47,7 +47,7 @@ return Def.ActorFrame{
 }
 `}
 			</Highlight>
-			<p>In the exmaple above, the the Sprite has a <code>sleep(3)</code> tween, so it would appear on the screen for 3 seconds at beat 1 (specified by the .sm file) and then disappear.</p>
+			<p>In the exmaple above, the the Sprite has a <code>sleep(3)</code> tween, so it would appear on the screen for 3 seconds at beat 4 (specified by the .sm file) and then have an alpha of <code>0</code> applied, causing it to be effectively invisible.</p>
 
 			<p>If you are testing this in SM5's editor, you'll need to ensure that you have <strong>Show Background Changes</strong> enabled, otherwise neither BGChanges nor FGChanges will appear.</p>
 
