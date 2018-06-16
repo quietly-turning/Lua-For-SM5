@@ -21,7 +21,7 @@ class ModChartSetup extends Component {
 
 			<Highlight>#FGCHANGES: 4.000=./default.lua=1.000=0=0=1=====;</Highlight>
 
-			<p>The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and <code>1</code>s) are various flags that are basically vestiges from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
+			<p>The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and <code>1</code>s) are <a href="https://github.com/stepmania/stepmania/wiki/sm#bgchanges">various flags that are basically vestiges</a> from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
 
 			<p>Any Lua-based actors loaded as FGCHANGES will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively tweening in some way, it will be cleared from memory.</p>
 
