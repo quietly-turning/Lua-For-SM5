@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Highlight from 'react-highlight';
-
+import { Link } from "react-router-dom";
 
 class SimpleTweens extends Component {
 	render() {
@@ -10,19 +10,22 @@ class SimpleTweens extends Component {
 			<h1>Simple Tweens</h1>
 			<h3 className="subtitle">Animate things from one state to another</h3>
 
-			<p>A <em>tween</em> is a process in computer animation in which an object is manipulated (translated, transformed, altered, etc.) from a starting state to an ending state.  StepMania has several simple tweens that can be used to animate virtually any aspect of StepMania&apos;s visual interface.</p>
+			<p>A <em>tween</em> is a process in computer animation in which an object is manipulated (translated, transformed, altered, etc.) from a starting state to an ending state.  In the context of StepMania scripting, tweens are used to visually animate Actors.</p>
 
-			<p>As a Lua scripter, you can use tweens for any number of tasks, including (but not limited to):</p>
+			<p>Using StepMania&apos;s Lua API, you can use tweens for many tasks, including (but not limited to):</p>
 
 			<ul>
-				<li>make a Quad actor grow to be twice as large by tweening its <code>zoom()</code> value to 2</li>
-				<li>make the entire screen appear to &#8220;fade out&#8221; by tweening its <code>diffuse()</code> to <em>Color.Black</em></li>
-				<li>gradually fade out an image Actor by tweening its <code>diffusealpha()</code> to 0</li>
-				<li>moving the Player&apos;s receptor arrows somewhere else on the screen by tweening the <code>x()</code> and <code>y()</code> values</li>
+				<li>make a <Link to="/Def.Sprite">Sprite Actor</Link> grow to be twice as large by tweening <code>zoom(2)</code></li>
+				<li>make the entire Screen Actor appear to &#8220;fade out&#8221; by tweening <code>diffuse(0,0,0,0)</code></li>
+				<li>gradually make a <Link to="/Def.BitmapText">BitmapText Actor</Link> by tweening <code>diffusealpha(0)</code></li>
+				<li>move a <Link to="/Def.Quad">Quad Actor</Link> diagonally 100 pixels down and 100 pixels right by tweening <code>xy(100,100)</code></li>
 				<li>etc.</li>
 			</ul>
 
-			<p>This tutorial will cover <em>types of simple tweens</em> available in StepMania, discuss <em>how to use tweens</em>, and concludes with a full example.</p>
+			<p>This tutorial lists the types of simple tweens available through the <a href="/Lua-For-SM5/API/Lua.xml">Lua API</a>, discusses how to use tweens, and concludes with a full example.</p>
+
+			<p>To learn more about Actors and Lua scripting in StepMania, check out the <Link to="/foreword">What Are Actors?</Link> tutorial.  To learn more about what Actor methods are available for tweening, refer to the <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor subsection</a> of the Lua API.
+			</p>
 
 			<h2>Tweens Defined by the Engine</h2>
 
@@ -53,6 +56,8 @@ class SimpleTweens extends Component {
 			<h2>How to Use Tweens</h2>
 
 			<p>Knowing <em>what</em> we can use is great, but it&apos;s only half the picture.  If you apply a tween to an Actor without any further commands, it won&apos;t <em>do</em> anything.  Tweens need additional commands to execute over the course of their duration in order to animate in any meaningful way.</p>
+
+			<p>Each of the tweens listed above takes a single argument: a <em>number</em> representing a duration in seconds for long the StepMania engine should tween the methods that immediately follow for.</p>
 
 			<p>Let&apos;s illustrate what we mean by this with some examples.</p>
 
@@ -107,7 +112,7 @@ Def.ActorFrame{
 
 			<p>Can you tween more than one property of an actor at once?  Absolutely.</p>
 
-			<p>The next example demonstrates that <em>all</em> commands following a tween will be tweened, until the next tween command is encountered of course.</p>
+			<p>The next example demonstrates that it is possible to tween multiple methods with a single tween.  After calling a tween method, all methods following it will be tweened until the next tween method is encountered.</p>
 
 			<span className="CodeExample-Title">Move a quad across the screen while fading it out:</span>
 			<Highlight className="lua">
@@ -125,7 +130,9 @@ Def.Quad{
 		-- This comprises one full tween.
 		self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
 
-		-- Here is a second, unique tween.  Note that line breaks are fine.
+		-- Here is a second, unique tween that tweens three methods
+		-- to change the color, xy-position, and y-rotation of the Quad.
+		-- Note that line breaks are fine.
 		self:accelerate(3)
 			:diffuse(1,0,0,1)
 			:xy( _screen.cx, _screen.cy )
@@ -138,7 +145,7 @@ Def.Quad{
 
 			<h2>Tweens in Motion</h2>
 
-			<p>Reading about tweens is well and good, but seeing is believing.  I&apos;ve put together a scripted simfile that briefly demonstrates each of these tweens, one after another.</p>
+			<p>Reading about tweens good, but a visual is worth a thousand words.  Here is a scripted simfile you can run in StepMania 5 that briefly demonstrates each of these tweens, one after another.</p>
 
 			<p>You can download that here!  <a href="/Lua-For-SM5/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a></p>
 
