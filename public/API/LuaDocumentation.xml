@@ -21,7 +21,7 @@
 
 save yourself some time, copy this for undocumented things:
 <Function name='' return='' arguments=''>
-		
+
 	</Function>
   -->
 
@@ -451,7 +451,7 @@ save yourself some time, copy this for undocumented things:
 		Returns a formatted percent with the specified <code>num</code>erator and <code>den</code>ominator.
 	</Function>
 	<Function name='print' theme='_fallback' return='void' arguments='string s'>
-		[00 init.lua] 
+		[00 init.lua]
 	</Function>
 	<Function name='PrintTable' theme='_fallback' return='void' arguments='table t'>
 		[03 ThemePrefs.lua] Prints a table's contents to the log.
@@ -568,7 +568,7 @@ save yourself some time, copy this for undocumented things:
 		[03 UserPreferences2.lua] Themer-facing function for setting a user preference.
 	</Function>
 	<Function name='ShowHoldJudgments' theme='_fallback' return='bool' arguments=''>
-		[03 Gameplay.lua] 
+		[03 Gameplay.lua]
 	</Function>
 	<Function name='ShowStandardDecoration' theme='_fallback' return='bool' arguments='string sMetricsName'>
 		[02 ActorDef.lua] Returns <code>true</code> if a decoration should be shown on the current screen or not.
@@ -586,13 +586,13 @@ save yourself some time, copy this for undocumented things:
 		[02 Colors.lua]
 	</Function>
 	<Function name='StandardDecorationFromTable' theme='_fallback' return='Actor' arguments='string sMetricsName, table t'>
-		[02 ActorDef.lua] 
+		[02 ActorDef.lua]
 	</Function>
 	<Function name='StandardDecorationFromFile' theme='_fallback' return='Actor' arguments='string sMetricsName, string sFileName'>
-		[02 ActorDef.lua] 
+		[02 ActorDef.lua]
 	</Function>
 	<Function name='StandardDecorationFromFileOptional' theme='_fallback' return='Actor' arguments='string sMetricsName, string sFileName'>
-		[02 ActorDef.lua] 
+		[02 ActorDef.lua]
 	</Function>
 	<Function name='tableshuffle' theme='_fallback' return='table' arguments='table t'>
 		[02 Utilities.lua] Returns a shuffled version of <code>t</code>.
@@ -736,7 +736,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='GetRotationZ' return='float' arguments='PlayerState ps, float fNoteBeat, bool bIsHoldHead'>
 		Returns the Z rotation of a note at beat <code>fNoteBeat</code> for the provided PlayerState.<br/>
-		<code>bIsHoldHead</code> is an optional argument which defaults to false. If true, this function will return <code>0</code> if the [ArrowEffects] metric <code>DizzyHoldHeads</code> is false.
+		<code>bIsHoldHead</code> is an optional argument which defaults to false. If true, this function will return <code>0</code> if the [PlayerOptions] modifier <code>DizzyHolds</code> is off.
 	</Function>
 	<Function name='ReceptorGetRotationZ' return='float' arguments='PlayerState ps'>
 		Returns the Z rotation of the receptors for the provided PlayerState.
@@ -760,7 +760,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='GetZoom' return='float' arguments='PlayerState ps'>
 		Returns the zoom of a note for the provided PlayerState.
 	</Function>
-	<Function name='GetFrameWidthScale' return='float' arguments='PlayerState ps, float fYOffset, fOverlappedTime'>
+	<Function name='GetFrameWidthScale' return='float' arguments='PlayerState ps, float fYOffset, float fOverlappedTime'>
 		Returns the FrameWidthScale of a hold part with a Y offset of <code>fYOffset</code> for the provided PlayerState.<br/> <code>fOverlappedTime</code> is optional and will default to 0.
 	</Function>
 </Namespace>
@@ -776,7 +776,7 @@ save yourself some time, copy this for undocumented things:
 		of <code>Enum</code>. Instead of
 		<code><Link function='GetName'>Enum.GetName</Link>(
 		<Link class='ENUM' function='PlayerNumber' /> )</code> or
-		<code><Link function='Reverse'>Enum.Reverse</Link>( 
+		<code><Link function='Reverse'>Enum.Reverse</Link>(
 		<Link class='ENUM' function='PlayerNumber' /> )</code>, one can use
 		<code><Link class='ENUM' function='PlayerNumber' />:<!--
 		--><Link function='GetName'>GetName</Link>()</code> or
@@ -2353,6 +2353,61 @@ save yourself some time, copy this for undocumented things:
 		Blanks the DifficultyIcon.
 	</Function>
 </Class>
+<Class name='DisplayMode'>
+	<Function name='GetWidth' return='int' arguments=''>
+		Return the width of the display in this mode.
+	</Function>
+	<Function name='GetWidth' return='int' arguments=''>
+		Return the height of the display in this mode.
+	</Function>
+	<Function name='GetRefreshRate' return='float' arguments=''>
+		Return the refresh rate of the display in this mode.
+	</Function>
+</Class>
+<Class name='DisplaySpec'>
+	<Description>
+		An object describing a display: its supported and current video modes.
+	</Description>
+	<Function name='GetId' return='string' arguments=''>
+		Return the unique identifier of the display.
+	</Function>
+	<Function name='GetName' return='string' arguments=''>
+		Return the &quot;human-readable&quot; display name.
+	</Function>
+	<Function name='GetSupportedModes' return='{DisplayMode}' arguments=''>
+		Return the <Link class='DisplayMode' />s supported by this device.
+	</Function>
+	<Function name='GetCurrentMode' return='DisplayMode' arguments=''>
+		Return the currently active <Link class='DisplayMode' /> for this display,
+		or <code>nil</code> if there is no such mode.
+	</Function>
+	<Function name='IsVirtual' return='bool' arguments=''>
+		Return <code>true</code> if this <code>DisplaySpec</code> is describing the
+		&quot;logical display&quot; like an X screen or the Win32 &quot;Virtual screen&quot;, or
+		<code>false</code> otherwise (if this describes a physical display).
+	</Function>
+</Class>
+<Class name='DisplaySpecs'>
+	<Description>
+		An array-like <code>userdata</code> object which describes the displays
+		configured on the user's machine.
+
+		This object supports the <code>__len</code> operator (<code>#t</code>), and
+		integer indexing, but does not support
+		iteration via <code>pairs</code> or <code>ipairs</code>.
+
+		Each element of the array is a <Link class='DisplaySpec' />.
+	</Description>
+
+	<Function name='__len' return='int' arguments=''>
+		Return the number of <Link class='DisplaySpec' /> instances in the array.
+	</Function>
+	<Function name='__index' return='DisplaySpec' arguments='int i'>
+		Return the <Link class='DisplaySpec' /> instance at index <code>i</code>
+	</Function>
+	<Function name='__tostring' return='string' arguments=''>
+	</Function>
+</Class>
 <Class name='FadingBanner'>
 	<Function name='GetLatestIndex' return='int' arguments=''>
 		Returns the index of the last banner loaded.
@@ -2518,7 +2573,7 @@ save yourself some time, copy this for undocumented things:
  		<code>musicLength</code> seconds one time. Both <code>fadeIn</code> and
 		<code>fadeOut</code> can be customized as required.  <code>loop</code>
 		tells the sound manager to loop the music part.  <code>applyRate</code>
-		tells the sound manager to apply the current music rate. If <code>alignBeat</code> 
+		tells the sound manager to apply the current music rate. If <code>alignBeat</code>
 		is true or nil, the length is automatically adjusted to cover an integer number of beats.
 	</Function>
 	<Function name='PlayOnce' return='void' arguments='string sPath, bool is_action'>
@@ -2903,7 +2958,7 @@ save yourself some time, copy this for undocumented things:
 		Sets if the Jukebox should use modifiers.
 	</Function>
 	<Function name='SetMultiplayer' return='void' arguments='bool b'>
-		
+
 	</Function>
 	<Function name='SetNumMultiplayerNoteFields' return='void' arguments='int iFields'>
 		Sets the number of multiplayer notefields to <code>iFields</code>
@@ -3183,7 +3238,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='SelectCourse' return='bool' arguments='Course cCourse'>
 		Selects a course. Returns <code>false</code> on failure.
 	</Function>
-</Class> 
+</Class>
 <Class name='NoteSkinManager'>
 	<Function name='GetMetric' return='string' arguments='string sElement, string sValue'>
 		Returns a string from the specified element and value.
@@ -3429,17 +3484,57 @@ save yourself some time, copy this for undocumented things:
 	</Description>
 	<Function name='Alternate' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='AttackMines' return='bool' arguments='bool value'> </Function>
+	<Function name='AttenuateX' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='AttenuateY' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='AttenuateZ' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='BatteryLives' return='int' arguments='int num'>	</Function>
 	<Function name='Backwards' return='bool' arguments='bool value'> </Function>
 	<Function name='Beat' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatMult' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatY' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatYMult' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatYOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatYPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatZ' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatZMult' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatZOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BeatZPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Big' return='bool' arguments='bool value'> </Function>
 	<Function name='Blink' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Blind' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='BMRize' return='bool' arguments='bool value'> </Function>
 	<Function name='Boomerang' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Boost' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Bounce' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BouncePeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BounceOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BounceZ' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BounceZPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='BounceZOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Brake' return='float, float' arguments='float value, float approach_speed'> </Function>
-	<Function name='Bumpy' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Bumpy' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='Bumpyn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply Bumpy on a specific column.
+	</Function>
+	<Function name='BumpyOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='BumpyPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='BumpyX' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='BumpyXOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='BumpyXPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
 	<Function name='Centered' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='CMod' return='float, float' arguments='float value, float approach_speed'>
 		If the player has a CMod set, returns the value of that CMod and its associated approach speed.  Returns nil otherwise.<br />
@@ -3447,10 +3542,53 @@ save yourself some time, copy this for undocumented things:
 		If the optional second argument is passed, sets the speed at which the transition occurs.
 	</Function>
 	<Function name='Confusion' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionOffsetn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply ConfusionOffset on a specific column.
+	</Function>
+	<Function name='ConfusionX' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionXOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionXOffsetn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply ConfusionXOffset on a specific column.
+	</Function>
+	<Function name='ConfusionY' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionYOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ConfusionYOffsetn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply ConfusionYOffset on a specific column.
+	</Function>
+	<Function name='Cosecant' return='bool' arguments='bool value'> </Function>
 	<Function name='Cover' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Cross' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Dark' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Darkn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply Dark on a specific column.
+	</Function>
+	<Function name='Digital' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalSteps' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalZ' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalZOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalZPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DigitalZSteps' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
 	<Function name='Dizzy' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='DizzyHolds' return='bool' arguments='bool value'> </Function>
 	<Function name='Distant' return='float, float' arguments='float value, float approach_speed'>
 		If the player is using Distant (zero skew and positive tilt), returns the value of tilt and its approach_speed.<br />
 		Returns nil otherwise.<br />
@@ -3458,9 +3596,39 @@ save yourself some time, copy this for undocumented things:
 		If the optional second argument is passed, sets the approach_speed for skew and tilt to it.
 	</Function>
 	<Function name='DrainSetting' return= 'DrainType' arguments='DrainType type'>	</Function>
-	<Function name='Drunk' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='DrawSize' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='DrawSizeBack' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Drunk' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkSpeed' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkZ' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkZOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkZPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='DrunkZSpeed' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
 	<Function name='Echo' return='bool' arguments='bool value'> </Function>
-	<Function name='Expand' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Expand' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='ExpandPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
 	<Function name='FailSetting' return='FailType' arguments='FailType'>
 		Sets the <Link class='ENUM' function='FailType' /> for the player, if the optional argument is provided.  Returns the <Link class='ENUM' function='FailType' /> that was previously set.
 	</Function>
@@ -3496,6 +3664,13 @@ save yourself some time, copy this for undocumented things:
 	<Function name='Left' return='bool' arguments='bool value'> </Function>
 	<Function name='LifeSetting' return='LifeType' arguments='LifeType type'>	</Function>
 	<Function name='Little' return='bool' arguments='bool value'> </Function>
+	<Function name='ModTimerSetting' return= 'ModTimerType' arguments='ModTimerType type'>
+		Sets the effect clock of certain modifiers for the player, if the optional argument is provided.  Returns the <Link class='ENUM' function='ModTimerType' /> that was previously set.<br />
+		Can also be set through strings in PlayerOptions::FromString().<br />
+		String Examples: 'ModTimerSong', 'modtimerbeat', etc.
+	</Function>
+	<Function name='ModTimerMult' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ModTimerOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='MaxScrollBPM' return='float, float' arguments='float value, float approach_speed'>
 		MaxScrollBPM is one of the variables for controlling the speed mod.<br />
 		Use CMod, XMod, or MMod to set the speed mod unless you have a good reason not to.<br />
@@ -3511,6 +3686,15 @@ save yourself some time, copy this for undocumented things:
 		If the optional first argument is passed, sets the MMod to the value and disables any CMod or XMod that is set.<br />
 		If the optional second argument is passed, sets the speed at which the transition occurs.<br />
 		MMods are not tweenable or settable on ScreenGameplay.  Use XMods if you need such an effect.
+	</Function>
+	<Function name='MoveXn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to move a specific column.
+	</Function>
+	<Function name='MoveYn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to move a specific column.
+	</Function>
+	<Function name='MoveZn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to move a specific column.
 	</Function>
 	<Function name='MuteOnError' return='bool' arguments='bool value'> </Function>
 	<Function name='NoAttack' return='float, float' arguments='float value, float approach_speed'> </Function>
@@ -3534,16 +3718,30 @@ save yourself some time, copy this for undocumented things:
 		If the player is using Overhead (0 tilt, 0 skew), returns true.<br />
 		If true is passed, sets the tilt and skew to 0.
 	</Function>
+	<Function name='ParabolaX' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ParabolaY' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ParabolaZ' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Passmark' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Planted' return='bool' arguments='bool value'> </Function>
 	<Function name='PlayerAutoPlay' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='PulseInner' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='PulseOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='PulseOuter' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='PulsePeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Quick' return='bool' arguments='bool value'> </Function>
 	<Function name='RandAttack' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='RandomSpeed' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='RandomVanish' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Reverse' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Reversen' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply Reverse on a specific column.
+	</Function>
 	<Function name='Right' return='bool' arguments='bool value'> </Function>
 	<Function name='Roll' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Sawtooth' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SawtoothPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SawtoothZ' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SawtoothZPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='ScrollBPM' return='float, float' arguments='float value, float approach_speed'>
 		ScrollBPM is one of the variables for controlling the speed mod.<br />
 		Use CMod, XMod, or MMod to set the speed mod unless you have a good reason not to.<br />
@@ -3554,6 +3752,8 @@ save yourself some time, copy this for undocumented things:
 		Use CMod, XMod, or MMod to set the speed mod unless you have a good reason not to.<br />
 		It is the setting for the XMod.
 	</Function>
+	<Function name='ShrinkMult' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ShrinkLinear' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Shuffle' return='bool' arguments='bool value'> </Function>
 	<Function name='Skew' return='float, float' arguments='float value, float approach_speed'>
 		Skew is one of the mods for controlling the perspective.  Use Overhead, Distant, Incoming, Space, Distant, or Hallway for controlling the perspective in the old way.<br />
@@ -3570,7 +3770,18 @@ save yourself some time, copy this for undocumented things:
 		If the optional second argument is passed, sets the approach_speed for skew and tilt to it.
 	</Function>
 	<Function name='Split' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Square' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SquareOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SquarePeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SquareZ' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SquareZOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='SquareZPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Stealth' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Stealthn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply Stealth on a specific column.
+	</Function>
+	<Function name='StealthPastReceptors' return='bool' arguments='bool value'> </Function>
+	<Function name='StealthType' return='bool' arguments='bool value'> </Function>
 	<Function name='Stomp' return='bool' arguments='bool value'> </Function>
 	<Function name='Sudden' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='SuddenOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
@@ -3585,8 +3796,36 @@ save yourself some time, copy this for undocumented things:
 		Tilt tilts the note field forward and back.
 	</Function>
 	<Function name='Tiny' return='float, float' arguments='float value, float approach_speed'> </Function>
-	<Function name='Tipsy' return='float, float' arguments='float value, float approach_speed'> </Function>
-	<Function name='Tornado' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='Tinyn' return= 'float, float' arguments='float value, float approach_speed'>
+		Use 1-16 in place of 'n' to apply Tiny on a specific column.
+	</Function>
+	<Function name='Tipsy' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TipsyOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TipsySpeed' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='Tornado' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TornadoOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TornadoPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TornadoZ' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TornadoZOffset' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
+	<Function name='TornadoZPeriod' return='float, float' arguments='float value, float approach_speed'>
+		Has a tangent variant that can be accessed by prepending 'Tan' to the function name.
+	</Function>
 	<Function name='TurnNone' return='bool' arguments='bool value'> </Function>
 	<Function name='Twirl' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Twister' return='bool' arguments='bool value'> </Function>
@@ -3594,6 +3833,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if the player is using reverse. (equivalent to <code>GetReverse() == 1.0</code>)
 	</Function>
 	<Function name='Wave' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='WavePeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 	<Function name='Wide' return='bool' arguments='bool value'> </Function>
 	<Function name='XMod' return='float, float' arguments='float value, float approach_speed'>
 		If the player has a XMod set, returns the value of that XMod and its associated approach speed.  Returns nil otherwise.<br />
@@ -3601,6 +3841,13 @@ save yourself some time, copy this for undocumented things:
 		If the optional second argument is passed, sets the speed at which the transition occurs.
 	</Function>
 	<Function name='Xmode' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZBuffer' return='bool' arguments='bool value'> </Function>
+	<Function name='Zigzag' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZigzagOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZigzagPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZigzagZ' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZigzagZOffset' return='float, float' arguments='float value, float approach_speed'> </Function>
+	<Function name='ZigzagZPeriod' return='float, float' arguments='float value, float approach_speed'> </Function>
 </Class>
 <Class name='PlayerStageStats'>
 	<Function name='FailPlayer' return='bool' arguments=''>
@@ -3727,6 +3974,9 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='IsDisqualified' return='bool' arguments=''>
 		Returns <code>true</code> if the player was disqualified from ranking.
+	</Function>
+	<Function name='SetDancePointLimits' return='void' arguments='int actual, int possible'>
+		Sets the Dance Point limits of the stage.
 	</Function>
 </Class>
 <Class name='PlayerState'>
@@ -4037,7 +4287,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='ProfileWasLoadedFromMemoryCard' return='bool' arguments='PlayerNumber pn'>
 		Returns <code>true</code> if <code>pn</code>'s Profile was loaded from a memory card.
 	</Function>
-	
+
 	<Function name='LastLoadWasFromLastGood' return='bool' arguments='PlayerNumber pn'>
 		Returns <code>true</code> if the last load of player <code>pn</code>'s profile was a LastGood copy of the profile.
 	</Function>
@@ -4103,6 +4353,18 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='GetCumFPS' return='int' arguments=''>
 		Return the cumulative FPS.
+	</Function>
+	<Function name='GetDisplaySpecs' return='DisplaySpecs' arguments=''>
+		Return an array-like <code>userdata</code> of type <Link class='DisplaySpecs' />,
+		which describes the displays configured on the user's machine.
+	</Function>
+	<Function name='SupportsRenderToTexture' return='bool' arguments=''>
+		Return <code>true</code> if the current renderer supports render-to-texture,
+		<code>false</code> otherwise.
+	</Function>
+	<Function name='SupportsFullscreenBorderlessWindow' return='bool' arguments=''>
+		Return <code>true</code> if the current renderer/window implementation supports
+		a fullscreen borderless-window mode, <code>false</code> otherwise.
 	</Function>
 </Class>
 <Class name='RageFile'>
@@ -4803,7 +5065,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='GetCourseGroupNames' return='{string}' arguments=''>
 		Returns a table containing all of the course group names.
 	</Function>
-	<Function name='GetCoursesInGroup' return='{Course}' arguments='string sGroup'>
+	<Function name='GetCoursesInGroup' return='{Course}' arguments='string sGroup, bool bIncludeAutogen'>
 		Returns a table with all of the courses in the specified group.
 	</Function>
 	<Function name='GetExtraStageInfo' return='various' arguments='bool bExtra2, Style s'>
@@ -4978,6 +5240,10 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='LoadBanner' return='void' arguments='string sPath'>
 		Load the song banner texture at <code>sPath</code>.
+	</Function>
+	<Function name='LoadFromCached' return='void' arguments='string sType, string sPath'>
+		Loads the image of type <code>sType</code> from the cache based on <code>sPath</code>.
+		Internal types: "Banner", "Background", "CDTitle", "Jacket", "CDImage" and "Disc".
 	</Function>
 	<Function name='LoadFromCurrentSongBackground' theme='_fallback' return='void' arguments=''>
 		[02 Sprite.lua] Loads the background from the current Song or the first Trail entry.
@@ -5391,7 +5657,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if the theme has the specified metric.
 	</Function>
 	<Function name='HasString' return='bool' arguments='string section, string value'>
-		Returns <code>true</code> if the theme has the specified string. 
+		Returns <code>true</code> if the theme has the specified string.
 	</Function>
 	<Function name='IsThemeSelectable' return='bool' arguments='string theme'>
 		Returns <code>true</code> if the specified theme is selectable.
@@ -5400,7 +5666,7 @@ save yourself some time, copy this for undocumented things:
 		Reloads the current theme's metrics.
 	</Function>
 	<Function name='RunLuaScripts' return='void' arguments='string sMask'>
-		
+
 	</Function>
 	<Function name='SetTheme' return='void' arguments='string theme'>
 		Changes the current theme.<br />
