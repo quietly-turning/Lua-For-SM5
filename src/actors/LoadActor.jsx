@@ -36,7 +36,7 @@ LoadActor( "OverlayAttachedGirlfriend.png" )..{
 
 			<p>The optional second argument of LoadActor() is where it really shines, however.  Let&apos;s look at this slightly more complex example which uses two Lua files.</p>
 
-			<p><strong>Primary.lua</strong> will load <strong>Box.lua</strong> once for each available human player and pass in unique properties to each.  If only PLAYER<em>1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER</em>2 is available, only the blue quadrilateral on the right will be drawn.</p>
+			<p><strong>Primary.lua</strong> will load <strong>Box.lua</strong> once for each available human player and pass in unique properties to each.  If only PLAYER_1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER_2 is available, only the blue quadrilateral on the right will be drawn.</p>
 
 			<p><img alt="" className="img-fluid" src="/Lua-For-SM5/img/loadactor.png" /></p>
 

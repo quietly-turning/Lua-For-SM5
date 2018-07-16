@@ -53,7 +53,7 @@ return Def.ActorFrame{
 
 			<p>SM5&apos;s Lua error reporting interface is invaluable when scripting things like this. You can toggle it on/off by holding <kbd>F3</kbd> and tapping <kbd>F6</kbd> then tapping <kbd>8</kbd></p>
 
-			<p>Finally, if there are no Lua errors, and still can&apos;t get anything to appear, you may need to reload your simfiles.</p>
+			<p>Finally, if there are no Lua errors, and you still can&apos;t get anything to appear, you may need to reload your simfiles.</p>
 		</div>
 		);
 	}
