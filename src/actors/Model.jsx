@@ -92,12 +92,12 @@ Def.Model {
 `}
 				</Highlight>
 
-				<p><img alt="" className="img-fluid" src="/Lua-For-SM5/img/Model-Meshintro.png" /></p>
+				<p><img alt="" className="img-fluid" src="/Lua-For-SM5/img/Model-MeshIntro.png" /></p>
 
 
 				<p>Okay, that&apos;s closer, but still doens&apos;t look like the dancing character from gameplay!</p>
 
-				<p>There&apos;s one additional "gotcha" regarding model animations in StepMania&apos;s Dancing Characters.  They are not handled by or defined within the model itself; rather, StepMania handles it, by loading the bones from somewhere else. To add a bone to the model, simply pass the <code>Bones</code> attribute of the <code>Def.Model</code> a dedicated bones file.</p>
+				<p>There&apos;s one additional "gotcha" regarding model animations in StepMania&apos;s Dancing Characters.  They are not handled by or defined within the model itself; StepMania handles it by loading the bones from somewhere else.  To add a bone to the model, pass the <code>Bones</code> attribute of the <code>Def.Model</code> a dedicated bones file.</p>
 
 
 				<span className="CodeExample-Title">Random Dancing Character, Fixed</span>
