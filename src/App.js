@@ -20,6 +20,8 @@ import LoadActor from "./actors/LoadActor";
 import Sound from "./actors/Sound";
 import ActorMultiVertex from "./actors/ActorMultiVertex";
 import ActorFrameTexture from "./actors/ActorFrameTexture";
+import Model from "./actors/Model"
+
 
 import SCREENMAN from "./singletons/SCREENMAN";
 import SOUND from "./singletons/SOUND";
@@ -60,6 +62,7 @@ class App extends Component {
 								<Route path="/Def.Sound"		component={Sound} />
 								<Route path="/Def.ActorMultiVertex"		component={ActorMultiVertex} />
 								<Route path="/Def.ActorFrameTexture"	component={ActorFrameTexture} />
+								<Route path="/Def.Model"	component={Model} />
 
 								<Route path="/SCREENMAN"	component={SCREENMAN} />
 								<Route path="/SOUND"			component={SOUND} />

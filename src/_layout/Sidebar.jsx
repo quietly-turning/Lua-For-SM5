@@ -77,6 +77,7 @@ class Sidebar extends Component {
 						<li><NavLink to="/Def.Actor">Actor</NavLink></li>
 						<li><NavLink to="/LoadActor">LoadActor()</NavLink></li>
 						<li><NavLink to="/Def.Sound">Sound</NavLink></li>
+						<li><NavLink to="/Def.Model">Model</NavLink></li>
 						<li><NavLink to="/Def.ActorMultiVertex">ActorMultiVertex</NavLink></li>
 						<li><NavLink to="/Def.ActorFrameTexture">ActorFrameTexture</NavLink></li>
 			      </ul>

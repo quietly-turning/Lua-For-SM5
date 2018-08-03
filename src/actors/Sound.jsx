@@ -10,7 +10,7 @@ class Sound extends Component {
 
 			<h1>Sound</h1>
 
-			<p>A <strong>Sound</strong> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
+			<p>A <em>Sound</em> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
 
 			<p className="alert alert-warning">
 			If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <Link to="SOUND">SOUND</Link>.
