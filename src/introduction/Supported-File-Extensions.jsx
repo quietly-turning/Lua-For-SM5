@@ -25,7 +25,7 @@ class SupportedFileExtensions extends Component {
 
 				<h4>Audio:</h4>
 
-				<p><em>.ogg</em> files are strong preferred; variable-bitrate mp3 files are very buggy.</p>
+				<p><em>.ogg</em> files are strongly preferred; variable-bitrate mp3 files <a href="https://github.com/stepmania/stepmania/issues/369">are buggy</a>.</p>
 
 				<h4>Video:</h4>
 

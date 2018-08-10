@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Highlight from 'react-highlight';
+import { Link } from "react-router-dom";
 
 class ModChartSetup extends Component {
 	render() {
@@ -23,7 +24,7 @@ class ModChartSetup extends Component {
 
 			<p>The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and <code>1</code>s) are <a href="https://github.com/stepmania/stepmania/wiki/sm#bgchanges">various flags that are basically vestiges</a> from SM3.9 that are necessary to include but will have no impact on your Lua.  For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.</p>
 
-			<p>Any Lua-based actors loaded as FGCHANGES will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively tweening in some way, it will be cleared from memory.</p>
+			<p>Any Lua-based actors loaded as FGCHANGES will be cleared from the screen as soon as they are "done." This means that if the actor isn&apos;t actively <Link to="/Simple-Tweens">tweening</Link> in some way, it will be cleared from memory.</p>
 
 			<p>  A common strategy is to ensure that this doesn&apos;t occur prematurely is to add a dummy keep-alive Actor that does nothing but sleep for as long as you want the overall Lua file to persist for. That might look like:</p>
 
