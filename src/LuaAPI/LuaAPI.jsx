@@ -234,8 +234,9 @@ class LuaAPI extends Component {
 		// searching for string matches in various ways
 		this.state.actor_classes.forEach(function(actor){
 
-			// if name of this entire actor class includes the user-input string
-			if (actor.name.toUpperCase().includes(eventValue)){
+			// if name of this entire actor class includes the user-input string,
+			// OR if the base of this actor class includes the user-input string
+			if (actor.name.toUpperCase().includes(eventValue) || (actor.base && actor.base.toUpperCase().includes(eventValue))){
 				// push the entire actor class and all its methods to the array of filtered results
 				results[0].push(actor)
 				// and continue to the next actor class
