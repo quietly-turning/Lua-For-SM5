@@ -5,9 +5,9 @@ import { NavLink } from "react-router-dom";
 class Header extends Component {
   render() {
     return (
-			<nav id="topbar" className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+			<nav id="topbar" className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
-				<img src="/Lua-For-SM5/img/stepmania.png" className="navbar-brand" alt="SM5 Logo" width="25" />
+				<img src="/Lua-For-SM5/img/stepmania.png" className="navbar-brand" alt="" width="25" />
 		 		<span className="navbar-brand">
 		 			Lua for SM5
 				</span>
@@ -22,7 +22,7 @@ class Header extends Component {
 							<NavLink className="nav-link" exact to="/">Home</NavLink>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="/Lua-For-SM5/API/Lua.xml">API</a>
+		 					<a className="nav-link" href="/Lua-For-SM5/API/Lua.xml">API</a>
 						</li>
 						<li className="nav-item">
 							<NavLink className="nav-link" to="/resources">Other Resources</NavLink>
