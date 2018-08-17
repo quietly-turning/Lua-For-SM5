@@ -22,7 +22,7 @@ class Header extends Component {
 							<NavLink className="nav-link" exact to="/">Home</NavLink>
 						</li>
 						<li className="nav-item">
-		 					<a className="nav-link" href="/Lua-For-SM5/API/Lua.xml">API</a>
+							<NavLink className="nav-link" to="/LuaAPI">API</NavLink>
 						</li>
 						<li className="nav-item">
 							<NavLink className="nav-link" to="/resources">Other Resources</NavLink>

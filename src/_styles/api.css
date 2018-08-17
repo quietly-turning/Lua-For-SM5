@@ -1,0 +1,39 @@
+div.LuaAPI *[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -75px;
+  height: 75px;
+  visibility: hidden; }
+div.LuaAPI h2.API-Category {
+  margin: 0.5em 0em;
+  padding: 0.2em 0em 0.2em 1em;
+  color: #fff;
+  background-color: #676b6f;
+  cursor: pointer; }
+div.LuaAPI div.actor-class h3 {
+  margin: 0.5em 0em;
+  padding: 0.2em 0em 0.2em 0em;
+  border-bottom: 1px solid #000; }
+  div.LuaAPI div.actor-class h3 span.base {
+    font-size: 98%;
+    font-weight: 200; }
+div.LuaAPI div.actor-class p.method span.octicon {
+  display: none;
+  margin: 0em 0.5em 0em -1.5em;
+  font-weight: bold; }
+div.LuaAPI div.actor-class p.method:hover {
+  cursor: pointer; }
+  div.LuaAPI div.actor-class p.method:hover span.octicon {
+    display: inline; }
+div.LuaAPI div.actor-class p.method span.method-signature {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: bold; }
+div.LuaAPI div.actor-class p.method span.method-return {
+  display: block; }
+div.LuaAPI div.actor-class p.method span.method-description {
+  margin-left: 1em;
+  display: block; }
+  div.LuaAPI div.actor-class p.method span.method-description br {
+    margin-bottom: 0.6em; }
+
+/*# sourceMappingURL=api.css.map */

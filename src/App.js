@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
+import "./_styles/custom.css";
+
 import Header from "./_layout/Header";
 import ContentNavigation from "./_layout/ContentNavigation";
 
 import Home from "./Home";
+import LuaAPI from "./LuaAPI/LuaAPI";
 import Resources from "./Resources";
 
-import Foreword  from "./introduction/Foreword";
-import Lua  from "./introduction/Lua";
+import Foreword from "./introduction/Foreword";
+import Lua from "./introduction/Lua";
 import SupportedFileExtensions from "./introduction/Supported-File-Extensions";
 import ModChartSetup from "./introduction/Mod-Chart-Setup";
 
@@ -47,6 +50,7 @@ class App extends Component {
 						<div id="content" className="col-xl-7 col-lg-9 col-md-9 col-sm-12">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
+								<Route path="/LuaAPI"		component={LuaAPI} />
 								<Route path="/resources"	component={Resources} />
 
 								<Route path="/foreword"		component={Foreword}/>
