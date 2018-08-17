@@ -19,7 +19,7 @@ class LuaAPI extends Component {
 			textFilter: "",
 
 			visible_categories: {
-				"Actor Classes": true,
+				"ActorClasses": true,
 				"Namespaces": true,
 				"Singletons": false,
 				"Global Functions": false,
@@ -51,7 +51,7 @@ class LuaAPI extends Component {
 		this.get_elements_to_render = function(classes_to_render){
 
 			return {
-				"Actor Classes": classes_to_render[0].map(function(actor, i){
+				"ActorClasses": classes_to_render[0].map(function(actor, i){
 					const methods = actor.methods.map(function(method, j){
 						return <ActorMethod actor={actor} method={method} key={actor.name + "-" + method.name + j} />
 					})
@@ -308,6 +308,8 @@ class LuaAPI extends Component {
 		var categories = {...this.state.visible_categories}
 		categories[category] = !(this.state.visible_categories[category])
 		this.setState({visible_categories: categories})
+
+		$("#" + category).toggleClass("collapsed")
 	}
 
 	render() {
@@ -335,19 +337,19 @@ class LuaAPI extends Component {
 					<label htmlFor="filter">Search:&nbsp;</label>
 					<input type="text" id="filter" onChange={this.handleFilter} />
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Actor Classes", e)}>Actor Classes</h2>
-					<div>{this.state.visible_categories["Actor Classes"] && elements["Actor Classes"]}</div>
+					<h2 id="ActorClasses" className="API-Category" onClick={(e) => this.handleCategoryClick("ActorClasses", e)}>Actor Classes</h2>
+					<div>{this.state.visible_categories["ActorClasses"] && elements["ActorClasses"]}</div>
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>
+					<h2 id="Namespaces" className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>
 					<div>{this.state.visible_categories["Namespaces"] && elements["Namespaces"]}</div>
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Singletons", e)}>Singletons</h2>
+					<h2 id="Singletons" className="API-Category" onClick={(e) => this.handleCategoryClick("Singletons", e)}>Singletons</h2>
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Global Functions", e)}>Global Functions</h2>
+					<h2 id="Global-Functions" className="API-Category" onClick={(e) => this.handleCategoryClick("Global-Functions", e)}>Global Functions</h2>
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Enums", e)}>Enums</h2>
+					<h2 id="Enums" className="API-Category" onClick={(e) => this.handleCategoryClick("Enums", e)}>Enums</h2>
 
-					<h2 className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
+					<h2 id="Constants" className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
 				</div>
 			)
 		} else {

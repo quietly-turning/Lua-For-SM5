@@ -16,6 +16,14 @@ div.LuaAPI{
 		color: #fff;
 		background-color:rgb(103, 107, 111);
 		cursor: pointer;
+
+		&:after{
+			content: " ▴";
+		}
+
+		&.collapsed:after{
+			content: " ▾";
+		}
 	}
 
 	div.actor-class{
