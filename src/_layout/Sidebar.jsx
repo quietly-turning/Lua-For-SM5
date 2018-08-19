@@ -20,8 +20,9 @@ class Sidebar extends Component {
 	}
 
 	render() {
+		const url_pieces = window.location.pathname.split("/")
 
-		if (window.location.pathname === "/LuaAPI"){
+		if (url_pieces[url_pieces.length-1] === "LuaAPI"){
 			return <LuaAPISidebar />
 		}
 
