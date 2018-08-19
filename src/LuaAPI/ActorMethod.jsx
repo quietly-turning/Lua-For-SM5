@@ -16,8 +16,9 @@ class ActorMethod extends Component {
 	render(){
 		return(
 			<p id={"Actors-" + this.props.actor.name +  "-" + this.props.method.name} className="method">
+				<span onClick={this.updateHash} className="method-signature">
 				<Octicon name="link" />
-				<span onClick={this.updateHash} className="method-signature">{this.props.method.name}
+				{this.props.method.name}
 				(</span><code>{this.props.method.arguments}</code><span className="method-signature">)
 				</span>
 

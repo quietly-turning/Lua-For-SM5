@@ -16,6 +16,41 @@ body{
 	background-color: #f7f7f7;
 	border-left: 1px solid #ececec;
 	padding: 5em 0em  0em 2em;
+
+	a:hover{
+		color: #777;
+	}
+
+	a.active{
+		color: #f92672;
+		font-weight:bold;
+	}
+
+	h5 a:hover{
+		color: #000;
+	}
+
+	h5 a.collapsed{
+		color: #777;
+	}
+	#GuidesSidebar h5 a::after{
+		content: " ▴";
+	}
+	#GuidesSidebar h5 a.collapsed::after{
+		content: " ▾";
+	}
+
+	#LuaAPISidebar a{
+		color: #777;
+
+		&:hover{
+			color:#000;
+		}
+	}
+
+	h5 a.collapsed:hover{
+		color: #000;
+	}
 }
 
 
@@ -36,30 +71,6 @@ body{
 	text-decoration:none;
 }
 
-#sidebar a:hover{
-	color: #777;
-}
-
-#sidebar h5 a.collapsed:hover, #sidebar h5 a:hover{
-	color: #000;
-}
-
-#sidebar a.active{
-	color: #f92672;
-	font-weight:bold;
-}
-
-#sidebar h5 a.collapsed{
-	color: #777;
-}
-
-#sidebar h5 a::after{
-	content: " ▴";
-}
-
-#sidebar h5 a.collapsed::after{
-	content: " ▾";
-}
 
 #content{
 	padding: 5em 3em;
