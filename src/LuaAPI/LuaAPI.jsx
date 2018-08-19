@@ -10,13 +10,11 @@ import "../_styles/api.css";
 
 class LuaAPI extends Component {
 
-	constructor(){
-		super();
+	constructor(props){
+		super()
+
 		this.state = {
 			isLoaded: false,
-
-			filtered_results: [],
-			textFilter: "",
 
 			visible_categories: {
 				"ActorClasses": true,
@@ -44,7 +42,6 @@ class LuaAPI extends Component {
 		this.actor_class_names = {}
 
 		// ensure that these functions have access to "this"
-		this.handleFilter = this.handleFilter.bind(this)
 		this.filterResults= this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
 
@@ -211,21 +208,6 @@ class LuaAPI extends Component {
 		return r
 	}
 
-	handleFilter(e){
-
-		const eventValue = e.target.value
-		const lua_api = this
-
-		clearTimeout(this.typingTimer)
-
-		this.typingTimer = setTimeout(
-			function() {
-				lua_api.filterResults(eventValue.toUpperCase())
-			},
-			this.doneTypingInterval
-		)
-	}
-
 	filterResults(eventValue){
 
 		let results = [ [], [], [], [], [], [] ]
@@ -276,8 +258,6 @@ class LuaAPI extends Component {
 				return
 			}
 
-
-
 			// otherwise, loop through the methods available to this namespace, using
 			// filter() to reduce a larger array to a smaller array of filtered results
 			const filtered_methods = n.methods.filter(function(method){
@@ -298,31 +278,33 @@ class LuaAPI extends Component {
 			}
 		})
 
-		// finally, use whatever results we got to set the state for filtered_results
-		this.setState({
-			filtered_results: results,
-			textFilter: eventValue
-		})
+		return results
 	}
 
+	// toggle the show/hide of major categories of the API
 	handleCategoryClick(category, e){
+		// get all categories from state
 		var categories = {...this.state.visible_categories}
+		// flip the visibility boolean for the desired category
 		categories[category] = !(this.state.visible_categories[category])
+		// it seems it's not possible to directly set the state of a nested property,
+		// so update state for the entire visible_categories object
 		this.setState({visible_categories: categories})
-
+		// toggle the "collapsed" class so CSS can append the appropriate UI triangle
 		$("#" + category).toggleClass("collapsed")
 	}
 
+
 	render() {
 
-		if (this.state && this.state.isLoaded){
+		if (this.state && this.state.isLoaded && this.props){
 
 			let elements = null
 
-			if (this.state.textFilter === ""){
+			if (this.props.api_filter === ""){
 				elements = this.all_elements
 			} else{
-				elements = this.get_elements_to_render(this.state.filtered_results)
+				elements = this.get_elements_to_render(this.filterResults(this.props.api_filter))
 			}
 
 			return (
@@ -335,8 +317,6 @@ class LuaAPI extends Component {
 					</p>
 
 					<h1>SM5 Lua API</h1>
-					<label htmlFor="filter">Search:&nbsp;</label>
-					<input type="text" id="filter" onChange={this.handleFilter} />
 
 					<h2 id="ActorClasses" className="API-Category" onClick={(e) => this.handleCategoryClick("ActorClasses", e)}>Actor Classes</h2>
 					<div>{this.state.visible_categories["ActorClasses"] && elements["ActorClasses"]}</div>

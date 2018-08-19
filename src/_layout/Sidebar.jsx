@@ -8,6 +8,8 @@ class Sidebar extends Component {
 		super()
 		// listen for window resizing and move the sizebar accordingly
 		window.addEventListener("resize", this.HandleResize)
+
+		this.handleFilterChange = this.handleFilterChange.bind(this)
 	}
 
 	HandleResize(){
@@ -19,11 +21,15 @@ class Sidebar extends Component {
 		}
 	}
 
+	handleFilterChange(eventValue){
+		this.props.onFilterChange(eventValue)
+	}
+
 	render() {
 		const url_pieces = window.location.pathname.split("/")
 
 		if (url_pieces[url_pieces.length-1] === "LuaAPI"){
-			return <LuaAPISidebar />
+			return <LuaAPISidebar onFilterChange={this.handleFilterChange} />
 		}
 
 		return <GuidesSidebar />

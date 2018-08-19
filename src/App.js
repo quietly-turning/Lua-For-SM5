@@ -37,7 +37,33 @@ import SimpleTweens from "./examples/SimpleTweens";
 
 class App extends Component {
 
+	constructor(props) {
+		super(props)
+		this.handleFilterChange = this.handleFilterChange.bind(this)
+
+		this.typingTimer = null
+		this.doneTypingInterval = 200
+		this.state = {
+			api_filter: ""
+		}
+	}
+
+	handleFilterChange(eventValue){
+
+		const app = this
+
+		clearTimeout(this.typingTimer)
+
+		this.typingTimer = setTimeout(
+			function() {
+				app.setState({api_filter: eventValue.toUpperCase()})
+			},
+			this.doneTypingInterval
+		)
+	}
+
 	render() {
+
 		return (
 			<div className="h-100">
 				<Header />
@@ -50,7 +76,7 @@ class App extends Component {
 						<div id="content" className="col-xl-7 col-lg-9 col-md-9 col-sm-12">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
-								<Route path="/LuaAPI"		component={LuaAPI} />
+								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} />))} />
 								<Route path="/resources"	component={Resources} />
 
 								<Route path="/foreword"		component={Foreword}/>
@@ -84,7 +110,7 @@ class App extends Component {
 						<div className="d-none col-xl-1 d-xl-block"></div>
 
 	 					<div className="col-xl-auto col-lg-2 col-md-3 col-sm-12">
-		 			  		<ContentNavigation />
+		 			  		<ContentNavigation onFilterChange={this.handleFilterChange} />
 						</div>
 	 				</div>
 				</div>
