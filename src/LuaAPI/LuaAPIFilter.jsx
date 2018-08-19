@@ -8,7 +8,6 @@ class LuaAPIFilter extends React.Component {
 
 	handleFilter(e) {
 		this.props.onFilterChange(e.target.value)
-		// console.log(e.target.value)
 	}
 
 	render() {

@@ -46,18 +46,22 @@ div.LuaAPI{
 				font-weight: bold;
 			}
 
-			&:hover{
-				cursor: pointer;
-
-				span.octicon{
-					display:inline;
-				}
-			};
-
 
 			span.method-signature{
 				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 				font-weight: bold;
+
+				&:hover{
+					cursor: pointer;
+
+					span.octicon{
+						display:inline;
+					}
+				}
+
+				code{
+					font-weight: normal;
+				}
 			}
 
 			span.method-return{

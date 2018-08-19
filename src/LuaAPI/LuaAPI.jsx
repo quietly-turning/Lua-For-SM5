@@ -26,16 +26,7 @@ class LuaAPI extends Component {
 			}
 		}
 
-		const lua_api = this;
-
-		// the API doesn't need to be filtered and re-filtered with each new keyup event
-		// instead, wait 500ms for keyup events to cease before calling filterResults()
-		// these variables are used as part of that 0.5 second timeout system
-		// see: https://stackoverflow.com/a/5926782
-		this.typingTimer = null
-		this.doneTypingInterval = 500
-
-		// this.all_elements = null
+		const lua_api = this
 
 		// a pojo containing just the actor class names as keys
 		// used for lookup purposes in get_return_value()
@@ -44,6 +35,7 @@ class LuaAPI extends Component {
 		// ensure that these functions have access to "this"
 		this.filterResults= this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
+
 
 		this.get_elements_to_render = function(classes_to_render){
 
@@ -82,6 +74,18 @@ class LuaAPI extends Component {
 			return null
 		}
 
+		// some method descriptions contain <Link /> elements, intended to serve
+		// as anchors to elsewhere within the document
+		// we need to find and replace them with html-complian anchors
+		const check_for_links = function(innerHTML){
+
+			// FIXME: I have to figure out a way to do this
+
+			return innerHTML
+		}
+
+		// ---------------------------------------------------------------------
+
 		$.ajax({
 			url: "./API/LuaDocumentation.xml"
 
@@ -112,7 +116,7 @@ class LuaAPI extends Component {
 				lua_api.actor_class_names = actor_class_names
 
 				// ---------------------------------------------------------------------
-				// next, do the "heavy lifting"
+				// now, do the "heavy lifting"
 				// process each actor_class...
 				actor_classes.forEach(function(actor_class){
 
@@ -134,7 +138,7 @@ class LuaAPI extends Component {
 							name: method.attributes.name.textContent,
 							return: lua_api.getReturnValue(method.attributes.return.textContent),
 							arguments: method.attributes.arguments.textContent,
-							desc: method.innerHTML.trim()
+							desc: check_for_links(method.innerHTML.trim())
 						}
 					})
 
@@ -147,7 +151,7 @@ class LuaAPI extends Component {
 				})
 
 				// ---------------------------------------------------------------------
-				// next, handle namespaces...
+				// next, process each namespace...
 
 				namespaces.forEach(function(namespace){
 					const _methods = Array.from($(namespace).find("Function"))
@@ -166,6 +170,7 @@ class LuaAPI extends Component {
 					})
 				})
 
+				// ---------------------------------------------------------------------
 				// cache all render-able elements now so that we don't need to constantly recompute them
 				lua_api.all_elements = lua_api.get_elements_to_render(data)
 
@@ -207,6 +212,9 @@ class LuaAPI extends Component {
 		// otherwise, we have something like "bool" or "int"; just return it
 		return r
 	}
+
+
+	// ---------------------------------------------------------------------
 
 	filterResults(eventValue){
 
