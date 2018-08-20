@@ -10,7 +10,6 @@ class Sidebar extends Component {
 
 	handleFilterChange(eventValue){
 		this.props.onFilterChange(eventValue)
-		// console.log(eventValue)
 	}
 
 	render() {
@@ -31,6 +30,11 @@ class Sidebar extends Component {
 					</a>
 				</h5>
 				<h5>
+					<a href="#Enums">
+						Enums
+					</a>
+				</h5>
+				<h5>
 					<a href="#Singletons">
 						Singletons
 					</a>
@@ -38,11 +42,6 @@ class Sidebar extends Component {
 				<h5>
 					<a href="#GlobalFunctions">
 						Global Functions
-					</a>
-				</h5>
-				<h5>
-					<a href="#Enums">
-						Enums
 					</a>
 				</h5>
 				<h5>

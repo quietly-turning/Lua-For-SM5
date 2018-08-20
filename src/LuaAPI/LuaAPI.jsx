@@ -19,9 +19,9 @@ class LuaAPI extends Component {
 			visible_categories: {
 				"ActorClasses": true,
 				"Namespaces": true,
+				"Enums": true,
 				"Singletons": false,
 				"Global Functions": false,
-				"Enums": false,
 				"Constants": false
 			}
 		}
@@ -29,13 +29,14 @@ class LuaAPI extends Component {
 		const lua_api = this
 
 		// a pojo containing just the actor class names as keys
-		// used for lookup purposes in get_return_value()
+		// used for lookup purposes in getReturnValue()
 		this.actor_class_names = {}
 
 		// ensure that these functions have access to "this"
 		this.filterResults= this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
 
+		this.dom_parser = new DOMParser()
 
 		this.get_elements_to_render = function(classes_to_render){
 
@@ -54,10 +55,23 @@ class LuaAPI extends Component {
 					return <Namespace namespace={n} methods={methods} key={n.name} />
 				}),
 
+				// the Enums are simple enough to not warrant full React components; just handle them here
+				"Enums": classes_to_render[2].map(function(e, i){
+
+					const values = e.values.map(function(_e, j){
+						return( <tr key={"enum-"+e.name+"-"+_e.name+"-"+j}><td>{_e.name}</td><td>{_e.value}</td></tr> )
+					})
+					return (
+						<table id={"Enums-" + e.name} className="table table-hover table-sm table-bordered" key={"enum-"+e.name}>
+						<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
+							<tbody>{values}</tbody>
+						</table>
+					)
+				}),
+
 
 				"Singletons": null,
 				"Global Functions": null,
-				"Enums": null,
 				"Constants": null
 			}
 		}
@@ -77,11 +91,35 @@ class LuaAPI extends Component {
 		// some method descriptions contain <Link /> elements, intended to serve
 		// as anchors to elsewhere within the document
 		// we need to find and replace them with html-complian anchors
-		const check_for_links = function(innerHTML){
+		const check_for_links = function(method){
 
-			// FIXME: I have to figure out a way to do this
+			const trimmed_innerHTML = method.innerHTML.trim()
 
-			return innerHTML
+			// FIXME: finish implementing this
+
+			// if (method.innerHTML.includes("</Link>")){
+			// 	console.log(trimmed_innerHTML)
+			//
+			// 	let s = ""
+			//
+			// 	method.childNodes.forEach(function(node){
+			// 		if (node.nodeName == "#text"){
+			//
+			// 			// this is some text surrounding the <Link> element, so just add it
+			// 			// to the desc string we're building
+			// 			s += node.nodeValue.trim()
+			//
+			// 		} else {
+			//
+			// 			for (let attr of node.attributes){
+			// 				console.log(attr)
+			// 			}
+			// 		}
+			// 	})
+			// 	// console.log(method)
+			// }
+
+			return trimmed_innerHTML
 		}
 
 		// ---------------------------------------------------------------------
@@ -99,8 +137,10 @@ class LuaAPI extends Component {
 
 				const namespaces = Array.from($(lua_documentation).children().find("Namespaces Namespace"))
 				const actor_classes = Array.from($(lua_documentation).children().find("Classes Class"))
+				const enums = Array.from($(lua_dot_xml).children().find("Enums Enum"))
 
-				// actor classes, namespaces, singletons, global functions, enums, constants
+
+				// actor classes, namespaces, enums, singletons, global functions, constants
 				let data = [ [], [], [], [], [], [] ]
 
 				// ---------------------------------------------------------------------
@@ -112,7 +152,7 @@ class LuaAPI extends Component {
 					actor_class_names[actor_class.attributes.name.textContent] = true
 				})
 
-				// retain the actor_class_names object as state so we can refer to it in get_return_value()
+				// retain the actor_class_names object as state so we can refer to it in getReturnValue()
 				lua_api.actor_class_names = actor_class_names
 
 				// ---------------------------------------------------------------------
@@ -138,7 +178,7 @@ class LuaAPI extends Component {
 							name: method.attributes.name.textContent,
 							return: lua_api.getReturnValue(method.attributes.return.textContent),
 							arguments: method.attributes.arguments.textContent,
-							desc: check_for_links(method.innerHTML.trim())
+							desc: check_for_links(method)
 						}
 					})
 
@@ -171,6 +211,24 @@ class LuaAPI extends Component {
 				})
 
 				// ---------------------------------------------------------------------
+				// next, process each enum...
+
+				enums.forEach(function(e){
+					const _values = Array.from($(e).find("EnumValue"))
+					const values = _values.map(function(v, i){
+						return {
+							name: v.attributes.name.textContent,
+							value: v.attributes.value.textContent
+						}
+					})
+
+					data[2].push({
+						name: e.attributes.name.textContent,
+						values: values
+					})
+				})
+
+				// ---------------------------------------------------------------------
 				// cache all render-able elements now so that we don't need to constantly recompute them
 				lua_api.all_elements = lua_api.get_elements_to_render(data)
 
@@ -180,9 +238,9 @@ class LuaAPI extends Component {
 					isLoaded: true,
 					actor_classes: data[0],
 					namespaces: data[1],
+					enums: data[2],
 					singletons: null,
 					global_functions: null,
-					enums: null,
 					constants: null
 				})
 			})
@@ -197,7 +255,7 @@ class LuaAPI extends Component {
 
 		// next, check to see if the return text matches any of the actor classes
 		if (this.actor_class_names[r]){
-			return "<a href='#" + r +"'>" + r + "</a>"
+			return "<a href='#Actors-" + r +"'>" + r + "</a>"
 		}
 
 		// maybe this method's return value is an Actor wrapped in curly braces
@@ -206,7 +264,7 @@ class LuaAPI extends Component {
 		// which we don't want to try to try to create an anchor to)
 		const _r = r.match(/{(.+)}/)
 		if (_r && this.actor_class_names[_r[1]]){
-			return "{ <a href='#" + _r[1] +"'>" + _r[1] + "</a> }"
+			return "{ <a href='#Actors-" + _r[1] +"'>" + _r[1] + "</a> }"
 		}
 
 		// otherwise, we have something like "bool" or "int"; just return it
@@ -214,12 +272,15 @@ class LuaAPI extends Component {
 	}
 
 
-	// ---------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+	// API TEXT FILTER
+	// -----------------------------------------------------------------------------------------
 
 	filterResults(eventValue){
 
 		let results = [ [], [], [], [], [], [] ]
 
+		// ---------------------------------------------------------------------
 		// loop through all actor classes stored in state,
 		// searching for string matches in various ways
 		this.state.actor_classes.forEach(function(actor){
@@ -253,7 +314,7 @@ class LuaAPI extends Component {
 			}
 		})
 
-
+		// ---------------------------------------------------------------------
 		// loop through all namespaces stored in state,
 		// searching for string matches in various ways
 		this.state.namespaces.forEach(function(n){
@@ -286,8 +347,31 @@ class LuaAPI extends Component {
 			}
 		})
 
+		// ---------------------------------------------------------------------
+		this.state.enums.forEach(function(e){
+			if (e.name.toUpperCase().includes(eventValue)){
+				results[2].push(e)
+				return
+			}
+
+			const filtered_enums = e.values.filter(function(val){
+				return (val.name.toUpperCase().includes(eventValue))
+			})
+
+			if (filtered_enums.length > 0){
+				results[2].push({
+					name: e.name,
+					values: filtered_enums
+				})
+			}
+		})
+
 		return results
 	}
+
+	// -----------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------
+
 
 	// toggle the show/hide of major categories of the API
 	handleCategoryClick(category, e){
@@ -332,11 +416,12 @@ class LuaAPI extends Component {
 					<h2 id="Namespaces" className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>
 					<div>{this.state.visible_categories["Namespaces"] && elements["Namespaces"]}</div>
 
+					<h2 id="Enums" className="API-Category" onClick={(e) => this.handleCategoryClick("Enums", e)}>Enums</h2>
+					<div>{this.state.visible_categories["Enums"] && elements["Enums"]}</div>
+
 					<h2 id="Singletons" className="API-Category" onClick={(e) => this.handleCategoryClick("Singletons", e)}>Singletons</h2>
 
 					<h2 id="Global-Functions" className="API-Category" onClick={(e) => this.handleCategoryClick("Global-Functions", e)}>Global Functions</h2>
-
-					<h2 id="Enums" className="API-Category" onClick={(e) => this.handleCategoryClick("Enums", e)}>Enums</h2>
 
 					<h2 id="Constants" className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
 				</div>
