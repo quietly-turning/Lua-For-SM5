@@ -70,8 +70,10 @@ div.LuaAPI{
 			}
 		}
 
-		// p.method is a CSS class for each method belonging to a particular ActorClass
-		p.method{
+		// div.method is a CSS class for each method belonging to a particular ActorClass
+		div.method{
+
+			margin-top: 1.5em;
 
 			div.method-signature{
 				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

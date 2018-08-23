@@ -15,7 +15,7 @@ class NamespaceMethod extends Component {
 
 	render(){
 		return(
-			<p id={"Namespaces-" + this.props.namespace.name +  "-" + this.props.method.name} className="method">
+			<div id={"Namespaces-" + this.props.namespace.name +  "-" + this.props.method.name} className="method">
 				<div className="method-signature">
 					<Octicon onClick={this.updateHash} name="link" />
 					{this.props.method.name}
@@ -24,7 +24,7 @@ class NamespaceMethod extends Component {
 
 				<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: this.props.method.return}} />  </span>
 				<span className="method-description" dangerouslySetInnerHTML={{ __html: this.props.method.desc }} />
-			</p>
+			</div>
 		)
 	}
 }

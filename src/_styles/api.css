@@ -34,25 +34,27 @@ div.LuaAPI div.actor-class h3 {
   div.LuaAPI div.actor-class h3 span.base {
     font-size: 98%;
     font-weight: 200; }
-div.LuaAPI div.actor-class p.method div.method-signature {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-weight: bold;
-  text-indent: -1em; }
-  div.LuaAPI div.actor-class p.method div.method-signature span.octicon {
-    font-size: 1em;
-    width: 1em; }
-  div.LuaAPI div.actor-class p.method div.method-signature:hover span.octicon {
-    opacity: 1; }
-    div.LuaAPI div.actor-class p.method div.method-signature:hover span.octicon:hover {
-      cursor: pointer; }
-  div.LuaAPI div.actor-class p.method div.method-signature code {
-    font-weight: normal; }
-div.LuaAPI div.actor-class p.method span.method-return {
-  display: block; }
-div.LuaAPI div.actor-class p.method span.method-description {
-  margin-left: 1em;
-  display: block; }
-  div.LuaAPI div.actor-class p.method span.method-description br {
-    margin-bottom: 0.6em; }
+div.LuaAPI div.actor-class div.method {
+  margin-top: 1.5em; }
+  div.LuaAPI div.actor-class div.method div.method-signature {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: bold;
+    text-indent: -1em; }
+    div.LuaAPI div.actor-class div.method div.method-signature span.octicon {
+      font-size: 1em;
+      width: 1em; }
+    div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon {
+      opacity: 1; }
+      div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon:hover {
+        cursor: pointer; }
+    div.LuaAPI div.actor-class div.method div.method-signature code {
+      font-weight: normal; }
+  div.LuaAPI div.actor-class div.method span.method-return {
+    display: block; }
+  div.LuaAPI div.actor-class div.method span.method-description {
+    margin-left: 1em;
+    display: block; }
+    div.LuaAPI div.actor-class div.method span.method-description br {
+      margin-bottom: 0.6em; }
 
 /*# sourceMappingURL=api.css.map */
