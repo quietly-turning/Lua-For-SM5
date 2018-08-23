@@ -34,6 +34,7 @@ div.LuaAPI{
 
 		hr{
 			border-bottom: 1px solid #000;
+			margin: 0em;
 		}
 
 		// the "chain-link" icon that users click on to update the url string for permalinking
@@ -48,35 +49,39 @@ div.LuaAPI{
 			padding: 0.2em 0em;
 			text-indent: -0.6em;
 
-			// "base" is the Actor class that this Actor class inherits from
-			span.base{
-				font-size: 98%;
-				font-weight: 200;
-			}
-
 			span.octicon{
-				font-size: 0.75em;
+				font-size: 0.8em;
 				width: 0.8em;
 			}
 
 			&:hover{
 				span.octicon{
 					opacity: 1;
-
 					&:hover{
 						cursor: pointer;
 					}
 				}
+			}
+
+			// "base" is the Actor class that this Actor class inherits from
+			span.base{
+				font-size: 98%;
+				font-weight: 200;
 			}
 		}
 
 		// p.method is a CSS class for each method belonging to a particular ActorClass
 		p.method{
 
-			span.method-signature{
+			div.method-signature{
 				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 				font-weight: bold;
-				text-indent: -1.5em;
+				text-indent: -1em;
+
+				span.octicon{
+					font-size: 1em;
+					width: 1em;
+				}
 
 				&:hover{
 					span.octicon{
