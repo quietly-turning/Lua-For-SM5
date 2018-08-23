@@ -26,55 +26,16 @@ class LuaAPI extends Component {
 			}
 		}
 
+		// maintain a handle on this class to be used within the functions below
 		const lua_api = this
 
 		// a pojo containing just the actor class names as keys
 		// used for lookup purposes in getReturnValue()
 		this.actor_class_names = {}
 
-		// ensure that these functions have access to "this"
+		// ensure that the following functions have access to "this"
 		this.filterResults= this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
-
-		this.dom_parser = new DOMParser()
-
-		this.get_elements_to_render = function(classes_to_render){
-
-			return {
-				"ActorClasses": classes_to_render[0].map(function(actor, i){
-					const methods = actor.methods.map(function(method, j){
-						return <ActorMethod actor={actor} method={method} key={actor.name + "-" + method.name + j} />
-					})
-					return <ActorClass actor={actor} methods={methods} key={actor.name} />
-				}),
-
-				"Namespaces": classes_to_render[1].map(function(n, i){
-					const methods = n.methods.map(function(method, j){
-						return <NamespaceMethod namespace={n} method={method} key={n.name + "-" + method.name + j} />
-					})
-					return <Namespace namespace={n} methods={methods} key={n.name} />
-				}),
-
-				// the Enums are simple enough to not warrant full React components; just handle them here
-				"Enums": classes_to_render[2].map(function(e, i){
-
-					const values = e.values.map(function(_e, j){
-						return( <tr key={"enum-"+e.name+"-"+_e.name+"-"+j}><td>{_e.name}</td><td>{_e.value}</td></tr> )
-					})
-					return (
-						<table id={"Enums-" + e.name} className="table table-hover table-sm table-bordered" key={"enum-"+e.name}>
-						<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
-							<tbody>{values}</tbody>
-						</table>
-					)
-				}),
-
-
-				"Singletons": null,
-				"Global Functions": null,
-				"Constants": null
-			}
-		}
 
 		// ---------------------------------------------------------------------
 
@@ -135,8 +96,8 @@ class LuaAPI extends Component {
 
 				const actors_with_base = $(lua_dot_xml).children()[0].children[1]
 
-				const namespaces = Array.from($(lua_documentation).children().find("Namespaces Namespace"))
 				const actor_classes = Array.from($(lua_documentation).children().find("Classes Class"))
+				const namespaces = Array.from($(lua_documentation).children().find("Namespaces Namespace"))
 				const enums = Array.from($(lua_dot_xml).children().find("Enums Enum"))
 
 
@@ -243,9 +204,61 @@ class LuaAPI extends Component {
 					global_functions: null,
 					constants: null
 				})
+
+				// scroll the page to the appropriate y-offset if needed
+				lua_api.scroll_window_after_constructor()
 			})
 		})
 	}
+
+	scroll_window_after_constructor(){
+		// now that the data has been retrieved, parsed, and injected into the document,
+		// check the url string for a hash and scroll the window to the appropriate y-offset
+		const window_hash = window.location.hash.replace("#","")
+		if (window_hash) {
+			const y_offset = document.getElementById(window_hash).offsetTop
+			if (y_offset){ window.scrollTo(0, y_offset) }
+		}
+	}
+
+	get_elements_to_render(classes_to_render){
+
+		return {
+			"ActorClasses": classes_to_render[0].map(function(actor, i){
+				const methods = actor.methods.map(function(method, j){
+					return <ActorMethod actor={actor} method={method} key={actor.name + "-" + method.name + j} />
+				})
+				return <ActorClass actor={actor} methods={methods} key={actor.name} />
+			}),
+
+			"Namespaces": classes_to_render[1].map(function(n, i){
+				const methods = n.methods.map(function(method, j){
+					return <NamespaceMethod namespace={n} method={method} key={n.name + "-" + method.name + j} />
+				})
+				return <Namespace namespace={n} methods={methods} key={n.name} />
+			}),
+
+			// the Enums are simple enough to not warrant full React components; just handle them here
+			"Enums": classes_to_render[2].map(function(e, i){
+
+				const values = e.values.map(function(_e, j){
+					return( <tr key={"enum-"+e.name+"-"+_e.name+"-"+j}><td>{_e.name}</td><td>{_e.value}</td></tr> )
+				})
+				return (
+					<table id={"Enums-" + e.name} className="table table-hover table-sm table-bordered" key={"enum-"+e.name}>
+					<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
+						<tbody>{values}</tbody>
+					</table>
+				)
+			}),
+
+
+			"Singletons": null,
+			"Global Functions": null,
+			"Constants": null
+		}
+	}
+
 
 	// a helper function to determine whether the "return" type of each API method
 	// should be static text or an anchor linking to elsewhere in the document
@@ -388,7 +401,6 @@ class LuaAPI extends Component {
 
 
 	render() {
-
 		if (this.state && this.state.isLoaded && this.props){
 
 			let elements = null
