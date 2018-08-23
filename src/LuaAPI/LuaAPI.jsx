@@ -54,33 +54,92 @@ class LuaAPI extends Component {
 		// we need to find and replace them with html-compliant anchors
 		const check_for_links = function(method){
 
+
 			const trimmed_innerHTML = method.innerHTML.trim()
 
-			// FIXME: finish implementing this
+			// first, attempt to handle <Link>text</Link> elements
+			let _matches = trimmed_innerHTML.match(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/i)
+			if (_matches){
+				let anchors = []
 
-			// // first, attempt to handle <Link>text</Link>
-			// if (method.innerHTML.includes("</Link>")){
-			// 	console.log(trimmed_innerHTML)
-			//
-			// 	let s = ""
-			//
-			// 	method.childNodes.forEach(function(node){
-			// 		if (node.nodeName == "#text"){
-			//
-			// 			// this is some text surrounding the <Link> element, so just add it
-			// 			// to the desc string we're building
-			// 			s += node.nodeValue.trim()
-			//
-			// 		} else {
-			//
-			// 			for (let attr of node.attributes){
-			// 				console.log(attr)
-			// 			}
-			// 		}
-			// 	})
-			// 	// console.log(method)
-			// }
+				_matches.forEach(function(_match){
+					const text = _matches[2]
+					const _link = $.parseHTML(_matches[1])
+					const _class = _link[0].attributes.getNamedItem("class").nodeValue
+					const _function = _link[0].attributes.getNamedItem("function").nodeValue
 
+					if (_class){
+						if (_class === "ENUM"){
+							if (_function){
+								// create the anchor string for this Enum
+								const anchor = "<a href='#Enums-" + _function + "'>" + text + "</a>"
+								anchors.push(anchor)
+							}
+						} else {
+							if (_function){
+								// create the anchor string for this Actor Class
+								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + text + "</a>"
+								anchors.push(anchor)
+							}
+						}
+					}
+				})
+
+				let _i = 0
+				// substitute each new anchor string for the appropriate old <Link>text</Link>
+				return trimmed_innerHTML.replace(/<\s*link[^>]*>.*?<\s*\/\s*link>/i, function(match){
+					return anchors[_i++]
+				})
+			}
+
+			// next, attempt to handle <Link /> elements
+			_matches = trimmed_innerHTML.match(/<\s*link[^>]*\/>/ig)
+			if (_matches){
+				let anchors = []
+
+				_matches.forEach(function(_match){
+
+					const _link = $.parseHTML(_match)
+					let _class = _link[0].attributes.getNamedItem("class")
+					_class = _class && _class.nodeValue
+					let _function = _link[0].attributes.getNamedItem("function")
+					_function = _function && _function.nodeValue
+
+					if (_class){
+						if (_class === "ENUM"){
+							if (_function){
+								// create the anchor string for this Enum
+								const anchor = "<a href='#Enums-" + _function + "'>" + _function + "</a>"
+								anchors.push(anchor)
+							}
+						} else{
+							if (_function){
+								// create the anchor string for this Actor Class
+								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
+								anchors.push(anchor)
+							}
+						}
+					} else {
+						// It was possible in LuaDocumentation.xml to create <Link> to some other method
+						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
+						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
+						// in the context of this React app.  We'll get the parentNode of the method object.
+						const _parent_class = method.parentNode.attributes.getNamedItem("name").nodeValue
+						const anchor = "<a href='#Actors-" + _parent_class + "-" + _function + "'>" + _parent_class +  "." + _function + "</a>"
+						anchors.push(anchor)
+					}
+
+				})
+
+				// temp variable used within the replace() function below in the event of multiple replaces being needed
+				let _i = 0
+				// substitute each new anchor string for the appropriate old <Link>text</Link>
+				return trimmed_innerHTML.replace(/<\s*link[^>]*\/>/gi, function(match){
+					return anchors[_i++]
+				})
+			}
+
+			// otherwise, no <Link> elements were found, so just return the method description
 			return trimmed_innerHTML
 		}
 
