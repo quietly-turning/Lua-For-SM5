@@ -16,9 +16,10 @@ class NamespaceMethod extends Component {
 	render(){
 		return(
 			<p id={"Namespaces-" + this.props.namespace.name +  "-" + this.props.method.name} className="method">
-				<Octicon name="link" />
-				<span onClick={this.updateHash} className="method-signature">{this.props.method.name}
-				(</span><code>{this.props.method.arguments}</code><span className="method-signature">)
+				<span className="method-signature">
+					<Octicon onClick={this.updateHash} name="link" />
+					{this.props.method.name}
+					(</span><code>{this.props.method.arguments}</code><span className="method-signature">)
 				</span>
 
 				<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: this.props.method.return}} />  </span>

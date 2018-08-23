@@ -44,7 +44,7 @@ class LuaAPI extends Component {
 
 			if (_class[0] && _class[0].attributes.base){
 				const base = _class[0].attributes.base.textContent
-				return " : <a href='#" + base + "'>" + base + "</a>"
+				return " : <a href='#Actors-" + base + "'>" + base + "</a>"
 			}
 			return null
 		}

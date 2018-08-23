@@ -15,24 +15,32 @@ div.LuaAPI h2.API-Category {
     content: " ▴"; }
   div.LuaAPI h2.API-Category.collapsed:after {
     content: " ▾"; }
-div.LuaAPI div.actor-class h3 {
-  margin: 0.5em 0em;
-  padding: 0.2em 0em 0.2em 0em;
+div.LuaAPI div.actor-class hr {
   border-bottom: 1px solid #000; }
+div.LuaAPI div.actor-class span.octicon {
+  opacity: 0; }
+div.LuaAPI div.actor-class h3 {
+  margin: 0.5em 0em 0em 0em;
+  padding: 0.2em 0em;
+  text-indent: -0.6em; }
   div.LuaAPI div.actor-class h3 span.base {
     font-size: 98%;
     font-weight: 200; }
-div.LuaAPI div.actor-class p.method span.octicon {
-  display: none;
-  margin: 0em 0.5em 0em -1.5em;
-  font-weight: bold; }
+  div.LuaAPI div.actor-class h3 span.octicon {
+    font-size: 0.75em;
+    width: 0.8em; }
+  div.LuaAPI div.actor-class h3:hover span.octicon {
+    opacity: 1; }
+    div.LuaAPI div.actor-class h3:hover span.octicon:hover {
+      cursor: pointer; }
 div.LuaAPI div.actor-class p.method span.method-signature {
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-weight: bold; }
-  div.LuaAPI div.actor-class p.method span.method-signature:hover {
-    cursor: pointer; }
-    div.LuaAPI div.actor-class p.method span.method-signature:hover span.octicon {
-      display: inline; }
+  font-weight: bold;
+  text-indent: -1.5em; }
+  div.LuaAPI div.actor-class p.method span.method-signature:hover span.octicon {
+    opacity: 1; }
+    div.LuaAPI div.actor-class p.method span.method-signature:hover span.octicon:hover {
+      cursor: pointer; }
   div.LuaAPI div.actor-class p.method span.method-signature code {
     font-weight: normal; }
 div.LuaAPI div.actor-class p.method span.method-return {

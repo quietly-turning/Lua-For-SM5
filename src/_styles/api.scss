@@ -10,6 +10,7 @@ div.LuaAPI{
 	  visibility: hidden;
 	}
 
+	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
 	h2.API-Category {
 		margin: 0.5em 0em;
 		padding: 0.2em 0em 0.2em 1em;
@@ -26,36 +27,63 @@ div.LuaAPI{
 		}
 	}
 
+
+	// div.actor-class is used for both classes of Actors such as ActorFrame, ActorMultiVertex, BitmapText, etc.
+	// as well as Namespaces (out of convenience) such as ActorUtil, ArrowEffects, RageFileUtil, etc.
 	div.actor-class{
 
-		h3{
-			margin: 0.5em 0em;
-			padding: 0.2em 0em 0.2em 0em;
+		hr{
 			border-bottom: 1px solid #000;
+		}
 
+		// the "chain-link" icon that users click on to update the url string for permalinking
+		// ActorClasses each get their own octicon link,
+		// and ActorClass Methods each get their own octicon link as well
+		span.octicon{
+			opacity: 0;
+		}
+
+		h3{
+			margin: 0.5em 0em 0em 0em;
+			padding: 0.2em 0em;
+			text-indent: -0.6em;
+
+			// "base" is the Actor class that this Actor class inherits from
 			span.base{
 				font-size: 98%;
 				font-weight: 200;
 			}
-		}
 
-		p.method{
 			span.octicon{
-				display:none;
-				margin:0em 0.5em 0em -1.5em;
-				font-weight: bold;
+				font-size: 0.75em;
+				width: 0.8em;
 			}
 
+			&:hover{
+				span.octicon{
+					opacity: 1;
+
+					&:hover{
+						cursor: pointer;
+					}
+				}
+			}
+		}
+
+		// p.method is a CSS class for each method belonging to a particular ActorClass
+		p.method{
 
 			span.method-signature{
 				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 				font-weight: bold;
+				text-indent: -1.5em;
 
 				&:hover{
-					cursor: pointer;
-
 					span.octicon{
-						display:inline;
+						opacity: 1;
+						&:hover{
+							cursor:pointer;
+						}
 					}
 				}
 
