@@ -5273,7 +5273,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='SetSecondsIntoAnimation' return='void' arguments='float fSeconds'>
 		Sets the number of seconds into the animation to <code>fSeconds</code>.
 	</Function>
-	<Function name='SetStateProperties' return= '' arguments='table properties'>
+	<Function name='SetStateProperties' return= 'void' arguments='table properties'>
 		Sets the properties of the states of the sprite.  The properties table is identical to the "Frames" table that can be put in the sprite when calling Def.Sprite.<br />
 		Example:<br />
 		{{Frame= 0, Delay= .016, {0, 0}, {.25, .25}},<br />
