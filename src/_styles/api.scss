@@ -1,15 +1,5 @@
 div.LuaAPI{
 
-	//	ensure that the topbar doesn't hide any content when loading the page via hashtag
-	// see: https://github.com/twbs/bootstrap/issues/1768#issuecomment-46519033
-	*[id]:before {
-	  display: block;
-	  content: " ";
-	  margin-top: -75px;
-	  height: 75px;
-	  visibility: hidden;
-	}
-
 	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
 	h2.API-Category {
 		margin: 0.5em 0em;
@@ -107,10 +97,18 @@ div.LuaAPI{
 				margin-left:1em;
 				display:block;
 
+				// treat <br> elements within method-description spans more like paragraphs
+				// see: https://stackoverflow.com/a/31633969
 				br{
-					margin-bottom: 0.6em;
+					display: block;
+					content: "";
+					margin-bottom: 0.5em;
 				}
 			}
 		}
+	}
+
+	#Enums + div > table{
+		margin: 1em 0em 0em 0em;
 	}
 }

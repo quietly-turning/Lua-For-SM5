@@ -51,13 +51,14 @@ class LuaAPI extends Component {
 
 		// some method descriptions contain <Link /> elements, intended to serve
 		// as anchors to elsewhere within the document
-		// we need to find and replace them with html-complian anchors
+		// we need to find and replace them with html-compliant anchors
 		const check_for_links = function(method){
 
 			const trimmed_innerHTML = method.innerHTML.trim()
 
 			// FIXME: finish implementing this
 
+			// // first, attempt to handle <Link>text</Link>
 			// if (method.innerHTML.includes("</Link>")){
 			// 	console.log(trimmed_innerHTML)
 			//
@@ -206,18 +207,29 @@ class LuaAPI extends Component {
 				})
 
 				// scroll the page to the appropriate y-offset if needed
-				lua_api.scroll_window_after_constructor()
+				lua_api.scroll_window_after_hashchange()
+
+				// ensure that future hashchanges scroll the appropriate amount, too
+				window.addEventListener("hashchange", function(e){
+					lua_api.scroll_window_after_hashchange()
+				})
 			})
 		})
 	}
 
-	scroll_window_after_constructor(){
+	scroll_window_after_hashchange(){
 		// now that the data has been retrieved, parsed, and injected into the document,
 		// check the url string for a hash and scroll the window to the appropriate y-offset
 		const window_hash = window.location.hash.replace("#","")
 		if (window_hash) {
-			const y_offset = document.getElementById(window_hash).offsetTop
-			if (y_offset){ window.scrollTo(0, y_offset) }
+			const el = document.getElementById(window_hash)
+			if (el){
+				const y_offset = el.offsetTop
+				if (y_offset){
+					const topbar_height = 75
+					window.scrollTo(0, y_offset-topbar_height)
+				}
+			}
 		}
 	}
 
@@ -422,7 +434,7 @@ class LuaAPI extends Component {
 
 					<h1>SM5 Lua API</h1>
 
-					<h2 id="ActorClasses" className="API-Category" onClick={(e) => this.handleCategoryClick("ActorClasses", e)}>Actor Classes</h2>
+					<h2 id="Actors" className="API-Category" onClick={(e) => this.handleCategoryClick("ActorClasses", e)}>Actor Classes</h2>
 					<div>{this.state.visible_categories["ActorClasses"] && elements["ActorClasses"]}</div>
 
 					<h2 id="Namespaces" className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>

@@ -20,7 +20,7 @@ class Sidebar extends Component {
 				<hr />
 
 				<h5>
-					<a href="#ActorClasses">
+					<a href="#Actors">
 						Actor Classes
 					</a>
 				</h5>
