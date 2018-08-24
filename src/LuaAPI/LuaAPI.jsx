@@ -17,12 +17,12 @@ class LuaAPI extends Component {
 			isLoaded: false,
 
 			visible_categories: {
-				"ActorClasses": true,
+				"Actors": true,
 				"Namespaces": true,
 				"Enums": true,
-				"Singletons": false,
-				"Global Functions": false,
-				"Constants": false
+				"Singletons": true,
+				"GlobalFunctions": true,
+				"Constants": true
 			}
 		}
 
@@ -154,11 +154,20 @@ class LuaAPI extends Component {
 				url: "./API/Lua.xml"
 			}).done(function(lua_dot_xml){
 
-				const actors_with_base = $(lua_dot_xml).children()[0].children[1]
+				// We have two xml files to retrieve data from, lua_documentation and lua_dot_xml
+				// I don't fully understand why the documentation is split across them the way it is,
+				// but it doesn't really matter, we just have to know where to look for what.
 
+				// Actor classes are *mostly* described in LuaDocumentation.xml, but the "base" class of each
+				// is actually defined in Lua.xml.  We'll need to combine the two data sources.
+				const actors_with_base = $(lua_dot_xml).children()[0].children[1]
 				const actor_classes = Array.from($(lua_documentation).children().find("Classes Class"))
+
 				const namespaces = Array.from($(lua_documentation).children().find("Namespaces Namespace"))
 				const enums = Array.from($(lua_dot_xml).children().find("Enums Enum"))
+				const singletons = Array.from($(lua_dot_xml).children().find("Singletons Singleton"))
+				const global_functions = Array.from($(lua_documentation).children().find("GlobalFunctions Function"))
+				const constants = Array.from($(lua_dot_xml).children().find("Constants Constant"))
 
 
 				// actor classes, namespaces, enums, singletons, global functions, constants
@@ -176,8 +185,9 @@ class LuaAPI extends Component {
 				// retain the actor_class_names object as state so we can refer to it in getReturnValue()
 				lua_api.actor_class_names = actor_class_names
 
-				// ---------------------------------------------------------------------
+
 				// now, do the "heavy lifting"
+				// ---------------------------------------------------------------------
 				// process each actor_class...
 				actor_classes.forEach(function(actor_class){
 
@@ -213,7 +223,6 @@ class LuaAPI extends Component {
 
 				// ---------------------------------------------------------------------
 				// next, process each namespace...
-
 				namespaces.forEach(function(namespace){
 					const _methods = Array.from($(namespace).find("Function"))
 					const methods = _methods.map(function(method, i){
@@ -233,7 +242,6 @@ class LuaAPI extends Component {
 
 				// ---------------------------------------------------------------------
 				// next, process each enum...
-
 				enums.forEach(function(e){
 					const _values = Array.from($(e).find("EnumValue"))
 					const values = _values.map(function(v, i){
@@ -250,6 +258,35 @@ class LuaAPI extends Component {
 				})
 
 				// ---------------------------------------------------------------------
+				// almost done now; process each singleton...
+				singletons.forEach(function(s){
+					data[3].push({
+						name: s.attributes.name.textContent,
+						actor_class: s.attributes.class.textContent
+					})
+				})
+
+				// ---------------------------------------------------------------------
+				// almost done! process each global function...
+				global_functions.forEach(function(f){
+					data[4].push({
+						name: f.attributes.name.textContent,
+						return: f.attributes.return.textContent,
+						arguments: f.attributes.arguments.textContent,
+						desc: f.innerHTML.trim()
+					})
+				})
+
+				// ---------------------------------------------------------------------
+				// finally! process each Lua constant, and we're done
+				constants.forEach(function(c){
+					data[5].push({
+						name: c.attributes.name.textContent,
+						value: c.attributes.value.textContent
+					})
+				})
+
+				// ---------------------------------------------------------------------
 				// cache all render-able elements now so that we don't need to constantly recompute them
 				lua_api.all_elements = lua_api.get_elements_to_render(data)
 
@@ -260,9 +297,9 @@ class LuaAPI extends Component {
 					actor_classes: data[0],
 					namespaces: data[1],
 					enums: data[2],
-					singletons: null,
-					global_functions: null,
-					constants: null
+					singletons: data[3],
+					global_functions: data[4],
+					constants: data[5]
 				})
 
 				// scroll the page to the appropriate y-offset if needed
@@ -295,7 +332,7 @@ class LuaAPI extends Component {
 	get_elements_to_render(classes_to_render){
 
 		return {
-			"ActorClasses": classes_to_render[0].map(function(actor, i){
+			"Actors": classes_to_render[0].map(function(actor, i){
 				const methods = actor.methods.map(function(method, j){
 					return <ActorMethod actor={actor} method={method} key={actor.name + "-" + method.name + j} />
 				})
@@ -317,16 +354,56 @@ class LuaAPI extends Component {
 				})
 				return (
 					<table id={"Enums-" + e.name} className="table table-hover table-sm table-bordered" key={"enum-"+e.name}>
-					<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
+						<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
 						<tbody>{values}</tbody>
 					</table>
 				)
 			}),
 
 
-			"Singletons": null,
-			"Global Functions": null,
-			"Constants": null
+			"Singletons": (
+				<ul id="Singletons">
+					{classes_to_render[3].map(function(s, i){
+						return(<li key={"singleton-"+s.name}><a href={"#Actors-"+s.actor_class}>{s.name}</a></li>)
+					})}
+				</ul>
+			),
+
+			"GlobalFunctions":(
+				<div className="GlobalFunctions actor-class">
+
+				{classes_to_render[4].map(function(f, i){
+					return(
+						<div id={"GlobalFunctions-" + f.name} className="method" key={"GlobalFunction-"+f.name+"-"+i}>
+							<div className="method-signature">
+								{f.name}
+								(<code>{f.arguments}</code>)
+							</div>
+
+							<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: f.return}} />  </span>
+							<span className="method-description" dangerouslySetInnerHTML={{ __html: f.desc }} />
+						</div>
+					)
+				})}
+				</div>
+
+			),
+
+			"Constants": (
+					<table id={"Constants"} className="table table-hover table-sm table-bordered">
+						<thead className="table-primary"><tr><th><strong>Lua Variable</strong></th><th>Value</th></tr></thead>
+						<tbody>
+							{classes_to_render[5].map(function(c, i){
+								return(
+									<tr key={"constant-"+c.name}>
+										<td>{c.name}</td>
+										<td>{c.value}</td>
+									</tr>
+								)
+							})}
+						</tbody>
+					</table>
+			)
 		}
 	}
 
@@ -365,8 +442,7 @@ class LuaAPI extends Component {
 		let results = [ [], [], [], [], [], [] ]
 
 		// ---------------------------------------------------------------------
-		// loop through all actor classes stored in state,
-		// searching for string matches in various ways
+		// loop through all actor classes stored in state, searching for string matches in various ways
 		this.state.actor_classes.forEach(function(actor){
 
 			// if name of this entire actor class includes the user-input string,
@@ -399,8 +475,7 @@ class LuaAPI extends Component {
 		})
 
 		// ---------------------------------------------------------------------
-		// loop through all namespaces stored in state,
-		// searching for string matches in various ways
+		// loop through all namespaces stored in state, searching for string matches in various ways
 		this.state.namespaces.forEach(function(n){
 
 			// if name of this entire actor class includes the user-input string
@@ -432,6 +507,7 @@ class LuaAPI extends Component {
 		})
 
 		// ---------------------------------------------------------------------
+		// loop through all enums stored in state, searching for string matches in various ways
 		this.state.enums.forEach(function(e){
 			if (e.name.toUpperCase().includes(eventValue)){
 				results[2].push(e)
@@ -447,6 +523,33 @@ class LuaAPI extends Component {
 					name: e.name,
 					values: filtered_enums
 				})
+			}
+		})
+
+		// ---------------------------------------------------------------------
+		// loop through all enums stored in state, searching for string matches
+		this.state.singletons.forEach(function(s){
+			if (s.name.toUpperCase().includes(eventValue)){
+				results[3].push(s)
+				return
+			}
+		})
+
+		// ---------------------------------------------------------------------
+		// loop through all global functions stored in state, searching for string matches
+		this.state.global_functions.forEach(function(f){
+			if (f.name.toUpperCase().includes(eventValue) || f.desc.toUpperCase().includes(eventValue)){
+				results[4].push(f)
+				return
+			}
+		})
+
+		// ---------------------------------------------------------------------
+		// loop through all constants stored in state, searching for string matches
+		this.state.constants.forEach(function(c){
+			if (c.name.toUpperCase().includes(eventValue)){
+				results[5].push(c)
+				return
 			}
 		})
 
@@ -486,15 +589,15 @@ class LuaAPI extends Component {
 				<div className="LuaAPI">
 
 					<p className="alert alert-info">
-						This version of SM5&apos;s API is in beta, and a lot of useful information hasn&apos;t been transitioned over yet!
+						This version of SM5&apos;s API is in beta, so some information may not have been transitioned over yet!
 						<br /><br />
 						The original, full API can <a href="/Lua-For-SM5/API/Lua.xml">still be accessed here</a>.
 					</p>
 
 					<h1>SM5 Lua API</h1>
 
-					<h2 id="Actors" className="API-Category" onClick={(e) => this.handleCategoryClick("ActorClasses", e)}>Actor Classes</h2>
-					<div>{this.state.visible_categories["ActorClasses"] && elements["ActorClasses"]}</div>
+					<h2 id="Actors" className="API-Category" onClick={(e) => this.handleCategoryClick("Actors", e)}>Actor Classes</h2>
+					<div>{this.state.visible_categories["Actors"] && elements["Actors"]}</div>
 
 					<h2 id="Namespaces" className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>
 					<div>{this.state.visible_categories["Namespaces"] && elements["Namespaces"]}</div>
@@ -503,10 +606,13 @@ class LuaAPI extends Component {
 					<div>{this.state.visible_categories["Enums"] && elements["Enums"]}</div>
 
 					<h2 id="Singletons" className="API-Category" onClick={(e) => this.handleCategoryClick("Singletons", e)}>Singletons</h2>
+					<div>{this.state.visible_categories["Singletons"] && elements["Singletons"]}</div>
 
-					<h2 id="Global-Functions" className="API-Category" onClick={(e) => this.handleCategoryClick("Global-Functions", e)}>Global Functions</h2>
+					<h2 id="GlobalFunctions" className="API-Category" onClick={(e) => this.handleCategoryClick("GlobalFunctions", e)}>Global Functions</h2>
+					<div>{this.state.visible_categories["GlobalFunctions"] && elements["GlobalFunctions"]}</div>
 
 					<h2 id="Constants" className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
+					<div>{this.state.visible_categories["Constants"] && elements["Constants"]}</div>
 				</div>
 			)
 		} else {
