@@ -589,7 +589,7 @@ class LuaAPI extends Component {
 				<div className="LuaAPI">
 
 					<p className="alert alert-info">
-						This version of SM5&apos;s API is in beta, so some information may not have been transitioned over yet!
+						This version of SM5&apos;s Lua API is in beta, so some information may be missing!
 						<br /><br />
 						The original, full API can <a href="/Lua-For-SM5/API/Lua.xml">still be accessed here</a>.
 					</p>
