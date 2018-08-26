@@ -585,6 +585,12 @@ class LuaAPI extends Component {
 				elements = this.get_elements_to_render(this.filterResults(this.props.api_filter))
 			}
 
+			// by default there are 24 constants, but text filtering may result in fewer or none
+			// store the curent number of constants in num_constants now and use it below
+			// to determine whether to show/hide the header for the constants table
+			// (having a table header with 0 rows of data is confusing)
+			const num_constants = elements.Constants.props.children[1].props.children.length
+
 			return (
 				<div className="LuaAPI">
 
@@ -612,7 +618,7 @@ class LuaAPI extends Component {
 					<div>{this.state.visible_categories["GlobalFunctions"] && elements["GlobalFunctions"]}</div>
 
 					<h2 id="Constants" className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
-					<div>{this.state.visible_categories["Constants"] && elements["Constants"]}</div>
+					<div>{this.state.visible_categories["Constants"] && num_constants > 0 && elements["Constants"]}</div>
 				</div>
 			)
 		} else {
