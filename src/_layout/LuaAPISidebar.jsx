@@ -16,8 +16,10 @@ class Sidebar extends Component {
 		return (
 			<div id="LuaAPISidebar">
 
-				<LuaAPIFilter onFilterChange={this.handleFilterChange} />
-				<hr />
+				<div className="d-none d-md-block">
+					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
+					<hr />
+				</div>
 
 				<h5>
 					<a href="#Actors">

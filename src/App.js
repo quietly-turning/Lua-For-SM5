@@ -41,30 +41,13 @@ class App extends Component {
 		super(props)
 		this.handleFilterChange = this.handleFilterChange.bind(this)
 
-		// the LuaAPI doesn't need to be filtered and re-filtered with each new keyup event
-		// instead, wait 200ms for keyup events to cease before calling filterResults()
-		// these variables are used as part of that 0.2 second timeout system
-		// see: https://stackoverflow.com/a/5926782
-		this.typingTimer = null
-		this.doneTypingInterval = 200
-
 		this.state = {
 			api_filter: ""
 		}
 	}
 
 	handleFilterChange(eventValue){
-
-		const app = this
-
-		clearTimeout(this.typingTimer)
-
-		this.typingTimer = setTimeout(
-			function() {
-				app.setState({api_filter: eventValue.toUpperCase()})
-			},
-			this.doneTypingInterval
-		)
+		this.setState({api_filter: eventValue})
 	}
 
 	render() {

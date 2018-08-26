@@ -4,6 +4,7 @@ import ActorClass from "./ActorClass"
 import ActorMethod from "./ActorMethod"
 import Namespace from "./Namespace"
 import NamespaceMethod from "./NamespaceMethod"
+import LuaAPIFilter from "./LuaAPIFilter"
 
 import $ from "jquery";
 import "../_styles/api.css";
@@ -15,6 +16,8 @@ class LuaAPI extends Component {
 
 		this.state = {
 			isLoaded: false,
+
+			mobile_api_filter: "",
 
 			visible_categories: {
 				"Actors": true,
@@ -36,6 +39,7 @@ class LuaAPI extends Component {
 		// ensure that the following functions have access to "this"
 		this.filterResults= this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
+		this.handleFilterChangeMobile = this.handleFilterChangeMobile.bind(this)
 
 		// ---------------------------------------------------------------------
 
@@ -437,6 +441,12 @@ class LuaAPI extends Component {
 	// API TEXT FILTER
 	// -----------------------------------------------------------------------------------------
 
+
+	// this methods exists to handle the text-input field that appears in mobile layout
+	handleFilterChangeMobile(eventValue){
+		this.setState({mobile_api_filter: eventValue})
+	}
+
 	filterResults(eventValue){
 
 		let results = [ [], [], [], [], [], [] ]
@@ -579,10 +589,12 @@ class LuaAPI extends Component {
 
 			let elements = null
 
-			if (this.props.api_filter === ""){
+			if (this.props.api_filter === "" && this.state.mobile_api_filter === ""){
 				elements = this.all_elements
-			} else{
-				elements = this.get_elements_to_render(this.filterResults(this.props.api_filter))
+
+			} else {
+				const eventValue = this.props.api_filter !== "" ? this.props.api_filter : this.state.mobile_api_filter
+				elements = this.get_elements_to_render(this.filterResults(eventValue))
 			}
 
 			// by default there are 24 constants, but text filtering may result in fewer or none
@@ -599,6 +611,13 @@ class LuaAPI extends Component {
 						<br /><br />
 						The original, full API can <a href="/Lua-For-SM5/API/Lua.xml">still be accessed here</a>.
 					</p>
+
+
+						<div className="d-md-none">
+							<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
+							<hr />
+						</div>
+
 
 					<h1>SM5 Lua API</h1>
 
