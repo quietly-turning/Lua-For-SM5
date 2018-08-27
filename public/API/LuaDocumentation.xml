@@ -5556,7 +5556,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 </Class>
 <Class name='HoldNoteResult'>
-	<Function name='GetHoldNoteScore' return='HoleNoteScore' arguments=''>
+	<Function name='GetHoldNoteScore' return='HoldNoteScore' arguments=''>
 		Returns the <Link class='HoldNoteScore' /> of the Hold Note.
 	</Function>
 	<Function name='GetLife' return='float' arguments=''>
