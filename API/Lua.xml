@@ -2294,6 +2294,7 @@
 			<Function name='ReloadMetrics'/>
 			<Function name='RunLuaScripts'/>
 			<Function name='SetTheme'/>
+			<Function name='get_theme_fallback_list'/>
 		</Class>
 		<Class name='TimingData'>
 			<Function name='GetActualBPM'/>
@@ -3937,6 +3938,7 @@
 		<Constant name='PLAYER_1' value='&apos;PlayerNumber_P1&apos;'/>
 		<Constant name='PLAYER_2' value='&apos;PlayerNumber_P2&apos;'/>
 		<Constant name='_VERSION' value='&apos;Lua 5.1&apos;'/>
+		<Constant name='bPreference' value='&apos;Normal&apos;'/>
 		<Constant name='bottom' value='&apos;VertAlign_Bottom&apos;'/>
 		<Constant name='center' value='&apos;HorizAlign_Center&apos;'/>
 		<Constant name='left' value='&apos;HorizAlign_Left&apos;'/>
@@ -3944,6 +3946,6 @@
 		<Constant name='right' value='&apos;HorizAlign_Right&apos;'/>
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
-	<Version>StepMania5.1.0-b1</Version>
-	<Date>2018-02-10</Date>
+	<Version>StepMania5.1.0-b2</Version>
+	<Date>2018-08-27</Date>
 </Lua>
