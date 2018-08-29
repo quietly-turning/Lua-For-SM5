@@ -8,7 +8,7 @@ class Debugging extends Component {
 		return (
 			<div>
 
-			<h2>Debugging</h2>
+			<h1>Debugging</h1>
 
 			<p>Using <Link to="/SCREENMAN">SCREENMAN</Link>&apos;s <code>SystemMessage()</code> method may perhaps be the most tried-and-true means of quickly displaying debugging output to the Screen.  <code>SystemMessage()</code> accepts a string as an argument and displays it at the top of the screen for a few seconds.</p>
 

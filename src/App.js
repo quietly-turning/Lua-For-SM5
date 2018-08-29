@@ -44,10 +44,30 @@ class App extends Component {
 		this.state = {
 			api_filter: ""
 		}
+
+		this.old_pathname = ""
 	}
 
 	handleFilterChange(eventValue){
 		this.setState({api_filter: eventValue})
+	}
+
+	componentDidUpdate(){
+		// componentDidUpdate() will be called both when we're on a completely
+		// new tutorial page, and WANT to scroll-to-top to reset the window's y,
+		// as well as when we're clicking around in the LuaAPI and the hash is changing
+		// where we don't want to scroll-to-top (we want to scroll to the desired LuaAPI item)
+		//
+		// Within the LuaAPI, window.location.pathname should always be "/LuaAPI"
+		// regardless of what sub-element we're interested in.
+		//
+		// So, if we're in this componentDidUpdate() hook and window.location.pathname
+		// hasn't changed since last time, it (hopefully) signifies that the hash changed
+		// and we don't want to scroll-to-top.  Otherwise, the pathname changed, and we do.
+		if (this.old_pathname !== window.location.pathname){
+			this.old_pathname = window.location.pathname
+			window.scrollTo(0, 0)
+		}
 	}
 
 	render() {
