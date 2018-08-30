@@ -1,23 +1,22 @@
 import React, { Component } from "react"
 import { NavLink } from "react-router-dom"
+import $ from "jquery"
 
 class GuidesSidebar extends Component {
 
 	componentDidMount(){
 		[1,2,3,4,5].forEach(function(i){
-			const el = document.getElementById("collapse-" + i);
-			const listitems = el.getElementsByTagName('ul')[0].getElementsByTagName('li')
+			const el = $("#collapse-" + i)
+			const listitem_anchors = el.find('li a')
 
-			for (let li of listitems){
-				for (let a of li.getElementsByTagName('a')){
-					if (a.classList.contains("active")){
-						// ensure the proper bootstrap accordion section is open
-						el.classList.add("show");
-						// ensure the proper styling rules are applied to accordion section header
-						document.getElementById("heading-"+i).getElementsByTagName("h5")[0].getElementsByTagName("a")[0].classList.remove("collapsed");
-					}
+			listitem_anchors.each(function(j, anchor){
+				if ($(anchor).hasClass("active")){
+					// ensure the proper bootstrap accordion section is open
+					el.addClass("show")
+					// ensure the proper styling rules are applied to accordion section header
+					$("#heading-" + i + " h5 a").removeClass("collapsed")
 				}
-			}
+			})
 		});
 	}
 

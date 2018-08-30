@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import GuidesSidebar from "./GuidesSidebar"
 import LuaAPISidebar from "./LuaAPISidebar"
+import $ from "jquery"
 
 class Sidebar extends Component {
 
@@ -13,11 +14,12 @@ class Sidebar extends Component {
 	}
 
 	HandleResize(){
-		const md = 768;
+		const md = 768
+
 		if (window.innerWidth < md){
-			document.getElementById("sidebar").classList.remove("position-fixed");
+			$("#sidebar").removeClass("position-fixed")
 		} else {
-			document.getElementById("sidebar").classList.add("position-fixed");
+			$("#sidebar").addClass("position-fixed")
 		}
 	}
 
