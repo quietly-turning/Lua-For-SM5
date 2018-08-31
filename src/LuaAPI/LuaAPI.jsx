@@ -121,6 +121,9 @@ class LuaAPI extends Component {
 								// create the anchor string for this Actor Class
 								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
 								anchors.push(anchor)
+							} else {
+								const anchor = "<a href='#Actors-" + _class + "'>" + _class + "</a>"
+								anchors.push(anchor)
 							}
 						}
 					} else {
