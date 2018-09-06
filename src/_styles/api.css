@@ -1,7 +1,7 @@
 @charset "UTF-8";
 div.LuaAPI h2.API-Category {
   margin: 0.5em 0em;
-  padding: 0.2em 0em 0.2em 1em;
+  padding: 0.2em 0em 0.2em 0.5em;
   color: #fff;
   background-color: #676b6f;
   cursor: pointer; }
