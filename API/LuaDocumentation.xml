@@ -326,7 +326,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if Event Mode is turned on.
 	</Function>
 	<Function name='IsFreePlay' theme="_fallback" return='bool' arguments=''>
-		[02 Utilities.lua] Returns <code>true</code> <Link function='IsArcade'>if Arcade</Link> and the coin mode is <Link class='ENUM' function='CoinMode'>CoinMode_Free</Link>.
+		[02 Utilities.lua] Returns <code>true</code> <Link function='IsArcade'>if IsArcade()</Link> and the coin mode is <Link class='ENUM' function='CoinMode'>CoinMode_Free</Link>.
 	</Function>
 	<Function name='IsGame' theme='_fallback' return='bool' arguments='string sGame'>
 		[03 Gameplay.lua] Returns <code>true</code> if the current game is <code>sGame</code>.
