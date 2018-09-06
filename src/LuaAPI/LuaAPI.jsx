@@ -69,7 +69,8 @@ class LuaAPI extends Component {
 				_matches.forEach(function(_match){
 					const text = _matches[2]
 					const _link = $.parseHTML(_matches[1])
-					const _class = _link[0].attributes.getNamedItem("class").nodeValue
+					let _class = _link[0].attributes.getNamedItem("class")
+					_class = _class && _class.nodeValue
 					const _function = _link[0].attributes.getNamedItem("function").nodeValue
 
 					if (_class){
@@ -116,7 +117,14 @@ class LuaAPI extends Component {
 								const anchor = "<a href='#Enums-" + _function + "'>" + _function + "</a>"
 								anchors.push(anchor)
 							}
+						} else if (_class === "GLOBAL"){
+							if (_function){
+								// create the anchor string for this Global Function
+					 			const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + _function + "</a>"
+								anchors.push(anchor)
+							}
 						} else{
+
 							if (_function){
 								// create the anchor string for this Actor Class
 								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
@@ -237,7 +245,7 @@ class LuaAPI extends Component {
 							name: method.attributes.name.textContent,
 							return: lua_api.getReturnValue(method.attributes.return.textContent),
 							arguments: method.attributes.arguments.textContent,
-							desc: method.innerHTML.trim()
+							desc: check_for_links(method)
 						}
 					})
 
@@ -280,7 +288,7 @@ class LuaAPI extends Component {
 						name: f.attributes.name.textContent,
 						return: f.attributes.return.textContent,
 						arguments: f.attributes.arguments.textContent,
-						desc: f.innerHTML.trim()
+						desc: check_for_links(f)
 					})
 				})
 
