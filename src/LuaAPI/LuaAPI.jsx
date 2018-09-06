@@ -58,6 +58,13 @@ class LuaAPI extends Component {
 		// we need to find and replace them with html-compliant anchors
 		const check_for_links = function(method){
 
+			const class_is_a_namespace = function(_class){
+				for (let i=0; i < lua_api.namespaces.length; i++){
+					if (lua_api.namespaces[i]===_class){ return true }
+				}
+				return false
+			}
+
 
 			const trimmed_innerHTML = method.innerHTML.trim()
 
@@ -80,12 +87,29 @@ class LuaAPI extends Component {
 								const anchor = "<a href='#Enums-" + _function + "'>" + text + "</a>"
 								anchors.push(anchor)
 							}
+						} else if (class_is_a_namespace(_class)) {
+							// create the anchor string for this Lua Namespace
+							const anchor = "<a href='#Namespaces-" + _class + "-" + _function + "'>" + text + "</a>"
+							anchors.push(anchor)
+
 						} else {
 							if (_function){
 								// create the anchor string for this Actor Class
 								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + text + "</a>"
 								anchors.push(anchor)
 							}
+						}
+					} else {
+
+						// It was possible in LuaDocumentation.xml to create <Link> to some other method
+						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
+						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
+						// in the context of this React app.  We'll get the parentNode of the method object.
+						const _parent_class = method.parentNode.nodeName
+
+						if (_parent_class === "GlobalFunctions"){
+							const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + text + "</a>"
+							anchors.push(anchor)
 						}
 					}
 				})
@@ -123,7 +147,7 @@ class LuaAPI extends Component {
 					 			const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + _function + "</a>"
 								anchors.push(anchor)
 							}
-						} else{
+						} else {
 
 							if (_function){
 								// create the anchor string for this Actor Class
@@ -200,6 +224,10 @@ class LuaAPI extends Component {
 				// retain the actor_class_names object as state so we can refer to it in getReturnValue()
 				lua_api.actor_class_names = actor_class_names
 
+				// include the SM5 Lua Namespace names for convenience, too
+				lua_api.namespaces = namespaces.map(function(namespace){
+					return namespace.attributes[0].nodeValue
+				})
 
 				// now, do the "heavy lifting"
 				// ---------------------------------------------------------------------
