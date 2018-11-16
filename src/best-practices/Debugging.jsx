@@ -20,7 +20,7 @@ class Debugging extends Component {
 -- Since the engine only broadcasts JudgmentMessages to ScreenGameplay,
 -- this example only makes sense and does anything in ScreenGameplay.
 
-return Actor{
+return Def.Actor{
 
 	JudgmentMessageCommand=function(self, params)
 		-- Note that JudgementMessages will be broadcast for any human players,
@@ -58,7 +58,7 @@ return Actor{
 			<span className="CodeExample-Title">Using SM() to display a small Lua table</span>
 			<Highlight className="lua">
 {`
-return Actor{
+return Def.Actor{
 	JudgmentMessageCommand=function(self, params)
 		-- Again, limit to  PLAYER_1 for a more simple example.
 		if params.Player == PLAYER_1 then
@@ -84,7 +84,7 @@ return Actor{
 			<span className="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
 			<Highlight className="lua">
 {`
-return Actor{
+return Def.Actor{
 	JudgmentMessageCommand=function(self, params)
 	-- recursive print the entire table of JudgmentMessage parameters
 	-- to Logs/Log.txt.  This would be more information than could fit
