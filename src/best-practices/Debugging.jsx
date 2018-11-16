@@ -86,11 +86,11 @@ return Def.Actor{
 {`
 return Def.Actor{
 	JudgmentMessageCommand=function(self, params)
-	-- recursive print the entire table of JudgmentMessage parameters
-	-- to Logs/Log.txt.  This would be more information than could fit
-	-- onscreen at a single moment.
-	rec_print_table( params )
-end
+		-- recursive print the entire table of JudgmentMessage parameters
+		-- to Logs/Log.txt.  This would be more information than could fit
+		-- onscreen at a single moment.
+		rec_print_table( params )
+	end
 }
 `}
 			</Highlight>
