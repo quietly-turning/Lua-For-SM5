@@ -18,8 +18,7 @@ class Sound extends Component {
 
 			<span className="CodeExample-Title">Minimal Example:</span>
 			<Highlight className="lua">
-{`
-Def.Sound{
+{`Def.Sound{
 	-- Note that you must tell the sound actor to play().
 	File="filepath.ogg",
 
@@ -27,7 +26,8 @@ Def.Sound{
 		self:play()
 	end,
 }
-
+`}
+			</Highlight>
 
 			<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
 
