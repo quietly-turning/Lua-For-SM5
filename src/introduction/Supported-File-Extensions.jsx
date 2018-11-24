@@ -31,6 +31,8 @@ class SupportedFileExtensions extends Component {
 
 				<p>SM5 supports a broad array of codecs and containers via <a href="https://www.ffmpeg.org/">ffmpeg</a>.</p>
 
+				<p>Please note that you cannot play audio from video files. One workaround is to extract the audio from the video, and play it at the same time as the video.</p>
+
 				<p>You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The <em>.avi</em> container in conjunction with the h264 codec works great.  As of this writing, the <strong>h265 codec is not supported</strong> by SM5&apos;s version of ffmpeg.</p>
 
 				<p><a href="https://handbrake.fr/">Handbrake</a> is a useful, free application you can use to resize your videos and convert them to one of the aforementioned formats with the h264 codec.</p>
