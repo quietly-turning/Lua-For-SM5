@@ -16,6 +16,19 @@ class Sound extends Component {
 			If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <Link to="SOUND">SOUND</Link>.
 			</p>
 
+			<span className="CodeExample-Title">Minimal Example:</span>
+			<Highlight className="lua">
+{`
+Def.Sound{
+	-- Note that you must tell the sound actor to play().
+	File="filepath.ogg",
+
+	OnCommand=function(self)
+		self:play()
+	end,
+}
+
+
 			<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
 
 			<ul>
