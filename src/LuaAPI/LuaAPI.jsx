@@ -256,10 +256,14 @@ class LuaAPI extends Component {
 						}
 					})
 
+					// some Actor classes have <Description> tags which contain text describing the overall class
+					let class_desc = $(actor_class).find("Description")
+
 					// push a new object representing this actor_class to the overall data array
 					data[0].push({
 						name: actor_class.attributes.name.textContent,
 						base: get_base(actors_with_base, actor_class.attributes.name.textContent),
+						desc: class_desc[0] !== undefined ? class_desc[0].innerHTML : null,
 						methods: sorted_methods
 					})
 				})

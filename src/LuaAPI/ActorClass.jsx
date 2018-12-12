@@ -23,6 +23,8 @@ class ActorClass extends Component {
 				</h3>
 				<hr />
 
+				<span className="actorclass-description" dangerouslySetInnerHTML={{__html: this.props.actor.desc}} />
+
 				{this.props.methods}
 			</div>
 		)
