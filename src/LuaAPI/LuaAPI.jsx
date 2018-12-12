@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Octicon from 'react-octicon'
 
 import ActorClass from "./ActorClass"
 import ActorMethod from "./ActorMethod"
@@ -423,6 +424,7 @@ class LuaAPI extends Component {
 					return(
 						<div id={"GlobalFunctions-" + f.name} className="method" key={"GlobalFunction-"+f.name+"-"+i}>
 							<div className="method-signature">
+								<Octicon onClick={ function() { window.location.hash = "#GlobalFunctions-" + f.name } } name="link" />
 								{f.name}
 								(<code>{f.arguments}</code>)
 							</div>
@@ -641,7 +643,7 @@ class LuaAPI extends Component {
 			}
 
 			// by default there are 24 constants, but text filtering may result in fewer or none
-			// store the curent number of constants in num_constants now and use it below
+			// so, store the curent number of constants in num_constants now and use it below
 			// to determine whether to show/hide the header for the constants table
 			// (having a table header with 0 rows of data is confusing)
 			const num_constants = elements.Constants.props.children[1].props.children.length

@@ -54,7 +54,5 @@ div.LuaAPI div.actor-class div.method {
       margin-bottom: 0.5em; }
 div.LuaAPI #Enums + div > table {
   margin: 1em 0em 0em 0em; }
-div.LuaAPI div.GlobalFunctions.actor-class div.method div.method-signature {
-  text-indent: 0em; }
 
 /*# sourceMappingURL=api.css.map */
