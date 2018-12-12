@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 
 class ActorMultiVertex extends Component {
@@ -10,7 +11,7 @@ class ActorMultiVertex extends Component {
 
 			<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
 
-			<p>An <em>ActorMultiVertex</em> actor has seven possible <a href="http://dguzek.github.io/Lua-For-SM5/API/Lua.xml#DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
+			<p>An <em>ActorMultiVertex</em> actor has seven possible <Link to="/LuaAPI#Enums-DrawMode">DrawModes</Link>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
 
 			<p>For example, calling <code>{` self:SetDrawState({Mode="DrawMode_Quads"}) `}</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/dguzek/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
 

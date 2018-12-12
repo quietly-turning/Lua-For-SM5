@@ -6,7 +6,7 @@ class ModChartSetup extends Component {
 	render() {
 		return (
 		<div>
-			<h1>Setting Up a "Mod Chart"</h1>
+			<h1>Setting Up a "Mod" Chart</h1>
 
 			<p>StepMania simfiles can be scripted to enhance gameplay using Lua and the SM5 API.  This chapter will briefly demonstrate how to prepare a simfile for such scripting.</p>
 

@@ -22,9 +22,9 @@ class SimpleTweens extends Component {
 				<li>etc.</li>
 			</ul>
 
-			<p>This tutorial lists the types of simple tweens available through the <a href="/Lua-For-SM5/API/Lua.xml">Lua API</a>, discusses how to use tweens, and concludes with a full example.</p>
+			<p>This tutorial lists the types of simple tweens available through the <Link to="/LuaAPI">Lua API</Link>, discusses how to use tweens, and concludes with a full example.</p>
 
-			<p>To learn more about Actors and Lua scripting in StepMania, check out the <Link to="/foreword">What Are Actors?</Link> tutorial.  To learn more about what Actor methods are available for tweening, refer to the <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor subsection</a> of the Lua API.
+			<p>To learn more about Actors and Lua scripting in StepMania, check out the <Link to="/foreword">What Are Actors?</Link> tutorial.  To learn more about what Actor methods are available for tweening, refer to the <Link to="/LuaAPI#Actors-Actor">Actor subsection</Link> of the Lua API.
 			</p>
 
 			<h2>Tweens Defined by the Engine</h2>

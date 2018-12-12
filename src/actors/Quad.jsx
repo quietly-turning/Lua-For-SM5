@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Highlight from 'react-highlight';
+import { Link } from "react-router-dom";
 
 class Quad extends Component {
 	render() {
@@ -26,7 +27,7 @@ Def.Quad{
 
 			<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
 
-			<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor objects</a>.  (Note that in your web-browser, you may need to click to expand the list of methods linked to.)</p>
+			<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <Link to="/LuaAPI#Actors-Actor">Actor objects</Link>.</p>
 
 			<h2>A More Advanced Example</h2>
 

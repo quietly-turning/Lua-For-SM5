@@ -33,7 +33,7 @@ Def.Sprite{
 
 			<p><strong>Where are those commands like</strong> <code>zoom()</code> <strong>and</strong> <code>Center()</code> <strong>coming from?</strong></p>
 
-			<p>Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available first to all <a href="/Lua-For-SM5/API/Lua.xml#Actor">Actor</a> and then to <a href="/Lua-For-SM5/API/Lua.xml#Sprite">Sprite</a> specifically.  (Note that in your web-browser, you may need to click to expand the list of methods linked to.)</p>
+			<p>Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available first to all <Link to="/LuaAPI#Actors-Actor">Actor</Link> and then to <Link to="/LuaAPI#Actors-Sprite">Sprite</Link> specifically.</p>
 
 			<h2>Animated Spritesheets</h2>
 
