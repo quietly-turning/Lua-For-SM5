@@ -20,12 +20,12 @@ self.__precacheManifest = [
     "url": "/Lua-For-SM5/static/js/runtime~main.2e1c0849.js"
   },
   {
-    "revision": "ee5b1bee959a95bd43b223ec901d098a",
-    "url": "/Lua-For-SM5/static/media/octicons.ee5b1bee.woff"
-  },
-  {
     "revision": "de59a97248b44599e6747a27a943f738",
     "url": "/Lua-For-SM5/static/media/octicons.de59a972.woff2"
+  },
+  {
+    "revision": "ee5b1bee959a95bd43b223ec901d098a",
+    "url": "/Lua-For-SM5/static/media/octicons.ee5b1bee.woff"
   },
   {
     "revision": "d038ccbc4a99be24f33a54b482b2422e",
