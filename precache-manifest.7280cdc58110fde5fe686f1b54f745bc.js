@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "76232c6e2993fb431f29",
+    "revision": "328be7da0a53130db7d0",
     "url": "/Lua-For-SM5/static/css/main.54bf2ba9.chunk.css"
   },
   {
-    "revision": "76232c6e2993fb431f29",
-    "url": "/Lua-For-SM5/static/js/main.76232c6e.chunk.js"
+    "revision": "328be7da0a53130db7d0",
+    "url": "/Lua-For-SM5/static/js/main.328be7da.chunk.js"
   },
   {
     "revision": "0f092fb0aa6baf9f9eae",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/Lua-For-SM5/static/media/octicons.190e7257.svg"
   },
   {
-    "revision": "e0455a87c537a565a016121f742da371",
+    "revision": "0f6f2ed30c2068202e8b207187060050",
     "url": "/Lua-For-SM5/index.html"
   }
 ];
