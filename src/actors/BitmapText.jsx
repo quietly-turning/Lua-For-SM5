@@ -23,11 +23,11 @@ class BitmapText extends Component {
 `}
 			</Highlight>
 
-			<p>StepMania 5&apos;s <em>_fallback</em> theme defines a helper function, <code>LoadActor()</code>, that can be used to simplify the above code somewhat.</p>
+			<p>StepMania 5&apos;s <em>_fallback</em> theme defines a helper function, <code>LoadFont()</code>, that can be used to simplify the above code somewhat.</p>
 
-			<span className="CodeExample-Title">BitmapText example using LoadActor()</span>
+			<span className="CodeExample-Title">BitmapText example using LoadFont()</span>
 			<Highlight className="lua">
-{`LoadActor("Common normal")..{
+{`LoadFont("Common normal")..{
 	Text="Hello SM5!",
 	InitCommand=function(self) self:Center() end
 }
@@ -38,7 +38,7 @@ class BitmapText extends Component {
 
 			<h3>Loading Custom Fonts within a Scripted Simfile</h3>
 
-			<p>Note that the <code>LoadActor()</code> helper function can only be used to load BitmapText fonts contained within the current theme&apos;s <code>./Fonts/</code> directory.
+			<p>Note that the <code>LoadFont()</code> helper function can only be used to load BitmapText fonts contained within the current theme&apos;s <code>./Fonts/</code> directory.
 			 If you are working within the context of a <Link to="/Lua-For-SM5/Mod-Chart-Setup">scripted simfile</Link> and are trying to load a custom BitmapText font that is located within the simfile directory itself, you can do so like this:</p>
 
 			<span className="CodeExample-Title">loading a custom BitmapText from within a simfile</span>
@@ -153,7 +153,7 @@ return Def.ActorFrame{
 		self:GetChild("CatchPhrase"):playcommand("Update", {PhraseIndex=i})
 	end,
 
-	LoadActor("Common normal")..{
+	LoadFont("Common normal")..{
 		Name="CatchPhrase",
 		InitCommand=cmd(diffuse, color("#FEDCBA"); Center),
 		UpdateCommand=function(self, params)
