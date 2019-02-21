@@ -20,25 +20,7 @@ class Resources extends Component {
 				<h2>Theming for StepMania 5</h2>
 				<ul>
 					<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/stepmania/stepmania/wiki/Theming">StepMania&apos;s GitHub Wiki Theming Page</a></li>
-					<li><a target="_blank" rel="noopener noreferrer" href="http://stepmaniaonline.net/forum/viewtopic.php?f=8&t=4893">SpoOky&apos;s SM5 Theming Guide</a></li>
 				</ul>
-
-				<h2>Theming for StepMania 5.2</h2>
-
-				<p>
-					SM5.2 will offer lots of new features and many are documented here:
-				</p>
-
-				<ul>
-					<li>
-						<a target="_blank" rel="noopener noreferrer" href="https://github.com/stepmania/stepmania/blob/5_1_0/Docs/Themerdocs/item_scroller.md">Lua Item Scroller</a>
-					</li>
-					<li>
-						<a target="_blank" rel="noopener noreferrer" href="https://github.com/stepmania/stepmania/blob/5_1_0/Docs/Themerdocs/lua_config_system.md">Lua Preference System</a>
-					</li>
-				</ul>
-
-
 
 				<h2>SM/SSC File Documentation</h2>
 				<ul>
