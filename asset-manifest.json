@@ -1,16 +1,18 @@
 {
-  "main.css": "/Lua-For-SM5/static/css/main.54bf2ba9.chunk.css",
-  "main.js": "/Lua-For-SM5/static/js/main.328be7da.chunk.js",
-  "main.js.map": "/Lua-For-SM5/static/js/main.328be7da.chunk.js.map",
-  "runtime~main.js": "/Lua-For-SM5/static/js/runtime~main.0f092fb0.js",
-  "runtime~main.js.map": "/Lua-For-SM5/static/js/runtime~main.0f092fb0.js.map",
-  "static/css/2.d9ced7c4.chunk.css": "/Lua-For-SM5/static/css/2.d9ced7c4.chunk.css",
-  "static/js/2.ba9d66dc.chunk.js": "/Lua-For-SM5/static/js/2.ba9d66dc.chunk.js",
-  "static/js/2.ba9d66dc.chunk.js.map": "/Lua-For-SM5/static/js/2.ba9d66dc.chunk.js.map",
-  "index.html": "/Lua-For-SM5/index.html",
-  "precache-manifest.7280cdc58110fde5fe686f1b54f745bc.js": "/Lua-For-SM5/precache-manifest.7280cdc58110fde5fe686f1b54f745bc.js",
-  "service-worker.js": "/Lua-For-SM5/service-worker.js",
-  "static/css/2.d9ced7c4.chunk.css.map": "/Lua-For-SM5/static/css/2.d9ced7c4.chunk.css.map",
-  "static/css/main.54bf2ba9.chunk.css.map": "/Lua-For-SM5/static/css/main.54bf2ba9.chunk.css.map",
-  "static/media/octicons.css": "/Lua-For-SM5/static/media/octicons.ee5b1bee.woff"
+  "files": {
+    "main.css": "/Lua-For-SM5/static/css/main.901046e1.chunk.css",
+    "main.js": "/Lua-For-SM5/static/js/main.ebe55427.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.ebe55427.chunk.js.map",
+    "runtime~main.js": "/Lua-For-SM5/static/js/runtime~main.635c4d4a.js",
+    "runtime~main.js.map": "/Lua-For-SM5/static/js/runtime~main.635c4d4a.js.map",
+    "static/css/2.7b52c558.chunk.css": "/Lua-For-SM5/static/css/2.7b52c558.chunk.css",
+    "static/js/2.52151365.chunk.js": "/Lua-For-SM5/static/js/2.52151365.chunk.js",
+    "static/js/2.52151365.chunk.js.map": "/Lua-For-SM5/static/js/2.52151365.chunk.js.map",
+    "index.html": "/Lua-For-SM5/index.html",
+    "precache-manifest.b92e8dc8012a407e34bc5e6d25c22f22.js": "/Lua-For-SM5/precache-manifest.b92e8dc8012a407e34bc5e6d25c22f22.js",
+    "service-worker.js": "/Lua-For-SM5/service-worker.js",
+    "static/css/2.7b52c558.chunk.css.map": "/Lua-For-SM5/static/css/2.7b52c558.chunk.css.map",
+    "static/css/main.901046e1.chunk.css.map": "/Lua-For-SM5/static/css/main.901046e1.chunk.css.map",
+    "static/media/octicons.css": "/Lua-For-SM5/static/media/octicons.ee5b1bee.woff"
+  }
 }
