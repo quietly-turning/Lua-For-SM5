@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b117a7804465f1e672a348501b949146",
+    "revision": "ab17ec19a5ff8ee7b880620b40bd137b",
     "url": "/Lua-For-SM5/index.html"
   },
   {
