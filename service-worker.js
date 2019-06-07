@@ -11,10 +11,10 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.0/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Lua-For-SM5/precache-manifest.a6d614f2f59b9a1a97b8e7d959754f6d.js"
+  "/Lua-For-SM5/precache-manifest.e325496656843673d17cc8384150a93e.js"
 );
 
 self.addEventListener('message', (event) => {
