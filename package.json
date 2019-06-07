@@ -9,17 +9,17 @@
     "not dead"
   ],
   "dependencies": {
-    "gh-pages": "^1.2.0",
-    "jquery": "^3.4.0",
-    "popper.js": "^1.15.0",
     "bootstrap": "^4.3.1",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
+    "gh-pages": "^1.2.0",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-highlight": "^0.12.0",
     "react-octicon": "^3.0.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^3.0.0",
-    "typescript": "^3.4.5"
+    "react-scripts": "^3.0.1",
+    "typescript": "^3.5.1"
   },
   "scripts": {
     "start": "sass --watch src/_styles/ | react-scripts start",
