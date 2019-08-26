@@ -14,12 +14,12 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "popper.js": "^1.15.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-highlight": "^0.12.0",
     "react-octicon": "^3.0.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.1.1",
     "typescript": "^3.5.3"
   },
   "scripts": {
