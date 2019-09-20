@@ -186,12 +186,12 @@ class LuaAPI extends Component {
 		// ---------------------------------------------------------------------
 
 		$.ajax({
-			url: "./API/LuaDocumentation.xml"
+			url: "./Luadoc/LuaDocumentation.xml"
 
 		}).done(function(lua_documentation){
 
 			$.ajax({
-				url: "./API/Lua.xml"
+				url: "./Luadoc/Lua.xml"
 			}).done(function(lua_dot_xml){
 
 				// We have two xml files to retrieve data from, lua_documentation and lua_dot_xml
@@ -654,7 +654,7 @@ class LuaAPI extends Component {
 					<p className="alert alert-info">
 						This version of SM5&apos;s Lua API is in beta, so some information may be missing!
 						<br /><br />
-						The original, full API can <a href="/Lua-For-SM5/API/Lua.xml">still be accessed here</a>.
+						The original, full API can <a href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
 					</p>
 
 
