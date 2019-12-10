@@ -1,18 +1,26 @@
 {
   "files": {
     "main.css": "/Lua-For-SM5/static/css/main.901046e1.chunk.css",
-    "main.js": "/Lua-For-SM5/static/js/main.c5ad350c.chunk.js",
-    "main.js.map": "/Lua-For-SM5/static/js/main.c5ad350c.chunk.js.map",
-    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.d21b9b58.js",
-    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.d21b9b58.js.map",
-    "static/css/2.0d209e37.chunk.css": "/Lua-For-SM5/static/css/2.0d209e37.chunk.css",
-    "static/js/2.8a4464d4.chunk.js": "/Lua-For-SM5/static/js/2.8a4464d4.chunk.js",
-    "static/js/2.8a4464d4.chunk.js.map": "/Lua-For-SM5/static/js/2.8a4464d4.chunk.js.map",
+    "main.js": "/Lua-For-SM5/static/js/main.3d8c1355.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.3d8c1355.chunk.js.map",
+    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.5347dabd.js",
+    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.5347dabd.js.map",
+    "static/css/2.81dba4c5.chunk.css": "/Lua-For-SM5/static/css/2.81dba4c5.chunk.css",
+    "static/js/2.7ab6930f.chunk.js": "/Lua-For-SM5/static/js/2.7ab6930f.chunk.js",
+    "static/js/2.7ab6930f.chunk.js.map": "/Lua-For-SM5/static/js/2.7ab6930f.chunk.js.map",
     "index.html": "/Lua-For-SM5/index.html",
-    "precache-manifest.a7bfd84c36c1234aba92a2916ec1269e.js": "/Lua-For-SM5/precache-manifest.a7bfd84c36c1234aba92a2916ec1269e.js",
+    "precache-manifest.c87f4285694efbb78249ee765fcae961.js": "/Lua-For-SM5/precache-manifest.c87f4285694efbb78249ee765fcae961.js",
     "service-worker.js": "/Lua-For-SM5/service-worker.js",
-    "static/css/2.0d209e37.chunk.css.map": "/Lua-For-SM5/static/css/2.0d209e37.chunk.css.map",
+    "static/css/2.81dba4c5.chunk.css.map": "/Lua-For-SM5/static/css/2.81dba4c5.chunk.css.map",
     "static/css/main.901046e1.chunk.css.map": "/Lua-For-SM5/static/css/main.901046e1.chunk.css.map",
+    "static/js/2.7ab6930f.chunk.js.LICENSE": "/Lua-For-SM5/static/js/2.7ab6930f.chunk.js.LICENSE",
     "static/media/octicons.css": "/Lua-For-SM5/static/media/octicons.ee5b1bee.woff"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5347dabd.js",
+    "static/css/2.81dba4c5.chunk.css",
+    "static/js/2.7ab6930f.chunk.js",
+    "static/css/main.901046e1.chunk.css",
+    "static/js/main.3d8c1355.chunk.js"
+  ]
 }
