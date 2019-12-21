@@ -19,9 +19,6 @@ class Home extends Component {
 				<p>
 					You can find additional resources for learning about Lua and SM5 scripting on the <Link to="/Resources">Other Resources</Link> page.
 				</p>
-				<p>
-					-Dan Guzek
-				</p>
 			</div>
 		);
 	}
