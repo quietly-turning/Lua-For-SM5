@@ -20,7 +20,7 @@
     "react-octicon": "^3.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^3.3.0",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.4"
   },
   "scripts": {
     "start": "sass --watch src/_styles/ | react-scripts start",
