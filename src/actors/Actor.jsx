@@ -26,7 +26,7 @@ return Def.Actor{
 `}
 			</Highlight>
 
-			<p>For another example, see: <a href="https://github.com/dguzek/Simply-Love-SM5/blob/00fdf7112b0050d229679c39d777dfca5f0bb11a/BGAnimations/ScreenGameplay%20overlay/ReceptorArrowsPosition.lua#L25-L40">./Simply Love/BGAnimations/ScreenGameplay overlay/ReceptorArrowsPosition.lua</a></p>
+			<p>For another example, see: <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/00fdf7112b0050d229679c39d777dfca5f0bb11a/BGAnimations/ScreenGameplay%20overlay/ReceptorArrowsPosition.lua#L25-L40">./Simply Love/BGAnimations/ScreenGameplay overlay/ReceptorArrowsPosition.lua</a></p>
 
 			</div>
 		);

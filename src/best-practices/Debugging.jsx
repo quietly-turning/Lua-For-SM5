@@ -51,7 +51,7 @@ return Def.Actor{
 
 			<h3>Using SystemMessage() to display Table output</h3>
 
-			<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/dguzek/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
+			<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
 
 			<p>The function defined in <strong>SL-Utilities.lua</strong> that is relevant here is <code>SM()</code>  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme&apos;s Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.</p>
 
