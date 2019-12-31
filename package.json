@@ -30,5 +30,5 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "http://quietly-turning.github.io/Lua-For-SM5/"
+  "homepage": "https://quietly-turning.github.io/Lua-For-SM5/"
 }

@@ -10,7 +10,7 @@ class Resources extends Component {
 
 				<ul>
 					<li>
-						<a target="_blank" rel="noopener noreferrer" href="http://www.tutorialspoint.com/lua/">TutorialsPoint Lua Guide</a>
+						<a target="_blank" rel="noopener noreferrer" href="https://www.tutorialspoint.com/lua/">TutorialsPoint Lua Guide</a>
 					</li>
 					<li>
 						<a target="_blank" rel="noopener noreferrer" href="https://www.lua.org/pil/contents.html">Programming in Lua</a>
