@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { Route, Switch } from "react-router-dom"
 import GuidesSidebar from "./GuidesSidebar"
 import LuaAPISidebar from "./LuaAPISidebar"
 import $ from "jquery"
@@ -28,13 +29,15 @@ class Sidebar extends Component {
 	}
 
 	render() {
-		const url_pieces = window.location.pathname.split("/")
+		return(
+			<Switch>
+				<Route path="/LuaAPI">
+					<LuaAPISidebar onFilterChange={this.handleFilterChange} />
+				</Route>
 
-		if (url_pieces[url_pieces.length-1] === "LuaAPI"){
-			return <LuaAPISidebar onFilterChange={this.handleFilterChange} />
-		}
-
-		return <GuidesSidebar />
+				<GuidesSidebar />
+			</Switch>
+		)
 	}
 }
 
