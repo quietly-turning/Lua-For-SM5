@@ -7,7 +7,7 @@ import "./_styles/custom.css"
 
 //------- components for layout (header, sidebar)
 import Header from "./_layout/Header"
-import ContentNavigation from "./_layout/ContentNavigation"
+import Sidebar from "./_layout/Sidebar"
 
 //------- components for top-level pages
 import Home from "./Home"
@@ -47,30 +47,36 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.handleFilterChange = this.handleFilterChange.bind(this)
+		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
 
 		this.state = {
+			mobile_nav: false,
 			api_filter: ""
 		}
-
-		this.old_pathname = ""
 	}
 
 	handleFilterChange(eventValue){
 		this.setState({api_filter: eventValue})
 	}
 
+	handleMobileNavToggle(){
+		this.setState({mobile_nav: !this.state.mobile_nav})
+	}
+
 	render() {
 
 		return (
-			<div className="h-100">
+			<main className="h-100">
 				<Header />
 
 				<div className="container-fluid h-100">
 					<div className="row h-100">
 
-						<div className="d-none col-xl-1 d-xl-block"></div>
+						<div className="sidebar position-fixed h-100 col-lg-2 col-md-3 d-md-block d-none">
+							<Sidebar onFilterChange={this.handleFilterChange} />
+						</div>
 
-						<div id="content" className="col-xl-7 col-lg-9 col-md-9 col-sm-12">
+						<div id="content" className="offset-md-3 col-md-6 col-sm-12">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
 								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} />))} />
@@ -100,18 +106,20 @@ class App extends Component {
 								<Route path="/Arbitrary-Input"	component={ArbitraryInput} />
 								<Route path="/Simple-Tweens"		component={SimpleTweens} />
 							</Switch>
-
-							<p>&nbsp;</p>
-	 					</div>
-
-						<div className="d-none col-xl-1 d-xl-block"></div>
-
-	 					<div className="col-xl-auto col-lg-2 col-md-3 col-sm-12">
-		 			  		<ContentNavigation onFilterChange={this.handleFilterChange} />
 						</div>
-	 				</div>
+					</div>
 				</div>
-			</div>
+
+				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
+					<Sidebar onFilterChange={this.handleFilterChange} />
+				</div>
+
+				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-toggle="collapse" data-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				  <div className={this.state.mobile_nav ? "x bar1" : "bar1"}></div>
+				  <div className={this.state.mobile_nav ? "x bar2" : "bar2"}></div>
+				  <div className={this.state.mobile_nav ? "x bar3" : "bar3"}></div>
+				</button>
+			</main>
 		);
 	}
 }

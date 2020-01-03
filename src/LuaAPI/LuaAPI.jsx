@@ -649,7 +649,7 @@ class LuaAPI extends Component {
 			const num_constants = elements.Constants.props.children[1].props.children.length
 
 			return (
-				<div className="LuaAPI">
+				<div className="LuaAPI pl-md-4">
 
 					<p className="alert alert-info">
 						This version of SM5&apos;s Lua API doc is in beta, so some information may be missing!
@@ -658,10 +658,10 @@ class LuaAPI extends Component {
 					</p>
 
 
-						<div className="d-md-none">
-							<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
-							<hr />
-						</div>
+					<div className="d-md-none">
+						<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
+						<hr />
+					</div>
 
 
 					<h1>SM5 Lua API</h1>

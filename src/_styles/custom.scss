@@ -11,79 +11,82 @@ body{
 	font-size: 1.15em;
 }
 
+#filter{
+	&::placeholder{
+		color: #bbb;
+	}
+}
 
-#sidebar{
+.sidebar{
 	background-color: #f7f7f7;
-	border-left: 1px solid #ececec;
-	padding: 5em 0em  0em 2em;
+	border-right: 1px solid #ececec;
+	padding: 5em 0.5em  0em 0.5em;
+	overflow-x: auto;
 
-	a:hover{
-		color: #777;
+	a{
+		color: #000000;
+		text-decoration:none;
 	}
 
-	a.active{
-		color: #f92672;
-		font-weight:bold;
+	ul{
+		padding-left: 0.75em; // indent less
+		list-style-type: none;
 	}
 
-	h5 a:hover{
-		color: #000;
+	h5{
+		font-weight:400;
 	}
 
-	h5 a.collapsed{
-		color: #777;
-	}
-	#GuidesSidebar h5 a::after{
-		content: " ▴";
-	}
-	#GuidesSidebar h5 a.collapsed::after{
-		content: " ▾";
+	h5, li{
+		border-radius: 0.25em;
+		padding:0.35em 1em;
 	}
 
-	#LuaAPISidebar a{
-		color: #777;
+	h5, a{
+		display: flex;
+		justify-content: space-between;
+	}
+	h5:hover, li:hover{
+		cursor: pointer;
+		background-color: #e5e5e5;
+	}
 
-		&:hover{
-			color:#000;
+	#GuidesSidebar{
+		//	.active class handled by react-router-dom NavLink
+		.active{
+			color: #f92672;   // pink
+			font-weight:bold;
+		}
+
+		h5::after{
+			background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
+			background-size: 2rem 2rem;
+			height: 1.25rem;
+			width: 1.25rem;
+			background-position: 50%;
+			margin-right: -0.5em;
+			content: " ";
+			display: block;
+		}
+		h5.collapsed::after{
+			content: " ";
+			transform: rotateX(180deg);
 		}
 	}
-
-	h5 a.collapsed:hover{
-		color: #000;
-	}
-}
-
-
-#bottombar{
-	padding: 2em;
-	margin: 0em;
-	background-color: #f7f7f7;
-	border-top: 1px solid #ececec;
-}
-
-#sidebar ul, #bottombar ul{
-	list-style-type: none;
-	padding-left: 0.75em;
-}
-
-#sidebar a, #bottombar a{
-	color: #000000;
-	text-decoration:none;
 }
 
 
 #content{
-	padding: 5em 3em;
-}
+	padding: 5em 1em;
 
-#content p{
-	margin-top: 1.5em;
-	max-width: 42em;
-	line-height: 1.55;
-}
+	p{
+		margin-top: 1.5em;
+		line-height: 1.55;
+	}
 
-#content ul li{
-	max-width: 42em;
+	ul li{
+		max-width: 42em;
+	}
 }
 
 h2{
@@ -114,4 +117,50 @@ code{
 
 h3.subtitle{
 	font-weight: normal;
+}
+
+.no-transition {
+	-webkit-transition: height 0.01s;
+	-moz-transition: height 0.01s;
+	-ms-transition: height 0.01s;
+	-o-transition: height 0.01s;
+	transition: height 0.01s;
+}
+
+#mobileNav{
+	position:fixed;
+	top:0;
+	left:0;
+}
+
+#mobileNavToggle{
+	cursor: pointer;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+
+	.bar1, .bar2, .bar3 {
+	  width: 25px;
+	  height: 2px;
+	  background-color: #6c757d;
+	  margin: 6px 0;
+	  transition: 0.4s;
+	}
+
+	/* Rotate first bar */
+	.bar1.x {
+	  -webkit-transform: rotate(-45deg) translate(-6px, 6px) ;
+	  transform: rotate(-45deg) translate(-6px, 6px) ;
+	}
+
+	/* Fade out the second bar */
+	.bar2.x {
+	  opacity: 0;
+	}
+
+	/* Rotate last bar */
+	.bar3.x {
+	  -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
+	  transform: rotate(45deg) translate(-6px, -6px) ;
+	}
 }

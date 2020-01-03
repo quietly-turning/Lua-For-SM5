@@ -1,58 +1,86 @@
-@charset "UTF-8";
 div.LuaAPI h2.API-Category {
   margin: 0.5em 0em;
-  padding: 0.2em 0em 0.2em 0.5em;
+  padding: 0.2em 0.5em;
   color: #fff;
   background-color: #676b6f;
-  cursor: pointer; }
-  div.LuaAPI h2.API-Category:after {
-    content: " ▴"; }
-  div.LuaAPI h2.API-Category.collapsed:after {
-    content: " ▾"; }
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+div.LuaAPI h2.API-Category:after {
+  background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(255,255,255,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
+  background-size: 3rem 3rem;
+  height: 2.4rem;
+  width: 1.5rem;
+  background-position: 50%;
+  content: " ";
+  display: block;
+}
+div.LuaAPI h2.API-Category.collapsed:after {
+  content: " ";
+  transform: rotateX(180deg);
+}
 div.LuaAPI div.actor-class hr {
   border-bottom: 1px solid #000;
-  margin: 0em; }
+  margin: 0em;
+}
 div.LuaAPI div.actor-class span.octicon {
-  opacity: 0; }
+  opacity: 0;
+}
 div.LuaAPI div.actor-class h3 {
   margin: 0.5em 0em 0em 0em;
   padding: 0.2em 0em;
-  text-indent: -0.6em; }
-  div.LuaAPI div.actor-class h3 span.octicon {
-    font-size: 0.8em;
-    width: 0.8em; }
-  div.LuaAPI div.actor-class h3:hover span.octicon {
-    opacity: 1; }
-    div.LuaAPI div.actor-class h3:hover span.octicon:hover {
-      cursor: pointer; }
-  div.LuaAPI div.actor-class h3 span.base {
-    font-size: 98%;
-    font-weight: 200; }
+  text-indent: -0.6em;
+}
+div.LuaAPI div.actor-class h3 span.octicon {
+  font-size: 0.8em;
+  width: 0.8em;
+}
+div.LuaAPI div.actor-class h3:hover span.octicon {
+  opacity: 1;
+}
+div.LuaAPI div.actor-class h3:hover span.octicon:hover {
+  cursor: pointer;
+}
+div.LuaAPI div.actor-class h3 span.base {
+  font-size: 98%;
+  font-weight: 200;
+}
 div.LuaAPI div.actor-class div.method {
-  margin-top: 1.5em; }
-  div.LuaAPI div.actor-class div.method div.method-signature {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-weight: bold;
-    text-indent: -1em; }
-    div.LuaAPI div.actor-class div.method div.method-signature span.octicon {
-      font-size: 1em;
-      width: 1em; }
-    div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon {
-      opacity: 1; }
-      div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon:hover {
-        cursor: pointer; }
-    div.LuaAPI div.actor-class div.method div.method-signature code {
-      font-weight: normal; }
-  div.LuaAPI div.actor-class div.method span.method-return {
-    display: block; }
-  div.LuaAPI div.actor-class div.method span.method-description {
-    margin-left: 1em;
-    display: block; }
-    div.LuaAPI div.actor-class div.method span.method-description br {
-      display: block;
-      content: "";
-      margin-bottom: 0.5em; }
+  margin-top: 1.5em;
+}
+div.LuaAPI div.actor-class div.method div.method-signature {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: bold;
+  text-indent: -1em;
+}
+div.LuaAPI div.actor-class div.method div.method-signature span.octicon {
+  font-size: 1em;
+  width: 1em;
+}
+div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon {
+  opacity: 1;
+}
+div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon:hover {
+  cursor: pointer;
+}
+div.LuaAPI div.actor-class div.method div.method-signature code {
+  font-weight: normal;
+}
+div.LuaAPI div.actor-class div.method span.method-return {
+  display: block;
+}
+div.LuaAPI div.actor-class div.method span.method-description {
+  margin-left: 1em;
+  display: block;
+}
+div.LuaAPI div.actor-class div.method span.method-description br {
+  display: block;
+  content: "";
+  margin-bottom: 0.5em;
+}
 div.LuaAPI #Enums + div > table {
-  margin: 1em 0em 0em 0em; }
+  margin: 1em 0em 0em 0em;
+}
 
 /*# sourceMappingURL=api.css.map */
