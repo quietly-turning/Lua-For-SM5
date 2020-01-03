@@ -46,11 +46,12 @@ div.LuaAPI{
 		h3{
 			margin: 0.5em 0em 0em 0em;
 			padding: 0.2em 0em;
-			text-indent: -0.6em;
+			text-indent: -0.5em;
 
 			span.octicon{
 				font-size: 0.8em;
 				width: 0.8em;
+				margin-right: -0.1em;
 			}
 
 			&:hover{
@@ -77,11 +78,12 @@ div.LuaAPI{
 			div.method-signature{
 				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 				font-weight: bold;
-				text-indent: -1em;
+				text-indent: -0.75em;
 
 				span.octicon{
 					font-size: 1em;
 					width: 1em;
+					margin-right: -0.25em;
 				}
 
 				&:hover{

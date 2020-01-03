@@ -76,7 +76,7 @@ class App extends Component {
 							<Sidebar onFilterChange={this.handleFilterChange} />
 						</div>
 
-						<div id="content" className="offset-md-3 col-md-6 col-sm-12">
+						<div id="content" className="offset-md-3 col-md-6 col-sm-12 pl-lg-0 pl-md-3 pl-4">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
 								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} />))} />

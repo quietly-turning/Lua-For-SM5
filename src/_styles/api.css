@@ -30,11 +30,12 @@ div.LuaAPI div.actor-class span.octicon {
 div.LuaAPI div.actor-class h3 {
   margin: 0.5em 0em 0em 0em;
   padding: 0.2em 0em;
-  text-indent: -0.6em;
+  text-indent: -0.5em;
 }
 div.LuaAPI div.actor-class h3 span.octicon {
   font-size: 0.8em;
   width: 0.8em;
+  margin-right: -0.1em;
 }
 div.LuaAPI div.actor-class h3:hover span.octicon {
   opacity: 1;
@@ -52,11 +53,12 @@ div.LuaAPI div.actor-class div.method {
 div.LuaAPI div.actor-class div.method div.method-signature {
   font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-weight: bold;
-  text-indent: -1em;
+  text-indent: -0.75em;
 }
 div.LuaAPI div.actor-class div.method div.method-signature span.octicon {
   font-size: 1em;
   width: 1em;
+  margin-right: -0.25em;
 }
 div.LuaAPI div.actor-class div.method div.method-signature:hover span.octicon {
   opacity: 1;
