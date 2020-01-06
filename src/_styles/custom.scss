@@ -41,18 +41,9 @@ body{
 		font-weight:400;
 	}
 
-	h5, li{
-		border-radius: 0.25em;
-		padding:0.35em 1em;
-	}
-
 	h5, a{
 		display: flex;
 		justify-content: space-between;
-	}
-	h5:hover, li:hover{
-		cursor: pointer;
-		background-color: #e5e5e5;
 	}
 
 	#GuidesSidebar{
@@ -60,6 +51,16 @@ body{
 		.active{
 			color: #f92672;   // pink
 			font-weight:bold;
+		}
+
+		h5, li{
+			border-radius: 0.25em;
+			padding:0.35em 1em;
+		}
+
+		h5:hover, li:hover{
+			cursor: pointer;
+			background-color: #e5e5e5;
 		}
 
 		h5::after{
@@ -75,6 +76,19 @@ body{
 		h5.collapsed::after{
 			content: " ";
 			transform: rotateX(180deg);
+		}
+	}
+
+	#LuaAPISidebar{
+		h5 a{
+			border-radius: 0.25em;
+			padding:0.35em 1em;
+			width: 100%;
+		}
+
+		h5 a:hover{
+			cursor: pointer;
+			background-color: #e5e5e5;
 		}
 	}
 }

@@ -36,21 +36,21 @@ body {
 .sidebar h5 {
   font-weight: 400;
 }
-.sidebar h5, .sidebar li {
-  border-radius: 0.25em;
-  padding: 0.35em 1em;
-}
 .sidebar h5, .sidebar a {
   display: flex;
   justify-content: space-between;
 }
-.sidebar h5:hover, .sidebar li:hover {
-  cursor: pointer;
-  background-color: #e5e5e5;
-}
 .sidebar #GuidesSidebar .active {
   color: #f92672;
   font-weight: bold;
+}
+.sidebar #GuidesSidebar h5, .sidebar #GuidesSidebar li {
+  border-radius: 0.25em;
+  padding: 0.35em 1em;
+}
+.sidebar #GuidesSidebar h5:hover, .sidebar #GuidesSidebar li:hover {
+  cursor: pointer;
+  background-color: #e5e5e5;
 }
 .sidebar #GuidesSidebar h5::after {
   background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
@@ -65,6 +65,15 @@ body {
 .sidebar #GuidesSidebar h5.collapsed::after {
   content: " ";
   transform: rotateX(180deg);
+}
+.sidebar #LuaAPISidebar h5 a {
+  border-radius: 0.25em;
+  padding: 0.35em 1em;
+  width: 100%;
+}
+.sidebar #LuaAPISidebar h5 a:hover {
+  cursor: pointer;
+  background-color: #e5e5e5;
 }
 
 #content {
