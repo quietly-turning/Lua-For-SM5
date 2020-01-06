@@ -50,15 +50,15 @@ body{
 		//	.active class handled by react-router-dom NavLink
 		.active{
 			color: #f92672;   // pink
-			font-weight:bold;
 		}
 
-		h5, li{
+		h5, li a{
 			border-radius: 0.25em;
 			padding:0.35em 1em;
+			width: 100%;
 		}
 
-		h5:hover, li:hover{
+		h5:hover, li a:hover{
 			cursor: pointer;
 			background-color: #e5e5e5;
 		}

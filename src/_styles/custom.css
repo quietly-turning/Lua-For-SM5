@@ -42,13 +42,13 @@ body {
 }
 .sidebar #GuidesSidebar .active {
   color: #f92672;
-  font-weight: bold;
 }
-.sidebar #GuidesSidebar h5, .sidebar #GuidesSidebar li {
+.sidebar #GuidesSidebar h5, .sidebar #GuidesSidebar li a {
   border-radius: 0.25em;
   padding: 0.35em 1em;
+  width: 100%;
 }
-.sidebar #GuidesSidebar h5:hover, .sidebar #GuidesSidebar li:hover {
+.sidebar #GuidesSidebar h5:hover, .sidebar #GuidesSidebar li a:hover {
   cursor: pointer;
   background-color: #e5e5e5;
 }
