@@ -10,17 +10,17 @@
   ],
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "gh-pages": "^2.1.x",
+    "gh-pages": "^2.2.0",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
-    "popper.js": "^1.16.0",
+    "popper.js": "^1.16.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-highlight": "^0.12.0",
     "react-octicon": "^3.0.1",
     "react-router-dom": "^5.1.x",
     "react-scripts": "^3.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "sass --watch src/_styles/ | react-scripts start",
