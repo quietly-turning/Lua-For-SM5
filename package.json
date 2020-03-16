@@ -14,13 +14,13 @@
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "popper.js": "^1.16.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "react-highlight": "^0.12.0",
     "react-octicon": "^3.0.1",
     "react-router-dom": "^5.1.x",
-    "react-scripts": "^3.3.0",
-    "typescript": "^3.7.5"
+    "react-scripts": "^3.4.0",
+    "typescript": "^3.8.3"
   },
   "scripts": {
     "start": "sass --watch src/_styles/ | react-scripts start",
