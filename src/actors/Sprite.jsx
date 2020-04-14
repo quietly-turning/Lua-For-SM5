@@ -39,7 +39,7 @@ Def.Sprite{
 
 			<p>What about sprite sheets for animated sprites?  StepMania&apos;s engine is hardcoded to look for patterns in the filename with Sprite actors.  If you are loading a sprite sheet that you intend to animate through, you&apos;ll want to ensure that the filename of the png you are loading ends with the pattern: <em>(columns)</em>x<em>(rows)</em></p>
 
-			<p>For example. this sprite of Dr. WIly has 6 columns across 1 row.</p>
+			<p>For example, this sprite of Dr. Wily has 6 columns across 1 row.</p>
 
 			<p><img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily 6x1.png" /></p>
 
