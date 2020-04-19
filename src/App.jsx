@@ -5,42 +5,41 @@ import { Route, Switch } from "react-router-dom"
 // ------- primary stylesheet
 import "./_styles/custom.css"
 
-//------- components for layout (header, sidebar)
+// ------- components for layout (header, sidebar)
 import Header from "./_layout/Header"
 import Sidebar from "./_layout/Sidebar"
 
-//------- components for top-level pages
+// ------- components for top-level pages
 import Home from "./Home"
 import LuaAPI from "./LuaAPI/LuaAPI"
 import Resources from "./Resources"
 
-// ------- BEGIN GUIDES -------
+// ------- components for Guides
+import Foreword from "./Guides/introduction/Foreword"
+import Lua from "./Guides/introduction/Lua"
+import SupportedFileExtensions from "./Guides/introduction/Supported-File-Extensions"
+import ModChartSetup from "./Guides/introduction/Mod-Chart-Setup"
 
-import Foreword from "./introduction/Foreword"
-import Lua from "./introduction/Lua"
-import SupportedFileExtensions from "./introduction/Supported-File-Extensions"
-import ModChartSetup from "./introduction/Mod-Chart-Setup"
+import Quad from "./Guides/actors/Quad"
+import BitmapText from "./Guides/actors/BitmapText"
+import Sprite from "./Guides/actors/Sprite"
+import Actor from "./Guides/actors/Actor"
+import LoadActor from "./Guides/actors/LoadActor"
+import Sound from "./Guides/actors/Sound"
+import ActorMultiVertex from "./Guides/actors/ActorMultiVertex"
+import ActorFrameTexture from "./Guides/actors/ActorFrameTexture"
+import Model from "./Guides/actors/Model"
 
-import Quad from "./actors/Quad"
-import BitmapText from "./actors/BitmapText"
-import Sprite from "./actors/Sprite"
-import Actor from "./actors/Actor"
-import LoadActor from "./actors/LoadActor"
-import Sound from "./actors/Sound"
-import ActorMultiVertex from "./actors/ActorMultiVertex"
-import ActorFrameTexture from "./actors/ActorFrameTexture"
-import Model from "./actors/Model"
+import SCREENMAN from "./Guides/singletons/SCREENMAN"
+import SOUND from "./Guides/singletons/SOUND"
 
-import SCREENMAN from "./singletons/SCREENMAN"
-import SOUND from "./singletons/SOUND"
+import Debugging from "./Guides/best-practices/Debugging"
+import CommandChaining from "./Guides/best-practices/Command-Chaining"
 
-import Debugging from "./best-practices/Debugging"
-import CommandChaining from "./best-practices/Command-Chaining"
+import ArbitraryInput from "./Guides/examples/ArbitraryInput"
+import SimpleTweens from "./Guides/examples/SimpleTweens"
 
-import ArbitraryInput from "./examples/ArbitraryInput"
-import SimpleTweens from "./examples/SimpleTweens"
-
-// ------- END GUIDES -------
+// -----------------------------------
 
 class App extends Component {
 
