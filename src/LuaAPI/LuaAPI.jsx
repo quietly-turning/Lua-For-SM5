@@ -658,12 +658,19 @@ class LuaAPI extends Component {
 						The original, full API doc can <a href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
 					</p>
 
+					{
+						// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
+						// when the mobile navigation menu (should fill the entire the screen) is active
+						// otherwise, use d-md-none so that this div only appears when bootstraps detects page
+						// width is smaller than md
+					}
+					<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
 
-					<div className="d-md-none sticky-top mobile-filter">
-
-						<span className="">
-							<br /> <br /><br />
-						</span>
+						{
+							// hack: pad the LuaAPIFilter component down a bit so that it doesn't
+							// appear under the navbar when sticky-top takes effect
+						}
+						<span className=""><br /> <br /><br /></span>
 
 						<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
 						<hr />
