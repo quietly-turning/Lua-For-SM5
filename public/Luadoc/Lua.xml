@@ -3222,12 +3222,9 @@
 		<Constant name='SCREEN_RIGHT' value='1280'/>
 		<Constant name='SCREEN_TOP' value='0'/>
 		<Constant name='SCREEN_WIDTH' value='1280'/>
-		<Constant name='bCategory' value='2'/>
-		<Constant name='num' value='550'/>
 		<Constant name='PLAYER_1' value='&apos;PlayerNumber_P1&apos;'/>
 		<Constant name='PLAYER_2' value='&apos;PlayerNumber_P2&apos;'/>
 		<Constant name='_VERSION' value='&apos;Lua 5.1&apos;'/>
-		<Constant name='bPreference' value='&apos;Normal&apos;'/>
 		<Constant name='bottom' value='&apos;VertAlign_Bottom&apos;'/>
 		<Constant name='center' value='&apos;HorizAlign_Center&apos;'/>
 		<Constant name='left' value='&apos;HorizAlign_Left&apos;'/>
