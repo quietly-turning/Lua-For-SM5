@@ -8,7 +8,7 @@ class Header extends Component {
 			<nav id="topbar" className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
 				<div className="navbar-nav">
-					<NavLink className="ml-4 mr-5 nav-link text-nowrap font-weight-normal" exact to="/">
+					<NavLink className="ml-4 mr-5 nav-link text-nowrap text-white font-weight-normal" exact to="/">
 						<img src="/Lua-For-SM5/img/stepmania.png" className="mr-2" alt="" width="25" height="25" />
 						Lua for SM5
 					</NavLink>
