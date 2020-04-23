@@ -69,7 +69,7 @@ Line  0= !"$%&'()*+,-.
 Line  1=/0123456789:;<
 Line  2=>?@ABCDEFGHIJKL
 Line  3=MNOPQRSTUVWXYZ
-Line  4=\^_abcdefghij
+Line  4=\\]^_abcdefghij
 # etc.
 
 0=6
@@ -95,7 +95,7 @@ Line  0= !"$%&'()*+,-.
 Line  1=/0123456789:;<
 Line  2=>?@ABCDEFGHIJKL
 Line  3=MNOPQRSTUVWXYZ
-Line  4=\^_abcdefghij
+Line  4=\\]^_abcdefghij
 # etc.
 
 0=6
