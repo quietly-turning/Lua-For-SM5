@@ -7,10 +7,13 @@ class Header extends Component {
 		return (
 			<nav id="topbar" className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
 
-				<img src="/Lua-For-SM5/img/stepmania.png" className="navbar-brand" alt="" width="25" />
-				<span className="navbar-brand">
-					Lua for SM5
-				</span>
+				<div className="navbar-nav">
+					<NavLink className="ml-4 mr-5 nav-link text-nowrap font-weight-normal" exact to="/">
+						<img src="/Lua-For-SM5/img/stepmania.png" className="mr-2" alt="" width="25" height="25" />
+						Lua for SM5
+					</NavLink>
+				</div>
+
 
 				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span className="navbar-toggler-icon"></span>
