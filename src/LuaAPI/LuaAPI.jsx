@@ -38,9 +38,10 @@ class LuaAPI extends Component {
 		this.actor_class_names = {}
 
 		// ensure that the following functions have access to "this"
-		this.filterResults= this.filterResults.bind(this)
+		this.filterResults  = this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
 		this.handleFilterChangeMobile = this.handleFilterChangeMobile.bind(this)
+
 
 		// ---------------------------------------------------------------------
 
@@ -642,7 +643,7 @@ class LuaAPI extends Component {
 				elements = this.get_elements_to_render(this.filterResults(eventValue))
 			}
 
-			// by default there are 24 constants, but text filtering may result in fewer or none
+			// by default there are 22 constants, but text filtering may result in fewer or none
 			// so, store the curent number of constants in num_constants now and use it below
 			// to determine whether to show/hide the header for the constants table
 			// (having a table header with 0 rows of data is confusing)
@@ -658,7 +659,12 @@ class LuaAPI extends Component {
 					</p>
 
 
-					<div className="d-md-none">
+					<div className="d-md-none sticky-top mobile-filter">
+
+						<span className="">
+							<br /> <br /><br />
+						</span>
+
 						<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
 						<hr />
 					</div>

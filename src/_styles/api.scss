@@ -1,5 +1,11 @@
 div.LuaAPI{
 
+	//  mobile-filter contains a LuaAPIFilter component and
+	// appears when Bootstrap detects width to be less than md
+	div.mobile-filter{
+		background-color: #ffffff;
+	}
+
 	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
 	h2.API-Category {
 		margin: 0.5em 0em;
