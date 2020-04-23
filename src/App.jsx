@@ -1,6 +1,10 @@
 // ------- components for React
 import React, { Component } from "react"
-import { Route, Switch } from "react-router-dom"
+import { Route, Switch }    from "react-router-dom"
+
+// withRouter allows us access to app url history
+// and, more importantly here, hook events into url changes
+import { withRouter }       from "react-router"
 
 // ------- primary stylesheet
 import "./_styles/custom.css"
@@ -52,6 +56,19 @@ class App extends Component {
 			mobile_nav: false,
 			api_filter: ""
 		}
+
+		// on URL change
+		props.history.listen((location, action) => {
+			// if mobile_nav is true (suggesting  that #mobileNav is fullscreen)
+			if (this.state.mobile_nav === true){
+				// assume that the URL has changed because the user clicked an anchor
+				// within mobileNav, and remove bootstrap's "show" class,
+				// which has the effect of hiding it
+				const mobileNav = document.getElementById("mobileNav")
+				mobileNav.classList.remove("show")
+				this.setState({mobile_nav: false})
+			}
+		})
 	}
 
 	handleFilterChange(eventValue){
@@ -123,4 +140,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default withRouter(App);
