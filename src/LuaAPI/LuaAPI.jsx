@@ -55,10 +55,10 @@ class LuaAPI extends Component {
 			return null
 		}
 
-		// some method descriptions contain <Link /> elements, intended to serve
-		// as anchors to elsewhere within the document
+		// some ActorClass and method descriptions contain <Link> elements,
+		// intended to serve as anchors to elsewhere within the document
 		// we need to find and replace them with html-compliant anchors
-		const check_for_links = function(method){
+		const check_for_links = function(element){
 
 			const class_is_a_namespace = function(_class){
 				for (let i=0; i < lua_api.namespaces.length; i++){
@@ -68,16 +68,19 @@ class LuaAPI extends Component {
 			}
 
 
-			const trimmed_innerHTML = method.innerHTML.trim()
+			const trimmed_innerHTML = element.innerHTML.trim()
 
-			// first, attempt to handle <Link>text</Link> elements
-			let _matches = trimmed_innerHTML.match(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/i)
-			if (_matches){
+			// look for <Link>text</Link> elements
+			const wrapped_links = trimmed_innerHTML.match(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/i)
+			// also look for self-closing <Link /> elements
+			const self_closing_links = trimmed_innerHTML.match(/<\s*link[^>]*\/>/ig)
+
+			if (wrapped_links){
 				let anchors = []
 
-				_matches.forEach(function(_match){
-					const text = _matches[2]
-					const _link = $.parseHTML(_matches[1])
+				wrapped_links.forEach(function(_match){
+					const text = wrapped_links[2]
+					const _link = $.parseHTML(wrapped_links[1])
 					let _class = _link[0].attributes.getNamedItem("class")
 					_class = _class && _class.nodeValue
 					const _function = _link[0].attributes.getNamedItem("function").nodeValue
@@ -107,7 +110,7 @@ class LuaAPI extends Component {
 						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
 						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
 						// in the context of this React app.  We'll get the parentNode of the method object.
-						const _parent_class = method.parentNode.nodeName
+						const _parent_class = element.parentNode.nodeName
 
 						if (_parent_class === "GlobalFunctions"){
 							const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + text + "</a>"
@@ -116,6 +119,7 @@ class LuaAPI extends Component {
 					}
 				})
 
+				// temp variable used within the replace() function below in the event of multiple replaces being needed
 				let _i = 0
 				// substitute each new anchor string for the appropriate old <Link>text</Link>
 				return trimmed_innerHTML.replace(/<\s*link[^>]*>.*?<\s*\/\s*link>/i, function(match){
@@ -123,12 +127,11 @@ class LuaAPI extends Component {
 				})
 			}
 
-			// next, attempt to handle <Link /> elements
-			_matches = trimmed_innerHTML.match(/<\s*link[^>]*\/>/ig)
-			if (_matches){
+
+			if (self_closing_links){
 				let anchors = []
 
-				_matches.forEach(function(_match){
+				self_closing_links.forEach(function(_match){
 
 					const _link = $.parseHTML(_match)
 					let _class = _link[0].attributes.getNamedItem("class")
@@ -151,21 +154,34 @@ class LuaAPI extends Component {
 							}
 						} else {
 
-							if (_function){
-								// create the anchor string for this Actor Class
-								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
-								anchors.push(anchor)
-							} else {
-								const anchor = "<a href='#Actors-" + _class + "'>" + _class + "</a>"
-								anchors.push(anchor)
+
+							// create the anchor string for this Actor Class
+							let anchor = ""
+
+							// ensure that _class matches an ActorClass before creating an anchor to it
+							// lua_api.actor_class_names is a convenience object with string keys that match ActorClass names
+							if (lua_api.actor_class_names[_class]){
+
+								if (_function){
+									anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
+								} else {
+									anchor = "<a href='#Actors-" + _class + "'>" + _class + "</a>"
+								}
+
+							// if _class wasn't an ActorClass, look for it in Namespaces next
+							// lua_api.namespaces is a numerically indexed Array with string values that match Namespaces
+							} else if (lua_api.namespaces.indexOf(_class) > -1) {
+								anchor = "<a href='#Namespaces-" + _class + "'>" + _class + "</a>"
 							}
+
+							anchors.push(anchor)
 						}
 					} else {
 						// It was possible in LuaDocumentation.xml to create <Link> to some other method
 						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
 						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
 						// in the context of this React app.  We'll get the parentNode of the method object.
-						const _parent_class = method.parentNode.attributes.getNamedItem("name").nodeValue
+						const _parent_class = element.parentNode.attributes.getNamedItem("name").nodeValue
 						const anchor = "<a href='#Actors-" + _parent_class + "-" + _function + "'>" + _parent_class +  "." + _function + "</a>"
 						anchors.push(anchor)
 					}
@@ -265,7 +281,7 @@ class LuaAPI extends Component {
 					data[0].push({
 						name: actor_class.attributes.name.textContent,
 						base: get_base(actors_with_base, actor_class.attributes.name.textContent),
-						desc: class_desc[0] !== undefined ? class_desc[0].innerHTML : null,
+						desc: class_desc[0] !== undefined ? check_for_links(class_desc[0]) : null,
 						methods: sorted_methods
 					})
 				})
