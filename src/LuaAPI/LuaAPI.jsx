@@ -677,14 +677,14 @@ class LuaAPI extends Component {
 					{
 						// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
 						// when the mobile navigation menu (should fill the entire the screen) is active
-						// otherwise, use d-md-none so that this div only appears when bootstraps detects page
+						// otherwise, use d-md-none so that this div only appears when bootstrap detects page
 						// width is smaller than md
 					}
 					<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
 
 						{
-							// hack: pad the LuaAPIFilter component down a bit so that it doesn't
-							// appear under the navbar when sticky-top takes effect
+							// hack: pad the LuaAPIFilter component down a bit via <br> so that
+							// it doesn't appear under the navbar when sticky-top takes effect
 						}
 						<span className=""><br /> <br /><br /></span>
 
