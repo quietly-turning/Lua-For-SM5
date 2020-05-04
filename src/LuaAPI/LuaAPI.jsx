@@ -68,72 +68,60 @@ class LuaAPI extends Component {
 			}
 
 
-			const trimmed_innerHTML = element.innerHTML.trim()
+			let trimmed_innerHTML = element.innerHTML.trim()
+			let anchors = []
 
 			// look for <Link>text</Link> elements
-			const wrapped_links = trimmed_innerHTML.match(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/i)
-			// also look for self-closing <Link /> elements
-			const self_closing_links = trimmed_innerHTML.match(/<\s*link[^>]*\/>/ig)
+			const wrapped_links = trimmed_innerHTML.matchAll(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/ig)
 
-			if (wrapped_links){
-				let anchors = []
+			for (const wrapped_link of wrapped_links){
 
-				wrapped_links.forEach(function(_match){
-					const text = wrapped_links[2]
-					const _link = $.parseHTML(wrapped_links[1])
-					let _class = _link[0].attributes.getNamedItem("class")
-					_class = _class && _class.nodeValue
-					const _function = _link[0].attributes.getNamedItem("function").nodeValue
+				const text = wrapped_link[2]
+				const _link = $.parseHTML(wrapped_link[1])
+				let _class = _link[0].attributes.getNamedItem("class")
+				_class = _class && _class.nodeValue
+				const _function = _link[0].attributes.getNamedItem("function").nodeValue
 
-					if (_class){
-						if (_class === "ENUM"){
-							if (_function){
-								// create the anchor string for this Enum
-								const anchor = "<a href='#Enums-" + _function + "'>" + text + "</a>"
-								anchors.push(anchor)
-							}
-						} else if (class_is_a_namespace(_class)) {
-							// create the anchor string for this Lua Namespace
-							const anchor = "<a href='#Namespaces-" + _class + "-" + _function + "'>" + text + "</a>"
+				if (_class){
+					if (_class === "ENUM"){
+						if (_function){
+							// create the anchor string for this Enum
+							const anchor = "<a href='#Enums-" + _function + "'>" + text + "</a>"
 							anchors.push(anchor)
-
-						} else {
-							if (_function){
-								// create the anchor string for this Actor Class
-								const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + text + "</a>"
-								anchors.push(anchor)
-							}
 						}
+					} else if (class_is_a_namespace(_class)) {
+						// create the anchor string for this Lua Namespace
+						const anchor = "<a href='#Namespaces-" + _class + "-" + _function + "'>" + text + "</a>"
+						anchors.push(anchor)
+
 					} else {
-
-						// It was possible in LuaDocumentation.xml to create <Link> to some other method
-						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
-						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
-						// in the context of this React app.  We'll get the parentNode of the method object.
-						const _parent_class = element.parentNode.nodeName
-
-						if (_parent_class === "GlobalFunctions"){
-							const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + text + "</a>"
+						if (_function){
+							// create the anchor string for this Actor Class
+							const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + text + "</a>"
 							anchors.push(anchor)
 						}
 					}
-				})
+				} else {
 
-				// temp variable used within the replace() function below in the event of multiple replaces being needed
-				let _i = 0
-				// substitute each new anchor string for the appropriate old <Link>text</Link>
-				return trimmed_innerHTML.replace(/<\s*link[^>]*>.*?<\s*\/\s*link>/i, function(match){
-					return anchors[_i++]
-				})
+					// It was possible in LuaDocumentation.xml to create <Link> to some other method
+					// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
+					// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
+					// in the context of this React app.  We'll get the parentNode of the method object.
+					const _parent_class = element.parentNode.nodeName
+
+					if (_parent_class === "GlobalFunctions"){
+						const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + text + "</a>"
+						anchors.push(anchor)
+					}
+				}
 			}
 
+			// also look for self-closing <Link /> elements
+			const self_closing_links = trimmed_innerHTML.matchAll(/<\s*link[^>]*\/>/ig)
 
-			if (self_closing_links){
-				let anchors = []
+			for (const self_closing_link of self_closing_links){
 
-				self_closing_links.forEach(function(_match){
-
-					const _link = $.parseHTML(_match)
+					const _link = $.parseHTML(self_closing_link[0])
 					let _class = _link[0].attributes.getNamedItem("class")
 					_class = _class && _class.nodeValue
 					let _function = _link[0].attributes.getNamedItem("function")
@@ -154,8 +142,7 @@ class LuaAPI extends Component {
 							}
 						} else {
 
-
-							// create the anchor string for this Actor Class
+							// create the anchor string
 							let anchor = ""
 
 							// ensure that _class matches an ActorClass before creating an anchor to it
@@ -177,26 +164,30 @@ class LuaAPI extends Component {
 							anchors.push(anchor)
 						}
 					} else {
-						// It was possible in LuaDocumentation.xml to create <Link> to some other method
-						// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
+						// It was possible in LuaDocumentation.xml to create a <Link> to some other method
+						// *within* the current Actor Class with a compact syntax like <Link function="zoomy"/>
 						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
 						// in the context of this React app.  We'll get the parentNode of the method object.
 						const _parent_class = element.parentNode.attributes.getNamedItem("name").nodeValue
 						const anchor = "<a href='#Actors-" + _parent_class + "-" + _function + "'>" + _parent_class +  "." + _function + "</a>"
 						anchors.push(anchor)
 					}
-
-				})
-
-				// temp variable used within the replace() function below in the event of multiple replaces being needed
-				let _i = 0
-				// substitute each new anchor string for the appropriate old <Link>text</Link>
-				return trimmed_innerHTML.replace(/<\s*link[^>]*\/>/gi, function(match){
-					return anchors[_i++]
-				})
 			}
 
-			// otherwise, no <Link> elements were found, so just return the method description
+
+			// temp variable used within the replace() function below in the event of multiple replaces being needed
+			let _i = 0
+
+			// replace each <Link>text</Link> element with the appropriate new anchor string
+			trimmed_innerHTML = trimmed_innerHTML.replace(/<\s*link[^>]*>.*?<\s*\/\s*link>/gi, function(match){
+				return anchors[_i++]
+			})
+
+			// replace each <Link /> element with the appropriate new anchor string
+			trimmed_innerHTML = trimmed_innerHTML.replace(/<\s*link[^>]*\/>/gi, function(match){
+				return anchors[_i++]
+			})
+
 			return trimmed_innerHTML
 		}
 
