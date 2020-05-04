@@ -1,6 +1,6 @@
 div.LuaAPI{
 
-	//  mobile-filter contains a LuaAPIFilter component and
+	// mobile-filter contains a LuaAPIFilter component and
 	// appears when Bootstrap detects width to be less than md
 	div.mobile-filter{
 		background-color: #ffffff;
@@ -76,6 +76,19 @@ div.LuaAPI{
 			}
 		}
 
+		// treat <br> elements within <Description> tags
+		// more like paragraphs; see: https://stackoverflow.com/a/31633969
+		span.actorclass-description,
+		span.namespace-description,
+		span.method-description
+		{
+			br{
+				display: block;
+				content: "";
+				margin-bottom: 0.5em;
+			}
+		}
+
 		// div.method is a CSS class for each method belonging to a particular ActorClass
 		div.method{
 
@@ -113,14 +126,6 @@ div.LuaAPI{
 			span.method-description{
 				margin-left:1em;
 				display:block;
-
-				// treat <br> elements within method-description spans more like paragraphs
-				// see: https://stackoverflow.com/a/31633969
-				br{
-					display: block;
-					content: "";
-					margin-bottom: 0.5em;
-				}
 			}
 		}
 	}
