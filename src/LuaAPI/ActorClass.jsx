@@ -9,14 +9,17 @@ class ActorClass extends Component {
 		super()
 		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
-
-		this.methods = props.actor.methods.map(function(method, j){
-			return <ActorMethod actor_name={props.actor.name} method={method} key={props.actor.name + "-" + method.name + j} />
-		})
 	}
 
 	updateHash(){
 		window.location.hash = "#Actors-" + this.props.actor.name
+	}
+
+	getMethodsToRender(){
+		const actor_name = this.props.actor.name
+		return this.props.actor.methods.map(function(method, j){
+			return <ActorMethod actor_name={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+		})
 	}
 
 	render(){
@@ -31,7 +34,7 @@ class ActorClass extends Component {
 
 				<span className="actorclass-description" dangerouslySetInnerHTML={{__html: this.props.actor.desc}} />
 
-				{this.methods}
+				{this.getMethodsToRender()}
 			</div>
 		)
 	}

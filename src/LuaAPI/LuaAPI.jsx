@@ -40,7 +40,7 @@ class LuaAPI extends Component {
 		// ensure that the following functions have access to "this"
 		this.filterResults  = this.filterResults.bind(this)
 		this.getReturnValue = this.getReturnValue.bind(this)
-		this.handleFilterChangeMobile = this.handleFilterChangeMobile.bind(this)
+		this.filterResultsMobile = this.filterResultsMobile.bind(this)
 
 
 		// ---------------------------------------------------------------------
@@ -457,7 +457,7 @@ class LuaAPI extends Component {
 
 
 	// this methods exists to handle the text-input field that appears in mobile layout
-	handleFilterChangeMobile(eventValue){
+	filterResultsMobile(eventValue){
 		this.setState({mobile_api_filter: eventValue})
 	}
 
@@ -640,7 +640,7 @@ class LuaAPI extends Component {
 						}
 						<span className=""><br /> <br /><br /></span>
 
-						<LuaAPIFilter onFilterChange={this.handleFilterChangeMobile} />
+						<LuaAPIFilter onFilterChange={this.filterResultsMobile} />
 						<hr />
 					</div>
 

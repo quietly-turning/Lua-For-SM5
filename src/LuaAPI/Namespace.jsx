@@ -9,14 +9,17 @@ class Namespace extends Component {
 		super()
 		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
-
-		this.methods = props.namespace.methods.map(function(method, j){
-			return <NamespaceMethod namespace_name={props.namespace.name} method={method} key={props.namespace.name + "-" + method.name + j} />
-		})
 	}
 
 	updateHash(){
 		window.location.hash = "#Namespaces-" + this.props.namespace.name
+	}
+
+	getMethodsToRender(){
+		const namespace_name = this.props.namespace.name
+		return this.props.namespace.methods.map(function(method, j){
+			return <NamespaceMethod namespace_name={namespace_name} method={method} key={namespace_name + "-" + method.name + j} />
+		})
 	}
 
 	render(){
@@ -30,7 +33,7 @@ class Namespace extends Component {
 
 				<span className="namespace-description" dangerouslySetInnerHTML={{__html: this.props.namespace.desc}} />
 
-				{this.methods}
+				{this.getMethodsToRender()}
 			</div>
 		)
 	}
