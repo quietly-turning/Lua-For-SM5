@@ -106,13 +106,22 @@ class LuaAPI extends Component {
 				} else if (link.c !== undefined && link.f === undefined){
 
 					const text = link.t !== "" ? link.t : link.c
+					let anchor
+
+					// linking to a particular ActorClass
 					if (lua_api.actor_class_names[link.c]){
-			 			const anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
-						anchors.push(anchor)
+			 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
+
+					// linking to a particular Namespace
 					} else if (lua_api.namespaces[link.c]){
-						const anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
-						anchors.push(anchor)
+						anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
+
+					// linking somewhere else in the document
+					} else {
+						anchor = "<a href='#" + link.c + "'>" + text + "</a>"
 					}
+
+					anchors.push(anchor)
 
 
 				// Linking to a global function or an enum.
@@ -274,7 +283,7 @@ class LuaAPI extends Component {
 					data[1].push({
 						name: namespace.attributes.name.textContent,
 						methods: methods,
-						desc: namespace_desc[0] !== undefined ? check_for_links(namespace_desc[0]) : null,
+						desc: check_for_links(namespace_desc[0]),
 					})
 				})
 
