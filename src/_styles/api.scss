@@ -32,16 +32,7 @@ div.LuaAPI{
 		}
 	}
 
-
-	// div.actor-class is used for both classes of Actors such as ActorFrame, ActorMultiVertex, BitmapText, etc.
-	// as well as Namespaces (out of convenience) such as ActorUtil, ArrowEffects, RageFileUtil, etc.
-	div.actor-class{
-
-		hr{
-			border-bottom: 1px solid #000;
-			margin: 0em;
-		}
-
+	div.actor-class, div.enum{
 		// the "chain-link" icon that users click on to update the url string for permalinking
 		// ActorClasses each get their own octicon link,
 		// and ActorClass Methods each get their own octicon link as well
@@ -68,7 +59,26 @@ div.LuaAPI{
 					}
 				}
 			}
+		}
+	}
 
+	// div.actor-class is used for both classes of Actors such as ActorFrame, ActorMultiVertex, BitmapText, etc.
+	// as well as Namespaces (out of convenience) such as ActorUtil, ArrowEffects, RageFileUtil, etc.
+	div.actor-class{
+
+		hr{
+			border-bottom: 1px solid #000;
+			margin: 0em;
+		}
+
+		// the "chain-link" icon that users click on to update the url string for permalinking
+		// ActorClasses each get their own octicon link,
+		// and ActorClass Methods each get their own octicon link as well
+		span.octicon{
+			opacity: 0;
+		}
+
+		h3{
 			// "base" is the Actor class that this Actor class inherits from
 			span.base{
 				font-size: 98%;

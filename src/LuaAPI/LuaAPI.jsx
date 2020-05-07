@@ -1,14 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Octicon from 'react-octicon'
 
-import ActorClass from "./ActorClass"
-import ActorMethod from "./ActorMethod"
-import Namespace from "./Namespace"
+import ActorClass      from "./ActorClass"
+import ActorMethod     from "./ActorMethod"
+import Namespace       from "./Namespace"
 import NamespaceMethod from "./NamespaceMethod"
-import LuaAPIFilter from "./LuaAPIFilter"
+import Enum            from "./Enum"
+import LuaAPIFilter    from "./LuaAPIFilter"
 
-import $ from "jquery";
-import "../_styles/api.css";
+import $ from "jquery"
+import "../_styles/api.css"
 
 class LuaAPI extends Component {
 
@@ -392,20 +393,14 @@ class LuaAPI extends Component {
 				return <Namespace namespace={n} methods={methods} key={n.name} />
 			}),
 
-			// the Enums are simple enough to not warrant full React components; just handle them here
 			"Enums": classes_to_render[2].map(function(e, i){
-
 				const values = e.values.map(function(_e, j){
 					return( <tr key={"enum-"+e.name+"-"+_e.name+"-"+j}><td>{_e.name}</td><td>{_e.value}</td></tr> )
 				})
 				return (
-					<table id={"Enums-" + e.name} className="table table-hover table-sm table-bordered" key={"enum-"+e.name}>
-						<thead className="table-primary"><tr><th><strong>{e.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
-						<tbody>{values}</tbody>
-					</table>
+					<Enum enum={e} values={values} key={e.name} />
 				)
 			}),
-
 
 			"Singletons": (
 				<ul id="Singletons">
