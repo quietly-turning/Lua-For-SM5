@@ -1,10 +1,7 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
 
 import ActorClass      from "./ActorClass"
-import ActorMethod     from "./ActorMethod"
 import Namespace       from "./Namespace"
-import NamespaceMethod from "./NamespaceMethod"
 import Enum            from "./Enum"
 import GlobalFunction  from "./GlobalFunction"
 import LuaAPIFilter    from "./LuaAPIFilter"
@@ -380,27 +377,16 @@ class LuaAPI extends Component {
 	get_elements_to_render(classes_to_render){
 
 		return {
-			"Actors": classes_to_render[0].map(function(actor, i){
-				const methods = actor.methods.map(function(method, j){
-					return <ActorMethod actor={actor} method={method} key={actor.name + "-" + method.name + j} />
-				})
-				return <ActorClass actor={actor} methods={methods} key={actor.name} />
+			"Actors": classes_to_render[0].map(function(a, i){
+				return <ActorClass actor={a} key={a.name} />
 			}),
 
 			"Namespaces": classes_to_render[1].map(function(n, i){
-				const methods = n.methods.map(function(method, j){
-					return <NamespaceMethod namespace={n} method={method} key={n.name + "-" + method.name + j} />
-				})
-				return <Namespace namespace={n} methods={methods} key={n.name} />
+				return <Namespace namespace={n} key={n.name} />
 			}),
 
 			"Enums": classes_to_render[2].map(function(e, i){
-				const values = e.values.map(function(_e, j){
-					return( <tr key={"enum-"+e.name+"-"+_e.name+"-"+j}><td>{_e.name}</td><td>{_e.value}</td></tr> )
-				})
-				return (
-					<Enum enum={e} values={values} key={e.name} />
-				)
+				return <Enum enum={e} key={e.name} />
 			}),
 
 			"Singletons": (
@@ -414,25 +400,25 @@ class LuaAPI extends Component {
 			"GlobalFunctions":(
 				<div className="GlobalFunctions actor-class">
 					{classes_to_render[4].map(function(f, i){
-						return( <GlobalFunction global_function={f} /> )
+						return( <GlobalFunction global_function={f} key={"global_function-"+f.name}/> )
 					})}
 				</div>
 			),
 
 			"Constants": (
-					<table id={"Constants"} className="table table-hover table-sm table-bordered">
-						<thead className="table-primary"><tr><th><strong>Lua Variable</strong></th><th>Value</th></tr></thead>
-						<tbody>
-							{classes_to_render[5].map(function(c, i){
-								return(
-									<tr key={"constant-"+c.name}>
-										<td>{c.name}</td>
-										<td>{c.value}</td>
-									</tr>
-								)
-							})}
-						</tbody>
-					</table>
+				<table id={"Constants"} className="table table-hover table-sm table-bordered">
+					<thead className="table-primary"><tr><th><strong>Lua Variable</strong></th><th>Value</th></tr></thead>
+					<tbody>
+						{classes_to_render[5].map(function(c, i){
+							return(
+								<tr key={"constant-"+c.name}>
+									<td>{c.name}</td>
+									<td>{c.value}</td>
+								</tr>
+							)
+						})}
+					</tbody>
+				</table>
 			)
 		}
 	}

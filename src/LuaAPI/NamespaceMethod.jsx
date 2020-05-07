@@ -5,17 +5,17 @@ class NamespaceMethod extends Component {
 
 	constructor(){
 		super()
-		// ensure that these functions have access to "this"
+		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
 	}
 
 	updateHash(){
-		window.location.hash = "#Namespaces-" + this.props.namespace.name +  "-" + this.props.method.name
+		window.location.hash = "#Namespaces-" + this.props.namespace_name +  "-" + this.props.method.name
 	}
 
 	render(){
 		return(
-			<div id={"Namespaces-" + this.props.namespace.name +  "-" + this.props.method.name} className="method">
+			<div id={"Namespaces-" + this.props.namespace_name +  "-" + this.props.method.name} className="method">
 				<div className="method-signature">
 					<Octicon onClick={this.updateHash} name="link" />
 					{this.props.method.name}

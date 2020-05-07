@@ -1,12 +1,18 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Octicon from 'react-octicon'
+
+import ActorMethod from "./ActorMethod"
 
 class ActorClass extends Component {
 
-	constructor(){
+	constructor(props){
 		super()
-		// ensure that these functions have access to "this"
+		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
+
+		this.methods = props.actor.methods.map(function(method, j){
+			return <ActorMethod actor_name={props.actor.name} method={method} key={props.actor.name + "-" + method.name + j} />
+		})
 	}
 
 	updateHash(){
@@ -25,10 +31,10 @@ class ActorClass extends Component {
 
 				<span className="actorclass-description" dangerouslySetInnerHTML={{__html: this.props.actor.desc}} />
 
-				{this.props.methods}
+				{this.methods}
 			</div>
 		)
 	}
 }
 
-export default ActorClass;
+export default ActorClass

@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import Octicon from 'react-octicon'
 
+import NamespaceMethod from "./NamespaceMethod"
+
 class Namespace extends Component {
 
-	constructor(){
+	constructor(props){
 		super()
-		// ensure that these functions have access to "this"
+		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
+
+		this.methods = props.namespace.methods.map(function(method, j){
+			return <NamespaceMethod namespace_name={props.namespace.name} method={method} key={props.namespace.name + "-" + method.name + j} />
+		})
 	}
 
 	updateHash(){
@@ -24,10 +30,10 @@ class Namespace extends Component {
 
 				<span className="namespace-description" dangerouslySetInnerHTML={{__html: this.props.namespace.desc}} />
 
-				{this.props.methods}
+				{this.methods}
 			</div>
 		)
 	}
 }
 
-export default Namespace;
+export default Namespace
