@@ -770,15 +770,13 @@ save yourself some time, copy this for undocumented things:
 		The functions defined in the <code>Enum</code> namespace are valid member
 		functions of every <Link class='Enums'>Enum</Link> where the first argument is
 		omitted and the name of the <Link class='Enums'>Enum</Link> is used in place
-		of <code>Enum</code>. Instead of
-		<code><Link function='GetName'>Enum.GetName</Link>(
-		<Link class='ENUM' function='PlayerNumber' /> )</code> or
-		<code><Link function='Reverse'>Enum.Reverse</Link>(
-		<Link class='ENUM' function='PlayerNumber' /> )</code>, one can use
-		<code><Link class='ENUM' function='PlayerNumber' />:<!--
-		--><Link function='GetName'>GetName</Link>()</code> or
-		<code><Link class='ENUM' function='PlayerNumber' />:<!--
-		--><Link function='Reverse'>Reverse</Link>()</code>, respectively.
+		of <code>Enum</code>.<br />
+
+		Instead of
+		<code><Link function='GetName'>Enum.GetName</Link>(<Link class='ENUM' function='PlayerNumber' />)</code> or
+		<code><Link function='Reverse'>Enum.Reverse</Link>(<Link class='ENUM' function='PlayerNumber' />)</code>, one can use
+		<code><Link class='ENUM' function='PlayerNumber' />:<Link function='GetName'>GetName</Link>()</code> or
+		<code><Link class='ENUM' function='PlayerNumber' />:<Link function='Reverse'>Reverse</Link>()</code>, respectively.
 	</Description>
 	<Function name='Compare' return='int' arguments='Enum e, string x, string y'>
 		Both <code>x</code> and <code>y</code> need to be elements of the enumerated
