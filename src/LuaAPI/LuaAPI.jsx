@@ -34,8 +34,9 @@ class LuaAPI extends Component {
 		const lua_api = this
 
 		// a pojo containing just the actor class names as keys
-		// used for lookup purposes in getReturnValue()
+		// used for convenient lookup in getReturnValue()
 		this.actor_class_names = {}
+		this.namespaces = {}
 
 		// ensure that the following functions have access to "this"
 		this.filterResults  = this.filterResults.bind(this)
@@ -60,135 +61,114 @@ class LuaAPI extends Component {
 		// we need to find and replace them with html-compliant anchors
 		const check_for_links = function(element){
 
-			const class_is_a_namespace = function(_class){
-				for (let i=0; i < lua_api.namespaces.length; i++){
-					if (lua_api.namespaces[i]===_class){ return true }
-				}
-				return false
-			}
-
-
-			let trimmed_innerHTML = element.innerHTML.trim()
 			let anchors = []
 
-			// look for <Link>text</Link> elements
-			const wrapped_links = trimmed_innerHTML.matchAll(/(<\s*link[^>]*>)(.*?)<\s*\/\s*link>/ig)
+			for (const l of $(element).find("Link")){
 
-			for (const wrapped_link of wrapped_links){
+				// find the function and class attributes of this <Link>
+				// as well as text (jQuery will return an empty string for self-closing elements without text)
+				// and put them in this temporary convenience object
+				const link = {
+					f: $(l).attr("function"),
+					c: $(l).attr("class"),
+					t: $(l).text()
+				}
 
-				const text = wrapped_link[2]
-				const _link = $.parseHTML(wrapped_link[1])
-				let _class = _link[0].attributes.getNamedItem("class")
-				_class = _class && _class.nodeValue
-				const _function = _link[0].attributes.getNamedItem("function").nodeValue
+				// attempt to recreate the logic from Lua.xsl for handling <Link> elements
+				// look for   <xsl:template match="sm:Link">
 
-				if (_class){
-					if (_class === "ENUM"){
-						if (_function){
-							// create the anchor string for this Enum
-							const anchor = "<a href='#Enums-" + _function + "'>" + text + "</a>"
-							anchors.push(anchor)
-						}
-					} else if (class_is_a_namespace(_class)) {
-						// create the anchor string for this Lua Namespace
-						const anchor = "<a href='#Namespaces-" + _class + "-" + _function + "'>" + text + "</a>"
-						anchors.push(anchor)
+				// Linking to a function in the current class/namespace.
+				if (link.c === undefined && link.f !== undefined){
 
-					} else {
-						if (_function){
-							// create the anchor string for this Actor Class
-							const anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + text + "</a>"
-							anchors.push(anchor)
-						}
-					}
-				} else {
-
-					// It was possible in LuaDocumentation.xml to create <Link> to some other method
-					// within the current Actor Class with a compact syntax like <Link function="zoomy"/>
+					// It was possible in LuaDocumentation.xml to create a <Link> to some other method
+					// *within* the current Actor Class with a compact syntax like <Link function="zoomy"/>
 					// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
 					// in the context of this React app.  We'll get the parentNode of the method object.
-					const _parent_class = element.parentNode.nodeName
+					const _parent = element.parentNode.attributes.getNamedItem("name")
+					const text = link.t !== "" ? link.t : link.f
 
-					if (_parent_class === "GlobalFunctions"){
-						const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + text + "</a>"
-						anchors.push(anchor)
-					}
-				}
-			}
-
-			// also look for self-closing <Link /> elements
-			const self_closing_links = trimmed_innerHTML.matchAll(/<\s*link[^>]*\/>/ig)
-
-			for (const self_closing_link of self_closing_links){
-
-					const _link = $.parseHTML(self_closing_link[0])
-					let _class = _link[0].attributes.getNamedItem("class")
-					_class = _class && _class.nodeValue
-					let _function = _link[0].attributes.getNamedItem("function")
-					_function = _function && _function.nodeValue
-
-					if (_class){
-						if (_class === "ENUM"){
-							if (_function){
-								// create the anchor string for this Enum
-								const anchor = "<a href='#Enums-" + _function + "'>" + _function + "</a>"
-								anchors.push(anchor)
-							}
-						} else if (_class === "GLOBAL"){
-							if (_function){
-								// create the anchor string for this Global Function
-					 			const anchor = "<a href='#GlobalFunctions-" + _function + "'>" + _function + "</a>"
-								anchors.push(anchor)
-							}
-						} else {
-
-							// create the anchor string
-							let anchor = ""
-
-							// ensure that _class matches an ActorClass before creating an anchor to it
-							// lua_api.actor_class_names is a convenience object with string keys that match ActorClass names
-							if (lua_api.actor_class_names[_class]){
-
-								if (_function){
-									anchor = "<a href='#Actors-" + _class + "-" + _function + "'>" + _class +  "." + _function + "</a>"
-								} else {
-									anchor = "<a href='#Actors-" + _class + "'>" + _class + "</a>"
-								}
-
-							// if _class wasn't an ActorClass, look for it in Namespaces next
-							// lua_api.namespaces is a numerically indexed Array with string values that match Namespaces
-							} else if (lua_api.namespaces.indexOf(_class) > -1) {
-								anchor = "<a href='#Namespaces-" + _class + "'>" + _class + "</a>"
-							}
-
+					if (_parent){
+						if (lua_api.actor_class_names[_parent.nodeValue]){
+							const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
 							anchors.push(anchor)
+
+						} else if (lua_api.namespaces[_parent.nodeValue]){
+							const anchor = "<a href='#Namespaces-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+							anchors.push(anchor)
+
+						} else {
+							// there doesn't seem to be any case to handle this in Lua.xsl
 						}
+
 					} else {
-						// It was possible in LuaDocumentation.xml to create a <Link> to some other method
-						// *within* the current Actor Class with a compact syntax like <Link function="zoomy"/>
-						// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
-						// in the context of this React app.  We'll get the parentNode of the method object.
-						const _parent_class = element.parentNode.attributes.getNamedItem("name").nodeValue
-						const anchor = "<a href='#Actors-" + _parent_class + "-" + _function + "'>" + _parent_class +  "." + _function + "</a>"
+						const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 					}
+
+
+				// Linking to a class/namespace.
+				} else if (link.c !== undefined && link.f === undefined){
+
+					const text = link.t !== "" ? link.t : link.c
+		 			const anchor = "<a href='#" + link.c + "'>" + text + "</a>"
+					anchors.push(anchor)
+
+
+				// Linking to a global function or an enum.
+				} else if ((link.c === "GLOBAL" || link.c === "ENUM") && (link.f !== undefined)){
+
+					const text = link.t !== "" ? link.t : link.f
+
+					if (link.c === "GLOBAL"){
+						// create the anchor string for this Global Function
+			 			const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+
+					} else if (link.c === "ENUM") {
+						// create the anchor string for this Enum
+						const anchor = "<a href='#Enums-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+					}
+
+
+				// Linking to a function in a class/namespace.
+				} else if (link.c !== undefined && link.f !== undefined) {
+
+					// if this was a <Link>text</Link> element, use the text provided
+					// if this was a self-closing link, use class.function and append "()"
+					const text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
+					let anchor = ""
+
+					// ensure that _class matches an ActorClass before creating an anchor to it
+					// lua_api.actor_class_names is a convenience object with string keys that match ActorClass names
+					if (lua_api.actor_class_names[link.c]){
+						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+
+					// if _class wasn't an ActorClass, look for it in Namespaces next
+					// lua_api.namespaces is a convenience object with string keys that match Namespaces
+					} else if (lua_api.namespaces[link.c]){
+						anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
+
+
+					// <Link> element was found with no documentation to link to...
+					// a current example is <Link class='ThemePrefs' function='Get' />
+					} else {
+						anchor = "<code>" + text + "</code>"
+					}
+
+					anchors.push(anchor)
+				}
+
+				// else "Ignore this Link."
+
 			}
 
-
-			// temp variable used within the replace() function below in the event of multiple replaces being needed
-			let _i = 0
-
-			// replace each <Link>text</Link> element with the appropriate new anchor string
-			trimmed_innerHTML = trimmed_innerHTML.replace(/<\s*link[^>]*>.*?<\s*\/\s*link>/gi, function(match){
-				return anchors[_i++]
+			$(element).find("Link").each(function(i, obj){
+				$(this).replaceWith(anchors[i])
 			})
 
-			// replace each <Link /> element with the appropriate new anchor string
-			trimmed_innerHTML = trimmed_innerHTML.replace(/<\s*link[^>]*\/>/gi, function(match){
-				return anchors[_i++]
-			})
-
-			return trimmed_innerHTML
+			return element.innerHTML.trim()
 		}
 
 		// ---------------------------------------------------------------------
@@ -223,20 +203,11 @@ class LuaAPI extends Component {
 
 				// ---------------------------------------------------------------------
 				// first, populate the actor_class_names object with the names of each actor class
-				// we'll need this to check against in the next forEach loop below
-				const actor_class_names = {}
-
-				actor_classes.forEach(function(actor_class){
-					actor_class_names[actor_class.attributes.name.textContent] = true
-				})
-
-				// retain the actor_class_names object as state so we can refer to it in getReturnValue()
-				lua_api.actor_class_names = actor_class_names
-
+				// and retain it as state for convenient lookup elsewhere (e.g. getReturnValue)
+				actor_classes.forEach(actor => lua_api.actor_class_names[actor.attributes.name.textContent] = true)
 				// include the SM5 Lua Namespace names for convenience, too
-				lua_api.namespaces = namespaces.map(function(namespace){
-					return namespace.attributes[0].nodeValue
-				})
+				namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
+
 
 				// now, do the "heavy lifting"
 				// ---------------------------------------------------------------------
