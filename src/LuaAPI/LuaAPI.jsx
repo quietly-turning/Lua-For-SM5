@@ -333,21 +333,20 @@ class LuaAPI extends Component {
 					constants: data[5]
 				})
 
-				// scroll the page to the appropriate y-offset if needed
+				// trigger a custom page scroll now
 				lua_api.scroll_window_after_hashchange()
 
-				// ensure that future hashchanges scroll the appropriate amount, too
-				window.addEventListener("hashchange", function(e){
-					lua_api.scroll_window_after_hashchange()
+				// and set up future hashchanges to use the custom scroll as well
+				props.history.listen((location, action) => {
+					lua_api.scroll_window_after_hashchange(location.hash)
 				})
 			})
 		})
 	}
 
-	scroll_window_after_hashchange(){
-		// now that the data has been retrieved, parsed, and injected into the document,
-		// check the url string for a hash and scroll the window to the appropriate y-offset
-		const window_hash = window.location.hash.replace("#","")
+	scroll_window_after_hashchange(hash){
+		const window_hash = (hash || window.location.hash).replace("#","")
+
 		if (window_hash) {
 			const el = document.getElementById(window_hash)
 			if (el){
