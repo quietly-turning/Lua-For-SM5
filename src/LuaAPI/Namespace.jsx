@@ -22,6 +22,8 @@ class Namespace extends Component {
 				</h3>
 				<hr />
 
+				<span className="namespace-description" dangerouslySetInnerHTML={{__html: this.props.namespace.desc}} />
+
 				{this.props.methods}
 			</div>
 		)

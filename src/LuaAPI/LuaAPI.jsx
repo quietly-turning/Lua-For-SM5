@@ -261,9 +261,13 @@ class LuaAPI extends Component {
 						}
 					})
 
+					// some namespaces have <Description> tags which contain text describing the overall class
+					const namespace_desc = $(namespace).find("Description")
+
 					data[1].push({
 						name: namespace.attributes.name.textContent,
-						methods: methods
+						methods: methods,
+						desc: namespace_desc[0] !== undefined ? check_for_links(namespace_desc[0]) : null,
 					})
 				})
 
