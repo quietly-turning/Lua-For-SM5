@@ -106,8 +106,13 @@ class LuaAPI extends Component {
 				} else if (link.c !== undefined && link.f === undefined){
 
 					const text = link.t !== "" ? link.t : link.c
-		 			const anchor = "<a href='#" + link.c + "'>" + text + "</a>"
-					anchors.push(anchor)
+					if (lua_api.actor_class_names[link.c]){
+			 			const anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
+						anchors.push(anchor)
+					} else if (lua_api.namespaces[link.c]){
+						const anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
+						anchors.push(anchor)
+					}
 
 
 				// Linking to a global function or an enum.
