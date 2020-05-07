@@ -139,16 +139,16 @@ class LuaAPI extends Component {
 					const text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
 					let anchor = ""
 
-					// ensure that _class matches an ActorClass before creating an anchor to it
+					// ensure that link.c matches an ActorClass before creating an anchor to it
 					// lua_api.actor_class_names is a convenience object with string keys that match ActorClass names
 					if (lua_api.actor_class_names[link.c]){
 						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
 
-					// if _class wasn't an ActorClass, look for it in Namespaces next
+					// if link.c wasn't an ActorClass, look for it in Namespaces next
 					// lua_api.namespaces is a convenience object with string keys that match Namespaces
 					} else if (lua_api.namespaces[link.c]){
-						anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
+						anchor = "<a href='#Namespaces-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
 
 					// <Link> element was found with no documentation to link to...
