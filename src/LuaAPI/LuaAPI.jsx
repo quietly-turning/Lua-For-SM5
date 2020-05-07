@@ -6,6 +6,7 @@ import ActorMethod     from "./ActorMethod"
 import Namespace       from "./Namespace"
 import NamespaceMethod from "./NamespaceMethod"
 import Enum            from "./Enum"
+import GlobalFunction  from "./GlobalFunction"
 import LuaAPIFilter    from "./LuaAPIFilter"
 
 import $ from "jquery"
@@ -412,23 +413,10 @@ class LuaAPI extends Component {
 
 			"GlobalFunctions":(
 				<div className="GlobalFunctions actor-class">
-
-				{classes_to_render[4].map(function(f, i){
-					return(
-						<div id={"GlobalFunctions-" + f.name} className="method" key={"GlobalFunction-"+f.name+"-"+i}>
-							<div className="method-signature">
-								<Octicon onClick={ function() { window.location.hash = "#GlobalFunctions-" + f.name } } name="link" />
-								{f.name}
-								(<code>{f.arguments}</code>)
-							</div>
-
-							<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: f.return}} />  </span>
-							<span className="method-description" dangerouslySetInnerHTML={{ __html: f.desc }} />
-						</div>
-					)
-				})}
+					{classes_to_render[4].map(function(f, i){
+						return( <GlobalFunction global_function={f} /> )
+					})}
 				</div>
-
 			),
 
 			"Constants": (
