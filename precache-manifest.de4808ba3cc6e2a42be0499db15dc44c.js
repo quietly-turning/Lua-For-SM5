@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "eab2ebaa2310ae2793b1a42fcbb5e32f",
+    "revision": "d8ec34138e3ab966b5ed9ff1e4b74fc6",
     "url": "/Lua-For-SM5/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Lua-For-SM5/static/css/2.8de60f06.chunk.css"
   },
   {
-    "revision": "a0c2a48f7487979bb175",
+    "revision": "e92eddaf815b1a7e8db0",
     "url": "/Lua-For-SM5/static/css/main.aeddf95d.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Lua-For-SM5/static/js/2.2f5b56c5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a0c2a48f7487979bb175",
-    "url": "/Lua-For-SM5/static/js/main.3713be7b.chunk.js"
+    "revision": "e92eddaf815b1a7e8db0",
+    "url": "/Lua-For-SM5/static/js/main.534dcf38.chunk.js"
   },
   {
     "revision": "6d9f27546675578647a1",
