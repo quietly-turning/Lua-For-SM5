@@ -805,6 +805,8 @@
 			<Function name='set_spatial_extent'/>
 			<Function name='solve'/>
 		</Class>
+		<Class base='BitmapText' name='DeviceList'>
+		</Class>
 		<Class base='Sprite' name='DifficultyIcon'>
 			<Function name='SetFromDifficulty'/>
 			<Function name='SetFromSteps'/>
@@ -1070,6 +1072,8 @@
 			<Function name='GetMouseWheel'/>
 			<Function name='GetMouseX'/>
 			<Function name='GetMouseY'/>
+		</Class>
+		<Class base='BitmapText' name='InputList'>
 		</Class>
 		<Class base='ActorFrame' name='LifeMeter'>
 			<Function name='GetLife'/>
