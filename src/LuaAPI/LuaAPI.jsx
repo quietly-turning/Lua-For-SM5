@@ -32,16 +32,16 @@ class LuaAPI extends Component {
 		// maintain a handle on this class to be used within the functions below
 		const lua_api = this
 
-		// a pojo containing just the actor class names as keys
-		// used for convenient lookup in getReturnValue()
+		// pojos containing just the actor class names and just namespace names as keys
+		// used for convenient lookup in getReturnValue() and to pass up to LuaAPISidebar
 		this.actor_class_names = {}
 		this.namespaces = {}
 
 		// ensure that the following functions have access to "this"
-		this.filterResults  = this.filterResults.bind(this)
-		this.getReturnValue = this.getReturnValue.bind(this)
+		this.filterResults       = this.filterResults.bind(this)
+		this.getReturnValue      = this.getReturnValue.bind(this)
 		this.filterResultsMobile = this.filterResultsMobile.bind(this)
-
+		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
 
 		// ---------------------------------------------------------------------
 
@@ -216,6 +216,7 @@ class LuaAPI extends Component {
 				// include the SM5 Lua Namespace names for convenience, too
 				namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
 
+				lua_api.bubbleDataUp()
 
 				// now, do the "heavy lifting"
 				// ---------------------------------------------------------------------
@@ -333,7 +334,7 @@ class LuaAPI extends Component {
 				})
 
 				// ---------------------------------------------------------------------
-				// cache all render-able elements now so that we don't need to constantly recompute them
+				// store all render-able elements now so that we don't need to constantly recompute them
 				lua_api.all_elements = lua_api.get_elements_to_render(data)
 
 				// ---------------------------------------------------------------------
@@ -357,6 +358,10 @@ class LuaAPI extends Component {
 				})
 			})
 		})
+	}
+
+	bubbleDataUp(){
+		this.props.parentCallback({actor_classes: Object.keys(this.actor_class_names), namespaces: Object.keys(this.namespaces)})
 	}
 
 	scroll_window_after_hashchange(hash){

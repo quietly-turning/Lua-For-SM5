@@ -49,8 +49,10 @@ class App extends Component {
 
 	constructor(props) {
 		super(props)
-		this.handleFilterChange = this.handleFilterChange.bind(this)
+
+		this.handleFilterChange    = this.handleFilterChange.bind(this)
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
+		this.getClasses             = this.getClasses.bind(this)
 
 		this.state = {
 			mobile_nav: false,
@@ -79,6 +81,10 @@ class App extends Component {
 		this.setState({mobile_nav: !this.state.mobile_nav})
 	}
 
+	getClasses(data){
+		this.setState({actor_classes: data.actor_classes, namespaces: data.namespaces})
+	}
+
 	render() {
 
 		return (
@@ -89,13 +95,13 @@ class App extends Component {
 					<div className="row h-100">
 
 						<div className="sidebar position-fixed h-100 col-lg-2 col-md-3 d-md-block d-none">
-							<Sidebar onFilterChange={this.handleFilterChange} />
+							<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} />
 						</div>
 
 						<div id="content" className="offset-md-3 col-md-6 col-sm-12 pl-lg-0 pl-md-3 pl-4">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
-								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} />))} />
+								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} />))} />
 								<Route path="/resources"	component={Resources} />
 
 								<Route path="/foreword"		component={Foreword}/>
@@ -127,7 +133,7 @@ class App extends Component {
 				</div>
 
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
-					<Sidebar onFilterChange={this.handleFilterChange} />
+					<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} />
 				</div>
 
 				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-toggle="collapse" data-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

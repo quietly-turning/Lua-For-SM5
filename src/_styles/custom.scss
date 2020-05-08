@@ -46,16 +46,21 @@ body{
 		justify-content: space-between;
 	}
 
-	#GuidesSidebar{
-		//	.active class handled by react-router-dom NavLink
-		.active{
-			color: #f92672;   // pink
+
+
+	#GuidesSidebar, #LuaAPISidebar{
+
+		h5{
+			border-radius: 0.25em;
 		}
 
-		h5, li a{
-			border-radius: 0.25em;
-			padding:0.35em 1em;
+		h5 a{
 			width: 100%;
+		}
+
+		li a{
+			border-radius: 0.25em;
+			padding:0.25em 1em;
 		}
 
 		h5:hover, li a:hover{
@@ -63,32 +68,54 @@ body{
 			background-color: #e5e5e5;
 		}
 
-		h5::after{
+		section h5::after{
 			background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
 			background-size: 2rem 2rem;
 			height: 1.25rem;
 			width: 1.25rem;
 			background-position: 50%;
-			margin-right: -0.5em;
 			content: " ";
 			display: block;
 		}
-		h5.collapsed::after{
+		section h5.collapsed::after{
 			content: " ";
 			transform: rotateX(180deg);
 		}
 	}
 
-	#LuaAPISidebar{
-		h5 a{
-			border-radius: 0.25em;
-			padding:0.35em 1em;
-			width: 100%;
+	#GuidesSidebar{
+		//	.active class handled by react-router-dom NavLink
+		.active{
+			color: #f92672;   // pink
 		}
 
-		h5 a:hover{
-			cursor: pointer;
-			background-color: #e5e5e5;
+		h5{
+			padding:0.35em 1em;
+		}
+
+		section h5::after{
+			margin-right: -0.5em;
+		}
+	}
+
+	#LuaAPISidebar{
+
+		// in the LuaAPISidebar, h5 elements that are children of section elements
+		// denote that this h5 will expand when clicked
+		// this includes: Actor Classes, Namespaces
+		section h5{
+			width: 80%;
+		}
+		section h5::after{
+			margin-top: 0.4em;
+			margin-right: -1.7em;
+		}
+
+		// in the LuaAPISidebar, h5 a elements that are children of the LuaAPISidebar itself
+		// denote that this is a NavLink to a major section of the Lua API
+		// this includes: Enums, Singletons, Global Functions, Constants
+		h5 a{
+			padding: 0.35em 1em;
 		}
 	}
 }
