@@ -18,15 +18,6 @@ class LuaAPI extends Component {
 			isLoaded: false,
 
 			mobile_api_filter: "",
-
-			visible_categories: {
-				"Actors": true,
-				"Namespaces": true,
-				"Enums": true,
-				"Singletons": true,
-				"GlobalFunctions": true,
-				"Constants": true
-			}
 		}
 
 		// maintain a handle on this class to be used within the functions below
@@ -596,20 +587,6 @@ class LuaAPI extends Component {
 	// -----------------------------------------------------------------------------------------
 
 
-	// toggle the show/hide of major categories of the API
-	handleCategoryClick(category, e){
-		// get all categories from state
-		var categories = {...this.state.visible_categories}
-		// flip the visibility boolean for the desired category
-		categories[category] = !(this.state.visible_categories[category])
-		// it seems it's not possible to directly set the state of a nested property,
-		// so update state for the entire visible_categories object
-		this.setState({visible_categories: categories})
-		// toggle the "collapsed" class so CSS can append the appropriate UI triangle
-		$("#" + category).toggleClass("collapsed")
-	}
-
-
 	render() {
 		if (this.state && this.state.isLoaded && this.props){
 
@@ -659,23 +636,23 @@ class LuaAPI extends Component {
 
 					<h1>SM5 Lua API</h1>
 
-					<h2 id="Actors" className="API-Category" onClick={(e) => this.handleCategoryClick("Actors", e)}>Actor Classes</h2>
-					<div>{this.state.visible_categories["Actors"] && elements["Actors"]}</div>
+					<h2 id="Actors" className="API-Category">Actor Classes</h2>
+					<div>{elements["Actors"]}</div>
 
-					<h2 id="Namespaces" className="API-Category" onClick={(e) => this.handleCategoryClick("Namespaces", e)}>Namespaces</h2>
-					<div>{this.state.visible_categories["Namespaces"] && elements["Namespaces"]}</div>
+					<h2 id="Namespaces" className="API-Category">Namespaces</h2>
+					<div>{elements["Namespaces"]}</div>
 
-					<h2 id="Enums" className="API-Category" onClick={(e) => this.handleCategoryClick("Enums", e)}>Enums</h2>
-					<div>{this.state.visible_categories["Enums"] && elements["Enums"]}</div>
+					<h2 id="Enums" className="API-Category">Enums</h2>
+					<div>{elements["Enums"]}</div>
 
-					<h2 id="Singletons" className="API-Category" onClick={(e) => this.handleCategoryClick("Singletons", e)}>Singletons</h2>
-					<div>{this.state.visible_categories["Singletons"] && elements["Singletons"]}</div>
+					<h2 id="Singletons" className="API-Category">Singletons</h2>
+					<div>{elements["Singletons"]}</div>
 
-					<h2 id="GlobalFunctions" className="API-Category" onClick={(e) => this.handleCategoryClick("GlobalFunctions", e)}>Global Functions</h2>
-					<div>{this.state.visible_categories["GlobalFunctions"] && elements["GlobalFunctions"]}</div>
+					<h2 id="GlobalFunctions" className="API-Category">Global Functions</h2>
+					<div>{elements["GlobalFunctions"]}</div>
 
-					<h2 id="Constants" className="API-Category" onClick={(e) => this.handleCategoryClick("Constants", e)}>Constants</h2>
-					<div>{this.state.visible_categories["Constants"] && num_constants > 0 && elements["Constants"]}</div>
+					<h2 id="Constants" className="API-Category">Constants</h2>
+					<div>{num_constants > 0 && elements["Constants"]}</div>
 				</div>
 			)
 		} else {

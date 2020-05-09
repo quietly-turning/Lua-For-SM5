@@ -19,7 +19,7 @@ class Sidebar extends Component {
 
 	render() {
 
-		// setting actor_classes and namespaces this way certainly feels like a hack
+		// setting actor_classes, namespaces, and enums this way certainly feels like a hack
 		if (this.props.actorClasses !== undefined){
 			this.actor_classes = this.props.actorClasses.map(function(actorclass, i){
 				return <li key={"actorclass"+i}><NavLink to={"#Actors-"+actorclass}>{actorclass}</NavLink></li>
@@ -34,7 +34,6 @@ class Sidebar extends Component {
 			this.enums = this.props.enums.map(function(e, i){
 				return <li key={"enum"+i}><NavLink to={"#Enums-"+e}>{e}</NavLink></li>
 			})
-			// console.log(this.enums)
 		}
 
 		return (
@@ -44,6 +43,7 @@ class Sidebar extends Component {
 					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>
+
 
 				<section>
 					<h5 id="heading-1" className="collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
@@ -55,6 +55,7 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
+
 				<section>
 					<h5 id="heading-2" className="collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
 						<a href="#Namespaces">Namespaces</a>
@@ -65,6 +66,7 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
+
 				<section>
 					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
 						<a href="#Enums">Enums</a>
@@ -74,6 +76,7 @@ class Sidebar extends Component {
 						<ul>{this.enums}</ul>
 					</div>
 				</section>
+
 
 				<h5>
 					<a href="#Singletons">Singletons</a>

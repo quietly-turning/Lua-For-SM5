@@ -15,21 +15,6 @@ div.LuaAPI{
 		cursor: pointer;
 		display: flex;
 		justify-content: space-between;
-
-		&:after{
-			background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(255,255,255,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
-			background-size: 3rem 3rem;
-			height: 2.4rem;
-			width: 1.5rem;
-			background-position: 50%;
-			content: " ";
-			display: block;
-		}
-
-		&.collapsed:after{
-			content: " ";
-			transform: rotateX(180deg);
-		}
 	}
 
 	div.actor-class, div.enum{
