@@ -82,7 +82,7 @@ class App extends Component {
 	}
 
 	getClasses(data){
-		this.setState({actor_classes: data.actor_classes, namespaces: data.namespaces})
+		this.setState({actor_classes: data.actor_classes, namespaces: data.namespaces, enums: data.enums})
 	}
 
 	render() {
@@ -95,7 +95,7 @@ class App extends Component {
 					<div className="row h-100">
 
 						<div className="sidebar position-fixed h-100 col-lg-2 col-md-3 d-md-block d-none">
-							<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} />
+							<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} enums={this.state.enums} />
 						</div>
 
 						<div id="content" className="offset-md-3 col-md-6 col-sm-12 pl-lg-0 pl-md-3 pl-4">
@@ -133,7 +133,7 @@ class App extends Component {
 				</div>
 
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
-					<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} />
+					<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} enums={this.state.enums} />
 				</div>
 
 				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-toggle="collapse" data-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

@@ -10,6 +10,7 @@ class Sidebar extends Component {
 
 		this.actor_classes = this.props.actorClasses
 		this.namespaces    = this.props.namespaces
+		this.enums         = this.props.enums
 	}
 
 	handleFilterChange(eventValue){
@@ -17,6 +18,7 @@ class Sidebar extends Component {
 	}
 
 	render() {
+
 		// setting actor_classes and namespaces this way certainly feels like a hack
 		if (this.props.actorClasses !== undefined){
 			this.actor_classes = this.props.actorClasses.map(function(actorclass, i){
@@ -27,6 +29,12 @@ class Sidebar extends Component {
 			this.namespaces = this.props.namespaces.map(function(namespace, i){
 				return <li key={"namespace"+i}><NavLink to={"#Namespaces-"+namespace}>{namespace}</NavLink></li>
 			})
+		}
+		if (this.props.enums !== undefined){
+			this.enums = this.props.enums.map(function(e, i){
+				return <li key={"enum"+i}><NavLink to={"#Enums-"+e}>{e}</NavLink></li>
+			})
+			// console.log(this.enums)
 		}
 
 		return (
@@ -57,10 +65,15 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
+				<section>
+					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+						<a href="#Enums">Enums</a>
+					</h5>
 
-				<h5>
-					<a href="#Enums">Enums</a>
-				</h5>
+					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
+						<ul>{this.enums}</ul>
+					</div>
+				</section>
 
 				<h5>
 					<a href="#Singletons">Singletons</a>

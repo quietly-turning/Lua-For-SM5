@@ -32,10 +32,11 @@ class LuaAPI extends Component {
 		// maintain a handle on this class to be used within the functions below
 		const lua_api = this
 
-		// pojos containing just the actor class names and just namespace names as keys
+		// pojos containing just the actor class names, namespace names, and enum strings as keys
 		// used for convenient lookup in getReturnValue() and to pass up to LuaAPISidebar
 		this.actor_class_names = {}
 		this.namespaces = {}
+		this.enums = {}
 
 		// ensure that the following functions have access to "this"
 		this.filterResults       = this.filterResults.bind(this)
@@ -213,8 +214,10 @@ class LuaAPI extends Component {
 				// first, populate the actor_class_names object with the names of each actor class
 				// and retain it as state for convenient lookup elsewhere (e.g. getReturnValue)
 				actors.forEach(actor => lua_api.actor_class_names[actor.attributes.name.textContent] = true)
-				// include the SM5 Lua Namespace names for convenience, too
+				// also include the SM5 Lua Namespace names
 				namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
+				// and Enums strings, too
+				enums.forEach(e => lua_api.enums[e.attributes.name.textContent] = true)
 
 				lua_api.bubbleDataUp()
 
@@ -361,7 +364,11 @@ class LuaAPI extends Component {
 	}
 
 	bubbleDataUp(){
-		this.props.parentCallback({actor_classes: Object.keys(this.actor_class_names), namespaces: Object.keys(this.namespaces)})
+		this.props.parentCallback({
+			actor_classes: Object.keys(this.actor_class_names),
+			namespaces: Object.keys(this.namespaces),
+			enums: Object.keys(this.enums)
+		})
 	}
 
 	scroll_window_after_hashchange(hash){

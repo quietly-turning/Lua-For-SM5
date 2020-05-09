@@ -19,7 +19,7 @@ class Sidebar extends Component {
 		return(
 			<Switch>
 				<Route path="/LuaAPI">
-					<LuaAPISidebar onFilterChange={this.handleFilterChange} actorClasses={this.props.actorClasses} namespaces={this.props.namespaces} />
+					<LuaAPISidebar onFilterChange={this.handleFilterChange} actorClasses={this.props.actorClasses} namespaces={this.props.namespaces} enums={this.props.enums} />
 				</Route>
 
 				<GuidesSidebar />
