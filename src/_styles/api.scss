@@ -17,14 +17,17 @@ div.LuaAPI{
 		justify-content: space-between;
 	}
 
-	div.actor-class, div.enum{
-		// the "chain-link" icon that users click on to update the url string for permalinking
-		// ActorClasses each get their own octicon link,
-		// and ActorClass Methods each get their own octicon link as well
-		span.octicon{
-			opacity: 0;
+	// the "chain-link" icon that users click on to update the url string for permalinking
+	// ActorClasses each get their own octicon link,
+	// and ActorClass Methods each get their own octicon link as well
+	span.octicon{
+		opacity: 0;
+		&:hover{
+			cursor:pointer;
 		}
+	}
 
+	div.actor-class, div.enum{
 		h3{
 			margin: 0.5em 0em 0em 0em;
 			padding: 0.2em 0em;
@@ -39,9 +42,6 @@ div.LuaAPI{
 			&:hover{
 				span.octicon{
 					opacity: 1;
-					&:hover{
-						cursor: pointer;
-					}
 				}
 			}
 		}
@@ -54,13 +54,6 @@ div.LuaAPI{
 		hr{
 			border-bottom: 1px solid #000;
 			margin: 0em;
-		}
-
-		// the "chain-link" icon that users click on to update the url string for permalinking
-		// ActorClasses each get their own octicon link,
-		// and ActorClass Methods each get their own octicon link as well
-		span.octicon{
-			opacity: 0;
 		}
 
 		h3{
@@ -103,9 +96,6 @@ div.LuaAPI{
 				&:hover{
 					span.octicon{
 						opacity: 1;
-						&:hover{
-							cursor:pointer;
-						}
 					}
 				}
 
