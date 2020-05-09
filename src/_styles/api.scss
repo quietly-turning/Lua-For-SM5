@@ -6,17 +6,6 @@ div.LuaAPI{
 		background-color: #ffffff;
 	}
 
-	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
-	h2.API-Category {
-		margin: 0.5em 0em;
-		padding: 0.2em 0.5em;
-		color: #fff;
-		background-color:rgb(103, 107, 111);
-		cursor: pointer;
-		display: flex;
-		justify-content: space-between;
-	}
-
 	// the "chain-link" icon that users click on to update the url string for permalinking
 	// ActorClasses each get their own octicon link,
 	// and ActorClass Methods each get their own octicon link as well
@@ -24,6 +13,29 @@ div.LuaAPI{
 		opacity: 0;
 		&:hover{
 			cursor:pointer;
+		}
+	}
+
+	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
+	h2.API-Category {
+		margin: 0.5em 0em;
+		padding: 0.2em 0.5em;
+		color: #fff;
+		background-color:rgb(103, 107, 111);
+		display: flex;
+		justify-content: flex-start;
+
+		span.octicon{
+			color:rgb(92, 96, 100);
+			font-size: 1em;
+			width: 1.2em;
+			margin: 0.1em 0.5em 0em -1.7em;
+		}
+
+		&:hover{
+			span.octicon{
+				opacity: 1;
+			}
 		}
 	}
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import Octicon from "react-octicon"
 
 import ActorClass      from "./ActorClass"
 import Namespace       from "./Namespace"
@@ -362,6 +363,10 @@ class LuaAPI extends Component {
 		})
 	}
 
+	updateHash(hash){
+		window.location.hash = "#" + hash
+	}
+
 	scroll_window_after_hashchange(hash){
 		const window_hash = (hash || window.location.hash).replace("#","")
 
@@ -636,22 +641,40 @@ class LuaAPI extends Component {
 
 					<h1>SM5 Lua API</h1>
 
-					<h2 id="Actors" className="API-Category">Actor Classes</h2>
+					<h2 id="Actors" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Actors")} name="link" />
+						Actor Classes
+					</h2>
 					<div>{elements["Actors"]}</div>
 
-					<h2 id="Namespaces" className="API-Category">Namespaces</h2>
+					<h2 id="Namespaces" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Namespaces")} name="link" />
+						Namespaces
+					</h2>
 					<div>{elements["Namespaces"]}</div>
 
-					<h2 id="Enums" className="API-Category">Enums</h2>
+					<h2 id="Enums" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Enums")} name="link" />
+						Enums
+					</h2>
 					<div>{elements["Enums"]}</div>
 
-					<h2 id="Singletons" className="API-Category">Singletons</h2>
+					<h2 id="Singletons" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Singletons")} name="link" />
+						Singletons
+					</h2>
 					<div>{elements["Singletons"]}</div>
 
-					<h2 id="GlobalFunctions" className="API-Category">Global Functions</h2>
+					<h2 id="GlobalFunctions" className="API-Category">
+						<Octicon onClick={() => this.updateHash("GlobalFunctions")} name="link" />
+						Global Functions
+					</h2>
 					<div>{elements["GlobalFunctions"]}</div>
 
-					<h2 id="Constants" className="API-Category">Constants</h2>
+					<h2 id="Constants" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Constants")} name="link" />
+						Constants
+					</h2>
 					<div>{num_constants > 0 && elements["Constants"]}</div>
 				</div>
 			)
