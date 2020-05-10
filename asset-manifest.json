@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Lua-For-SM5/static/css/main.d99c5233.chunk.css",
-    "main.js": "/Lua-For-SM5/static/js/main.2b0e647d.chunk.js",
-    "main.js.map": "/Lua-For-SM5/static/js/main.2b0e647d.chunk.js.map",
+    "main.js": "/Lua-For-SM5/static/js/main.a4090566.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.a4090566.chunk.js.map",
     "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.41a32b3f.js",
     "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.41a32b3f.js.map",
     "static/css/2.8de60f06.chunk.css": "/Lua-For-SM5/static/css/2.8de60f06.chunk.css",
     "static/js/2.70557188.chunk.js": "/Lua-For-SM5/static/js/2.70557188.chunk.js",
     "static/js/2.70557188.chunk.js.map": "/Lua-For-SM5/static/js/2.70557188.chunk.js.map",
     "index.html": "/Lua-For-SM5/index.html",
-    "precache-manifest.e961d012c6e72538b19600e8d7bdb2b1.js": "/Lua-For-SM5/precache-manifest.e961d012c6e72538b19600e8d7bdb2b1.js",
+    "precache-manifest.46898d39b573b166a7e7290685575e50.js": "/Lua-For-SM5/precache-manifest.46898d39b573b166a7e7290685575e50.js",
     "service-worker.js": "/Lua-For-SM5/service-worker.js",
     "static/css/2.8de60f06.chunk.css.map": "/Lua-For-SM5/static/css/2.8de60f06.chunk.css.map",
     "static/css/main.d99c5233.chunk.css.map": "/Lua-For-SM5/static/css/main.d99c5233.chunk.css.map",
@@ -21,6 +21,6 @@
     "static/css/2.8de60f06.chunk.css",
     "static/js/2.70557188.chunk.js",
     "static/css/main.d99c5233.chunk.css",
-    "static/js/main.2b0e647d.chunk.js"
+    "static/js/main.a4090566.chunk.js"
   ]
 }
