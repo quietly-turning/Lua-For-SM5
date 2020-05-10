@@ -8,7 +8,7 @@ class Home extends Component {
 				<h1>Lua for StepMania 5</h1>
 
 				<p>
-					Hello there!  In these pages, you&apos;ll find my <strong>Lua for SM5</strong> guide, comprised of various chapters organized under the headers <span className="d-none d-md-inline d-lg-inline d-xl-inline">on the right</span> <span className="d-xl-none d-lg-none d-md-none">at the bottom</span> of this page.
+					Hello there!  In these pages, you&apos;ll find my <strong>Lua for SM5</strong> guide, comprised of various chapters organized under the headers <span className="d-none d-md-inline d-lg-inline d-xl-inline">on the left</span> <span className="d-xl-none d-lg-none d-md-none">at the bottom</span> of this page.
 				</p>
 				<p>
 					If you&apos;re unsure of where to start, check out the chapter on <Link to="/Foreword">What Are Actors?</Link> to get a sense of how Lua files are organized in StepMania 5.
