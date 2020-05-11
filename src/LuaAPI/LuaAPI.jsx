@@ -337,7 +337,7 @@ class LuaAPI extends Component {
 				constants.forEach(function(c){
 					data[5].push({
 						name: c.attributes.name.textContent,
-						value: c.attributes.value.textContent
+						value: c.attributes.value !== undefined ? c.attributes.value.textContent : ""
 					})
 				})
 
