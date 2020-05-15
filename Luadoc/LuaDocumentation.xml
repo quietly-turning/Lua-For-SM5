@@ -72,7 +72,7 @@ save yourself some time, copy this for undocumented things:
 		Closes any connection to an online server.
 	</Function>
 	<Function name='collectgarbage' return='void' arguments='string opt, float arg'>
-		A generic interface to Lua's garbage collector. Performs different functions based on the value of <code>opt</code>.
+		A generic interface to Lua's garbage collector. Performs different functions based on the value of <code>opt</code>.<br/>
 		<code>collectgarbage</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='color' return='color' arguments='string color'>
@@ -621,7 +621,7 @@ save yourself some time, copy this for undocumented things:
 		Converts <code>e</code> to a string.
 	</Function>
 	<Function name='ToEnumShortString' theme='_fallback' return='string' arguments='enum e'>
-		[02 Enum.lua] Returns a string representing an enum starting from '_'. For example, passing <Link class='ENUM' function='PlayerNumber'>PlayerNumber_P1</Link> to this function will return <code>P1</code>.
+		[02 Enum.lua] Returns a string representing an enum starting from '_'. For example, passing <Link class='ENUM' function='PlayerNumber'>PlayerNumber_P1</Link> to this function will return "P1".
 	</Function>
 	<Function name='Trace' theme='_fallback' return='void' arguments='string sString'>
 		[00 init.lua] Alias for <Link class='lua' function='Trace' />.
