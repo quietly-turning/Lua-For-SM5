@@ -518,7 +518,7 @@ save yourself some time, copy this for undocumented things:
 		[00 init.lua] Alias for <Link class='GLOBAL' function='Trace' />.
 	</Function>
 	<Function name='PrintTable' theme='_fallback' return='void' arguments='table t'>
-		[03 ThemePrefs.lua] Prints a table's contents to the log.
+		[03 ThemePrefs.lua] Prints a table's contents to log.txt using <Link class='GLOBAL' function='Trace'/>.
 	</Function>
 	<Function name='ProductFamily' return='string' arguments=''>
 		Returns the product family. (e.g. "StepMania")
@@ -555,18 +555,19 @@ save yourself some time, copy this for undocumented things:
 		[03 UserPreferences2.lua] (internal) Reads the specified user preference from its config file.
 	</Function>
 	<Function name='rec_print_children' theme='_fallback' return='' arguments='ActorFrame a, string indent'>
-		Recursively prints all the children of the actor frame to the log file.  This can be useful for finding out what actors are on a screen or just seeing what the structure of the actor tree looks like.<br />
+		[02 Utilities.lua] Recursively prints all the children of the actor frame to the log file.  This can be useful for finding out what actors are on a screen or just seeing what the structure of the actor tree looks like.<br />
 		<code>indent</code> is an optional argument that will be prepended to every line.
 	</Function>
 	<Function name='rec_print_table' theme='_fallback' return='' arguments='table t, string indent'>
-		Recursively prints all values in the table to the log file in the form "(key_type) key: (value_type) value" so that you know the type of the key and the value.  Useful if you're not sure exactly what is in a table passed as a parameter.<br />
+		[02 Utilities.lua] Recursively prints all values in the table to the log file in the form "(key_type) key: (value_type) value" so that you know the type of the key and the value.  Useful if you're not sure exactly what is in a table passed as a parameter.<br />
 		<code>indent</code> is an optional argument that will be prepended to every line.
 	</Function>
 	<Function name='ReportStyle' return='void' arguments=''>
 		Sends the current style to the server.
 	</Function>
 	<Function name='require' return='void' arguments='string modname'>
-		Loads the specified module. See the Lua manual for more information.
+		Loads the specified module.<br/>
+		<code>require</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='round' theme='_fallback' return='int' arguments='float val, int decimal'>
 		[02 Utilities.lua] Round a number.
@@ -586,6 +587,8 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='scale' return='float' arguments='float x, float low1, float high1, float low2, float high2'>
 		Scales <code>x</code>, originally within <code>low1</code> and <code>high1</code>, to fall between <code>low2</code> and <code>high2</code>.
+	</Function>
+	<Function name='scale_to_fit' theme='default' return='' arguments='Actor a, float width, float height'>
 	</Function>
 	<Function name='ScoreKeeperClass' theme='_fallback' return='string' arguments=''>
 		[03 Gameplay.lua] Returns the primary ScoreKeeper class to use.
@@ -691,6 +694,9 @@ save yourself some time, copy this for undocumented things:
 	<Function name='TextBannerAfterSet' theme='default' return='void' arguments=''>
 		[02 TextBanner.lua] Defines how the <Link class='TextBanner' /> is laid out.
 	</Function>
+	<Function name='thified_curstage_index' theme='default' return='string' arguments='bool OnEval'>
+		[04 Other.lua]
+	</Function>
 	<Function name='tobool' theme='_fallback' return='bool' arguments='various v'>
 		[02 Utilities.lua] Converts a string or number to a bool.
 	</Function>
@@ -717,9 +723,9 @@ save yourself some time, copy this for undocumented things:
 		Returns <Link class='ENUM' function='UnlockRewardType' /> <code>i</code> localized for the current language using strings defined under <code>[UnlockRewardType]</code>.
 	</Function>
 	<Function name='unpack' return='various' arguments='table list, int i, int j'>
-		"Returns the elements from the given table.
-		This function is equivalent to <code>return list[i], list[i+1], ···, list[j]</code>"
-		(<code>i</code> and <code>j</code> are optional; "by default, i is 1 and j is the length of the list.")
+		Returns the elements from table <code>list</code>.	This function is equivalent to <code>return list[i], list[i+1], ···, list[j]</code>.<br/>
+		<code>i</code> and <code>j</code> are optional; by default, <code>i</code> is <code>1</code> and <code>j</code> is the length of the list.<br/>
+		<code>unpack</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='URLEncode' return='string' arguments='string sInput'>
 		Returns a string with characters escaped for URLs. (e.g. a space becomes '%20')
@@ -739,6 +745,9 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='Warn' theme='_fallback' return='void' arguments='string sString'>
 		[00 init.lua] Alias for <Link class='lua' function='Warn' />.
+	</Function>
+	<Function name='Weekday' return='int' arguments=''>
+		Returns the current weekday in the range of <code>0</code>-<code>6</code>, where Sunday is <code>0</code>.
 	</Function>
 	<Function name='WideScale' theme='_fallback' return='float' arguments='float ar43, float ar169'>
 		[04 WidescreenHelpers.lua] Depending on the screen width, scales between <code>ar43</code> (4:3; 640px) and <code>ar169</code> (16:9; 854px).
