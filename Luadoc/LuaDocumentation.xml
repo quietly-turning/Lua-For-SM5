@@ -28,28 +28,44 @@ save yourself some time, copy this for undocumented things:
 <Documentation xmlns='http://www.stepmania.com' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.stepmania.com Lua.xsd'>
 <!-- Global functions -->
 <GlobalFunctions>
+	<Function name='AllowOptionsMenu' theme='_fallback' return='bool' arguments=''>
+		[03 Gameplay.lua] Returns <code>false</code> if the player should be disallowed from entering the options menu from ScreenSelectMusic (i.e. during <Link class='GameState' function='IsAnExtraStage'>an ExtraStage</Link> or when the <Link class='ENUM' function='PlayMode' /> is Oni).  Returns <code>true</code> otherwise.
+	</Function>
 	<Function name='Alpha' theme='_fallback' return='color' arguments='color c, float percent'>
-		[02 Colors.lua] Returns a <code>color</code> with the specified alpha.
+		[02 Colors.lua] Returns a <code>color</code> with HSV values matching <code>c</code> and alpha set to <code>percent</code>, where <code>percent</code> is in the range 0..1.
 	</Function>
 	<Function name='approach' return='float' arguments='float current, float goal, float speed'>
 		Use this to make a current value approach a goal value at the given speed.  Speed must not be negative.  The value will not overshoot the goal.<br />
 		Note:  When you see the error "approach: speed 1 is negative." it means that the speed value passed was negative.  The 1 is there because approach and multiapproach use the same internal function and can be ignored when using approach.
 	</Function>
 	<Function name='ArbitrarySpeedMods' theme='_fallback' return='LuaOptionRow' arguments=''>
-		[03 CustomSpeedMods.lua]
+		[03 CustomSpeedMods.lua] Returns an <Link class='OptionRow' /> of speed mod choices generated from the comma-delimited list of speed mods in <em>SpeedMods.txt</em> in the root of the current Profile directory (player if available, machine otherwise).
 	</Function>
 	<Function name='AreStagePlayerModsForced' theme='_fallback' return='bool' arguments=''>
-		[02 StageMods.lua]
+		[02 StageMods.lua] Returns <code>true</code> if player modifiers should be forced.  This is effectively the negation of <Link class='GLOBAL' function='AllowOptionsMenu' />.
 	</Function>
 	<Function name='AreStageSongModsForced' theme='_fallback' return='bool' arguments=''>
-		[02 StageMods.lua]
+		[02 StageMods.lua] Returns <code>true</code> if song modifiers should be forced (i.e. during <Link class='GameState' function='IsAnExtraStage'>an ExtraStage</Link>, or when the <Link class='ENUM' function='PlayMode' /> is Oni, Battle, or Rave).
 	</Function>
 	<Function name='assert' return='various' arguments='LuaReference v, string sAssertMessage'>
 		Issues an error when <code>v</code> is <code>false</code> (or <code>nil</code>). Returns all arguments otherwise. <code>sAssertMessage</code> is an optional error message (the default is "assertion failed!").<br/>
 		<code>assert</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
+	<Function name='ArgsIfPlayerJoinedOrNil' theme='_fallback' return='various, various' arguments='various arg1, various arg2'>
+		[02 Utilities.lua] Returns two results.<br/>
+		If P1 <Link class='GameState' function='IsSideJoined'>is joined</Link>, the first return value will be <code>arg1</code>, and <code>nil</code> otherwise.<br/>
+		If P2 is joined, the second return value will be <code>arg2</code>, and <code>nil</code> otherwise.
+	</Function>
+	<Function name='BGFitChoiceExample' theme='_fallback' return='ActorFrame' arguments='table params'>
+		[04 SetBGFitHelpers.lua] Returns an ActorFrame containing examples of how a given background image (with set aspect ratio) will appear in a particular <Link class='ENUM' function='BackgroundFitMode' />.<br/>
+		The _fallback theme uses this to visually represent choices for ScreenSetBGFit, intended to help players choose a BackgroundFitMode preference.
+	</Function>
+	<Function name='BGFitInputActor' theme='_fallback' return='ActorFrame' arguments='table choices, function LoseFocus, GainFocus'>
+		[04 SetBGFitHelpers.lua] Returns an ActorFrame with an <Link class='Screen' Function='AddInputCallback'>InputCallback</Link> attached.<br/>
+		The _fallback theme uses this to manage input on ScreenSetBGFit, intended to help players choose a <Link class='ENUM' function='BackgroundFitMode' /> preference.
+	</Function>
 	<Function name='Basename' return='string' arguments='string path'>
-		Returns the base name of file path.
+		Returns the last named component of <code>path</code>.  For example, passing in <code>"/path/to/file.txt"</code> will return <code>"file.txt"</code>, while <code>"/path/to/some/directory/"</code> will return <code>"directory"</code>.
 	</Function>
 	<Function name='BoostColor' theme='_fallback' return='color' arguments='color c, float fBoost'>
 		[02 Colors.lua] Boosts the specified color by multiplying its values by <code>fBoost</code>.
@@ -59,6 +75,9 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='Center1Player' theme='_fallback' return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if Center 1P is being used.
+	</Function>
+	<Function name='check_stop_course_early' theme='default' return='bool' arguments=''>
+		[04 Other.lua] Returns <code>true</code> if the current course was exited early via the pause menu.
 	</Function>
 	<Function name='CheckpointsTapsSeparateJudgment' theme='_fallback' return='bool' arguments=''>
 		[03 Gameplay.lua] Returns <code>true</code> if checkpoint judgments and tap judgments
@@ -88,10 +107,10 @@ save yourself some time, copy this for undocumented things:
 		[02 Colors.lua] Returns a midtone of the color. (Specifically <code>c[1]/1.5, c[2]/1.5, c[3]/1.5, c[4]</code>)
 	</Function>
 	<Function name='ColorToHex' theme='_fallback' return='string' arguments='color c'>
-		[02 Colors.lua] Returns a hex representation for the specified color.
+		[02 Colors.lua] Accepts a color and returns the hex representation.  For example, passing in <code>{1, 0, 0.4, 1}</code> will return <code>"FF0066FF"</code>.
 	</Function>
 	<Function name='ColorToHSV' theme='_fallback' return='table' arguments='color c'>
-		[02 Colors.lua] Takes in a color and returns a table with the HSV values.
+		[02 Colors.lua]  Accepts a color and returns a table with the HSV values, indexed by <code>Hue</code>, <code>Sat</code>, <code>Value</code>, and <code>Alpha</code>.
 	</Function>
 	<Function name='ComboContinue' theme='_fallback' return='TapNoteScore' arguments=''>
 		[03 Gameplay.lua] Determines what TapNoteScore allows for continuing the combo.
@@ -103,10 +122,11 @@ save yourself some time, copy this for undocumented things:
 		[03 Gameplay.lua] Determines if combo should be per row (Jump = 1) or per column (Jump = 2).
 	</Function>
 	<Function name='ComboTransformCommand' theme='_fallback' return='void' arguments='Actor self, params p'>
-		[02 Other.lua] The combo trasform command.
+		[02 Other.lua] Defines the transform function used to position player combo during gameplay.  <code>params</code> will contain two boolean values indexed by <code>bReverse</code> and <code>bCentered</code>.<br/>
+		Not intended to be called directly by themes.
 	</Function>
-	<Function name='ComboUnderField' theme='_fallback' return='bool' arguments=''>
-		[03 Gameplay.lua] Returns the <code>UserPrefComboUnderField</code> user preference value.
+	<Function name='ComboUnderField' theme='default' return='bool' arguments=''>
+		[03 Gameplay.lua] Returns the <code>ComboUnderField</code> ThemePref value.
 	</Function>
 	<Function name='commify' return='string' arguments='string number, string comma, string dot'>
 		This will take the number and insert a comma every three digits, as normal in English for writing large numbers.<br />
@@ -119,6 +139,15 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='ConnectToServer' return='bool' arguments='string sAddress'>
 		Tries to connect to the server at <code>sAddress</code>.
+	</Function>
+	<Function name='CourseDifficultyToLocalizedString' return='string' arguments='Difficulty'>
+		Localizes a <Link class='ENUM' function='Difficulty' /> to the current language using strings defined under <code>[CourseDifficulty]</code>.
+	</Function>
+	<Function name='CourseTypeToLocalizedString' return='string' arguments='CourseType'>
+		Localizes a <Link class='ENUM' function='CourseType' /> to the current language using strings defined under <code>[CourseType]</code>.
+	</Function>
+	<Function name='convert_text_to_indented_lines' theme='_fallback' return='table' arguments='BitmapText text, int indent, float width, float text_zoom'>
+		[02 Utilities.lua] Utillity function used to format log output for presenting on-screen.  <code>indent</code> is the number of pixels to indent lines.  <code>width</code> is the width in pixels that lines should be constrained to.
 	</Function>
 	<Function name='convert_xml_bgs' return='' arguments='string dir'>
 		Recursively searches <code>dir</code> for xml files of actors and
@@ -141,10 +170,10 @@ save yourself some time, copy this for undocumented things:
 		[02 Colors.lua]
 	</Function>
 	<Function name='DayOfMonth' return='int' arguments=''>
-		Returns the current day of the month.
+		Returns the current day of the month in the range 1..31.
 	</Function>
 	<Function name='DayOfYear' return='int' arguments=''>
-		Returns the current day of the year.
+		Returns the current day of the year in the range 0..365.
 	</Function>
 	<Function name='DeepCopy' theme='_fallback' return='table' arguments='table from, table to, table already_copied'>
 		[02 Serialize] Recursively deep-copy a table.
@@ -191,6 +220,10 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='GetCodeForGame' theme='_fallback' return='string' arguments=''>
 		[03 Gameplay.lua]
+	</Function>
+	<Function name='GetCoursesToShowRanking' theme='_fallback' return='string' arguments=''>
+		[02 Other.lua] Returns the value of the <code>CoursesToShowRanking</code> preference if it is not an empty string.<br/>
+		Otherwise, returns a comma-delimited set of paths to the .crs files included with StepMania as a string.  This string is hardcoded and does not accurately reflect whether those crs files exist in the filesystem.
 	</Function>
 	<Function name='GetCustomDifficulty' return='string' arguments='StepsType st, Difficulty d, CourseType ct'>
 		Returns the corresponding CustomDifficulty string for a StepsType/Difficulty (/optional CourseType) combination.
