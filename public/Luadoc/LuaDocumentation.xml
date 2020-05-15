@@ -32,7 +32,7 @@ save yourself some time, copy this for undocumented things:
 		[03 Gameplay.lua] Returns <code>false</code> if the player should be disallowed from entering the options menu from ScreenSelectMusic (i.e. during <Link class='GameState' function='IsAnExtraStage'>an ExtraStage</Link> or when the <Link class='ENUM' function='PlayMode' /> is Oni).  Returns <code>true</code> otherwise.
 	</Function>
 	<Function name='Alpha' theme='_fallback' return='color' arguments='color c, float percent'>
-		[02 Colors.lua] Returns a <code>color</code> with HSV values matching <code>c</code> and alpha set to <code>percent</code>, where <code>percent</code> is in the range 0..1.
+		[02 Colors.lua] Returns a <code>color</code> with HSV values matching <code>c</code> and alpha set to <code>percent</code>, where <code>percent</code> is in the range <code>0</code>..<code>1</code>.
 	</Function>
 	<Function name='approach' return='float' arguments='float current, float goal, float speed'>
 		Use this to make a current value approach a goal value at the given speed.  Speed must not be negative.  The value will not overshoot the goal.<br />
@@ -173,10 +173,10 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>cd</code> localized for the current language using strings defined under <code>[CustomDifficulty]</code>.
 	</Function>
 	<Function name='DayOfMonth' return='int' arguments=''>
-		Returns the current day of the month in the range 1..31.
+		Returns the current day of the month in the range <code>1</code>-<code>31</code>.
 	</Function>
 	<Function name='DayOfYear' return='int' arguments=''>
-		Returns the current day of the year in the range 0..365.
+		Returns the current day of the year in the range <code>0</code>-<code>365</code>.
 	</Function>
 	<Function name='DeepCopy' theme='_fallback' return='table' arguments='table from, table to, table already_copied'>
 		[02 Serialize] Recursively deep-copy a table.
@@ -247,7 +247,7 @@ save yourself some time, copy this for undocumented things:
 		Returns a corresponding <Link class='ENUM' function='Grade' /> for the given percentage.
 	</Function>
 	<Function name='GetLifeDifficulty' return='int' arguments=''>
-		Returns the current Life difficulty in the range of <code>1</code> to <code>7</code>
+		Returns the current Life difficulty in the range of <code>1</code>-<code>7</code>
 	</Function>
 	<Function name='get_music_file_length' return='float' arguments='string path'>
 		Returns the length of the music file found at <code>path</code> in seconds.<br />
@@ -294,7 +294,7 @@ save yourself some time, copy this for undocumented things:
 		[03 ThemePrefs.lua] Alias for <Link class='ThemePrefs' function='Get' />.
 	</Function>
 	<Function name='GetTimingDifficulty' return='int' arguments=''>
-		Returns the current Timing difficulty in the range of <code>1</code> to <code>9</code>.
+		Returns the current Timing difficulty in the range of <code>1</code>-<code>9</code>.
 	</Function>
 	<Function name='GetTimeSinceStart' return='float' arguments=''>
 		Returns the current time since the program was started.  Includes time that was spent loading songs.
@@ -458,7 +458,7 @@ save yourself some time, copy this for undocumented things:
 		<code>module</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='MonthOfYear' return='int' arguments=''>
-		Returns the current month of the year (in the range <code>0</code>-<code>11</code>).
+		Returns the current month of the year in the range <code>0</code>-<code>11</code>.
 	</Function>
 	<Function name='MonthToLocalizedString' return='string' arguments='Month m'>
 		Returns <Link class='ENUM' function='Month' /> <code>m</code> localized for the current language using strings defined under <code>[Month]</code>.
