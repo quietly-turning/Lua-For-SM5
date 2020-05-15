@@ -269,6 +269,9 @@ class LuaAPI extends Component {
 				// ---------------------------------------------------------------------
 				// next, process each namespace...
 				namespaces.forEach(function(namespace){
+					const namespace_name = namespace.attributes.name.textContent
+					const namespace_doc = $(documentation.namespaces).find("Namespace[name=" + namespace_name + "]")
+
 					const _funcs = Array.from($(namespace).find("Function"))
 
 					const funcs = _funcs.map(function(func, i){
@@ -283,12 +286,12 @@ class LuaAPI extends Component {
 					})
 
 					// some namespaces have <Description> tags which contain text describing the overall class
-					const namespace_desc = $(namespace).find("Description")
+					const namespace_desc = $(namespace_doc).find("Description")[0]
 
 					data[1].push({
 						name: namespace.attributes.name.textContent,
 						methods: funcs,
-						desc: check_for_links(namespace_desc[0]),
+						desc: check_for_links(namespace_desc),
 					})
 				})
 
