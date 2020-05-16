@@ -368,8 +368,9 @@ save yourself some time, copy this for undocumented things:
 	<Function name='IsArcade' theme="_fallback" return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if the coin mode is not set to <Link class='ENUM' function='CoinMode'>CoinMode_Home</Link>.
 	</Function>
-	<Function name='IsEventMode' return='bool' arguments=''>
-		Returns <code>true</code> if Event Mode is turned on.
+	<Function name='IsCourse' theme="_fallback" return='bool' arguments=''>
+		Returns <code>true</code> if the current <Link class='ENUM' function='PlayMode' /> is Nonstop, Oni, or Endless.<br/>
+		This is effectively the same as <Link class='GameState' function='IsCourseMode' />.
 	</Function>
 	<Function name='IsFreePlay' theme="_fallback" return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if <Link function='IsArcade'>IsArcade()</Link> and the coin mode is <Link class='ENUM' function='CoinMode'>CoinMode_Free</Link>.
@@ -2005,10 +2006,10 @@ save yourself some time, copy this for undocumented things:
 	<Function name='GetPercentScrolling' return='float' arguments=''>
 		<!-- todo -->
 	</Function>
-	<Function name='LoadBackgroundFromUnlockEntry' return='void' arguments='UnlockEntry pUE'>
+	<Function name='LoadBackgroundFromUnlockEntry' return='void' arguments='UnlockEntry ue'>
 		Loads the background from an UnlockEntry.
 	</Function>
-	<Function name='LoadBannerFromUnlockEntry' return='void' arguments='UnlockEntry pUE'>
+	<Function name='LoadBannerFromUnlockEntry' return='void' arguments='UnlockEntry ue'>
 		Loads the banner from an UnlockEntry.
 	</Function>
 	<Function name='LoadCardFromCharacter' return='void' arguments='Character pCharacter'>
