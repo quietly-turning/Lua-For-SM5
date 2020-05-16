@@ -11,6 +11,7 @@ class Sidebar extends Component {
 		this.actor_classes = this.props.actorClasses
 		this.namespaces    = this.props.namespaces
 		this.enums         = this.props.enums
+		this.singletons    = this.props.singletons
 	}
 
 	handleFilterChange(eventValue){
@@ -23,6 +24,11 @@ class Sidebar extends Component {
 		if (this.props.actorClasses !== undefined){
 			this.actor_classes = this.props.actorClasses.map(function(actorclass, i){
 				return <li key={"actorclass"+i}><NavLink to={"#Actors-"+actorclass}>{actorclass}</NavLink></li>
+			})
+		}
+		if (this.props.singletons !== undefined){
+			this.singletons = this.props.singletons.map(function(singleton, i){
+				return <li key={"singleton"+i}><NavLink to={"#Singletons-"+singleton}>{singleton}</NavLink></li>
 			})
 		}
 		if (this.props.namespaces !== undefined){
@@ -58,29 +64,35 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-2" className="collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						<a href="#Namespaces">Namespaces</a>
+						<a href="#Singletons">Singletons</a>
 					</h5>
 
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
+						<ul>{this.singletons}</ul>
+					</div>
+				</section>
+
+				<section>
+					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+						<a href="#Namespaces">Namespaces</a>
+					</h5>
+
+					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
 						<ul>{this.namespaces}</ul>
 					</div>
 				</section>
 
 
 				<section>
-					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+					<h5 id="heading-4" className="collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
 						<a href="#Enums">Enums</a>
 					</h5>
 
-					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
+					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
 						<ul>{this.enums}</ul>
 					</div>
 				</section>
 
-
-				<h5>
-					<a href="#Singletons">Singletons</a>
-				</h5>
 				<h5>
 					<a href="#GlobalFunctions">Global Functions</a>
 				</h5>

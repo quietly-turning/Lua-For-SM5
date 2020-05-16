@@ -1,21 +1,24 @@
 import React, { Component } from "react"
 import Octicon from 'react-octicon'
 
-class ActorMethod extends Component {
+class Method extends Component {
 
-	constructor(){
+	constructor(props){
 		super()
+
+		this.id = props.sm_class_grouping + "-" + props.sm_class +  "-" + props.method.name
+
 		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
 	}
 
 	updateHash(){
-		window.location.hash = "#Actors-" + this.props.actor_name +  "-" + this.props.method.name
+		window.location.hash = "#" + this.id
 	}
 
 	render(){
 		return(
-			<div id={"Actors-" + this.props.actor_name +  "-" + this.props.method.name} className="method">
+			<div id={this.id} className="method">
 				<div className="method-signature">
 					<Octicon onClick={this.updateHash} name="link" />
 					{this.props.method.name}
@@ -29,4 +32,4 @@ class ActorMethod extends Component {
 	}
 }
 
-export default ActorMethod
+export default Method

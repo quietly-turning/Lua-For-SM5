@@ -4,6 +4,7 @@ import Octicon from "react-octicon"
 import ActorClass      from "./ActorClass"
 import Namespace       from "./Namespace"
 import Enum            from "./Enum"
+import Singleton       from "./Singleton"
 import GlobalFunction  from "./GlobalFunction"
 import LuaAPIFilter    from "./LuaAPIFilter"
 
@@ -29,6 +30,7 @@ class LuaAPI extends Component {
 		this.actor_class_names = {}
 		this.namespaces = {}
 		this.enums = {}
+		this.singletons = {}
 
 		// ensure that the following functions have access to "this"
 		this.filterResults       = this.filterResults.bind(this)
@@ -209,10 +211,21 @@ class LuaAPI extends Component {
 				// actor classes, namespaces, enums, singletons, global functions, constants
 				let data = [ [], [], [], [], [], [] ]
 
+
 				// ---------------------------------------------------------------------
-				// first, populate the actor_class_names object with the names of each actor class
-				// and retain it as state for convenient lookup elsewhere (e.g. getReturnValue)
-				actors.forEach(actor => lua_api.actor_class_names[actor.attributes.name.textContent] = true)
+				// first, populate lua_api.singletons object with the names of each singleton and retain it as state
+				singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = true)
+
+				// next, do similarly with lua_api.actor_class_names, filling it with the names of each stepmania class
+				actors.forEach(actor => {
+					const class_name = actor.attributes.name.textContent
+
+					// don't add singletons here
+					if (!(class_name in lua_api.singletons)){
+						lua_api.actor_class_names[class_name] = true
+					}
+				})
+
 				// also include the SM5 Lua Namespace names
 				namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
 				// and Enums strings, too
@@ -220,12 +233,19 @@ class LuaAPI extends Component {
 
 				lua_api.bubbleDataUp()
 
+
+
 				// now, do the "heavy lifting"
 				// ---------------------------------------------------------------------
 				// process each actor_class...
 				actors.forEach(function(actor_class){
 
 					const class_name = actor_class.attributes.name.textContent
+
+					// if this class is a singleton, skip to the next forEach iteration
+					// so its methods and description don't get put in with ActorClass methods
+					if (lua_api.singletons[class_name]){ return }
+
 					const class_doc  = $(documentation.actors).find("Class[name=" + class_name + "]")
 
 					let unsorted_methods = Array.from($(actor_class).find("Function"))
@@ -315,9 +335,29 @@ class LuaAPI extends Component {
 				// ---------------------------------------------------------------------
 				// almost done now; process each singleton...
 				singletons.forEach(function(s){
+					const sm_class = s.attributes.class.textContent
+					const _name    = s.attributes.name.textContent
+					const _doc     = $(documentation.actors).find("Class[name=" + sm_class + "]")
+					const _desc    = _doc.find("Description")[0]
+
+					const _methods = Array.from(_doc.find("Function")).map(function(method, i){
+
+						const method_name = method.attributes.name.textContent
+						const method_doc  = $(_doc).find("Function[name=" + method_name + "]")
+
+						return {
+							name: method_name,
+							return: lua_api.getReturnValue( method_doc.attr("return") ),
+							arguments: method_doc.attr("arguments") || "",
+							desc: check_for_links(method_doc[0])
+						}
+					})
+
 					data[3].push({
-						name: s.attributes.name.textContent,
-						actor_class: s.attributes.class.textContent
+						sm_class: sm_class,
+						name: _name,
+						methods: _methods,
+						desc: check_for_links(_desc)
 					})
 				})
 
@@ -375,7 +415,8 @@ class LuaAPI extends Component {
 		this.props.parentCallback({
 			actor_classes: Object.keys(this.actor_class_names),
 			namespaces: Object.keys(this.namespaces),
-			enums: Object.keys(this.enums)
+			enums: Object.keys(this.enums),
+			singletons: Object.keys(this.singletons)
 		})
 	}
 
@@ -413,13 +454,9 @@ class LuaAPI extends Component {
 				return <Enum enum={e} key={e.name} />
 			}),
 
-			"Singletons": (
-				<ul id="Singletons">
-					{classes_to_render[3].map(function(s, i){
-						return(<li key={"singleton-"+s.name}><a href={"#Actors-"+s.actor_class}>{s.name}</a></li>)
-					})}
-				</ul>
-			),
+			"Singletons": classes_to_render[3].map(function(s, i){
+				return <Singleton singleton={s} key={s.name} />
+			}),
 
 			"GlobalFunctions":(
 				<div className="GlobalFunctions actor-class">
@@ -663,6 +700,12 @@ class LuaAPI extends Component {
 					</h2>
 					<div>{elements["Actors"]}</div>
 
+					<h2 id="Singletons" className="API-Category">
+						<Octicon onClick={() => this.updateHash("Singletons")} name="link" />
+						Singletons
+					</h2>
+					<div>{elements["Singletons"]}</div>
+
 					<h2 id="Namespaces" className="API-Category">
 						<Octicon onClick={() => this.updateHash("Namespaces")} name="link" />
 						Namespaces
@@ -674,12 +717,6 @@ class LuaAPI extends Component {
 						Enums
 					</h2>
 					<div>{elements["Enums"]}</div>
-
-					<h2 id="Singletons" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Singletons")} name="link" />
-						Singletons
-					</h2>
-					<div>{elements["Singletons"]}</div>
 
 					<h2 id="GlobalFunctions" className="API-Category">
 						<Octicon onClick={() => this.updateHash("GlobalFunctions")} name="link" />

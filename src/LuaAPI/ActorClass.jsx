@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Octicon from 'react-octicon'
 
-import ActorMethod from "./ActorMethod"
+import Method from "./Method"
 
 class ActorClass extends Component {
 
@@ -18,7 +18,7 @@ class ActorClass extends Component {
 	getMethodsToRender(){
 		const actor_name = this.props.actor.name
 		return this.props.actor.methods.map(function(method, j){
-			return <ActorMethod actor_name={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+			return <Method sm_class_grouping="Actors" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
 		})
 	}
 
