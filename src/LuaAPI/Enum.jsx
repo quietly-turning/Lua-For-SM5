@@ -28,6 +28,8 @@ class Enum extends Component {
 					{this.props.enum.name}
 				</h3>
 
+				<span className="enum-description" dangerouslySetInnerHTML={{__html: this.props.enum.desc}} />
+
 				<table className="table table-hover table-sm table-bordered">
 					<thead className="table-primary"><tr><th><strong>{this.props.enum.name}</strong></th><th style={{width:15+"%"}}>Value</th></tr></thead>
 					<tbody>{this.getValuesToRender()}</tbody>

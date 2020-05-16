@@ -199,6 +199,7 @@ class LuaAPI extends Component {
 					actors:           lua_doc_children.find("Classes"),
 					namespaces:       lua_doc_children.find("Namespaces"),
 					global_functions: lua_doc_children.find("GlobalFunctions"),
+					enums:            lua_doc_children.find("Enums"),
 				}
 
 				const actors           = Array.from(lua_dot_xml_children.find("Classes Class"))
@@ -318,7 +319,11 @@ class LuaAPI extends Component {
 				// ---------------------------------------------------------------------
 				// next, process each enum...
 				enums.forEach(function(e){
-					const _values = Array.from($(e).find("EnumValue"))
+					const enum_name = e.attributes.name.textContent
+					const enum_doc  = $(documentation.enums).find("Enum[name=" + enum_name + "]")
+					const enum_desc = enum_doc.find("Description")[0]
+
+					const _values   = Array.from($(e).find("EnumValue"))
 					const values = _values.map(function(v, i){
 						return {
 							name: v.attributes.name.textContent,
@@ -327,8 +332,9 @@ class LuaAPI extends Component {
 					})
 
 					data[2].push({
-						name: e.attributes.name.textContent,
-						values: values
+						name: enum_name,
+						values: values,
+						desc: check_for_links(enum_desc)
 					})
 				})
 

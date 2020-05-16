@@ -80,7 +80,8 @@ div.LuaAPI{
 		// more like paragraphs; see: https://stackoverflow.com/a/31633969
 		span.actorclass-description,
 		span.namespace-description,
-		span.method-description
+		span.method-description,
+		span.enum-description
 		{
 			br{
 				display: block;
@@ -127,7 +128,9 @@ div.LuaAPI{
 		}
 	}
 
-	#Enums + div > table{
-		margin: 1em 0em 0em 0em;
+	div.enum{
+		table{
+			margin: 0.5em 0em 0em 0em;
+		}
 	}
 }
