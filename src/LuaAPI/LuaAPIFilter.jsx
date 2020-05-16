@@ -17,7 +17,6 @@ class LuaAPIFilter extends React.Component {
 	}
 
 	handleFilter(e){
-
 		const eventValue = e.target.value
 		const filter_object = this
 
@@ -36,7 +35,7 @@ class LuaAPIFilter extends React.Component {
 			<fieldset>
 				<div className="input-group">
 					<div className="input-group-prepend"><div className="input-group-text">{this.filter_icon}</div></div>
-					<input type="text" id="filter" className="form-control" placeholder="type to filter..." onChange={this.handleFilter} />
+					<input type="text" className="form-control" placeholder="type to filter..." onChange={this.handleFilter} />
 				</div>
 			</fieldset>
 		)

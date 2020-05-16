@@ -18,8 +18,6 @@ class LuaAPI extends Component {
 
 		this.state = {
 			isLoaded: false,
-			text_filter: "",
-			mobile_api_filter: "",
 		}
 
 		// maintain a handle on this class to be used within the functions below
@@ -35,7 +33,7 @@ class LuaAPI extends Component {
 		// ensure that the following functions have access to "this"
 		this.getElementsToRender = this.getElementsToRender.bind(this)
 		this.getReturnValue      = this.getReturnValue.bind(this)
-		this.filterResultsMobile = this.filterResultsMobile.bind(this)
+		this.handleFilterChange  = this.handleFilterChange.bind(this)
 		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
 
 		// ---------------------------------------------------------------------
@@ -509,9 +507,9 @@ class LuaAPI extends Component {
 	// -----------------------------------------------------------------------------------------
 
 
-	// this methods exists to handle the text-input field that appears in mobile layout
-	filterResultsMobile(eventValue){
-		this.setState({mobile_api_filter: eventValue})
+	// this method exists to handle the text-input field that appears in mobile layout
+	handleFilterChange(eventValue){
+		this.props.parentFilterChange({text_filter: eventValue})
 	}
 
 
@@ -558,7 +556,7 @@ class LuaAPI extends Component {
 						<br /> <br /><br />
 					</span>
 
-					<LuaAPIFilter onFilterChange={this.filterResultsMobile} />
+					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>
 

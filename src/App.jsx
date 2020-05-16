@@ -101,7 +101,7 @@ class App extends Component {
 						<div id="content" className="offset-md-3 col-md-6 col-sm-12 pl-lg-0 pl-md-3 pl-4">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
-								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} />))} />
+								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} parentFilterChange={(p)=>this.handleFilterChange(p.text_filter)} />))} />
 								<Route path="/resources"	component={Resources} />
 
 								<Route path="/foreword"		component={Foreword}/>
