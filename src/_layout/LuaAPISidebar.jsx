@@ -47,7 +47,7 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-1" className="collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						<a href="#Actors">Actor Classes</a>
+						<a href="#Actors">Classes</a>
 					</h5>
 
 					<div id="collapse-1" className="collapse no-transition" aria-labelledby="heading-1">

@@ -659,7 +659,7 @@ class LuaAPI extends Component {
 
 					<h2 id="Actors" className="API-Category">
 						<Octicon onClick={() => this.updateHash("Actors")} name="link" />
-						Actor Classes
+						Classes
 					</h2>
 					<div>{elements["Actors"]}</div>
 
