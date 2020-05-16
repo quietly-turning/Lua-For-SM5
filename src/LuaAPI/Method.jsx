@@ -4,9 +4,9 @@ import Octicon from 'react-octicon'
 class Method extends Component {
 
 	constructor(props){
-		super()
+		super(props)
 
-		this.id = props.sm_class_grouping + "-" + props.sm_class +  "-" + props.method.name
+		this.id = this.props.sm_class_grouping + "-" + this.props.sm_class +  "-" + this.props.method.name
 
 		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)

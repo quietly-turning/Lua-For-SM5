@@ -56,7 +56,7 @@ class App extends Component {
 
 		this.state = {
 			mobile_nav: false,
-			api_filter: ""
+			text_filter: ""
 		}
 
 		// on URL change
@@ -74,7 +74,7 @@ class App extends Component {
 	}
 
 	handleFilterChange(eventValue){
-		this.setState({api_filter: eventValue})
+		this.setState({text_filter: eventValue})
 	}
 
 	handleMobileNavToggle(){

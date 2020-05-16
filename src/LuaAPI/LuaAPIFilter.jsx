@@ -1,6 +1,7 @@
-import React from "react";
+import React from "react"
 
 class LuaAPIFilter extends React.Component {
+
 	constructor(props) {
 		super(props)
 		this.handleFilter = this.handleFilter.bind(this)

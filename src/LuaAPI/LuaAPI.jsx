@@ -5,7 +5,7 @@ import ActorClass      from "./ActorClass"
 import Namespace       from "./Namespace"
 import Enum            from "./Enum"
 import Singleton       from "./Singleton"
-import GlobalFunction  from "./GlobalFunction"
+import GlobalFunctions  from "./GlobalFunctions"
 import LuaAPIFilter    from "./LuaAPIFilter"
 
 import $ from "jquery"
@@ -18,7 +18,7 @@ class LuaAPI extends Component {
 
 		this.state = {
 			isLoaded: false,
-
+			text_filter: "",
 			mobile_api_filter: "",
 		}
 
@@ -33,17 +33,12 @@ class LuaAPI extends Component {
 		this.singletons = {}
 
 		// ensure that the following functions have access to "this"
-		this.filterResults       = this.filterResults.bind(this)
+		this.getElementsToRender = this.getElementsToRender.bind(this)
 		this.getReturnValue      = this.getReturnValue.bind(this)
 		this.filterResultsMobile = this.filterResultsMobile.bind(this)
 		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
 
 		// ---------------------------------------------------------------------
-
-		const get_base = function(base){
-			if (base === undefined){ return }
-			return " : <a href='#Actors-" + base.textContent + "'>" + base.textContent + "</a>"
-		}
 
 		// some ActorClass and method descriptions contain <Link> elements,
 		// intended to serve as anchors to elsewhere within the document
@@ -281,7 +276,7 @@ class LuaAPI extends Component {
 					// push a new object representing this actor_class to the overall data array
 					data[0].push({
 						name: actor_class.attributes.name.textContent,
-						base: get_base(actor_class.attributes.base),
+						base: actor_class.attributes.base !== undefined ? actor_class.attributes.base.textContent : undefined,
 						desc: check_for_links(class_desc),
 						methods: sorted_methods
 					})
@@ -392,18 +387,13 @@ class LuaAPI extends Component {
 
 				// ---------------------------------------------------------------------
 				// store all render-able elements now so that we don't need to constantly recompute them
-				lua_api.all_elements = lua_api.get_elements_to_render(data)
+				// lua_api.all_elements = lua_api.getElementsToRender()
 
 				// ---------------------------------------------------------------------
 				// we're out of the "heavy lifting" forEach loop; it's time to setState
 				lua_api.setState({
 					isLoaded: true,
-					actor_classes: data[0],
-					namespaces: data[1],
-					enums: data[2],
-					singletons: data[3],
-					global_functions: data[4],
-					constants: data[5]
+					data: data,
 				})
 
 				// trigger a custom page scroll now
@@ -445,38 +435,34 @@ class LuaAPI extends Component {
 		}
 	}
 
-	get_elements_to_render(classes_to_render){
+	getElementsToRender(){
+
+		const filter = this.props.text_filter
 
 		return {
-			"Actors": classes_to_render[0].map(function(a, i){
-				return <ActorClass actor={a} key={a.name} />
+			"Actors": this.state.data[0].map(function(a, i){
+				return <ActorClass actor={a} key={a.name} text_filter={filter} />
 			}),
 
-			"Namespaces": classes_to_render[1].map(function(n, i){
-				return <Namespace namespace={n} key={n.name} />
+			"Namespaces": this.state.data[1].map(function(n, i){
+				return <Namespace namespace={n} key={n.name} text_filter={filter} />
 			}),
 
-			"Enums": classes_to_render[2].map(function(e, i){
-				return <Enum enum={e} key={e.name} />
+			"Enums": this.state.data[2].map(function(e, i){
+				return <Enum enum={e} key={e.name} text_filter={filter} />
 			}),
 
-			"Singletons": classes_to_render[3].map(function(s, i){
-				return <Singleton singleton={s} key={s.name} />
+			"Singletons": this.state.data[3].map(function(s, i){
+				return <Singleton singleton={s} key={s.name} text_filter={filter} />
 			}),
 
-			"GlobalFunctions":(
-				<div className="GlobalFunctions actor-class">
-					{classes_to_render[4].map(function(f, i){
-						return( <GlobalFunction global_function={f} key={"global_function-"+f.name}/> )
-					})}
-				</div>
-			),
+			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.data[4]} text_filter={filter} /> ),
 
 			"Constants": (
 				<table id={"Constants"} className="table table-hover table-sm table-bordered">
 					<thead className="table-primary"><tr><th><strong>Lua Variable</strong></th><th>Value</th></tr></thead>
 					<tbody>
-						{classes_to_render[5].map(function(c, i){
+						{this.state.data[5].map(function(c, i){
 							return(
 								<tr key={"constant-"+c.name}>
 									<td>{c.name}</td>
@@ -528,218 +514,94 @@ class LuaAPI extends Component {
 		this.setState({mobile_api_filter: eventValue})
 	}
 
-	filterResults(eventValue){
-
-		let results = [ [], [], [], [], [], [] ]
-
-		// ---------------------------------------------------------------------
-		// loop through all actor classes stored in state, searching for string matches in various ways
-		this.state.actor_classes.forEach(function(actor){
-
-			// if name of this entire actor class includes the user-input string,
-			// OR if the base of this actor class includes the user-input string
-			if (actor.name.toUpperCase().includes(eventValue) || (actor.base && actor.base.toUpperCase().includes(eventValue))){
-				// push the entire actor class and all its methods to the array of filtered results
-				results[0].push(actor)
-				// and continue to the next actor class
-				return
-			}
-
-			// otherwise, loop through the methods available to this actor, using
-			// filter() to reduce a larger array to a smaller array of filtered results
-			const filtered_methods = actor.methods.filter(function(method){
-				// check for case-insensitive strings matches on the method name or description
-				// if either is a match, return true, which means this method passes the filter()
-				// test and will be included in the pared down filtered_methods array
-				return (method.name.toUpperCase().includes(eventValue) || method.desc.toUpperCase().includes(eventValue))
-			})
-
-			// if any matches were found above, filtered_methods will contain those methods
-			// for this actor, so push them to the results array now so that they'll persist
-			// outside of this iteration of the forEach loop
-			if (filtered_methods.length > 0){
-				results[0].push({
-					name: actor.name,
-					methods: filtered_methods
-				})
-			}
-		})
-
-		// ---------------------------------------------------------------------
-		// loop through all namespaces stored in state, searching for string matches in various ways
-		this.state.namespaces.forEach(function(n){
-
-			// if name of this entire actor class includes the user-input string
-			if (n.name.toUpperCase().includes(eventValue)){
-				// push the entire namespace and all its methods to the array of filtered results
-				results[1].push(n)
-				// and continue to the next namespace
-				return
-			}
-
-			// otherwise, loop through the methods available to this namespace, using
-			// filter() to reduce a larger array to a smaller array of filtered results
-			const filtered_methods = n.methods.filter(function(method){
-				// check for case-insensitive strings matches on the method name or description
-				// if either is a match, return true, which means this method passes the filter()
-				// test and will be included in the pared down filtered_methods array
-				return (method.name.toUpperCase().includes(eventValue) || method.desc.toUpperCase().includes(eventValue))
-			})
-
-			// if any matches were found above, filtered_methods will contain those methods
-			// for this namespace, so push them to the results array now so that they'll persist
-			// outside of this iteration of the forEach loop
-			if (filtered_methods.length > 0){
-				results[1].push({
-					name: n.name,
-					methods: filtered_methods
-				})
-			}
-		})
-
-		// ---------------------------------------------------------------------
-		// loop through all enums stored in state, searching for string matches in various ways
-		this.state.enums.forEach(function(e){
-			if (e.name.toUpperCase().includes(eventValue)){
-				results[2].push(e)
-				return
-			}
-
-			const filtered_enums = e.values.filter(function(val){
-				return (val.name.toUpperCase().includes(eventValue))
-			})
-
-			if (filtered_enums.length > 0){
-				results[2].push({
-					name: e.name,
-					values: filtered_enums
-				})
-			}
-		})
-
-		// ---------------------------------------------------------------------
-		// loop through all enums stored in state, searching for string matches
-		this.state.singletons.forEach(function(s){
-			if (s.name.toUpperCase().includes(eventValue)){
-				results[3].push(s)
-				return
-			}
-		})
-
-		// ---------------------------------------------------------------------
-		// loop through all global functions stored in state, searching for string matches
-		this.state.global_functions.forEach(function(f){
-			if (f.name.toUpperCase().includes(eventValue) || f.desc.toUpperCase().includes(eventValue)){
-				results[4].push(f)
-				return
-			}
-		})
-
-		// ---------------------------------------------------------------------
-		// loop through all constants stored in state, searching for string matches
-		this.state.constants.forEach(function(c){
-			if (c.name.toUpperCase().includes(eventValue)){
-				results[5].push(c)
-				return
-			}
-		})
-
-		return results
-	}
 
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
 
 
 	render() {
-		if (this.state && this.state.isLoaded && this.props){
 
-			let elements = null
+		if (this.state === undefined || this.state.isLoaded === false){ return null }
 
-			if (this.props.api_filter === "" && this.state.mobile_api_filter === ""){
-				elements = this.all_elements
+		// ---------------------------------------------------------------------
+		// let elements = null
+		const elements = this.getElementsToRender()
 
-			} else {
-				const eventValue = this.props.api_filter !== "" ? this.props.api_filter : this.state.mobile_api_filter
-				elements = this.get_elements_to_render(this.filterResults(eventValue))
-			}
+		// by default there are 22 constants, but text filtering may result in fewer or none
+		// so, store the curent number of constants in num_constants now and use it below
+		// to determine whether to show/hide the header for the constants table
+		// (having a table header with 0 rows of data is confusing)
+		const num_constants = elements.Constants.props.children[1].props.children.length
 
-			// by default there are 22 constants, but text filtering may result in fewer or none
-			// so, store the curent number of constants in num_constants now and use it below
-			// to determine whether to show/hide the header for the constants table
-			// (having a table header with 0 rows of data is confusing)
-			const num_constants = elements.Constants.props.children[1].props.children.length
+		return (
+			<div className="LuaAPI pl-md-4">
 
-			return (
-				<div className="LuaAPI pl-md-4">
+				<p className="alert alert-info">
+					This version of SM5&apos;s Lua API doc is in beta, so some information may be missing!
+					<br /><br />
+					The original, full API doc can <a href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
+				</p>
 
-					<p className="alert alert-info">
-						This version of SM5&apos;s Lua API doc is in beta, so some information may be missing!
-						<br /><br />
-						The original, full API doc can <a href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
-					</p>
+				{
+					// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
+					// when the mobile navigation menu (should fill the entire the screen) is active
+					// otherwise, use d-md-none so that this div only appears when bootstrap detects page
+					// width is smaller than md
+				}
+				<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
 
 					{
-						// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
-						// when the mobile navigation menu (should fill the entire the screen) is active
-						// otherwise, use d-md-none so that this div only appears when bootstrap detects page
-						// width is smaller than md
+						// hack: pad the LuaAPIFilter component down a bit via <br> so that
+						// it doesn't appear under the navbar when sticky-top takes effect
 					}
-					<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
+					<span>
+						<br /> <br /><br />
+					</span>
 
-						{
-							// hack: pad the LuaAPIFilter component down a bit via <br> so that
-							// it doesn't appear under the navbar when sticky-top takes effect
-						}
-						<span className=""><br /> <br /><br /></span>
-
-						<LuaAPIFilter onFilterChange={this.filterResultsMobile} />
-						<hr />
-					</div>
-
-
-					<h1>SM5 Lua API</h1>
-
-					<h2 id="Actors" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Actors")} name="link" />
-						Classes
-					</h2>
-					<div>{elements["Actors"]}</div>
-
-					<h2 id="Singletons" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Singletons")} name="link" />
-						Singletons
-					</h2>
-					<div>{elements["Singletons"]}</div>
-
-					<h2 id="Namespaces" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Namespaces")} name="link" />
-						Namespaces
-					</h2>
-					<div>{elements["Namespaces"]}</div>
-
-					<h2 id="Enums" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Enums")} name="link" />
-						Enums
-					</h2>
-					<div>{elements["Enums"]}</div>
-
-					<h2 id="GlobalFunctions" className="API-Category">
-						<Octicon onClick={() => this.updateHash("GlobalFunctions")} name="link" />
-						Global Functions
-					</h2>
-					<div>{elements["GlobalFunctions"]}</div>
-
-					<h2 id="Constants" className="API-Category">
-						<Octicon onClick={() => this.updateHash("Constants")} name="link" />
-						Constants
-					</h2>
-					<div>{num_constants > 0 && elements["Constants"]}</div>
+					<LuaAPIFilter onFilterChange={this.filterResultsMobile} />
+					<hr />
 				</div>
-			)
-		} else {
-			return null
-		}
+
+
+				<h1>SM5 Lua API</h1>
+
+				<h2 id="Actors" className="API-Category">
+					<Octicon onClick={() => this.updateHash("Actors")} name="link" />
+					Classes
+				</h2>
+				<div>{elements.Actors}</div>
+
+				<h2 id="Singletons" className="API-Category">
+					<Octicon onClick={() => this.updateHash("Singletons")} name="link" />
+					Singletons
+				</h2>
+				<div>{elements.Singletons}</div>
+
+				<h2 id="Namespaces" className="API-Category">
+					<Octicon onClick={() => this.updateHash("Namespaces")} name="link" />
+					Namespaces
+				</h2>
+				<div>{elements.Namespaces}</div>
+
+				<h2 id="Enums" className="API-Category">
+					<Octicon onClick={() => this.updateHash("Enums")} name="link" />
+					Enums
+				</h2>
+				<div>{elements.Enums}</div>
+
+				<h2 id="GlobalFunctions" className="API-Category">
+					<Octicon onClick={() => this.updateHash("GlobalFunctions")} name="link" />
+					Global Functions
+				</h2>
+				<div>{elements.GlobalFunctions}</div>
+
+				<h2 id="Constants" className="API-Category">
+					<Octicon onClick={() => this.updateHash("Constants")} name="link" />
+					Constants
+				</h2>
+				<div>{num_constants > 0 && elements.Constants}</div>
+			</div>
+		)
 	}
 }
 
