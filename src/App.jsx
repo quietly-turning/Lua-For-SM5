@@ -52,7 +52,7 @@ class App extends Component {
 
 		this.handleFilterChange    = this.handleFilterChange.bind(this)
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
-		this.getClasses             = this.getClasses.bind(this)
+		this.getClasses            = this.getClasses.bind(this)
 
 		this.state = {
 			mobile_nav: false,

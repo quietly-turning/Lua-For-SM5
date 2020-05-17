@@ -24,7 +24,7 @@ class GuidesSidebar extends Component {
 		return (
 			<nav id="GuidesSidebar">
 				<section>
-					<h5 id="heading-1" className="collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
 						Introduction
 					</h5>
 
@@ -40,7 +40,7 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-2" className="collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
 						Actors
 					</h5>
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
@@ -60,7 +60,7 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
 						Singletons
 					</h5>
 					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
@@ -73,7 +73,7 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-4" className="collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
 						Best Practices
 					</h5>
 					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
@@ -86,7 +86,7 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-5" className="collapsed" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
 						Examples
 					</h5>
 					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">

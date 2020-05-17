@@ -69,16 +69,15 @@ body{
 			background-color: #e5e5e5;
 		}
 
-		section h5::after{
+		section h5.expandable::after{
 			background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
 			background-size: 2rem 2rem;
-			height: 1.25rem;
-			width: 1.25rem;
+			padding: 0.5em 1em 1em 1em;
 			background-position: 50%;
 			content: " ";
 			display: block;
 		}
-		section h5.collapsed::after{
+		section h5.expandable.collapsed::after{
 			content: " ";
 			transform: rotateX(180deg);
 		}
@@ -93,7 +92,7 @@ body{
 		}
 
 		h5{
-			padding: 0.35em 1em 0.35em 0.65em;
+			padding: 0.5em 1em 0.35em 0.65em;
 		}
 
 		section h5::after{
@@ -108,21 +107,17 @@ body{
 		// denote that this h5 will expand when clicked
 		// this includes: Actor Classes, Namespaces
 		section h5{
-			width: 100%;
+			// keep it at 85% for mobile
+			width: 80%;
+			margin-top: 0.25em;
+			padding: 0.25em 0em 0.25em 0.5em;
+
+			span{
+				width: 90%;
+			}
 		}
 		section h5::after{
-			margin-top: 0.4em;
-			margin-right: -1em;
-		}
-
-		// in the LuaAPISidebar, h5 a elements that are children of the LuaAPISidebar itself
-		// denote that this is a NavLink to a major section of the Lua API
-		// this includes: Enums, Singletons, Global Functions, Constants
-		h5 {
-			width: 90%;
-			a {
-				padding: 0.35em 0em 0.35em 0.65em;
-			}
+			margin-right: -2em;
 		}
 
 		// sidebar-filter is also sticky-top, so it needs a

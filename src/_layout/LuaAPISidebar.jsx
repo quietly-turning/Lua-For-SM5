@@ -14,6 +14,10 @@ class Sidebar extends Component {
 		this.singletons    = this.props.singletons
 	}
 
+	updateHash(hash){
+		window.location.hash = "#" + hash
+	}
+
 	handleFilterChange(eventValue){
 		this.props.onFilterChange(eventValue)
 	}
@@ -52,8 +56,8 @@ class Sidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-1" className="collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						<a href="#Actors">Classes</a>
+					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+						<span onClick={() => this.updateHash("Actors")}>Classes</span>
 					</h5>
 
 					<div id="collapse-1" className="collapse no-transition" aria-labelledby="heading-1">
@@ -63,8 +67,8 @@ class Sidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-2" className="collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						<a href="#Singletons">Singletons</a>
+					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+						<span onClick={() => this.updateHash("Singletons")}>Singletons</span>
 					</h5>
 
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
@@ -73,8 +77,8 @@ class Sidebar extends Component {
 				</section>
 
 				<section>
-					<h5 id="heading-3" className="collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-						<a href="#Namespaces">Namespaces</a>
+					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+						<span onClick={() => this.updateHash("Namespaces")}>Namespaces</span>
 					</h5>
 
 					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
@@ -84,8 +88,8 @@ class Sidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-4" className="collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-						<a href="#Enums">Enums</a>
+					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+						<span onClick={() => this.updateHash("Enums")}>Enums</span>
 					</h5>
 
 					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
@@ -93,12 +97,17 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
-				<h5>
-					<a href="#GlobalFunctions">Global Functions</a>
-				</h5>
-				<h5>
-					<a href="#Constants">Constants</a>
-				</h5>
+				<section>
+					<h5>
+						<a href="#GlobalFunctions">Global Functions</a>
+					</h5>
+				</section>
+
+				<section>
+					<h5>
+						<a href="#Constants">Constants</a>
+					</h5>
+				</section>
 			</div>
 		)
 	}

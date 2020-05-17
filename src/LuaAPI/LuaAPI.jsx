@@ -426,7 +426,7 @@ class LuaAPI extends Component {
 			if (el){
 				const y_offset = el.offsetTop
 				if (y_offset){
-					const topbar_height = 75
+					const topbar_height = this.props.mobile_nav ? 128 : 75
 					window.scrollTo(0, y_offset-topbar_height)
 				}
 			}
