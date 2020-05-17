@@ -94,11 +94,11 @@ class App extends Component {
 				<div className="container-fluid h-100">
 					<div className="row h-100">
 
-						<div className="sidebar position-fixed h-100 col-lg-2 col-md-3 d-md-block d-none">
+						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar onFilterChange={this.handleFilterChange} actorClasses={this.state.actor_classes} namespaces={this.state.namespaces} enums={this.state.enums} singletons={this.state.singletons} />
 						</div>
 
-						<div id="content" className="offset-md-3 col-md-6 col-sm-12 pl-lg-0 pl-md-3 pl-4">
+						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 pl-lg-4 pr-lg-4 pl-md-5 pr-md-5 pl-4 pr-4">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
 								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} parentFilterChange={(p)=>this.handleFilterChange(p.text_filter)} />))} />

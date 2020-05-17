@@ -104,7 +104,7 @@ body{
 		// denote that this h5 will expand when clicked
 		// this includes: Actor Classes, Namespaces
 		section h5{
-			width: 80%;
+			width: 90%;
 		}
 		section h5::after{
 			margin-top: 0.4em;
@@ -208,5 +208,19 @@ h3.subtitle{
 	.bar3.x {
 	  -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
 	  transform: rotate(45deg) translate(-6px, -6px) ;
+	}
+}
+
+// rules that stop applying once Bootstrap goes above md
+// that is, these rules will not apply in xs, sm, or md
+// but will apply in lg and xl
+@media only screen and (min-width : 767px) {
+	.sidebar{
+		min-width:220px;
+		max-width:300px;
+
+		#LuaAPISidebar	section h5{
+			width: 80%;
+		}
 	}
 }
