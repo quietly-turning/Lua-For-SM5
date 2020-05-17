@@ -24,7 +24,8 @@ body{
 .sidebar{
 	background-color: #f7f7f7;
 	border-right: 1px solid #ececec;
-	padding: 5em 0.5em  0em 0.5em;
+	padding: 0em 0.5em 0em 0.5em;
+	margin-top:60px;
 	overflow-x: auto;
 
 	a{
@@ -60,7 +61,7 @@ body{
 
 		li a{
 			border-radius: 0.25em;
-			padding:0.25em 1em;
+			padding: 0.25em 0em 0.25em 0.65em;
 		}
 
 		h5:hover, li a:hover{
@@ -84,16 +85,19 @@ body{
 	}
 
 	#GuidesSidebar{
+		padding-top:18px;
+
 		//	.active class handled by react-router-dom NavLink
 		.active{
 			color: #f92672;   // pink
 		}
 
 		h5{
-			padding:0.35em 1em;
+			padding: 0.35em 1em 0.35em 0.65em;
 		}
 
 		section h5::after{
+			margin-top: 0.1em;
 			margin-right: -0.5em;
 		}
 	}
@@ -104,18 +108,28 @@ body{
 		// denote that this h5 will expand when clicked
 		// this includes: Actor Classes, Namespaces
 		section h5{
-			width: 90%;
+			width: 100%;
 		}
 		section h5::after{
 			margin-top: 0.4em;
-			margin-right: -1.7em;
+			margin-right: -1em;
 		}
 
 		// in the LuaAPISidebar, h5 a elements that are children of the LuaAPISidebar itself
 		// denote that this is a NavLink to a major section of the Lua API
 		// this includes: Enums, Singletons, Global Functions, Constants
-		h5 a{
-			padding: 0.35em 1em;
+		h5 {
+			width: 90%;
+			a {
+				padding: 0.35em 0em 0.35em 0.65em;
+			}
+		}
+
+		// sidebar-filter is also sticky-top, so it needs a
+		// background-color to cover text that scrolls under it
+		div.sidebar-filter{
+			padding-top: 16px;
+			background-color: #f7f7f7;
 		}
 	}
 }
@@ -216,7 +230,7 @@ h3.subtitle{
 // but will apply in lg and xl
 @media only screen and (min-width : 767px) {
 	.sidebar{
-		min-width:220px;
+		min-width:230px;
 		max-width:300px;
 
 		#LuaAPISidebar	section h5{

@@ -45,7 +45,7 @@ class Sidebar extends Component {
 		return (
 			<div id="LuaAPISidebar">
 
-				<div className="d-none d-md-block">
+				<div className="d-none d-md-block sticky-top sidebar-filter">
 					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>
