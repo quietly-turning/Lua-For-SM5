@@ -43,6 +43,18 @@ import CommandChaining from "./Guides/best-practices/Command-Chaining"
 import ArbitraryInput from "./Guides/examples/ArbitraryInput"
 import SimpleTweens from "./Guides/examples/SimpleTweens"
 
+// ------- highlightjs for syntax coloring
+// import highlightjs modules last so that hljs.registerLanguage()
+// doesn't trigger eslint-plugin-import's import/first rule
+import hljs from "highlight.js/lib/core"
+import "highlight.js/styles/monokai-sublime.css"
+import lua from "highlight.js/lib/languages/lua"
+import ini from "highlight.js/lib/languages/ini"
+import xml from "highlight.js/lib/languages/xml"
+hljs.registerLanguage('javascript', lua)
+hljs.registerLanguage('javascript', ini)
+hljs.registerLanguage('javascript', xml)
+
 // -----------------------------------
 
 class App extends Component {
