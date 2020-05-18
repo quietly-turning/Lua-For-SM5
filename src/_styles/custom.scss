@@ -13,11 +13,17 @@ h2{
 
 // -------------------------------------------------------
 
-#topbar a.nav-link{
-	font-weight:lighter;
-	font-size: 1.15em;
+#topbar{
+	padding: 2px 0px;
+	background-color: #282828;
+
+	a.nav-link{
+		font-weight:lighter;
+		font-size: 1.15em;
+	}
 }
 
+// -------------------------------------------------------
 
 .LuaAPI-filter input{
 	&::placeholder{
@@ -47,7 +53,7 @@ h2{
 	background-color: #f7f7f7;
 	border-right: 1px solid #ececec;
 	padding: 0em 0.5em 0em 0.5em;
-	margin-top:60px;
+	margin-top: 48px; // offset to accommodate #topbar
 	overflow-x: auto;
 
 	a{
@@ -105,20 +111,24 @@ h2{
 	}
 
 	#GuidesSidebar{
-		padding-top:18px;
+		// #LuaAPISidebar doesn't need an explicit margin-top
+		// as div.sidebar-filter at the top pushes items down
+		margin-top:16px;
 
+		// used to highlight the guide currently being viewed
 		//	.active class handled by react-router-dom NavLink
 		.active{
 			color: #f92672;   // pink
 		}
 
-		h5{
-			padding: 0.5em 1em 0.35em 0.65em;
-		}
+		section h5{
+			margin-top: 0.25em;
+			padding: 0.25em 1em 0.25em 0.75em;
 
-		section h5::after{
-			margin-top: 0.1em;
-			margin-right: -0.5em;
+			&::after{
+				margin-top: 0.1em;
+				margin-right: -0.5em;
+			}
 		}
 	}
 
@@ -128,17 +138,35 @@ h2{
 		// denote that this h5 will expand when clicked
 		// this includes: Actor Classes, Namespaces
 		section h5{
-			// keep it at 80% for mobile
-			width: 80%;
 			margin-top: 0.25em;
 			padding: 0.25em 0em 0.25em 0.5em;
 
+			// span is nested in section h5 and handles url hash updating onClick
+			// these were orginally normal <a href="#thing"> elements but I think
+			// Bootstrap's collapse component was interfering with hash updating
 			span{
+				// specify to be 100% width so that clickable area is as wide as
+				// possible for the the jsx onClick
 				width: 100%;
 			}
-		}
-		section h5::after{
-			margin-right: -2em;
+
+			// pull the caret symbol further right
+			&::after{
+				margin-right: -2em;
+			}
+
+
+			// --------------------------------------------------------
+			// this h5 width and h5.expandable width will only apply when
+			// Bootstrap is at xs, sm, or md
+			// they are overrideen by the @media query below for lg and xl
+			width: 95%;
+			&.expandable{
+				//	keep h5.expandable at 80% width so that :hover
+				// background-color effect does not include caret symbol
+				width: 85%;
+			}
+			// --------------------------------------------------------
 		}
 
 		// the LuaAPI <input> used to filter the API doc is sticky-top, so
@@ -146,6 +174,26 @@ h2{
 		div.sidebar-filter{
 			padding-top: 16px;
 			background-color: #f7f7f7;
+		}
+	}
+}
+
+// -------------------------------------------------------
+// rules that will only apply when Bootstrap is in lg and xl
+
+@media only screen and (min-width : 767px) {
+	.sidebar{
+		min-width:230px;
+		max-width:300px;
+
+		#LuaAPISidebar	section h5{
+			width: 100%;
+
+			&.expandable{
+				// keep h5.expandable at 80% width so that :hover
+				// background-color effect does not include caret symbol
+				width: 80%;
+			}
 		}
 	}
 }
@@ -223,21 +271,5 @@ code{
 	.bar3.x {
 	  -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
 	  transform: rotate(45deg) translate(-6px, -6px) ;
-	}
-}
-
-// -------------------------------------------------------
-
-// rules that stop applying once Bootstrap goes above md
-// that is, these rules will not apply in xs, sm, or md
-// but will apply in lg and xl
-@media only screen and (min-width : 767px) {
-	.sidebar{
-		min-width:230px;
-		max-width:300px;
-
-		#LuaAPISidebar	section h5{
-			width: 80%;
-		}
 	}
 }

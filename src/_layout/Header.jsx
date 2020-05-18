@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 class Header extends Component {
 	render() {
 		return (
-			<nav id="topbar" className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+			<nav id="topbar" className="navbar navbar-expand-sm navbar-dark fixed-top">
 
 				<div className="navbar-nav">
 					<NavLink className="ml-4 mr-5 nav-link text-nowrap text-white font-weight-normal" exact to="/">
