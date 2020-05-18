@@ -419,10 +419,11 @@ class LuaAPI extends Component {
 	}
 
 	scroll_window_after_hashchange(hash){
-		const window_hash = (hash || window.location.hash).replace("#","")
+		hash = (hash || window.location.hash)
 
-		if (window_hash) {
-			const el = document.getElementById(window_hash)
+		if (hash) {
+			hash = hash.replace("#","")
+			const el = document.getElementById(hash)
 			if (el){
 				const y_offset = el.offsetTop
 				if (y_offset){

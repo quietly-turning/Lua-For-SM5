@@ -16,6 +16,23 @@ class Sidebar extends Component {
 
 	updateHash(hash){
 		window.location.hash = "#" + hash
+		this.scroll_window_after_hashchange(hash)
+	}
+
+	scroll_window_after_hashchange(hash){
+		hash = (hash || window.location.hash)
+
+		if (hash) {
+			hash = hash.replace("#","")
+			const el = document.getElementById(hash)
+			if (el){
+				const y_offset = el.offsetTop
+				if (y_offset){
+					const topbar_height = this.props.mobile_nav ? 128 : 75
+					window.scrollTo(0, y_offset-topbar_height)
+				}
+			}
+		}
 	}
 
 	handleFilterChange(eventValue){
@@ -99,13 +116,13 @@ class Sidebar extends Component {
 
 				<section>
 					<h5>
-						<a href="#GlobalFunctions">Global Functions</a>
+						<span onClick={() => this.updateHash("GlobalFunctions")}>Global Functions</span>
 					</h5>
 				</section>
 
 				<section>
 					<h5>
-						<a href="#Constants">Constants</a>
+						<span onClick={() => this.updateHash("Constants")}>Constants</span>
 					</h5>
 				</section>
 			</div>
