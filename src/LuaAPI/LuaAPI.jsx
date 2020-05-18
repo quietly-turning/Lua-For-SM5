@@ -535,11 +535,11 @@ class LuaAPI extends Component {
 		return (
 			<div className="LuaAPI pl-md-4">
 
-				<p className="alert alert-info">
+				<div className="alert alert-info">
 					This version of SM5&apos;s Lua API doc is in beta, so some information may be missing!
 					<br /><br />
 					The original, full API doc can <a href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
-				</p>
+				</div>
 
 				{
 					// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
@@ -548,15 +548,6 @@ class LuaAPI extends Component {
 					// width is smaller than md
 				}
 				<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
-
-					{
-						// hack: pad the LuaAPIFilter component down a bit via <br> so that
-						// it doesn't appear under the navbar when sticky-top takes effect
-					}
-					<span>
-						<br /> <br /><br />
-					</span>
-
 					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>

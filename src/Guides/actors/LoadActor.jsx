@@ -30,7 +30,7 @@ LoadActor( "OverlayAttachedGirlfriend.png" )..{
 `}
 			</Highlight>
 
-			<p>As <a href="https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159">its definition in the _fallback theme demonstrates </a>, <em>LoadActor()</em> can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use <code>Def.Sprite{}</code>, <code>Def.Sound{}</code>, <code>Def.Model{}</code> or <code>Def.Actor</code>.</p>
+			<p>As <a href="https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159">its definition</a> in the _fallback theme demonstrates, <em>LoadActor()</em> can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use <code>Def.Sprite{}</code>, <code>Def.Sound{}</code>, <code>Def.Model{}</code> or <code>Def.Actor</code>.</p>
 
 			<h3>Second Argument - A table to pass into the loaded file</h3>
 

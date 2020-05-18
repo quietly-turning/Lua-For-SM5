@@ -103,7 +103,7 @@ class App extends Component {
 			<main className="h-100">
 				<Header />
 
-				<div className="container-fluid h-100">
+				<div className="container-fluid h-100 pt-5">
 					<div className="row h-100">
 
 						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">

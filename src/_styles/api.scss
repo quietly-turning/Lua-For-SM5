@@ -1,8 +1,9 @@
 div.LuaAPI{
 
-	// mobile-filter contains a LuaAPIFilter component and
+	// mobile-filter contains a LuaAPIFilter component that
 	// appears when Bootstrap detects width to be less than md
 	div.mobile-filter{
+		padding-top:4em;
 		background-color: #ffffff;
 	}
 
