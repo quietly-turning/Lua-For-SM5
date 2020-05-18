@@ -33,7 +33,7 @@ class LuaAPIFilter extends React.Component {
 	render() {
 		return (
 			<fieldset>
-				<div className="input-group">
+				<div className="input-group LuaAPI-filter">
 					<div className="input-group-prepend"><div className="input-group-text">{this.filter_icon}</div></div>
 					<input type="text" className="form-control" placeholder="type to filter..." onChange={this.handleFilter} />
 				</div>

@@ -1,25 +1,47 @@
 html, body{
 	height: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 h1{
 	font-size: 2.25rem;
 }
-
-body{
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+h2{
+	font-size: 1.7rem;
+	font-weight:normal;
 }
+
+// -------------------------------------------------------
 
 #topbar a.nav-link{
 	font-weight:lighter;
 	font-size: 1.15em;
 }
 
-#filter{
+
+.LuaAPI-filter input{
 	&::placeholder{
 		color: #bbb;
 	}
 }
+
+// -------------------------------------------------------
+
+#content{
+	margin-top:5em;
+	margin-bottom:5em;
+
+	p{
+		margin-top: 1.5em;
+		line-height: 1.55;
+	}
+
+	ul li{
+		max-width: 42em;
+	}
+}
+
+// -------------------------------------------------------
 
 .sidebar{
 	background-color: #f7f7f7;
@@ -38,15 +60,14 @@ body{
 		list-style-type: none;
 	}
 
+	// TODO: fix these sidebar H5 elements to be semantically meaningful
 	h5{
 		font-weight:400;
 	}
-
 	h5, a{
 		display: flex;
 		justify-content: space-between;
 	}
-
 
 
 	#GuidesSidebar, #LuaAPISidebar{
@@ -72,7 +93,7 @@ body{
 		section h5.expandable::after{
 			background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
 			background-size: 2rem 2rem;
-			padding: 0.5em 1em 1em 1em;
+			padding: 0.5em;
 			background-position: 50%;
 			content: " ";
 			display: block;
@@ -107,21 +128,21 @@ body{
 		// denote that this h5 will expand when clicked
 		// this includes: Actor Classes, Namespaces
 		section h5{
-			// keep it at 85% for mobile
+			// keep it at 80% for mobile
 			width: 80%;
 			margin-top: 0.25em;
 			padding: 0.25em 0em 0.25em 0.5em;
 
 			span{
-				width: 90%;
+				width: 100%;
 			}
 		}
 		section h5::after{
 			margin-right: -2em;
 		}
 
-		// sidebar-filter is also sticky-top, so it needs a
-		// background-color to cover text that scrolls under it
+		// the LuaAPI <input> used to filter the API doc is sticky-top, so
+		// it needs a background-color to cover text that scrolls under it
 		div.sidebar-filter{
 			padding-top: 16px;
 			background-color: #f7f7f7;
@@ -129,23 +150,7 @@ body{
 	}
 }
 
-
-#content{
-	padding: 5em 1em;
-
-	p{
-		margin-top: 1.5em;
-		line-height: 1.55;
-	}
-
-	ul li{
-		max-width: 42em;
-	}
-}
-
-h2{
-	font-weight:normal;
-}
+// -------------------------------------------------------
 
 span.CodeExample-Title{
 	background-color: #23241f;
@@ -169,10 +174,7 @@ code{
 	border-radius: 0px 8px 8px 8px;
 }
 
-h3.subtitle{
-	font-weight: normal;
-}
-
+// use no-transition to override Bootstrap's collapse animation
 .no-transition {
 	-webkit-transition: height 0.01s;
 	-moz-transition: height 0.01s;
@@ -181,6 +183,10 @@ h3.subtitle{
 	transition: height 0.01s;
 }
 
+// -------------------------------------------------------
+
+// #mobileNav is full screen navigation menu for mobile
+// toggled into view via mobileNavToggle button
 #mobileNav{
 	position:fixed;
 	top:0;
@@ -219,6 +225,8 @@ h3.subtitle{
 	  transform: rotate(45deg) translate(-6px, -6px) ;
 	}
 }
+
+// -------------------------------------------------------
 
 // rules that stop applying once Bootstrap goes above md
 // that is, these rules will not apply in xs, sm, or md

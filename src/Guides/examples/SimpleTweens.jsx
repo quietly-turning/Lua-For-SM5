@@ -8,7 +8,7 @@ class SimpleTweens extends Component {
 			<div>
 
 			<h1>Simple Tweens</h1>
-			<h3 className="subtitle">Animate things from one state to another</h3>
+			<h2>Animate things from one state to another</h2>
 
 			<p>A <em>tween</em> is a process in computer animation in which an object is manipulated (translated, transformed, altered, etc.) from a starting state to an ending state.  In the context of StepMania scripting, tweens are used to visually animate Actors.</p>
 
