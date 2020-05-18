@@ -9,7 +9,7 @@
     "not dead"
   ],
   "dependencies": {
-    "bootstrap": "github:twbs/bootstrap",
+    "bootstrap": "^4.5.0",
     "gh-pages": "^2.2.0",
     "highlight.js": "^10.0.3",
     "jquery": "^3.5.1",
