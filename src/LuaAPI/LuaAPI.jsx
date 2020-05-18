@@ -5,7 +5,7 @@ import ActorClass      from "./ActorClass"
 import Namespace       from "./Namespace"
 import Enum            from "./Enum"
 import Singleton       from "./Singleton"
-import GlobalFunctions  from "./GlobalFunctions"
+import GlobalFunctions from "./GlobalFunctions"
 import LuaAPIFilter    from "./LuaAPIFilter"
 
 import $ from "jquery"
@@ -370,7 +370,8 @@ class LuaAPI extends Component {
 						name: f.attributes.name.textContent,
 						return: gfunc_doc !== undefined ? gfunc_doc.attributes.return.textContent : "",
 						arguments: gfunc_doc !== undefined ? gfunc_doc.attributes.arguments.textContent : "",
-						desc: check_for_links(gfunc_doc)
+						desc: check_for_links(gfunc_doc),
+						theme: (gfunc_doc !== undefined && gfunc_doc.attributes.theme !== undefined) ? gfunc_doc.attributes.theme.textContent : ""
 					})
 				})
 

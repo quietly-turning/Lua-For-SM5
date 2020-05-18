@@ -16,6 +16,9 @@ class GlobalFunction extends Component {
 		this.textfilter = this.props.text_filter
 	}
 
+	// unused until it is more useful
+	// {gfunc.theme !== "" ? <span className="method-theme"><em>theme: </em> <span dangerouslySetInnerHTML={{__html: gfunc.theme}} /> </span> : "" }
+
 	updateHash(gfunc_name){
 		window.location.hash = "#GlobalFunctions-" + gfunc_name
 	}
@@ -58,7 +61,7 @@ class GlobalFunction extends Component {
 						(<code>{gfunc.arguments}</code>)
 					</div>
 
-					<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: gfunc.return}} />  </span>
+					<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: gfunc.return}} /> </span>
 					<span className="method-description" dangerouslySetInnerHTML={{ __html: gfunc.desc }} />
 				</div>
 			)
