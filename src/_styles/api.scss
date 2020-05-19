@@ -10,7 +10,7 @@ div.LuaAPI{
 	// the "chain-link" icon that users click on to update the url string for permalinking
 	// ActorClasses each get their own octicon link,
 	// and ActorClass Methods each get their own octicon link as well
-	span.octicon{
+	span.octicon-link{
 		opacity: 0;
 		&:hover{
 			cursor:pointer;
@@ -26,7 +26,7 @@ div.LuaAPI{
 		display: flex;
 		justify-content: flex-start;
 
-		span.octicon{
+		span.octicon-link{
 			color:rgb(92, 96, 100);
 			font-size: 1em;
 			width: 1.2em;
@@ -34,7 +34,7 @@ div.LuaAPI{
 		}
 
 		&:hover{
-			span.octicon{
+			span.octicon-link{
 				opacity: 1;
 			}
 		}
@@ -46,85 +46,114 @@ div.LuaAPI{
 			padding: 0.2em 0em;
 			text-indent: -0.5em;
 
-			span.octicon{
+			span.octicon-link{
 				font-size: 0.8em;
 				width: 0.8em;
 				margin-right: -0.1em;
 			}
 
 			&:hover{
-				span.octicon{
+				span.octicon-link{
 					opacity: 1;
 				}
 			}
 		}
 	}
 
-	// div.actor-class is used for both classes of Actors such as ActorFrame, ActorMultiVertex, BitmapText, etc.
-	// as well as Namespaces (out of convenience) such as ActorUtil, ArrowEffects, RageFileUtil, etc.
-	div.actor-class{
 
-		hr{
-			border-bottom: 1px solid #000;
-			margin: 0em;
+
+	hr{
+		border-bottom: 1px solid #000;
+		margin: 0em;
+	}
+
+	h3{
+		// "base" is the Actor class that this Actor class inherits from
+		span.base{
+			font-size: 98%;
+			font-weight: 200;
 		}
+	}
 
-		h3{
-			// "base" is the Actor class that this Actor class inherits from
-			span.base{
-				font-size: 98%;
-				font-weight: 200;
+	// treat <br> elements within <Description> tags
+	// more like paragraphs; see: https://stackoverflow.com/a/31633969
+	span.actorclass-description,
+	span.namespace-description,
+	span.method-description,
+	span.enum-description
+	{
+		br{
+			display: block;
+			content: "";
+			margin-bottom: 0.5em;
+		}
+	}
+
+	// div.method is a CSS class for each method belonging to a particular ActorClass
+	div.method{
+
+		margin-top: 1.5em;
+
+		div.method-signature{
+			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			font-weight: bold;
+			text-indent: -0.75em;
+
+			span.octicon-link{
+				font-size: 1em;
+				width: 1em;
+				margin-right: -0.25em;
 			}
-		}
 
-		// treat <br> elements within <Description> tags
-		// more like paragraphs; see: https://stackoverflow.com/a/31633969
-		span.actorclass-description,
-		span.namespace-description,
-		span.method-description,
-		span.enum-description
-		{
-			br{
-				display: block;
-				content: "";
-				margin-bottom: 0.5em;
-			}
-		}
-
-		// div.method is a CSS class for each method belonging to a particular ActorClass
-		div.method{
-
-			margin-top: 1.5em;
-
-			div.method-signature{
-				font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-				font-weight: bold;
-				text-indent: -0.75em;
-
-				span.octicon{
-					font-size: 1em;
-					width: 1em;
-					margin-right: -0.25em;
+			&:hover{
+				span.octicon-link{
+					opacity: 1;
 				}
+			}
+
+			code{
+				font-weight: normal;
+			}
+		}
+
+		span.method-return{
+			display:block;
+		}
+
+		span.method-description{
+			margin-left:1em;
+			display:block;
+		}
+	}
+
+	div.global-function{
+		div.method-signature{
+			display: inline-flex;
+			height: 24px;
+
+			span.octicon-link{
+				position:relative;
+				top: 4px;
+				right: 8px;
+			}
+
+			&:hover{
+				span.octicon-link{
+					opacity: 1;
+				}
+			}
+
+			span.octicon-logo-github{
+				font-size: 2.75em;
+				color: rgb(33, 136, 255);
+				position: relative;
+				top: 4px;
+				left: 0.85em;
 
 				&:hover{
-					span.octicon{
-						opacity: 1;
-					}
+					color: #024dbc;
+					cursor: pointer;
 				}
-
-				code{
-					font-weight: normal;
-				}
-			}
-
-			span.method-return{
-				display:block;
-			}
-
-			span.method-description{
-				margin-left:1em;
-				display:block;
 			}
 		}
 	}

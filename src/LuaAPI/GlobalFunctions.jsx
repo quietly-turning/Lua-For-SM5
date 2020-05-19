@@ -16,8 +16,9 @@ class GlobalFunction extends Component {
 		this.textfilter = this.props.text_filter
 	}
 
-	// unused until it is more useful
-	// {gfunc.theme !== "" ? <span className="method-theme"><em>theme: </em> <span dangerouslySetInnerHTML={{__html: gfunc.theme}} /> </span> : "" }
+	// temp for now; can make less hardcoded later
+	github_url = "https://github.com/stepmania/stepmania/tree/"
+	sm_hash = "6bea7639e8c184ca5d681d5d2f665c71eef64d44"
 
 	updateHash(gfunc_name){
 		window.location.hash = "#GlobalFunctions-" + gfunc_name
@@ -27,12 +28,18 @@ class GlobalFunction extends Component {
 		// retain handle to this GlobalFunction for the context change within map()
 		const gf = this
 		return this.props.global_functions.map(function(gfunc, i){
+
+			const github_anchor = gfunc.url !== undefined ? <a href={gf.github_url + gf.sm_hash + gfunc.url} target="_blank" rel="noopener noreferrer"><Octicon name="logo-github" /></a> : ""
+
 			return(
-				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method">
+				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method global-function">
 					<div className="method-signature">
 						<Octicon onClick={() => gf.updateHash(gfunc.name)} name="link" />
-						{gfunc.name}
-						(<code>{gfunc.arguments}</code>)
+						<span>
+							{gfunc.name}
+							(<code>{gfunc.arguments}</code>)
+						</span>
+						{github_anchor}
 					</div>
 
 					<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: gfunc.return}} />  </span>
