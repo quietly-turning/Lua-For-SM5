@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
 
 class Method extends Component {
 
@@ -20,7 +20,7 @@ class Method extends Component {
 		return(
 			<div id={this.id} className="method">
 				<div className="method-signature">
-					<Octicon onClick={this.updateHash} name="link" />
+					<span className="octicon-link" onClick={this.updateHash}><Octicon icon={getIconByName("link")} /></span>
 					{this.props.method.name}
 					(<code>{this.props.method.arguments}</code>)
 				</div>

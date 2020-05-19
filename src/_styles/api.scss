@@ -25,6 +25,7 @@ div.LuaAPI{
 	// and ActorClass Methods each get their own octicon link as well
 	span.octicon-link{
 		opacity: 0;
+		display: inline-block;
 		&:hover{
 			cursor:pointer;
 		}
@@ -41,9 +42,7 @@ div.LuaAPI{
 
 		span.octicon-link{
 			color:rgb(92, 96, 100);
-			font-size: 1em;
-			width: 1.2em;
-			margin: 0.1em 0.5em 0em -1.7em;
+			margin: 0.1em 0.5em 0em -1.85em;
 		}
 
 		&:hover{
@@ -57,12 +56,11 @@ div.LuaAPI{
 		h3{
 			margin: 0.5em 0em 0em 0em;
 			padding: 0.2em 0em;
-			text-indent: -0.5em;
+			text-indent: -0.6em;
 
 			span.octicon-link{
-				font-size: 0.8em;
-				width: 0.8em;
-				margin-right: -0.1em;
+				color:rgb(92, 96, 100);
+				svg{ scale: 0.75; }
 			}
 
 			&:hover{
@@ -110,12 +108,14 @@ div.LuaAPI{
 		div.method-signature{
 			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 			font-weight: bold;
-			text-indent: -0.75em;
+			text-indent: -0.5em;
 
 			span.octicon-link{
-				font-size: 1em;
-				width: 1em;
-				margin-right: -0.25em;
+				margin-left: -0.25em;
+				margin-right: 0.25em;
+				position:relative;
+				bottom: 2px;
+				svg{ scale: 1.1; }
 			}
 
 			&:hover{
@@ -139,36 +139,11 @@ div.LuaAPI{
 		}
 	}
 
-	div.global-function{
-		div.method-signature{
-			display: inline-flex;
-			height: 24px;
-
-			span.octicon-link{
-				position:relative;
-				top: 4px;
-				right: 8px;
-			}
-
-			&:hover{
-				span.octicon-link{
-					opacity: 1;
-				}
-			}
-
-			span.octicon-logo-github{
-				font-size: 2.75em;
-				color: rgb(33, 136, 255);
-				position: relative;
-				top: 4px;
-				left: 0.85em;
-
-				&:hover{
-					color: #024dbc;
-					cursor: pointer;
-				}
-			}
-		}
+	a.logo-github{
+		margin-left: 0.85em;
+		text-decoration: none;
+		position:relative;
+		bottom: 2px;
 	}
 
 	div.enum{

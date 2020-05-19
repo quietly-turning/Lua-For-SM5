@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
 
 class Enum extends Component {
 
@@ -57,7 +57,7 @@ class Enum extends Component {
 			<div id={"Enums-" + this.props.enum.name} className="enum">
 
 				<h3>
-					<Octicon onClick={this.updateHash} name="link" />
+					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					{this.props.enum.name}
 				</h3>
 

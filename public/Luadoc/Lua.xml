@@ -220,6 +220,7 @@
 		<Function name='assert'/>
 		<Function name='check_stop_course_early'/>
 		<Function name='clamp'/>
+		<Function name='class'/>
 		<Function name='collectgarbage'/>
 		<Function name='color'/>
 		<Function name='commify'/>

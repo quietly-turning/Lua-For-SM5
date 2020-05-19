@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
 import $ from "jquery"
 
 import Method from "./Method"
@@ -61,7 +61,7 @@ class Namespace extends Component {
 		return(
 			<div id={"Namespaces-" + this.props.namespace.name} className="actor-class">
 				<h3>
-					<Octicon onClick={this.updateHash} name="link" />
+					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					{this.props.namespace.name}
 				</h3>
 				<hr />

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
 import $ from "jquery"
 
 import Method from "./Method"
@@ -61,7 +61,7 @@ class Singleton extends Component {
 		return(
 			<div id={"Singletons-" + this.props.singleton.sm_class} className="actor-class">
 				<h3>
-					<Octicon onClick={this.updateHash} name="link" />
+					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					{this.props.singleton.sm_class}
 				</h3>
 				<hr />

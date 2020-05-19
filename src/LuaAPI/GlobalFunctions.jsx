@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
+
 import $ from "jquery"
 
 class GlobalFunction extends Component {
@@ -29,12 +30,12 @@ class GlobalFunction extends Component {
 		const gf = this
 		return this.props.global_functions.map(function(gfunc, i){
 
-			const github_anchor = gfunc.url !== undefined ? <a href={gf.github_url + gf.sm_hash + gfunc.url} target="_blank" rel="noopener noreferrer"><Octicon name="logo-github" /></a> : ""
+			const github_anchor = gfunc.url !== undefined ? <a className="logo-github" href={gf.github_url + gf.sm_hash + gfunc.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
 
 			return(
 				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method global-function">
 					<div className="method-signature">
-						<Octicon onClick={() => gf.updateHash(gfunc.name)} name="link" />
+						<span className="octicon-link" onClick={() => gf.updateHash(gfunc.name)}><Octicon icon={getIconByName("link")} /></span>
 						<span>
 							{gfunc.name}
 							(<code>{gfunc.arguments}</code>)
@@ -65,7 +66,7 @@ class GlobalFunction extends Component {
 			return(
 				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method">
 					<div className="method-signature">
-						<Octicon onClick={() => this.updateHash(gfunc.name)} name="link" />
+						<span className="octicon-link" onClick={() => this.updateHash(gfunc.name)}><Octicon icon={getIconByName("link")} /></span>
 						{gfunc.name}
 						(<code>{gfunc.arguments}</code>)
 					</div>

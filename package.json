@@ -9,6 +9,7 @@
     "not dead"
   ],
   "dependencies": {
+    "@primer/octicons-react": "^9.6.0",
     "bootstrap": "github:twbs/bootstrap",
     "csv-parse": "^4.9.1",
     "gh-pages": "^2.2.0",
@@ -19,7 +20,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight": "^0.12.0",
-    "react-octicon": "^3.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "typescript": "^3.9.2"

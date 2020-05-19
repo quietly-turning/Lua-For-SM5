@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Octicon from 'react-octicon'
+import Octicon, {getIconByName} from '@primer/octicons-react'
 import $ from "jquery"
 
 import Method from "./Method"
@@ -67,7 +67,7 @@ class ActorClass extends Component {
 		return(
 			<div id={"Actors-" + this.props.actor.name} className="actor-class">
 				<h3>
-					<Octicon onClick={this.updateHash} name="link" />
+					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					{this.props.actor.name}
 					<span className="base" dangerouslySetInnerHTML={{ __html: this.generateBase(this.props.actor.base) }}  />
 				</h3>
