@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Lua-For-SM5/precache-manifest.7ddaf1700a25237535abe41f2747187d.js"
+  "/Lua-For-SM5/precache-manifest.1cdd1f1c9401e28a991ece31059c9f3d.js"
 );
 
 self.addEventListener('message', (event) => {
