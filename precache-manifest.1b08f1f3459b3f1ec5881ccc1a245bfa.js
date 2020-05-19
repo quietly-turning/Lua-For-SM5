@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6f1726b28f04cea1bf1b081d225226ca",
+    "revision": "e98f00ca119753d7eb98cbb4e5f115c7",
     "url": "/Lua-For-SM5/index.html"
   },
   {
-    "revision": "9b739548fd109e620e8e",
+    "revision": "1d18edfde310c05d2cda",
     "url": "/Lua-For-SM5/static/css/2.b5d08dc6.chunk.css"
   },
   {
-    "revision": "1bf51799e9682ba90d50",
-    "url": "/Lua-For-SM5/static/css/main.504be14a.chunk.css"
+    "revision": "441e1aad276c4d53ed6c",
+    "url": "/Lua-For-SM5/static/css/main.ff841ba2.chunk.css"
   },
   {
-    "revision": "9b739548fd109e620e8e",
-    "url": "/Lua-For-SM5/static/js/2.fe23c378.chunk.js"
+    "revision": "1d18edfde310c05d2cda",
+    "url": "/Lua-For-SM5/static/js/2.f7cee433.chunk.js"
   },
   {
-    "revision": "1a1608bcc1c4691f6b1a83d748040301",
-    "url": "/Lua-For-SM5/static/js/2.fe23c378.chunk.js.LICENSE.txt"
+    "revision": "2e57526120df579233558cc71d3e05c6",
+    "url": "/Lua-For-SM5/static/js/2.f7cee433.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1bf51799e9682ba90d50",
-    "url": "/Lua-For-SM5/static/js/main.49b6b1a3.chunk.js"
+    "revision": "441e1aad276c4d53ed6c",
+    "url": "/Lua-For-SM5/static/js/main.260b8fc0.chunk.js"
   },
   {
     "revision": "6d9f27546675578647a1",
