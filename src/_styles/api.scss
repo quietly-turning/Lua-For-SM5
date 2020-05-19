@@ -1,11 +1,24 @@
+.LuaAPI-filter input{
+	&::placeholder{
+		color: #bbb;
+	}
+}
+
 div.LuaAPI{
 
 	// mobile-filter contains a LuaAPIFilter component that
 	// appears when Bootstrap detects width to be less than md
 	div.mobile-filter{
 		padding-top:4em;
+		margin-bottom:1em;
 		background-color: #ffffff;
+
+		input{
+			margin-bottom:0.5em;
+		}
 	}
+
+	// -------------------------------------------------------
 
 	// the "chain-link" icon that users click on to update the url string for permalinking
 	// ActorClasses each get their own octicon link,

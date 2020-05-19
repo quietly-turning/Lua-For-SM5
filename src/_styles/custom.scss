@@ -51,7 +51,7 @@ a{
 .sidebar{
 	background-color: #f7f7f7;
 	border-right: 1px solid #ececec;
-	padding: 0em 0.5em 0em 0.5em;
+	padding: 0em 0.5em;
 	overflow-x: auto;
 
 	a{
@@ -65,6 +65,42 @@ a{
 	}
 
 	section{
+		// in the LuaAPISidebar, h5 elements that are children of section elements
+		// denote that this h5 will expand when clicked
+		// this includes: Classes, Singletons, Namespaces, Enums
+		h5{
+			margin-top: 0.25em;
+			padding: 0.25em 0em 0.25em 2em;
+
+			// span is nested in section h5 and handles url hash updating onClick
+			// these were orginally normal <a href="#thing"> elements but I think
+			// Bootstrap's collapse component was interfering with hash updating
+			span{
+				// specify to be 100% width so that clickable area is as wide as
+				// possible for the the jsx onClick
+				width: 100%;
+			}
+
+			// pull the caret symbol right
+			&::after{
+				margin-right: -1em;
+			}
+
+
+			// --------------------------------------------------------
+			// this h5 width and h5.expandable width will only apply when
+			// Bootstrap is at xs, sm, or md
+			// they are overrideen by the @media query below for lg and xl
+			width: 95%;
+			&.expandable{
+				//	keep h5.expandable at 80% width so that :hover
+				// background-color effect does not include caret symbol
+				width: 85%;
+			}
+			// --------------------------------------------------------
+		}
+
+
 		// TODO: change these sidebar H5 elements to be semantically meaningful
 		h5, li a{
 			font-weight:400;
@@ -80,7 +116,7 @@ a{
 		}
 
 		li a{
-			padding: 0.25em 0em 0.25em 0.65em;
+			padding: 0.25em 0em 0.25em 3em;
 		}
 
 		h5.expandable{
@@ -111,54 +147,10 @@ a{
 		.active{
 			color: #f92672;   // pink
 		}
-
-		section h5{
-			margin-top: 0.25em;
-			padding: 0.25em 1em 0.25em 0.75em;
-
-			&::after{
-				margin-top: 0.1em;
-				margin-right: -0.5em;
-			}
-		}
 	}
 
 	#LuaAPISidebar{
-
-		// in the LuaAPISidebar, h5 elements that are children of section elements
-		// denote that this h5 will expand when clicked
-		// this includes: Actor Classes, Namespaces
-		section h5{
-			margin-top: 0.25em;
-			padding: 0.25em 0em 0.25em 0.5em;
-
-			// span is nested in section h5 and handles url hash updating onClick
-			// these were orginally normal <a href="#thing"> elements but I think
-			// Bootstrap's collapse component was interfering with hash updating
-			span{
-				// specify to be 100% width so that clickable area is as wide as
-				// possible for the the jsx onClick
-				width: 100%;
-			}
-
-			// pull the caret symbol further right
-			&::after{
-				margin-right: -2em;
-			}
-
-
-			// --------------------------------------------------------
-			// this h5 width and h5.expandable width will only apply when
-			// Bootstrap is at xs, sm, or md
-			// they are overrideen by the @media query below for lg and xl
-			width: 95%;
-			&.expandable{
-				//	keep h5.expandable at 80% width so that :hover
-				// background-color effect does not include caret symbol
-				width: 85%;
-			}
-			// --------------------------------------------------------
-		}
+		margin-bottom: 100px;
 
 		// the LuaAPI <input> used to filter the API doc is sticky-top, so
 		// it needs a background-color to cover text that scrolls under it
@@ -181,23 +173,30 @@ a{
 		min-width:230px;
 		max-width:300px;
 
-		#LuaAPISidebar	section h5{
-			width: 100%;
+		#GuidesSidebar, #LuaAPISidebar{
+			section h5{
+				width: 100%;
+				padding-left: 0.5em;
 
-			&.expandable{
-				// keep h5.expandable at 80% width so that :hover
-				// background-color effect does not include caret symbol
-				width: 80%;
+				&.expandable{
+					// keep h5.expandable at 80% width so that :hover
+					// background-color effect does not include caret symbol
+					width: 80%;
+				}
 			}
 		}
-	}
-}
 
-// -------------------------------------------------------
-
-.LuaAPI-filter input{
-	&::placeholder{
-		color: #bbb;
+		section{
+			li a{
+				padding-left: 0.65em;
+			}
+			h5{
+				// pull the caret symbol further right
+				&::after{
+					margin-right: -2em;
+				}
+			}
+		}
 	}
 }
 
