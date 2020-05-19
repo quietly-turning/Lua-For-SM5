@@ -24,11 +24,13 @@ class GlobalFunction extends Component {
 	}
 
 	getAll(){
+		// retain handle to this GlobalFunction for the context change within map()
+		const gf = this
 		return this.props.global_functions.map(function(gfunc, i){
 			return(
 				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method">
 					<div className="method-signature">
-						<Octicon onClick={() => this.updateHash(gfunc.name)} name="link" />
+						<Octicon onClick={() => gf.updateHash(gfunc.name)} name="link" />
 						{gfunc.name}
 						(<code>{gfunc.arguments}</code>)
 					</div>
