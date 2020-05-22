@@ -24,14 +24,18 @@ class LuaAPI extends Component {
 		// maintain a handle on this class to be used within the functions below
 		const lua_api = this
 
-		this.docs = { "github": {} }
+		// docs will contain documentation data read in from outside files
+		// Lua.xml, LuaDocumentation.xml, and GlobalFunctions.csv
+		this.docs = {
+			"github": {},
+		}
 
-		// pojos containing just the actor class names, namespace names, and enum strings as keys
+		// pojos containing just the actor/singleton class names, namespace names, and enum strings as keys
 		// used for convenient lookup in getReturnValue() and to pass up to LuaAPISidebar
-		this.actor_class_names = {}
-		this.namespaces = {}
-		this.enums = {}
+		this.actors     = {}
 		this.singletons = {}
+		this.namespaces = {}
+		this.enums      = {}
 
 		// ensure that the following functions have access to "this"
 		this.getElementsToRender = this.getElementsToRender.bind(this)
@@ -67,23 +71,24 @@ class LuaAPI extends Component {
 				if (link.c === undefined && link.f !== undefined){
 
 					// It was possible in LuaDocumentation.xml to create a <Link> to some other method
-					// *within* the current Actor Class with a compact syntax like <Link function="zoomy"/>
-					// Unfortunately, that leaves us trying to figure out what the "current Actor Class" is
+					// *within* the current Class using a compact syntax like <Link function="zoomy"/>
+					// Unfortunately, that leaves us trying to figure out what the "current Class" is
 					// in the context of this React app.  We'll get the parentNode of the method object.
 					const _parent = element.parentNode.attributes.getNamedItem("name")
 					const text = link.t !== "" ? link.t : link.f
 
 					if (_parent){
-						if (lua_api.actor_class_names[_parent.nodeValue]){
+						if (lua_api.actors[_parent.nodeValue]){
 							const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+							anchors.push(anchor)
+
+						} else if (lua_api.singletons[_parent.nodeValue]){
+							const anchor = "<a href='#Singletons-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
 							anchors.push(anchor)
 
 						} else if (lua_api.namespaces[_parent.nodeValue]){
 							const anchor = "<a href='#Namespaces-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
 							anchors.push(anchor)
-
-						} else {
-							// there doesn't seem to be any case to handle this in Lua.xsl
 						}
 
 					} else {
@@ -99,7 +104,7 @@ class LuaAPI extends Component {
 					let anchor
 
 					// linking to a particular ActorClass
-					if (lua_api.actor_class_names[link.c]){
+					if (lua_api.actors[link.c]){
 			 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
 
 					// linking to a particular singleton
@@ -144,10 +149,12 @@ class LuaAPI extends Component {
 					let anchor = ""
 
 					// ensure that link.c matches an ActorClass before creating an anchor to it
-					// lua_api.actor_class_names is a convenience object with string keys that match ActorClass names
-					if (lua_api.actor_class_names[link.c]){
+					// lua_api.actors is a convenience object with string keys that match ActorClass names
+					if (lua_api.actors[link.c]){
 						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
+					// if link.c wasn't an ActorClass, look for it in singletons next
+					// lua_api.singletons is a convenience object with C++ class names as keys and Lua userdata names as values
 					} else if (lua_api.singletons[link.c]){
 						text = link.t !== "" ? link.t : (lua_api.singletons[link.c] + ":" + link.f + "()")
 						anchor = "<a href='#Singletons-" + link.c + "-" + link.f + "'>" + text + "</a>"
@@ -181,8 +188,8 @@ class LuaAPI extends Component {
 		// ---------------------------------------------------------------------
 
 		$.when(
-			$.get("./Luadoc/LuaDocumentation.xml",  luadoc    => lua_api.docs.lua_doc_children = $(luadoc).children() ),
-			$.get("./Luadoc/Lua.xml",               luadotxml => lua_api.docs.lua_dot_xml_children = $(luadotxml).children() ),
+			$.get("./Luadoc/LuaDocumentation.xml",  luadoc    => lua_api.docs.luadoc        = $(luadoc).children() ),
+			$.get("./Luadoc/Lua.xml",               luadotxml => lua_api.docs.luadotxml     = $(luadotxml).children() ),
 			$.get("./Luadoc++/GlobalFunctions.csv", gfuncs    => lua_api.docs.github.gfuncs = Object.fromEntries(csvparse(gfuncs, {columns: false, skip_empty_lines: true})) )
 
 
@@ -195,32 +202,32 @@ class LuaAPI extends Component {
 			// All available classes and methods should be in Lua.xml, but not everything has a
 			// corresponding explanation in LuaDocumentation.xml
 			const documentation = {
-				actors:           lua_api.docs.lua_doc_children.find("Classes"),
-				namespaces:       lua_api.docs.lua_doc_children.find("Namespaces"),
-				enums:            lua_api.docs.lua_doc_children.find("Enums"),
-				singletons:       lua_api.docs.lua_doc_children.find("Singletons"),
-				global_functions: lua_api.docs.lua_doc_children.find("GlobalFunctions"),
-				constants:        lua_api.docs.lua_doc_children.find("Constants"),
+				actors:           lua_api.docs.luadoc.find("Classes"),
+				namespaces:       lua_api.docs.luadoc.find("Namespaces"),
+				enums:            lua_api.docs.luadoc.find("Enums"),
+				singletons:       lua_api.docs.luadoc.find("Singletons"),
+				global_functions: lua_api.docs.luadoc.find("GlobalFunctions"),
+				constants:        lua_api.docs.luadoc.find("Constants"),
 			}
 
-			const actors           = Array.from(lua_api.docs.lua_dot_xml_children.find("Classes Class"))
-			const namespaces       = Array.from(lua_api.docs.lua_dot_xml_children.find("Namespaces Namespace"))
-			const enums            = Array.from(lua_api.docs.lua_dot_xml_children.find("Enums Enum"))
-			const singletons       = Array.from(lua_api.docs.lua_dot_xml_children.find("Singletons Singleton"))
-			const global_functions = Array.from(lua_api.docs.lua_dot_xml_children.find("GlobalFunctions Function"))
-			const constants        = Array.from(lua_api.docs.lua_dot_xml_children.find("Constants Constant"))
+			const actors           = Array.from(lua_api.docs.luadotxml.find("Classes Class"))
+			const namespaces       = Array.from(lua_api.docs.luadotxml.find("Namespaces Namespace"))
+			const enums            = Array.from(lua_api.docs.luadotxml.find("Enums Enum"))
+			const singletons       = Array.from(lua_api.docs.luadotxml.find("Singletons Singleton"))
+			const global_functions = Array.from(lua_api.docs.luadotxml.find("GlobalFunctions Function"))
+			const constants        = Array.from(lua_api.docs.luadotxml.find("Constants Constant"))
 
 			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
 			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
 
-			// next, do similarly with lua_api.actor_class_names, filling it with the names of each stepmania class
+			// next, do similarly with lua_api.actors, filling it with the names of each stepmania class
 			actors.forEach(actor => {
 				const class_name = actor.attributes.name.textContent
 
 				// don't add singletons here
 				if (!(class_name in lua_api.singletons)){
-					lua_api.actor_class_names[class_name] = true
+					lua_api.actors[class_name] = true
 				}
 			})
 
@@ -416,7 +423,7 @@ class LuaAPI extends Component {
 
 	bubbleDataUp(){
 		this.props.parentCallback({
-			actor_classes: Object.keys(this.actor_class_names),
+			actor_classes: Object.keys(this.actors),
 			namespaces: Object.keys(this.namespaces),
 			enums: Object.keys(this.enums),
 			singletons: Object.keys(this.singletons)
@@ -494,7 +501,7 @@ class LuaAPI extends Component {
 		if (r === "void"){ return r }
 
 		// next, check to see if the return text matches any of the actor classes
-		if (this.actor_class_names[r]){
+		if (this.actors[r]){
 			return "<a href='#Actors-" + r +"'>" + r + "</a>"
 		}
 
@@ -503,7 +510,7 @@ class LuaAPI extends Component {
 		// (though, it could also be "float" wrapped in curly braces,
 		// which we don't want to try to try to create an anchor to)
 		const _r = r.match(/{(.+)}/)
-		if (_r && this.actor_class_names[_r[1]]){
+		if (_r && this.actors[_r[1]]){
 			return "{ <a href='#Actors-" + _r[1] +"'>" + _r[1] + "</a> }"
 		}
 
@@ -602,6 +609,7 @@ class LuaAPI extends Component {
 					<span className="octicon-link" onClick={() => this.updateHash("GlobalFunctions")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Global Functions
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[4].desc}} />
 				<div>{elements.GlobalFunctions}</div>
 
 
