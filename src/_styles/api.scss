@@ -75,7 +75,7 @@ div.LuaAPI{
 
 	hr{
 		border-bottom: 1px solid #000;
-		margin: 0em;
+		margin: 0em 0em 0.1em 0em;
 	}
 
 	h3{
@@ -91,7 +91,8 @@ div.LuaAPI{
 	span.actorclass-description,
 	span.namespace-description,
 	span.method-description,
-	span.enum-description
+	span.enum-description,
+	div.API-Category-description
 	{
 		br{
 			display: block;

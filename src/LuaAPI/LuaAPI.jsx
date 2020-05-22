@@ -102,6 +102,10 @@ class LuaAPI extends Component {
 					if (lua_api.actor_class_names[link.c]){
 			 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
 
+					// linking to a particular singleton
+					} else if (lua_api.singletons[link.c]){
+			 			anchor = "<a href='#Singletons-" + link.c + "'>" + text + "</a>"
+
 					// linking to a particular Namespace
 					} else if (lua_api.namespaces[link.c]){
 						anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
@@ -136,7 +140,7 @@ class LuaAPI extends Component {
 
 					// if this was a <Link>text</Link> element, use the text provided
 					// if this was a self-closing link, use class.function and append "()"
-					const text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
+					let text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
 					let anchor = ""
 
 					// ensure that link.c matches an ActorClass before creating an anchor to it
@@ -144,6 +148,9 @@ class LuaAPI extends Component {
 					if (lua_api.actor_class_names[link.c]){
 						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
+					} else if (lua_api.singletons[link.c]){
+						text = link.t !== "" ? link.t : (lua_api.singletons[link.c] + ":" + link.f + "()")
+						anchor = "<a href='#Singletons-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
 					// if link.c wasn't an ActorClass, look for it in Namespaces next
 					// lua_api.namespaces is a convenience object with string keys that match Namespaces
@@ -190,8 +197,10 @@ class LuaAPI extends Component {
 			const documentation = {
 				actors:           lua_api.docs.lua_doc_children.find("Classes"),
 				namespaces:       lua_api.docs.lua_doc_children.find("Namespaces"),
-				global_functions: lua_api.docs.lua_doc_children.find("GlobalFunctions"),
 				enums:            lua_api.docs.lua_doc_children.find("Enums"),
+				singletons:       lua_api.docs.lua_doc_children.find("Singletons"),
+				global_functions: lua_api.docs.lua_doc_children.find("GlobalFunctions"),
+				constants:        lua_api.docs.lua_doc_children.find("Constants"),
 			}
 
 			const actors           = Array.from(lua_api.docs.lua_dot_xml_children.find("Classes Class"))
@@ -201,12 +210,9 @@ class LuaAPI extends Component {
 			const global_functions = Array.from(lua_api.docs.lua_dot_xml_children.find("GlobalFunctions Function"))
 			const constants        = Array.from(lua_api.docs.lua_dot_xml_children.find("Constants Constant"))
 
-			// actor classes, namespaces, enums, singletons, global functions, constants
-			const data = [ [], [], [], [], [], [] ]
-
 			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
-			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = true)
+			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
 
 			// next, do similarly with lua_api.actor_class_names, filling it with the names of each stepmania class
 			actors.forEach(actor => {
@@ -224,6 +230,16 @@ class LuaAPI extends Component {
 			enums.forEach(e => lua_api.enums[e.attributes.name.textContent] = true)
 
 			lua_api.bubbleDataUp()
+
+			// ---------------------------------------------------------------------
+			const G = [
+				{ data: [], desc: check_for_links(documentation.actors.children("Description")[0]) },           // 0: classes
+				{ data: [], desc: check_for_links(documentation.namespaces.children("Description")[0]) },       // 1: namespaces
+				{ data: [], desc: check_for_links(documentation.enums.children("Description")[0]) },            // 2: enums
+				{ data: [], desc: check_for_links(documentation.singletons.children("Description")[0]) },       // 3: singletons
+				{ data: [], desc: check_for_links(documentation.global_functions.children("Description")[0]) }, // 4: global_functions
+				{ data: [], desc: check_for_links(documentation.constants.children("Description")[0]) },        // 5: constants
+			]
 
 			// ---------------------------------------------------------------------
 			// process each actor_class...
@@ -267,7 +283,7 @@ class LuaAPI extends Component {
 				const class_desc = class_doc.find("Description")[0]
 
 				// push a new object representing this actor_class to the overall data array
-				data[0].push({
+				G[0].data.push({
 					name: class_name,
 					base: actor_class.attributes.base !== undefined ? actor_class.attributes.base.textContent : undefined,
 					desc: check_for_links(class_desc),
@@ -297,7 +313,7 @@ class LuaAPI extends Component {
 				// some namespaces have <Description> tags which contain text describing the overall class
 				const namespace_desc = $(namespace_doc).find("Description")[0]
 
-				data[1].push({
+				G[1].data.push({
 					name: namespace.attributes.name.textContent,
 					methods: funcs,
 					desc: check_for_links(namespace_desc),
@@ -319,7 +335,7 @@ class LuaAPI extends Component {
 					}
 				})
 
-				data[2].push({
+				G[2].data.push({
 					name: enum_name,
 					values: values,
 					desc: check_for_links(enum_desc)
@@ -347,7 +363,7 @@ class LuaAPI extends Component {
 					}
 				})
 
-				data[3].push({
+				G[3].data.push({
 					sm_class: sm_class,
 					name: _name,
 					methods: _methods,
@@ -361,7 +377,7 @@ class LuaAPI extends Component {
 				const gfunc_name = f.attributes.name.textContent
 				const gfunc_doc  = $(documentation.global_functions).find("Function[name=" + gfunc_name + "]")[0]
 
-				data[4].push({
+				G[4].data.push({
 					name: f.attributes.name.textContent,
 					return: gfunc_doc !== undefined ? gfunc_doc.attributes.return.textContent : "",
 					arguments: gfunc_doc !== undefined ? gfunc_doc.attributes.arguments.textContent : "",
@@ -374,7 +390,7 @@ class LuaAPI extends Component {
 			// ---------------------------------------------------------------------
 			// finally! process each Lua constant, and we're done
 			constants.forEach(function(c){
-				data[5].push({
+				G[5].data.push({
 					name: c.attributes.name.textContent,
 					value: c.attributes.value !== undefined ? c.attributes.value.textContent : ""
 				})
@@ -384,7 +400,7 @@ class LuaAPI extends Component {
 			// we're out of the "heavy lifting" forEach loop; it's time to setState
 			lua_api.setState({
 				isLoaded: true,
-				data: data,
+				G: G,
 			})
 
 			// trigger a custom page scroll now
@@ -432,29 +448,29 @@ class LuaAPI extends Component {
 		const filter = this.props.text_filter
 
 		return {
-			"Actors": this.state.data[0].map(function(a, i){
+			"Actors": this.state.G[0].data.map(function(a, i){
 				return <ActorClass actor={a} key={a.name} text_filter={filter} />
 			}),
 
-			"Namespaces": this.state.data[1].map(function(n, i){
+			"Namespaces": this.state.G[1].data.map(function(n, i){
 				return <Namespace namespace={n} key={n.name} text_filter={filter} />
 			}),
 
-			"Enums": this.state.data[2].map(function(e, i){
+			"Enums": this.state.G[2].data.map(function(e, i){
 				return <Enum enum={e} key={e.name} text_filter={filter} />
 			}),
 
-			"Singletons": this.state.data[3].map(function(s, i){
+			"Singletons": this.state.G[3].data.map(function(s, i){
 				return <Singleton singleton={s} key={s.name} text_filter={filter} />
 			}),
 
-			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.data[4]} text_filter={filter} /> ),
+			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.G[4].data} text_filter={filter} /> ),
 
 			"Constants": (
 				<table className="table table-hover table-sm table-bordered">
 					<thead className="table-primary"><tr><th>Lua Variable</th><th>Value</th></tr></thead>
 					<tbody>
-						{this.state.data[5].map(function(c, i){
+						{this.state.G[5].data.map(function(c, i){
 							return(
 								<tr key={"constant-"+c.name}>
 									<td>{c.name}</td>
@@ -554,29 +570,41 @@ class LuaAPI extends Component {
 				</h2>
 				<div>{elements.Actors}</div>
 
+
 				<h2 id="Singletons" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("Singletons")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Singletons
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[3].desc}} />
 				<div>{elements.Singletons}</div>
+
+
 
 				<h2 id="Namespaces" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("Namespaces")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Namespaces
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[1].desc}} />
 				<div>{elements.Namespaces}</div>
+
+
 
 				<h2 id="Enums" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("Enums")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Enums
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[2].desc}} />
 				<div>{elements.Enums}</div>
+
+
 
 				<h2 id="GlobalFunctions" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("GlobalFunctions")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Global Functions
 				</h2>
 				<div>{elements.GlobalFunctions}</div>
+
+
 
 				<h2 id="Constants" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("Constants")}><Octicon size="medium" icon={getIconByName("link")} /></span>
