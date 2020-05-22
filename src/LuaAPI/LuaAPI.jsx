@@ -202,8 +202,7 @@ class LuaAPI extends Component {
 			const constants        = Array.from(lua_api.docs.lua_dot_xml_children.find("Constants Constant"))
 
 			// actor classes, namespaces, enums, singletons, global functions, constants
-			let data = [ [], [], [], [], [], [] ]
-
+			const data = [ [], [], [], [], [], [] ]
 
 			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
@@ -226,9 +225,6 @@ class LuaAPI extends Component {
 
 			lua_api.bubbleDataUp()
 
-
-
-			// now, do the "heavy lifting"
 			// ---------------------------------------------------------------------
 			// process each actor_class...
 			actors.forEach(function(actor_class){
@@ -272,7 +268,7 @@ class LuaAPI extends Component {
 
 				// push a new object representing this actor_class to the overall data array
 				data[0].push({
-					name: actor_class.attributes.name.textContent,
+					name: class_name,
 					base: actor_class.attributes.base !== undefined ? actor_class.attributes.base.textContent : undefined,
 					desc: check_for_links(class_desc),
 					methods: sorted_methods
@@ -383,10 +379,6 @@ class LuaAPI extends Component {
 					value: c.attributes.value !== undefined ? c.attributes.value.textContent : ""
 				})
 			})
-
-			// ---------------------------------------------------------------------
-			// store all render-able elements now so that we don't need to constantly recompute them
-			// lua_api.all_elements = lua_api.getElementsToRender()
 
 			// ---------------------------------------------------------------------
 			// we're out of the "heavy lifting" forEach loop; it's time to setState
