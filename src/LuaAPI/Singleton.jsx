@@ -56,7 +56,7 @@ class Singleton extends Component {
 
 	render(){
 		if (this.props.text_filter !== this.textfilter){ this.handleTFChange() }
-		if (this.methods.length < 1){ return null }
+		if (this.props.text_filter !== "" && this.methods.length < 1){ return null }
 
 		return(
 			<div id={"Singletons-" + this.props.singleton.sm_class} className="actor-class">

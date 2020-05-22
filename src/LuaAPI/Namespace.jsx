@@ -56,7 +56,7 @@ class Namespace extends Component {
 
 	render(){
 		if (this.props.text_filter !== this.textfilter){ this.handleTFChange() }
-		if (this.methods.length < 1){ return null }
+		if (this.props.text_filter !== "" && this.methods.length < 1){ return null }
 
 		return(
 			<div id={"Namespaces-" + this.props.namespace.name} className="actor-class">
