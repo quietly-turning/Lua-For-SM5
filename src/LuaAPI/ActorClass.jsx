@@ -22,17 +22,17 @@ class ActorClass extends Component {
 
 	generateBase(base){
 		if (base === undefined){ return }
-		return " : <a href='#Actors-" + base + "'>" + base + "</a>"
+		return " : <a href='#Classes-" + base + "'>" + base + "</a>"
 	}
 
 	updateHash(){
-		window.location.hash = "#Actors-" + this.props.actor.name
+		window.location.hash = "#Classes-" + this.props.actor.name
 	}
 
 	getAll(){
 		const actor_name = this.props.actor.name
 		return this.props.actor.methods.map(function(method, j){
-			return <Method sm_class_grouping="Actors" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+			return <Method sm_class_grouping="Classes" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
 		})
 	}
 
@@ -56,7 +56,7 @@ class ActorClass extends Component {
 		})
 
 		return filtered_methods.map(function(method, j){
-			return <Method sm_class_grouping="Actors" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+			return <Method sm_class_grouping="Classes" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
 		})
 	}
 
@@ -65,7 +65,7 @@ class ActorClass extends Component {
 		if (this.props.text_filter !== "" && this.methods.length < 1){ return null }
 
 		return(
-			<div id={"Actors-" + this.props.actor.name} className="actor-class">
+			<div id={"Classes-" + this.props.actor.name} className="actor-class">
 				<h3>
 					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					{this.props.actor.name}

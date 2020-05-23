@@ -45,7 +45,7 @@ class Sidebar extends Component {
 		// setting actor_classes, namespaces, and enums this way certainly feels like a hack
 		if (this.props.actorClasses !== undefined){
 			this.actor_classes = this.props.actorClasses.map(function(actorclass, i){
-				return <li key={"actorclass"+i}><NavLink to={"#Actors-"+actorclass}>{actorclass}</NavLink></li>
+				return <li key={"actorclass"+i}><NavLink to={"#Classes-"+actorclass}>{actorclass}</NavLink></li>
 			})
 		}
 		if (this.props.singletons !== undefined){
@@ -84,7 +84,7 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						<span onClick={() => this.updateHash("Actors")}>Classes</span>
+						<span onClick={() => this.updateHash("Classes")}>Classes</span>
 					</h5>
 
 					<div id="collapse-1" className="collapse no-transition" aria-labelledby="heading-1">

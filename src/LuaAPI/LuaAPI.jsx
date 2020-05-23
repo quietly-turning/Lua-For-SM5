@@ -33,7 +33,7 @@ class LuaAPI extends Component {
 
 		// pojos containing just the actor/singleton class names, namespace names, and enum strings as keys
 		// used for convenient lookup in getReturnValue() and to pass up to LuaAPISidebar
-		this.actors     = {}
+		this.classes    = {}
 		this.singletons = {}
 		this.namespaces = {}
 		this.enums      = {}
@@ -79,8 +79,8 @@ class LuaAPI extends Component {
 					const text = link.t !== "" ? link.t : link.f
 
 					if (_parent){
-						if (lua_api.actors[_parent.nodeValue]){
-							const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						if (lua_api.classes[_parent.nodeValue]){
+							const anchor = "<a href='#Classes-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
 							anchors.push(anchor)
 
 						} else if (lua_api.singletons[_parent.nodeValue]){
@@ -105,8 +105,8 @@ class LuaAPI extends Component {
 					let anchor
 
 					// linking to a particular ActorClass
-					if (lua_api.actors[link.c]){
-			 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
+					if (lua_api.classes[link.c]){
+			 			anchor = "<a href='#Classes-" + link.c + "'>" + text + "</a>"
 
 					// linking to a particular singleton
 					} else if (lua_api.singletons[link.c]){
@@ -150,9 +150,9 @@ class LuaAPI extends Component {
 					let anchor = ""
 
 					// ensure that link.c matches an ActorClass before creating an anchor to it
-					// lua_api.actors is a convenience object with string keys that match ActorClass names
-					if (lua_api.actors[link.c]){
-						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
+					// lua_api.classes is a convenience object with string keys that match Class names
+					if (lua_api.classes[link.c]){
+						anchor = "<a href='#Classes-" + link.c + "-" + link.f + "'>" + text + "</a>"
 
 					// if link.c wasn't an ActorClass, look for it in singletons next
 					// lua_api.singletons is a convenience object with C++ class names as keys and Lua userdata names as values
@@ -216,7 +216,7 @@ class LuaAPI extends Component {
 			// All classes, methods, functions, etc. should be in Lua.xml, but not everything
 			// has a corresponding explanation written by a human in LuaDocumentation.xml
 			const documentation = {
-				actors:           lua_api.docs.luadoc.children("Classes"),
+				classes:          lua_api.docs.luadoc.children("Classes"),
 				namespaces:       lua_api.docs.luadoc.children("Namespaces"),
 				enums:            lua_api.docs.luadoc.children("Enums"),
 				singletons:       lua_api.docs.luadoc.children("Singletons"),
@@ -224,7 +224,7 @@ class LuaAPI extends Component {
 				constants:        lua_api.docs.luadoc.children("Constants"),
 			}
 
-			const actors           = Array.from(lua_api.docs.luadotxml.children("Classes").children("Class"))
+			const classes           = Array.from(lua_api.docs.luadotxml.children("Classes").children("Class"))
 			const namespaces       = Array.from(lua_api.docs.luadotxml.children("Namespaces").children("Namespace"))
 			const enums            = Array.from(lua_api.docs.luadotxml.children("Enums").children("Enum"))
 			const singletons       = Array.from(lua_api.docs.luadotxml.children("Singletons").children("Singleton"))
@@ -239,13 +239,13 @@ class LuaAPI extends Component {
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
 			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
 
-			// next, do similarly with lua_api.actors, filling it with the names of each stepmania class
-			actors.forEach(actor => {
-				const class_name = actor.attributes.name.textContent
+			// next, do similarly with lua_api.classes, filling it with the names of each stepmania class
+			classes.forEach(cls => {
+				const class_name = cls.attributes.name.textContent
 
 				// don't add singletons here
 				if (!(class_name in lua_api.singletons)){
-					lua_api.actors[class_name] = true
+					lua_api.classes[class_name] = true
 				}
 			})
 
@@ -258,7 +258,7 @@ class LuaAPI extends Component {
 
 			// ---------------------------------------------------------------------
 			const G = [
-				{ data: [], desc: check_for_links(documentation.actors.children("Description")[0]) },           // 0: classes
+				{ data: [], desc: check_for_links(documentation.classes.children("Description")[0]) },          // 0: classes
 				{ data: [], desc: check_for_links(documentation.namespaces.children("Description")[0]) },       // 1: namespaces
 				{ data: [], desc: check_for_links(documentation.enums.children("Description")[0]) },            // 2: enums
 				{ data: [], desc: check_for_links(documentation.singletons.children("Description")[0]) },       // 3: singletons
@@ -268,7 +268,7 @@ class LuaAPI extends Component {
 
 			// ---------------------------------------------------------------------
 			// process each actor_class...
-			actors.forEach(function(actor_class){
+			classes.forEach(function(actor_class){
 
 				const class_name = actor_class.attributes.name.textContent
 
@@ -276,7 +276,7 @@ class LuaAPI extends Component {
 				// so its methods and description don't get put in with ActorClass methods
 				if (lua_api.singletons[class_name]){ return }
 
-				const class_doc  = $(documentation.actors).find("Class[name=" + class_name + "]")
+				const class_doc  = $(documentation.classes).find("Class[name=" + class_name + "]")
 
 				let unsorted_methods = Array.from($(actor_class).find("Function"))
 
@@ -372,7 +372,7 @@ class LuaAPI extends Component {
 			singletons.forEach(function(s){
 				const sm_class = s.attributes.class.textContent
 				const _name    = s.attributes.name.textContent
-				const _doc     = $(documentation.actors).find("Class[name=" + sm_class + "]")
+				const _doc     = $(documentation.classes).find("Class[name=" + sm_class + "]")
 				const _desc    = _doc.find("Description")[0]
 
 				const _methods = Array.from(_doc.find("Function")).map(function(method, i){
@@ -442,7 +442,7 @@ class LuaAPI extends Component {
 	bubbleDataUp(){
 		this.props.parentCallback({
 			sm_version: this.docs.sm_version,
-			actor_classes: Object.keys(this.actors),
+			actor_classes: Object.keys(this.classes),
 			namespaces: Object.keys(this.namespaces),
 			enums: Object.keys(this.enums),
 			singletons: Object.keys(this.singletons)
@@ -474,7 +474,7 @@ class LuaAPI extends Component {
 		const filter = this.props.text_filter
 
 		return {
-			"Actors": this.state.G[0].data.map(function(a, i){
+			"Classes": this.state.G[0].data.map(function(a, i){
 				return <ActorClass actor={a} key={a.name} text_filter={filter} />
 			}),
 
@@ -519,18 +519,19 @@ class LuaAPI extends Component {
 		// if the return text for this method exactly matches "void" just use that
 		if (r === "void"){ return r }
 
-		// next, check to see if the return text matches any of the actor classes
-		if (this.actors[r]){
-			return "<a href='#Actors-" + r +"'>" + r + "</a>"
+		// next, check to see if the return text matches any of the StepMania classes
+		// FIXME: this doesn't handle singletons and actors
+		if (this.classes[r]){
+			return "<a href='#Classes-" + r +"'>" + r + "</a>"
 		}
 
-		// maybe this method's return value is an Actor wrapped in curly braces
-		// indicating that this method returns a table of Actors
+		// maybe this method's return value is a StepMania class wrapped in curly braces
+		// indicating that this method returns a table of objects
 		// (though, it could also be "float" wrapped in curly braces,
 		// which we don't want to try to try to create an anchor to)
 		const _r = r.match(/{(.+)}/)
-		if (_r && this.actors[_r[1]]){
-			return "{ <a href='#Actors-" + _r[1] +"'>" + _r[1] + "</a> }"
+		if (_r && this.classes[_r[1]]){
+			return "{ <a href='#Classes-" + _r[1] +"'>" + _r[1] + "</a> }"
 		}
 
 		// otherwise, we have something like "bool" or "int"; just return it
@@ -590,11 +591,11 @@ class LuaAPI extends Component {
 
 				<h1>SM5 Lua API</h1>
 
-				<h2 id="Actors" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Actors")}><Octicon size="medium" icon={getIconByName("link")} /></span>
+				<h2 id="Classes" className="API-Category">
+					<span className="octicon-link" onClick={() => this.updateHash("Classes")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Classes
 				</h2>
-				<div>{elements.Actors}</div>
+				<div>{elements.Classes}</div>
 
 
 				<h2 id="Singletons" className="API-Category">
