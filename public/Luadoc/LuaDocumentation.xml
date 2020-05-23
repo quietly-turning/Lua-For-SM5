@@ -1794,17 +1794,19 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='SetDrawState' return='void' arguments='table { Mode= mode, First= first, Num= num }'>
 		Sets the draw state variables to the values in the table.<br />
-		Mode must be a <Link class='ENUM' function='DrawMode'>DrawMode</Link>.<br />
-		First is the index of the first vertex to draw.<br />
-		Num is the number of vertices to draw.  -1 for Num means draw all verts after First.<br />
+		<code>Mode</code> must be a <Link class='ENUM' function='DrawMode'/>.<br />
+		<code>First</code> is the index of the first vertex to draw.<br />
+		<code>Num</code> is the number of vertices to draw.  -1 for <code>Num</code> means draw all verts after <code>First</code>.<br />
 		Any value not in the table defaults to the already set value.<br />
 		Examples:<br />
-		-- Sets all three parts of the draw state.<br />
-		self:SetDrawState{Mode="DrawMode_Quads", First= 1, Num= -1}<br />
-		-- Set only the draw mode.  First and Num remain unchanged from previous.<br />
-		self:SetDrawState{Mode="DrawMode_Quads"}<br />
-		-- Set the first and number to draw.  Draw mode remains unchanged.<br />
-		self:SetDrawState{First= 3, Num= 4}<br />
+		<code>
+			-- Sets all three parts of the draw state.<br />
+			self:SetDrawState{Mode="DrawMode_Quads", First= 1, Num= -1}<br />
+			-- Set only the draw mode.  First and Num remain unchanged from previous.<br />
+			self:SetDrawState{Mode="DrawMode_Quads"}<br />
+			-- Set the first and number to draw.  Draw mode remains unchanged.<br />
+			self:SetDrawState{First= 3, Num= 4}
+		</code>
 	</Function>
 	<Function name='GetDestDrawMode' return='DrawMode' arguments='void'>
 		Get the <Link class='ENUM' function='DrawMode'>DrawMode</Link> of the destination tween state.
@@ -3593,12 +3595,12 @@ save yourself some time, copy this for undocumented things:
 </Class>
 <Class name='PlayerOptions'>
 	<Description>
-		All these functions have an optional last argument:  If the last argument is the boolean value true, then instead of returning the previous settings as normal, they will instead return the PlayerOptions object.<br />
+		All these functions have an optional last argument:  If the last argument is the boolean value <code>true</code>, then instead of returning the previous settings as normal, they will instead return the PlayerOptions object.<br />
 		This allows you to chain them like this:<br />
-		player_options:Twirl(5, 1, true):Roll(5, true):Dizzy(true):Twirl()<br />
+		<code>player_options:Twirl(5, 1, true):Roll(5, true):Dizzy(true):Twirl()</code><br />
 		<br />
-		Special note:  Functions that take a bool as their arg must have true as the second arg to be used with chaining.<br />
-		"player_options:Backwards(true, true):Beat(5)" will chain, "player_options:Backwards(true):Beat(5)" will not chain.<br />
+		Functions that take a bool as their arg must have <code>true</code> as the second arg to be used with chaining.<br />
+		<code>player_options:Backwards(true, true):Beat(5)</code> will chain.  <code>player_options:Backwards(true):Beat(5)</code> will not chain.<br />
 		<br />
 		Most options fall into one of four types:  float, int, bool, or enum.<br />
 		Float type options have this interface:<br />
@@ -3608,14 +3610,22 @@ save yourself some time, copy this for undocumented things:
 		approach_speed is in units of n per second.  value will be approached at the rate of approach_speed per second.<br />
 		Note that the value and the approach speed arguments are both independently optional.<br />
 		Example:<br />
-		a,b= options:Boost() -- Sets a to the current value and b to the current approach_speed.<br />
-		a,b= options:Boost(5, .5) -- Stores the previous values in a and b, NOT to 5 and .5.  Sets the value to 5 and the approach speed to .5.<br />
-		a,b= options:Boost(5) -- Sets a and b to the previous values, NOT to 5 and .5.  Sets the value to 5 and leaves the approach speed at whatever it was.<br />
-		<br />
+		<code>
+			-- Sets a to the current value and b to the current approach_speed<br />
+			a,b = options:Boost()<br /><br />
+			-- Stores the previous values in a and b, NOT to 5 and .5<br/>
+			-- Sets the value to 5 and the approach speed to .5<br />
+			a,b = options:Boost(5, .5)<br /><br />
+			-- Sets a and b to the previous values, NOT to 5 and .5<br />
+			-- Sets the value to 5 and leaves the approach speed at whatever it was<br/>
+			a,b = options:Boost(5)
+		</code>
+		<br /><br />
 		Setting the approach speed only matters when modifying the PlayerOptions from ModsLevel_Song.<br />
 		Int type options are similar to float in that they return and take a number, but they do not have an approach speed.<br />
 		Bool type options have an almost identical interface, the difference is that they can not have an approach speed.<br />
 		Enum type options are almost identical to bool type.  They take and return an enum value.<br />
+		<!-- FIXME: These should really all have explanations. -->
 		For brevity, the functions are only given a description if the option requires careful handling or does not follow the float or bool interfaces.<br />
 	</Description>
 	<Function name='Alternate' return='float, float' arguments='float value, float approach_speed'> </Function>
@@ -3844,11 +3854,17 @@ save yourself some time, copy this for undocumented things:
 	<Function name='NoMines' return='bool' arguments='bool value'> </Function>
 	<Function name='NoRolls' return='bool' arguments='bool value'> </Function>
 	<Function name='NoteSkin' return='string, bool' arguments='string name'>
-		Sets the NoteSkin to the named noteskin, unless name is nil or the noteskin does not exist.  Returns the name of the previous noteskin and whether the set attempt succeeded.<br />
-		Changing the noteskin during a song is not supported.<br />
+		Sets the NoteSkin to the named noteskin, unless name is <code>nil</code> or the NoteSkin does not exist.  Returns the name of the previous NoteSkin and whether the set attempt succeeded.<br />
+		Changing the NoteSkin during gameplay is not supported.<br />
 		Example:<br />
-		note_name= options:NoteSkin() -- Sets note_name to the player's current noteskin.<br />
-		prev_note_name, succeeded= options:NoteSkin("cel") -- Sets prev_note_name to the noteskin the player had set, changes the current noteskin to "cel", sets succeeded to true if the "cel" noteskin exists.<br />
+		<code>
+			-- Sets note_name to the player's current noteskin<br />
+			note_name= options:NoteSkin()<br /><br />
+			-- Sets prev_note_name to the noteskin the player had set<br />
+			-- changes the current noteskin to "cel"<br />
+			-- sets succeeded to true if the "cel" noteskin exists.<br />
+			prev_note_name, succeeded= options:NoteSkin("cel")
+		</code>
 	</Function>
 	<Function name='Overhead' return='bool' arguments='bool'>
 		If the player is using Overhead (0 tilt, 0 skew), returns true.<br />
