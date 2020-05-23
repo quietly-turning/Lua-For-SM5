@@ -12,6 +12,7 @@ class Sidebar extends Component {
 		this.namespaces    = this.props.namespaces
 		this.enums         = this.props.enums
 		this.singletons    = this.props.singletons
+		this.sm_version    = {}
 	}
 
 	updateHash(hash){
@@ -62,11 +63,20 @@ class Sidebar extends Component {
 				return <li key={"enum"+i}><NavLink to={"#Enums-"+e}>{e}</NavLink></li>
 			})
 		}
+		if (this.props.smVersion !== undefined){
+			this.sm_version.release = this.props.smVersion.release
+			this.sm_version.githash = this.props.smVersion.githash
+		 }
 
 		return (
 			<div id="LuaAPISidebar">
 
 				<div className="d-none d-md-block sticky-top sidebar-filter">
+					<div className="version">
+						<span className="smversion">StepMania {this.sm_version.release}</span>
+						<span className="githash">commit <a href={"https://github.com/stepmania/stepmania/tree/" + this.sm_version.githash} target="_blank" rel="noopener noreferrer">{this.sm_version.githash}</a></span>
+					</div>
+
 					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>

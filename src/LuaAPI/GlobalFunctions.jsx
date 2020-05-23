@@ -30,7 +30,7 @@ class GlobalFunction extends Component {
 		const gf = this
 		return this.props.global_functions.map(function(gfunc, i){
 
-			const github_anchor = gfunc.url !== undefined ? <a className="logo-github" href={gf.github_url + gf.sm_hash + gfunc.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
+			const github_anchor = gfunc.url !== undefined ? <a className="logo-github" href={gf.github_url + gf.props.githash + gfunc.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
 
 			return(
 				<div id={"GlobalFunctions-" + gfunc.name} key={gfunc.name + "-" + i} className="method global-function">

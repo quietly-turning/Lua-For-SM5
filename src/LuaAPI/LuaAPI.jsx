@@ -27,7 +27,8 @@ class LuaAPI extends Component {
 		// docs will contain documentation data read in from outside files
 		// Lua.xml, LuaDocumentation.xml, and GlobalFunctions.csv
 		this.docs = {
-			"github": {},
+			sm_version: {},
+			github: {},
 		}
 
 		// pojos containing just the actor/singleton class names, namespace names, and enum strings as keys
@@ -186,12 +187,13 @@ class LuaAPI extends Component {
 		}
 
 		// ---------------------------------------------------------------------
+		// get documentation files using jQuery
+		// then parse them into a usable data structure for this React app
 
 		$.when(
 			$.get("./Luadoc/LuaDocumentation.xml",  luadoc    => lua_api.docs.luadoc        = $(luadoc).children() ),
 			$.get("./Luadoc/Lua.xml",               luadotxml => lua_api.docs.luadotxml     = $(luadotxml).children() ),
 			$.get("./Luadoc++/GlobalFunctions.csv", gfuncs    => lua_api.docs.github.gfuncs = Object.fromEntries(csvparse(gfuncs, {columns: false, skip_empty_lines: true})) )
-
 
 		).then(function(){
 
@@ -202,20 +204,24 @@ class LuaAPI extends Component {
 			// All available classes and methods should be in Lua.xml, but not everything has a
 			// corresponding explanation in LuaDocumentation.xml
 			const documentation = {
-				actors:           lua_api.docs.luadoc.find("Classes"),
-				namespaces:       lua_api.docs.luadoc.find("Namespaces"),
-				enums:            lua_api.docs.luadoc.find("Enums"),
-				singletons:       lua_api.docs.luadoc.find("Singletons"),
-				global_functions: lua_api.docs.luadoc.find("GlobalFunctions"),
-				constants:        lua_api.docs.luadoc.find("Constants"),
+				actors:           lua_api.docs.luadoc.children("Classes"),
+				namespaces:       lua_api.docs.luadoc.children("Namespaces"),
+				enums:            lua_api.docs.luadoc.children("Enums"),
+				singletons:       lua_api.docs.luadoc.children("Singletons"),
+				global_functions: lua_api.docs.luadoc.children("GlobalFunctions"),
+				constants:        lua_api.docs.luadoc.children("Constants"),
 			}
 
-			const actors           = Array.from(lua_api.docs.luadotxml.find("Classes Class"))
-			const namespaces       = Array.from(lua_api.docs.luadotxml.find("Namespaces Namespace"))
-			const enums            = Array.from(lua_api.docs.luadotxml.find("Enums Enum"))
-			const singletons       = Array.from(lua_api.docs.luadotxml.find("Singletons Singleton"))
-			const global_functions = Array.from(lua_api.docs.luadotxml.find("GlobalFunctions Function"))
-			const constants        = Array.from(lua_api.docs.luadotxml.find("Constants Constant"))
+			const actors           = Array.from(lua_api.docs.luadotxml.children("Classes").children("Class"))
+			const namespaces       = Array.from(lua_api.docs.luadotxml.children("Namespaces").children("Namespace"))
+			const enums            = Array.from(lua_api.docs.luadotxml.children("Enums").children("Enum"))
+			const singletons       = Array.from(lua_api.docs.luadotxml.children("Singletons").children("Singleton"))
+			const global_functions = Array.from(lua_api.docs.luadotxml.children("GlobalFunctions").children("Function"))
+			const constants        = Array.from(lua_api.docs.luadotxml.children("Constants").children("Constant"))
+
+			const smver = lua_api.docs.luadotxml.children("Version").text().split("-")
+			lua_api.docs.sm_version.release = smver[0].replace("StepMania", "")
+			lua_api.docs.sm_version.githash = (smver[2] !== undefined) ? smver[2] : ""
 
 			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
@@ -423,6 +429,7 @@ class LuaAPI extends Component {
 
 	bubbleDataUp(){
 		this.props.parentCallback({
+			sm_version: this.docs.sm_version,
 			actor_classes: Object.keys(this.actors),
 			namespaces: Object.keys(this.namespaces),
 			enums: Object.keys(this.enums),
@@ -471,7 +478,7 @@ class LuaAPI extends Component {
 				return <Singleton singleton={s} key={s.name} text_filter={filter} />
 			}),
 
-			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.G[4].data} text_filter={filter} /> ),
+			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.G[4].data} text_filter={filter} githash={this.docs.sm_version.githash} /> ),
 
 			"Constants": (
 				<table className="table table-hover table-sm table-bordered">
