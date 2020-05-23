@@ -162,14 +162,10 @@ a{
 				text-align:center;
 				padding-bottom: 8px;
 
-				span{ display: block; }
-
-				span.smversion{
-					font-size: 1.3em;
-				}
+				span{ white-space: nowrap; }
+				span.smversion{ font-size: 1.315em; }
 				span.githash{
-					font-size: 0.85em;
-					line-height:95%;
+					font-size: 0.875em;
 					a{
 						color: rgb(33, 136, 255);
 					}
