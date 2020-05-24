@@ -100,7 +100,7 @@ a{
 			// they are overrideen by the @media query below for lg and xl
 			width: 95%;
 			&.expandable{
-				//	keep h5.expandable at 80% width so that :hover
+				// keep h5.expandable at 80% width so that :hover
 				// background-color effect does not include caret symbol
 				width: 80%;
 
@@ -122,7 +122,7 @@ a{
 		}
 
 
-		// TODO: change these sidebar H5 elements to be semantically meaningful
+		// FIXME: change these sidebar H5 elements to be semantically meaningful
 		h5, li a{
 			font-weight:400;
 			display: flex;
@@ -182,12 +182,6 @@ a{
 				padding-left:  0.5em;
 				padding-right: 0.5em;
 			}
-		}
-
-		hr.divider{
-			width:87%;
-			margin-left: auto;
-			margin-right: auto;
 		}
 	}
 }

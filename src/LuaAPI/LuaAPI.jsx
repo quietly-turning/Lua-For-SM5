@@ -720,7 +720,7 @@ class LuaAPI extends Component {
 					<span className="octicon-link" onClick={() => this.updateHash("GlobalFunctions")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Global Functions
 				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[5].desc}} />
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[6].desc}} />
 				<div>{elements.GlobalFunctions}</div>
 
 

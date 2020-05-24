@@ -89,7 +89,6 @@ class Sidebar extends Component {
 					<hr />
 				</div>
 
-
 				<section>
 					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
 						<span onClick={() => this.updateHash("Actors")}>Actors</span>
@@ -102,7 +101,7 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						<span onClick={() => this.updateHash("Actors")}>Screens</span>
+						<span onClick={() => this.updateHash("Screens")}>Screens</span>
 					</h5>
 
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
@@ -131,7 +130,7 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
-				<hr className="divider" />
+				<hr/>
 
 				<section>
 					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
