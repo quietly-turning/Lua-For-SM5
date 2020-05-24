@@ -12,6 +12,13 @@ import csvparse from "csv-parse/lib/sync"
 import $ from "jquery"
 import "../_styles/api.css"
 
+
+// ------- highlightjs for syntax coloring
+// import highlightjs modules last so that hljs.registerLanguage()
+// doesn't trigger eslint-plugin-import's import/first rule
+
+import hljs from "highlight.js/lib/core"
+
 class LuaAPI extends Component {
 
 	constructor(props){
@@ -46,169 +53,196 @@ class LuaAPI extends Component {
 		this.handleFilterChange  = this.handleFilterChange.bind(this)
 		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
 
-		// ---------------------------------------------------------------------
+		// trigger a custom page scroll now
+		lua_api.scroll_window_after_hashchange()
 
-		// some class and method descriptions contain <Link> elements,
-		// intended to serve as anchors to elsewhere within the document
-		// we need to find and replace them with html-compliant anchors
-		const check_for_links = function(element){
-			if (element === undefined){ return "" }
+		// and set up future hashchanges to use the custom scroll as well
+		props.history.listen((location, action) => {
+			lua_api.scroll_window_after_hashchange(location.hash)
+		})
+	}
 
-			let anchors = []
+	// ---------------------------------------------------------------------
 
-			for (const l of $(element).find("Link")){
+	// some class and method descriptions contain <Link> elements,
+	// intended to serve as anchors to elsewhere within the document
+	// we need to find and replace them with html-compliant anchors
+	check_for_links(element){
+		if (element === undefined){ return "" }
 
-				// find the function and class attributes of this <Link>
-				// as well as text (jQuery will return an empty string for self-closing elements without text)
-				// and put them in this temporary convenience object
-				const link = {
-					f: $(l).attr("function"),
-					c: $(l).attr("class"),
-					t: $(l).text()
-				}
+		// maintain a handle on this class to be used within the functions below
+		const lua_api = this
+		let anchors = []
 
-				// attempt to recreate the logic from Lua.xsl for handling <Link> elements
-				// look for   <xsl:template match="sm:Link">
+		for (const l of $(element).find("Link")){
 
-				// Linking to a function in the current class/namespace.
-				if (link.c === undefined && link.f !== undefined){
-
-					// It was possible in LuaDocumentation.xml to create a <Link> to some other method
-					// *within* the current Class using a compact syntax like <Link function="zoomy"/>
-					// Unfortunately, that leaves us trying to figure out what the "current Class" is
-					// in the context of this React app.  We'll get the parentNode of the method object.
-					const _parent = element.parentNode.attributes.getNamedItem("name")
-					const text = link.t !== "" ? link.t : link.f
-
-					if (_parent){
-
-						if (lua_api.classes[_parent.nodeValue]){
-							const anchor = "<a href='#Classes-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
-							anchors.push(anchor)
-
-						} else if (lua_api.actors[_parent.nodeValue]){
-							const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
-							anchors.push(anchor)
-
-						} else if (lua_api.screens[_parent.nodeValue]){
-							const anchor = "<a href='#Screens-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
-							anchors.push(anchor)
-
-						} else if (lua_api.singletons[_parent.nodeValue]){
-							const anchor = "<a href='#Singletons-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
-							anchors.push(anchor)
-
-						} else if (lua_api.namespaces[_parent.nodeValue]){
-							const anchor = "<a href='#Namespaces-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
-							anchors.push(anchor)
-						}
-
-					} else {
-						const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-					}
-
-
-				// Linking to a class/namespace.
-				} else if (link.c !== undefined && link.f === undefined){
-
-					const text = link.t !== "" ? link.t : link.c
-					let anchor
-
-					// linking to a particular StepMania class
-					if (lua_api.classes[link.c]){
-			 			anchor = "<a href='#Classes-" + link.c + "'>" + text + "</a>"
-
-					// linking to a particular Actor class
-					} else if (lua_api.actors[link.c]){
-			 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
-
-					// linking to a particular Screen class
-					} else if (lua_api.screens[link.c]){
-			 			anchor = "<a href='#Screens-" + link.c + "'>" + text + "</a>"
-
-					// linking to a particular singleton
-					} else if (lua_api.singletons[link.c]){
-			 			anchor = "<a href='#Singletons-" + link.c + "'>" + text + "</a>"
-
-					// linking to a particular Namespace
-					} else if (lua_api.namespaces[link.c]){
-						anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
-
-					// linking somewhere else in the document
-					} else {
-						anchor = "<a href='#" + link.c + "'>" + text + "</a>"
-					}
-
-					anchors.push(anchor)
-
-
-				// Linking to a global function or an enum.
-				} else if ((link.c === "GLOBAL" || link.c === "ENUM") && (link.f !== undefined)){
-
-					const text = link.t !== "" ? link.t : link.f
-
-					if (link.c === "GLOBAL"){
-						// create the anchor string for this Global Function
-			 			const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-
-					} else if (link.c === "ENUM") {
-						// create the anchor string for this Enum
-						const anchor = "<a href='#Enums-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-					}
-
-
-				// Linking to a function in a class/namespace.
-				} else if (link.c !== undefined && link.f !== undefined) {
-
-					// if this was a <Link>text</Link> element, use the text provided
-					// if this was a self-closing link, use class.function and append "()"
-					let text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
-					let anchor = ""
-
-					// ensure that link.c matches an ActorClass before creating an anchor to it
-					// lua_api.classes is a convenience object with string keys that match Class names
-					if (lua_api.classes[link.c]){
-						anchor = "<a href='#Classes-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-					} else if (lua_api.actors[link.c]){
-						anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-					} else if (lua_api.screens[link.c]){
-						anchor = "<a href='#Screens-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-					// if link.c wasn't an Actor, Screen, or general Class, look for it in singletons next
-					// lua_api.singletons is a convenience object with C++ class names as keys and Lua userdata names as values
-					} else if (lua_api.singletons[link.c]){
-						text = link.t !== "" ? link.t : (lua_api.singletons[link.c] + ":" + link.f + "()")
-						anchor = "<a href='#Singletons-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-					// if link.c wasn't an ActorClass, look for it in Namespaces next
-					// lua_api.namespaces is a convenience object with string keys that match Namespaces
-					} else if (lua_api.namespaces[link.c]){
-						anchor = "<a href='#Namespaces-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-					// <Link> element was found with no documentation to link to...
-					// a current example is <Link class='ThemePrefs' function='Get' />
-					} else {
-						anchor = "<code>" + text + "</code>"
-					}
-
-					anchors.push(anchor)
-				}
-
-				// else "Ignore this Link."
-
+			// find the function and class attributes of this <Link>
+			// as well as text (jQuery will return an empty string for self-closing elements without text)
+			// and put them in this temporary convenience object
+			const link = {
+				f: $(l).attr("function"),
+				c: $(l).attr("class"),
+				t: $(l).text()
 			}
 
-			$(element).find("Link").each(function(i, obj){
-				$(this).replaceWith(anchors[i])
-			})
+			// attempt to recreate the logic from Lua.xsl for handling <Link> elements
+			// look for   <xsl:template match="sm:Link">
 
-			return element.innerHTML.trim()
+			// Linking to a function in the current class/namespace.
+			if (link.c === undefined && link.f !== undefined){
+
+				// It was possible in LuaDocumentation.xml to create a <Link> to some other method
+				// *within* the current Class using a compact syntax like <Link function="zoomy"/>
+				// Unfortunately, that leaves us trying to figure out what the "current Class" is
+				// in the context of this React app.  We'll get the parentNode of the method object.
+				const _parent = element.parentNode.attributes.getNamedItem("name")
+				const text = link.t !== "" ? link.t : link.f
+
+				if (_parent){
+
+					if (lua_api.classes[_parent.nodeValue]){
+						const anchor = "<a href='#Classes-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+
+					} else if (lua_api.actors[_parent.nodeValue]){
+						const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+
+					} else if (lua_api.screens[_parent.nodeValue]){
+						const anchor = "<a href='#Screens-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+
+					} else if (lua_api.singletons[_parent.nodeValue]){
+						const anchor = "<a href='#Singletons-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+
+					} else if (lua_api.namespaces[_parent.nodeValue]){
+						const anchor = "<a href='#Namespaces-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+						anchors.push(anchor)
+					}
+
+				} else {
+					const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
+					anchors.push(anchor)
+				}
+
+
+			// Linking to a class/namespace.
+			} else if (link.c !== undefined && link.f === undefined){
+
+				const text = link.t !== "" ? link.t : link.c
+				let anchor
+
+				// linking to a particular StepMania class
+				if (lua_api.classes[link.c]){
+		 			anchor = "<a href='#Classes-" + link.c + "'>" + text + "</a>"
+
+				// linking to a particular Actor class
+				} else if (lua_api.actors[link.c]){
+		 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
+
+				// linking to a particular Screen class
+				} else if (lua_api.screens[link.c]){
+		 			anchor = "<a href='#Screens-" + link.c + "'>" + text + "</a>"
+
+				// linking to a particular singleton
+				} else if (lua_api.singletons[link.c]){
+		 			anchor = "<a href='#Singletons-" + link.c + "'>" + text + "</a>"
+
+				// linking to a particular Namespace
+				} else if (lua_api.namespaces[link.c]){
+					anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
+
+				// linking somewhere else in the document
+				} else {
+					anchor = "<a href='#" + link.c + "'>" + text + "</a>"
+				}
+
+				anchors.push(anchor)
+
+
+			// Linking to a global function or an enum.
+			} else if ((link.c === "GLOBAL" || link.c === "ENUM") && (link.f !== undefined)){
+
+				const text = link.t !== "" ? link.t : link.f
+
+				if (link.c === "GLOBAL"){
+					// create the anchor string for this Global Function
+		 			const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
+					anchors.push(anchor)
+
+				} else if (link.c === "ENUM") {
+					// create the anchor string for this Enum
+					const anchor = "<a href='#Enums-" + link.f + "'>" + text + "</a>"
+					anchors.push(anchor)
+				}
+
+
+			// Linking to a function in a class/namespace.
+			} else if (link.c !== undefined && link.f !== undefined) {
+
+				// if this was a <Link>text</Link> element, use the text provided
+				// if this was a self-closing link, use class.function and append "()"
+				let text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
+				let anchor = ""
+
+				// ensure that link.c matches an ActorClass before creating an anchor to it
+				// lua_api.classes is a convenience object with string keys that match Class names
+				if (lua_api.classes[link.c]){
+					anchor = "<a href='#Classes-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+				} else if (lua_api.actors[link.c]){
+					anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+				} else if (lua_api.screens[link.c]){
+					anchor = "<a href='#Screens-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+				// if link.c wasn't an Actor, Screen, or general Class, look for it in singletons next
+				// lua_api.singletons is a convenience object with C++ class names as keys and Lua userdata names as values
+				} else if (lua_api.singletons[link.c]){
+					text = link.t !== "" ? link.t : (lua_api.singletons[link.c] + ":" + link.f + "()")
+					anchor = "<a href='#Singletons-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+				// if link.c wasn't an ActorClass, look for it in Namespaces next
+				// lua_api.namespaces is a convenience object with string keys that match Namespaces
+				} else if (lua_api.namespaces[link.c]){
+					anchor = "<a href='#Namespaces-" + link.c + "-" + link.f + "'>" + text + "</a>"
+
+				// <Link> element was found with no documentation to link to...
+				// a current example is <Link class='ThemePrefs' function='Get' />
+				} else {
+					anchor = "<code>" + text + "</code>"
+				}
+
+				anchors.push(anchor)
+			}
+
+			// else "Ignore this Link."
 		}
+
+		$(element).find("Link").each(function(i, obj){
+			$(this).replaceWith(anchors[i])
+		})
+
+		return (lua_api.check_for_code(element)).innerHTML.trim()
+	}
+
+	// ---------------------------------------------------------------------
+
+	check_for_code(element){
+		$(element).find("code").each(function(i, code){
+			if ($(code).has("br").length){
+				const txt = (code.textContent).replace(/<br\s*\/>/g, "")
+
+				$(code).replaceWith("<pre><code class='lua'>" + txt + "</code></pre>")
+			}
+		})
+		return element
+	}
+
+	componentDidMount(){
+		// maintain a handle on this class to be used within the functions below
+		const lua_api = this
 
 		// ---------------------------------------------------------------------
 		// get documentation files using jQuery
@@ -296,12 +330,12 @@ class LuaAPI extends Component {
 			const G = [
 				{ data: [], desc: "" },                                                                         // 0: actors
 				{ data: [], desc: "" },                                                                         // 1: screens
-				{ data: [], desc: check_for_links(documentation.classes.children("Description")[0]) },          // 2: classes
-				{ data: [], desc: check_for_links(documentation.namespaces.children("Description")[0]) },       // 3: namespaces
-				{ data: [], desc: check_for_links(documentation.enums.children("Description")[0]) },            // 4: enums
-				{ data: [], desc: check_for_links(documentation.singletons.children("Description")[0]) },       // 5: singletons
-				{ data: [], desc: check_for_links(documentation.global_functions.children("Description")[0]) }, // 6: global_functions
-				{ data: [], desc: check_for_links(documentation.constants.children("Description")[0]) },        // 7: constants
+				{ data: [], desc: lua_api.check_for_links(documentation.classes.children("Description")[0]) },          // 2: classes
+				{ data: [], desc: lua_api.check_for_links(documentation.namespaces.children("Description")[0]) },       // 3: namespaces
+				{ data: [], desc: lua_api.check_for_links(documentation.enums.children("Description")[0]) },            // 4: enums
+				{ data: [], desc: lua_api.check_for_links(documentation.singletons.children("Description")[0]) },       // 5: singletons
+				{ data: [], desc: lua_api.check_for_links(documentation.global_functions.children("Description")[0]) }, // 6: global_functions
+				{ data: [], desc: lua_api.check_for_links(documentation.constants.children("Description")[0]) },        // 7: constants
 			]
 
 			// ---------------------------------------------------------------------
@@ -339,7 +373,7 @@ class LuaAPI extends Component {
 						name: method_name,
 						return: lua_api.getReturnValue( method_doc.attr("return") ),
 						arguments: method_doc.attr("arguments") || "",
-						desc: check_for_links(method_doc[0])
+						desc: lua_api.check_for_links(method_doc[0])
 					}
 				})
 
@@ -371,7 +405,7 @@ class LuaAPI extends Component {
 				G[index[class_grouping]].data.push({
 					name: class_name,
 					base: sm_class.attributes.base !== undefined ? {name: base, grouping: base_grouping} : undefined,
-					desc: check_for_links(class_desc),
+					desc: lua_api.check_for_links(class_desc),
 					methods: sorted_methods
 				})
 			})
@@ -391,7 +425,7 @@ class LuaAPI extends Component {
 						name: func.attributes.name.textContent,
 						return: func_doc !== undefined ? lua_api.getReturnValue( func_doc.attributes.return.textContent ) : "",
 						arguments: func_doc !== undefined ? func_doc.attributes.arguments.textContent : "",
-						desc: check_for_links(func_doc)
+						desc: lua_api.check_for_links(func_doc)
 					}
 				})
 
@@ -401,7 +435,7 @@ class LuaAPI extends Component {
 				G[3].data.push({
 					name: namespace.attributes.name.textContent,
 					methods: funcs,
-					desc: check_for_links(namespace_desc),
+					desc: lua_api.check_for_links(namespace_desc),
 				})
 			})
 
@@ -423,7 +457,7 @@ class LuaAPI extends Component {
 				G[4].data.push({
 					name: enum_name,
 					values: values,
-					desc: check_for_links(enum_desc)
+					desc: lua_api.check_for_links(enum_desc)
 				})
 			})
 
@@ -444,7 +478,7 @@ class LuaAPI extends Component {
 						name: method_name,
 						return: lua_api.getReturnValue( method_doc.attr("return") ),
 						arguments: method_doc.attr("arguments") || "",
-						desc: check_for_links(method_doc[0])
+						desc: lua_api.check_for_links(method_doc[0])
 					}
 				})
 
@@ -452,7 +486,7 @@ class LuaAPI extends Component {
 					sm_class: sm_class,
 					name: _name,
 					methods: _methods,
-					desc: check_for_links(_desc)
+					desc: lua_api.check_for_links(_desc)
 				})
 			})
 
@@ -466,7 +500,7 @@ class LuaAPI extends Component {
 					name: f.attributes.name.textContent,
 					return: gfunc_doc !== undefined ? lua_api.getReturnValue(gfunc_doc.attributes.return.textContent) : "",
 					arguments: gfunc_doc !== undefined ? gfunc_doc.attributes.arguments.textContent : "",
-					desc: check_for_links(gfunc_doc),
+					desc: lua_api.check_for_links(gfunc_doc),
 					theme: (gfunc_doc !== undefined && gfunc_doc.attributes.theme !== undefined) ? gfunc_doc.attributes.theme.textContent : "",
 					url: lua_api.docs.github.gfuncs[gfunc_name]
 				})
@@ -488,15 +522,11 @@ class LuaAPI extends Component {
 				G: G,
 			})
 
-			// trigger a custom page scroll now
-			lua_api.scroll_window_after_hashchange()
 
-			// and set up future hashchanges to use the custom scroll as well
-			props.history.listen((location, action) => {
-				lua_api.scroll_window_after_hashchange(location.hash)
-			})
+		}).then(function(){
+			// highlightjs
+			hljs.initHighlighting()
 		})
-
 	}
 
 	bubbleDataUp(){
@@ -646,6 +676,9 @@ class LuaAPI extends Component {
 		// to determine whether to show/hide the header for the constants table
 		// (having a table header with 0 rows of data is confusing)
 		const num_constants = elements.Constants.props.children[1].props.children.length
+
+		// // highlightjs
+		// hljs.initHighlighting()
 
 		return (
 			<div className="LuaAPI pl-md-4">
