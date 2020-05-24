@@ -94,7 +94,15 @@ class App extends Component {
 	}
 
 	getClasses(data){
-		this.setState({actors: data.actors, sm_classes: data.sm_classes, namespaces: data.namespaces, enums: data.enums, singletons: data.singletons, sm_version: data.sm_version})
+		this.setState({
+			actors: data.actors,
+			screens: data.screens,
+			sm_classes: data.sm_classes,
+			namespaces: data.namespaces,
+			enums: data.enums,
+			singletons: data.singletons,
+			sm_version: data.sm_version
+		})
 	}
 
 	render() {
@@ -110,6 +118,7 @@ class App extends Component {
 							<Sidebar
 								onFilterChange={this.handleFilterChange}
 								actors={this.state.actors}
+								screens={this.state.screens}
 								smClasses={this.state.sm_classes}
 								namespaces={this.state.namespaces}
 								enums={this.state.enums}
@@ -156,6 +165,7 @@ class App extends Component {
 					<Sidebar
 						onFilterChange={this.handleFilterChange}
 						actors={this.state.actors}
+						screens={this.state.screens}
 						smClasses={this.state.sm_classes}
 						namespaces={this.state.namespaces}
 						enums={this.state.enums}

@@ -8,11 +8,6 @@ class Sidebar extends Component {
 		super(props)
 		this.handleFilterChange = this.handleFilterChange.bind(this)
 
-		this.ators      = this.props.ators
-		this.sm_classes = this.props.smClasses
-		this.namespaces = this.props.namespaces
-		this.enums      = this.props.enums
-		this.singletons = this.props.singletons
 		this.sm_version = {}
 	}
 
@@ -50,6 +45,11 @@ class Sidebar extends Component {
 				return <li key={"actor"+i}><NavLink to={"#Actors-"+actor}>{actor}</NavLink></li>
 			})
 		}
+		if (this.props.screens !== undefined){
+			this.screens = this.props.screens.map(function(screen_cls, i){
+				return <li key={"screen"+i}><NavLink to={"#Screens-"+screen_cls}>{screen_cls}</NavLink></li>
+			})
+		}
 		if (this.props.smClasses !== undefined){
 			this.sm_classes = this.props.smClasses.map(function(smclass, i){
 				return <li key={"smclass"+i}><NavLink to={"#Classes-"+smclass}>{smclass}</NavLink></li>
@@ -75,6 +75,7 @@ class Sidebar extends Component {
 			this.sm_version.githash = this.props.smVersion.githash
 		}
 
+		// FIXME: make a React component for SidebarSection
 		return (
 			<div id="LuaAPISidebar">
 
@@ -101,21 +102,31 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						<span onClick={() => this.updateHash("Classes")}>Other Classes</span>
+						<span onClick={() => this.updateHash("Actors")}>Screens</span>
 					</h5>
 
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
+						<ul>{this.screens}</ul>
+					</div>
+				</section>
+
+				<section>
+					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+						<span onClick={() => this.updateHash("Classes")}>Other Classes</span>
+					</h5>
+
+					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
 						<ul>{this.sm_classes}</ul>
 					</div>
 				</section>
 
 
 				<section>
-					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
 						<span onClick={() => this.updateHash("Singletons")}>Singletons</span>
 					</h5>
 
-					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
+					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
 						<ul>{this.singletons}</ul>
 					</div>
 				</section>
@@ -123,21 +134,21 @@ class Sidebar extends Component {
 				<hr className="divider" />
 
 				<section>
-					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
 						<span onClick={() => this.updateHash("Namespaces")}>Namespaces</span>
 					</h5>
 
-					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
+					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
 						<ul>{this.namespaces}</ul>
 					</div>
 				</section>
 
 				<section>
-					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+					<h5 id="heading-6" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-6" aria-expanded="false" aria-controls="collapse-6">
 						<span onClick={() => this.updateHash("Enums")}>Enums</span>
 					</h5>
 
-					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
+					<div id="collapse-6" className="collapse no-transition" aria-labelledby="heading-6">
 						<ul>{this.enums}</ul>
 					</div>
 				</section>

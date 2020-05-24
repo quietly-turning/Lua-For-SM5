@@ -22,6 +22,7 @@ class Sidebar extends Component {
 					<LuaAPISidebar
 						onFilterChange={this.handleFilterChange}
 						actors={this.props.actors}
+						screens={this.props.screens}
 						smClasses={this.props.smClasses}
 						namespaces={this.props.namespaces}
 						enums={this.props.enums}
