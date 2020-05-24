@@ -22,33 +22,35 @@ class ActorClass extends Component {
 
 	generateBase(base){
 		if (base === undefined){ return }
-		return " : <a href='#Classes-" + base + "'>" + base + "</a>"
+		return " : <a href='#" + base.grouping + "-" + base.name + "'>" + base.name + "</a>"
 	}
 
 	updateHash(){
-		window.location.hash = "#Classes-" + this.props.actor.name
+		window.location.hash = "#" + this.props.grouping + "-" + this.props.smclass.name
 	}
 
 	getAll(){
-		const actor_name = this.props.actor.name
-		return this.props.actor.methods.map(function(method, j){
-			return <Method sm_class_grouping="Classes" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+		const actor_name = this.props.smclass.name
+		const grouping = this.props.grouping
+		return this.props.smclass.methods.map(function(method, j){
+			return <Method sm_class_grouping={grouping} sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
 		})
 	}
 
 	handleTFChange(){
-		const showAllMethods = (this.props.actor.name.toUpperCase().includes(this.props.text_filter) || (this.props.actor.base !== undefined && this.props.actor.base.toUpperCase().includes(this.props.text_filter)))
+		const showAllMethods = (this.props.smclass.name.toUpperCase().includes(this.props.text_filter) || (this.props.smclass.base !== undefined && this.props.smclass.base.name.toUpperCase().includes(this.props.text_filter)))
 		this.methods = showAllMethods ? this.allMethods : this.filter()
 		this.textfilter = this.props.text_filter
 	}
 
 	filter(){
-		const actor_name  = this.props.actor.name
+		const actor_name  = this.props.smclass.name
 		const text_filter = this.props.text_filter
+		const grouping    = this.props.grouping
 
 		// loop through the methods available to this actor, using
 		// filter() to reduce a larger array to a smaller array of filtered results
-		const filtered_methods = this.props.actor.methods.filter(function(method){
+		const filtered_methods = this.props.smclass.methods.filter(function(method){
 			// check for case-insensitive strings matches on the method name or description
 			// if either is a match, return true, which means this method passes the filter()
 			// test and will be included in the pared down filtered_methods array
@@ -56,7 +58,7 @@ class ActorClass extends Component {
 		})
 
 		return filtered_methods.map(function(method, j){
-			return <Method sm_class_grouping="Classes" sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
+			return <Method sm_class_grouping={grouping} sm_class={actor_name} method={method} key={actor_name + "-" + method.name + j} />
 		})
 	}
 
@@ -65,15 +67,15 @@ class ActorClass extends Component {
 		if (this.props.text_filter !== "" && this.methods.length < 1){ return null }
 
 		return(
-			<div id={"Classes-" + this.props.actor.name} className="actor-class">
+			<div id={this.props.grouping + "-" + this.props.smclass.name} className="actor-class">
 				<h3>
 					<span className="octicon-link" onClick={this.updateHash}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					{this.props.actor.name}
-					<span className="base" dangerouslySetInnerHTML={{ __html: this.generateBase(this.props.actor.base) }}  />
+					{this.props.smclass.name}
+					<span className="base" dangerouslySetInnerHTML={{ __html: this.generateBase(this.props.smclass.base) }}  />
 				</h3>
 				<hr />
 
-				<span className="actorclass-description" dangerouslySetInnerHTML={{__html: this.props.actor.desc}} />
+				<span className="actorclass-description" dangerouslySetInnerHTML={{__html: this.props.smclass.desc}} />
 
 				{this.methods}
 			</div>

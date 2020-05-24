@@ -21,7 +21,8 @@ class Sidebar extends Component {
 				<Route path="/LuaAPI">
 					<LuaAPISidebar
 						onFilterChange={this.handleFilterChange}
-						actorClasses={this.props.actorClasses}
+						actors={this.props.actors}
+						smClasses={this.props.smClasses}
 						namespaces={this.props.namespaces}
 						enums={this.props.enums}
 						singletons={this.props.singletons}

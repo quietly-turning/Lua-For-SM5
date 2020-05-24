@@ -8,11 +8,12 @@ class Sidebar extends Component {
 		super(props)
 		this.handleFilterChange = this.handleFilterChange.bind(this)
 
-		this.actor_classes = this.props.actorClasses
-		this.namespaces    = this.props.namespaces
-		this.enums         = this.props.enums
-		this.singletons    = this.props.singletons
-		this.sm_version    = {}
+		this.ators      = this.props.ators
+		this.sm_classes = this.props.smClasses
+		this.namespaces = this.props.namespaces
+		this.enums      = this.props.enums
+		this.singletons = this.props.singletons
+		this.sm_version = {}
 	}
 
 	updateHash(hash){
@@ -41,11 +42,17 @@ class Sidebar extends Component {
 	}
 
 	render() {
-
+		// FIXME
 		// setting actor_classes, namespaces, and enums this way certainly feels like a hack
-		if (this.props.actorClasses !== undefined){
-			this.actor_classes = this.props.actorClasses.map(function(actorclass, i){
-				return <li key={"actorclass"+i}><NavLink to={"#Classes-"+actorclass}>{actorclass}</NavLink></li>
+
+		if (this.props.actors !== undefined){
+			this.actors = this.props.actors.map(function(actor, i){
+				return <li key={"actor"+i}><NavLink to={"#Actors-"+actor}>{actor}</NavLink></li>
+			})
+		}
+		if (this.props.smClasses !== undefined){
+			this.sm_classes = this.props.smClasses.map(function(smclass, i){
+				return <li key={"smclass"+i}><NavLink to={"#Classes-"+smclass}>{smclass}</NavLink></li>
 			})
 		}
 		if (this.props.singletons !== undefined){
@@ -66,7 +73,7 @@ class Sidebar extends Component {
 		if (this.props.smVersion !== undefined){
 			this.sm_version.release = this.props.smVersion.release
 			this.sm_version.githash = this.props.smVersion.githash
-		 }
+		}
 
 		return (
 			<div id="LuaAPISidebar">
@@ -84,42 +91,52 @@ class Sidebar extends Component {
 
 				<section>
 					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						<span onClick={() => this.updateHash("Classes")}>Classes</span>
+						<span onClick={() => this.updateHash("Actors")}>Actors</span>
 					</h5>
 
 					<div id="collapse-1" className="collapse no-transition" aria-labelledby="heading-1">
-						<ul>{this.actor_classes}</ul>
+						<ul>{this.actors}</ul>
+					</div>
+				</section>
+
+				<section>
+					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+						<span onClick={() => this.updateHash("Classes")}>Other Classes</span>
+					</h5>
+
+					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
+						<ul>{this.sm_classes}</ul>
 					</div>
 				</section>
 
 
 				<section>
-					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
 						<span onClick={() => this.updateHash("Singletons")}>Singletons</span>
 					</h5>
 
-					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
+					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
 						<ul>{this.singletons}</ul>
 					</div>
 				</section>
 
 				<section>
-					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
 						<span onClick={() => this.updateHash("Namespaces")}>Namespaces</span>
 					</h5>
 
-					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
+					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
 						<ul>{this.namespaces}</ul>
 					</div>
 				</section>
 
 
 				<section>
-					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
 						<span onClick={() => this.updateHash("Enums")}>Enums</span>
 					</h5>
 
-					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
+					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
 						<ul>{this.enums}</ul>
 					</div>
 				</section>

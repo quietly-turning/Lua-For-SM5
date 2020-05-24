@@ -94,7 +94,7 @@ class App extends Component {
 	}
 
 	getClasses(data){
-		this.setState({actor_classes: data.actor_classes, namespaces: data.namespaces, enums: data.enums, singletons: data.singletons, sm_version: data.sm_version})
+		this.setState({actors: data.actors, sm_classes: data.sm_classes, namespaces: data.namespaces, enums: data.enums, singletons: data.singletons, sm_version: data.sm_version})
 	}
 
 	render() {
@@ -109,7 +109,8 @@ class App extends Component {
 						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar
 								onFilterChange={this.handleFilterChange}
-								actorClasses={this.state.actor_classes}
+								actors={this.state.actors}
+								smClasses={this.state.sm_classes}
 								namespaces={this.state.namespaces}
 								enums={this.state.enums}
 								singletons={this.state.singletons}
@@ -154,7 +155,8 @@ class App extends Component {
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
 					<Sidebar
 						onFilterChange={this.handleFilterChange}
-						actorClasses={this.state.actor_classes}
+						actors={this.state.actors}
+						smClasses={this.state.sm_classes}
 						namespaces={this.state.namespaces}
 						enums={this.state.enums}
 						singletons={this.state.singletons}
