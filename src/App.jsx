@@ -100,11 +100,11 @@ class App extends Component {
 	render() {
 
 		return (
-			<main className="h-100">
+			<main>
 				<Header />
 
-				<div className="container-fluid h-100 pt-5">
-					<div className="row h-100">
+				<div className="pt-5">
+					<div className="row no-gutters">
 
 						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar

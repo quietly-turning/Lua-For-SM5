@@ -1,3 +1,8 @@
+.no-gutters{
+	margin-left: 0rem;
+	margin-right:0rem;
+}
+
 // -------------------------------------------------------
 // general elements
 
@@ -51,7 +56,7 @@ a{
 .sidebar{
 	background-color: #f7f7f7;
 	border-right: 1px solid #ececec;
-	padding: 0em 0.5em;
+	padding: 0em;
 	overflow-x: auto;
 
 	a{
@@ -70,7 +75,9 @@ a{
 		// this includes: Classes, Singletons, Namespaces, Enums
 		h5{
 			margin-top: 0.25em;
-			padding: 0.25em 0em 0.25em 2em;
+			padding-top: 0.25em;
+			padding-bottom: 0.25em;
+			padding-left: 2em;
 
 			// span is nested in section h5 and handles url hash updating onClick
 			// these were orginally normal <a href="#thing"> elements but I think
@@ -83,7 +90,7 @@ a{
 
 			// pull the caret symbol right
 			&::after{
-				margin-right: -1em;
+				margin-right: -2em;
 			}
 
 
@@ -95,7 +102,21 @@ a{
 			&.expandable{
 				//	keep h5.expandable at 80% width so that :hover
 				// background-color effect does not include caret symbol
-				width: 85%;
+				width: 80%;
+
+				&::after{
+					background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
+					background-size: 2rem 2rem;
+					padding: 0.5em;
+					background-position: 50%;
+					content: " ";
+					display: block;
+				}
+
+				&.collapsed::after{
+					content: " ";
+					transform: rotateX(180deg);
+				}
 			}
 			// --------------------------------------------------------
 		}
@@ -117,23 +138,7 @@ a{
 
 		li a{
 			padding: 0.25em 0em 0.25em 3em;
-		}
-
-		h5.expandable{
-
-			&::after{
-				background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
-				background-size: 2rem 2rem;
-				padding: 0.5em;
-				background-position: 50%;
-				content: " ";
-				display: block;
-			}
-
-			&.collapsed::after{
-				content: " ";
-				transform: rotateX(180deg);
-			}
+			width: 94%;
 		}
 	}
 
@@ -150,6 +155,8 @@ a{
 	}
 
 	#LuaAPISidebar{
+		// enfoce a margin-bottom so that fully-expanded contents don't
+		// go out of scrollable bounds
 		margin-bottom: 100px;
 
 		// the LuaAPI <input> used to filter the API doc is sticky-top, so
@@ -171,6 +178,16 @@ a{
 					}
 				}
 			}
+			fieldset{
+				padding-left:  0.5em;
+				padding-right: 0.5em;
+			}
+		}
+
+		hr.divider{
+			width:87%;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 }
@@ -190,7 +207,7 @@ a{
 		#GuidesSidebar, #LuaAPISidebar{
 			section h5{
 				width: 100%;
-				padding-left: 0.5em;
+				padding-left: 1em;
 
 				&.expandable{
 					// keep h5.expandable at 80% width so that :hover
@@ -202,7 +219,7 @@ a{
 
 		section{
 			li a{
-				padding-left: 0.65em;
+				padding-left: 1.35em;
 			}
 			h5{
 				// pull the caret symbol further right

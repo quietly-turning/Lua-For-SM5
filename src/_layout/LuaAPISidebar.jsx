@@ -120,6 +120,8 @@ class Sidebar extends Component {
 					</div>
 				</section>
 
+				<hr className="divider" />
+
 				<section>
 					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
 						<span onClick={() => this.updateHash("Namespaces")}>Namespaces</span>
@@ -129,7 +131,6 @@ class Sidebar extends Component {
 						<ul>{this.namespaces}</ul>
 					</div>
 				</section>
-
 
 				<section>
 					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
