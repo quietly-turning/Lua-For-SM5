@@ -967,7 +967,7 @@ save yourself some time, copy this for undocumented things:
 
 <!-- Classes -->
 <Classes>
-<Class name='Actor'>
+<Class name='Actor' grouping='Actor'>
 	<Function name='AddWrapperState' return='ActorFrame' arguments=''>
 		This adds a wrapper state around the Actor, which is like wrapping the Actor in an ActorFrame, except that you can use it on any actor, and add or remove wrapper states in response to things that happen while the screen is being used. (wrapping an Actor in an ActorFrame normally requires setting it up before the screen starts)<br />
 		The ActorFrame that is returned is the wrapper state, for convenience.<br />
@@ -1568,7 +1568,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the x and y location of the Actor in one command.
 	</Function>
 </Class>
-<Class name='ActorFrame'>
+<Class name='ActorFrame' grouping='Actor'>
 	<Function name='AddChildFromPath' return='bool' arguments='string sPath'>
 		Adds a child to the ActorFrame from the specified path.
 	</Function>
@@ -1653,7 +1653,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the vanishing point for the ActorFrame.
 	</Function>
 </Class>
-<Class name='ActorFrameTexture'>
+<Class name='ActorFrameTexture' grouping='Actor'>
 	<Function name='Create' return='void' arguments=''>
 		Creates the ActorFrameTexture.
 	</Function>
@@ -1676,7 +1676,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the Texture's name to <code>sName</code>.
 	</Function>
 </Class>
-<Class name='ActorMultiTexture'>
+<Class name='ActorMultiTexture' grouping='Actor'>
 	<Function name='AddTexture' return='int' arguments='RageTexture tex'>
 		Adds a texture to the ActorMultiTexture. Returns the number of texture units.
 	</Function>
@@ -1696,7 +1696,7 @@ save yourself some time, copy this for undocumented things:
 		Sets a TextureMode on the specified index.
 	</Function>
 </Class>
-<Class name='ActorMultiVertex'>
+<Class name='ActorMultiVertex' grouping='Actor'>
 	<Function name='AddQuadState' return='' arguments='int offset'>
 		The list of quad states is used to determine which animation state is used for each quad.  The offset is added to the AMV's current state, and the resulting state is used.
 	</Function>
@@ -1845,7 +1845,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the texture at from the file path <code>path</code>.
 	</Function>
 </Class>
-<Class name='ActorProxy'>
+<Class name='ActorProxy' grouping='Actor'>
 	<Function name='GetTarget' return='Actor' arguments=''>
 		Returns the target of the ActorProxy.
 	</Function>
@@ -1853,7 +1853,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the ActorProxy target to <code>a</code>.
 	</Function>
 </Class>
-<Class name='ActorScroller'>
+<Class name='ActorScroller' grouping='Actor'>
 	<Function name='GetCurrentItem' return='float' arguments=''>
 		Returns the scroller's current item.
 	</Function>
@@ -1940,7 +1940,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the scroller's transform function from <code>fItemWidth</code>.
 	</Function>
 </Class>
-<Class name='ActorSound'>
+<Class name='ActorSound' grouping='Actor'>
 	<Description>
 		This actor represents a playable sound.  Though the C++ class is ActorSound, it is accessible to Lua via <code>Def.Sound</code>.<br/>
 		There are three attributes that can be set as booleans on load:<br />
@@ -2001,7 +2001,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the name of the architecture in use.
 	</Function>
 </Class>
-<Class name='Banner'>
+<Class name='Banner' grouping='Actor'>
 	<Function name='GetScrolling' return='bool' arguments=''>
 		Returns <code>true</code> if the Banner is currently scrolling.
 	</Function>
@@ -2045,7 +2045,7 @@ save yourself some time, copy this for undocumented things:
 		<!-- todo -->
 	</Function>
 </Class>
-<Class name='BitmapText'>
+<Class name='BitmapText' grouping='Actor'>
 	<Function name='AddAttribute' return='void' arguments='int iPos, Attribute attr'>
 		Add the attribute <code>attr</code> to the string at position
 		<code>iPos</code>.<br />
@@ -2132,7 +2132,7 @@ save yourself some time, copy this for undocumented things:
 		Wrap the unzoomed text at <code>iWidth</code> pixels. If you <Link class='Actor' function='zoom' /> or <Link class='Actor' function='zoomx' /> by <code>x</code> and you want the text wrapped at <code>width</code>, then you should use <code>wrapwidthpixels(width/x)</code>.
 	</Function>
 </Class>
-<Class name='BPMDisplay'>
+<Class name='BPMDisplay' grouping='Actor'>
 	<Function name='GetText' return='string' arguments=''>
 		Returns the text that is currently set at the exact moment you call it. This is likely only going to be useful in an Update command.
 	</Function>
@@ -2201,7 +2201,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the number of characters available.
 	</Function>
 </Class>
-<Class name='ComboGraph'>
+<Class name='ComboGraph' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup'>
 		Loads the ComboGraph commands from the Metrics in group <code>sMetricsGroup</code>.
 	</Function>
@@ -2209,7 +2209,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the values of the ComboGraph using the specified StageStats and PlayerStageStats.
 	</Function>
 </Class>
-<Class name='ControllerStateDisplay'>
+<Class name='ControllerStateDisplay' grouping='Actor'>
 	<Function name='LoadGameController' return='void' arguments='string sType, GameController gc'>
 		Loads the ControllerStateDisplay from the specified GameController.
 	</Function>
@@ -2303,7 +2303,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if the Course is a ranking course.
 	</Function>
 </Class>
-<Class name='CourseContentsList'>
+<Class name='CourseContentsList' grouping='Actor'>
 	<Function name='SetFromGameState' return='void' arguments=''>
 		Sets the CourseContentsList from the GameState.
 	</Function>
@@ -2441,13 +2441,13 @@ save yourself some time, copy this for undocumented things:
 		Destroys the spline, freeing the memory allocated for it.  This can only be called on splines created with create_spline().
 	</Function>
 </Class>
-<Class name='DeviceList'>
+<Class name='DeviceList' grouping='Actor'>
 	<Description>
 		A newline-delimited list of available input devices.<br />
 		The list shown will the same as that returned by <Link class='RageInput' function='GetDescriptions'>INPUTMAN:GetDescriptions()</Link>, but with "MonkeyKeyboard" removed.
 	</Description>
 </Class>
-<Class name='DifficultyIcon'>
+<Class name='DifficultyIcon' grouping='Actor'>
 	<Function name='SetFromDifficulty' return='void' arguments='Difficulty dc'>
 		Sets the DifficultyIcon's state from the difficulty passed in.
 	</Function>
@@ -2521,7 +2521,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='__tostring' return='string' arguments=''>
 	</Function>
 </Class>
-<Class name='FadingBanner'>
+<Class name='FadingBanner' grouping='Actor'>
 	<Function name='GetLatestIndex' return='int' arguments=''>
 		Returns the index of the last banner loaded.
 	</Function>
@@ -2562,7 +2562,7 @@ save yourself some time, copy this for undocumented things:
 		See <Link class='Sprite' function='scaletoclipped' />.
 	</Function>
 </Class>
-<Class name='StepsDisplayList'>
+<Class name='StepsDisplayList' grouping='Actor'>
 	<Function name='setfromgamestate' return='void' arguments=''>
 		Sets the StepsDisplayList from the GameState.
 	</Function>
@@ -3112,7 +3112,7 @@ save yourself some time, copy this for undocumented things:
 		Unjoins player <code>pn</code>.
 	</Function>
 </Class>
-<Class name='GradeDisplay'>
+<Class name='GradeDisplay' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup'>
 		Loads the GradeDisplay commands from the Metrics in group <code>sMetricsGroup</code>.
 	</Function>
@@ -3120,7 +3120,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the GradeDisplay to show Grade <code>g</code>.
 	</Function>
 </Class>
-<Class name='GraphDisplay'>
+<Class name='GraphDisplay' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup'>
 		Loads the GraphDisplay commands from the Metrics in group <code>sMetricsGroup</code>.
 	</Function>
@@ -3128,7 +3128,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the values of the GraphDisplay using the specified StageStats and PlayerStageStats.
 	</Function>
 </Class>
-<Class name='GrooveRadar'>
+<Class name='GrooveRadar' grouping='Actor'>
 	<Function name='SetEmpty' return='void' arguments='PlayerNumber pn'>
 		Sets the GrooveRadar values for Player <code>pn</code> to empty.
 	</Function>
@@ -3139,7 +3139,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the GrooveRadar values for Player <code>pn</code> to the specified (floating point) values in the table.
 	</Function>
 </Class>
-<Class name='HelpDisplay'>
+<Class name='HelpDisplay' grouping='Actor'>
 	<Function name='gettips' return='{string}' arguments=''>
 		Returns two tables representing the tips and alternate tips in the HelpDisplay.
 	</Function>
@@ -3214,7 +3214,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the rank of the highest score for name in the list.  Returns 0 if there is no score for name in the list.  (returns 1 if name has the top score, 2 if name has the second place score, and so on)
 	</Function>
 </Class>
-<Class name='HoldJudgment'>
+<Class name='HoldJudgment' grouping='Actor'>
 	<Function name='LoadFromMultiPlayer' return='void' arguments='MultiPlayer mp'>
 		Loads the HoldJudgment for the specified MultiPlayer.
 	</Function>
@@ -3233,7 +3233,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the Y position of the mouse.
 	</Function>
 </Class>
-<Class name='InputList'>
+<Class name='InputList' grouping='Actor'>
 	<Description>
 		A newline-delimited list of inputs that are currently being pressed.  It will update as inputs are held and released.  Handy for custom TestInput screens.
 	</Description>
@@ -3323,12 +3323,12 @@ save yourself some time, copy this for undocumented things:
 		Sets whether logging of messages is enabled.  If log is true, all messages that pass through Broadcast (from the engine for from the theme or from anywhere else), will be logged with Trace.
 	</Function>
 </Class>
-<Class name='MeterDisplay'>
+<Class name='MeterDisplay' grouping='Actor'>
 	<Function name='SetStreamWidth' return='void' arguments='float fWidth'>
 		Sets the width of the MeterDisplay to <code>fWidth</code>.
 	</Function>
 </Class>
-<Class name='Model'>
+<Class name='Model' grouping='Actor'>
 	<Function name='GetDefaultAnimation' return='string' arguments=''>
 		Returns the model's default animation.
 	</Function>
@@ -3352,7 +3352,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the number of states the Model has.
 	</Function>
 </Class>
-<Class name='ModIconRow'>
+<Class name='ModIconRow' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup, PlayerNumber pn'>
 		Loads the ModIconRow of Player <code>pn</code> from the Metrics in group <code>sMetricsGroup</code>.
 	</Function>
@@ -3557,12 +3557,12 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if this row forces one choice on all players.
 	</Function>
 </Class>
-<Class name='PaneDisplay'>
+<Class name='PaneDisplay' grouping='Actor'>
 	<Function name='SetFromGameState' return='void' arguments=''>
 		Sets the PaneDisplay from the GameState.
 	</Function>
 </Class>
-<Class name='PercentageDisplay'>
+<Class name='PercentageDisplay' grouping='Actor'>
 	<Function name='LoadFromStats' return='void' arguments='PlayerState pPlayerState, PlayerStageStats pPlayerStageStats'>
 		Sets the PercentageDisplay from the specified PlayerState and PlayerStageStats.
 	</Function>
@@ -4698,7 +4698,7 @@ save yourself some time, copy this for undocumented things:
 		Reloads the texture.
 	</Function>
 </Class>
-<Class name='RollingNumbers'>
+<Class name='RollingNumbers' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sGroupName'>
 		Loads the metrics for this RollingNumbers from <code>sGroupName</code>.
 	</Function>
@@ -5401,7 +5401,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the warp destination length.
 	</Function>
 </Class>
-<Class name='Sprite'>
+<Class name='Sprite' grouping='Actor'>
 	<Function name='GetAnimationLengthSeconds' return='float' arguments=''>
 		Returns the length of the animation in seconds.
 	</Function>
@@ -5657,7 +5657,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if the Steps use different <code>TimingData</code> from the Song.
 	</Function>
 </Class>
-<Class name='StepsDisplay'>
+<Class name='StepsDisplay' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup'>
 		Loads the StepsDisplay commands from the Metrics in group <code>sMetricsGroup</code>.
 	</Function>
@@ -5776,7 +5776,7 @@ save yourself some time, copy this for undocumented things:
 		Returns true if the note was initiated.
 	</Function>
 </Class>
-<Class name='TextBanner'>
+<Class name='TextBanner' grouping='Actor'>
 	<Function name='Load' return='void' arguments='string sMetricsGroup'>
 		Loads the TextBanner from the specified metrics group.
 	</Function>
@@ -6177,7 +6177,7 @@ save yourself some time, copy this for undocumented things:
 		A specific case where this is known to happen is commands that trigger on CurrentSongChanged because the music wheel clears the current song before it finishes loading if the current song is longer than the number of stages remaining.
 	</Function>
 </Class>
-<Class name='WorkoutGraph'>
+<Class name='WorkoutGraph' grouping='Actor'>
 	<Function name='SetFromCurrentWorkout' return='void' arguments=''>
 		Sets the WorkoutGraph from the current Workout.
 	</Function>
