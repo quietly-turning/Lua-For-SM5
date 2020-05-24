@@ -787,6 +787,14 @@ save yourself some time, copy this for undocumented things:
 
 <!-- Namespaces -->
 <Namespaces>
+<Description>
+	The StepMania engine makes some of its namespaces available to Lua.  These can be thought of as collections of utility functions.<br />
+	Example using <code>SongUtil</code> to get playable <Link class='Steps' /> from a song given the current <Link class='Game' />:<br/>
+	<code>
+		local song = GAMESTATE:GetCurrentSong()<br/>
+		local playable_steps = SongUtil.GetPlayableSteps(song)
+	</code>
+</Description>
 <Namespace name='ActorUtil'>
 	<Function name='GetFileType' return='FileType' arguments='string sPath'>
 		Returns the <Link class='ENUM' function='FileType' /> for the file at <code>sPath</code>.
