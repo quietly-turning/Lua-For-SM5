@@ -790,10 +790,10 @@ save yourself some time, copy this for undocumented things:
 <Description>
 	The StepMania engine makes some of its namespaces available to Lua.  These can be thought of as collections of utility functions.<br />
 	Example using <code>SongUtil</code> to get playable <Link class='Steps' /> from a song given the current <Link class='Game' />:<br/>
-	<code>
-		local song = GAMESTATE:GetCurrentSong()<br/>
-		local playable_steps = SongUtil.GetPlayableSteps(song)
-	</code>
+<code>
+local song = GAMESTATE:GetCurrentSong()<br/>
+local playable_steps = SongUtil.GetPlayableSteps(song)
+</code>
 </Description>
 <Namespace name='ActorUtil'>
 	<Function name='GetFileType' return='FileType' arguments='string sPath'>
@@ -898,10 +898,10 @@ save yourself some time, copy this for undocumented things:
 	<Function name='Reverse' return='{int}' arguments='Enum e'>
 		Returns a reverse lookup table for the enumerated type <code>e</code>. For
 		example: <br />
-		<code>
-			local r = PlayerNumber:Reverse()<br />
-			local n = r['PlayerNumber_P2']
-		</code><br />
+<code>
+local r = PlayerNumber:Reverse()<br />
+local n = r['PlayerNumber_P2']
+</code><br />
 		The value of <code>n</code> in this case would be <code>1</code> corresponding
 		to the 0-based indexing using in C++ and not <code>2</code> as might be
 		expected for the 1-based indexing used in Lua.
@@ -2744,12 +2744,12 @@ save yourself some time, copy this for undocumented things:
 		Might not work in all cases, but will catch things like a player not having
 		steps set or no current song or style.  Mainly exists for people with a custom ScreenSelectMusic replacement.<br />
 		Example:<br />
-		<code>
-			local can, reason = GAMESTATE:CanSafelyEnterGameplay()<br />
-			if not can then<br />
-				lua.ReportScriptError("Cannot safely enter gameplay: " .. tostring(reason))<br />
-			end<br />
-		</code>
+<code>
+local can, reason = GAMESTATE:CanSafelyEnterGameplay()<br />
+if not can then<br />
+	lua.ReportScriptError("Cannot safely enter gameplay: " .. tostring(reason))<br />
+end
+</code>
 	</Function>
 	<Function name='ClearStageModifiersIllegalForCourse' return='void' arguments=''>
 		Removes any stage modifiers that are illegal for course play.
@@ -5892,19 +5892,19 @@ save yourself some time, copy this for undocumented things:
 		If the argument is <code>true</code>, they return tables of tables, and the inner tables contain numbers as described for each function.<br />
 		The first form is kept as the default to maintain compatibility with older themes.  The second form can be convenient because there is no need to transform the string into a table of numbers before using it.<br />
 		Example of first form:<br />
-		<code>
-		local bpms_and_times = timing_data:GetBPMsAndTimes()<br />
-		for i, s in ipairs(bpms_and_times) do<br />
-		   local bpm_and_time = split("=", s)<br />
-		   bpms_and_times[i] = {tonumber(bpm_and_time[1]), tonumber(bpm_and_time[2])}<br />
-		end<br />
-		-- do something with the bpms and times now that they are numbers.
-		</code><br/>
+<code>
+local bpms_and_times = timing_data:GetBPMsAndTimes()<br />
+for i, s in ipairs(bpms_and_times) do<br />
+	local bpm_and_time = split("=", s)<br />
+	bpms_and_times[i] = {tonumber(bpm_and_time[1]), tonumber(bpm_and_time[2])}<br />
+end<br />
+-- do something with the bpms and times now that they are numbers.
+</code><br/>
 		Example of second form:<br />
-		<code>
-			local bpms_and_times = timing_data:GetBPMsAndTimes(true)<br />
-			-- do something with the bpms and times because they are already numbers.
-		</code>
+<code>
+local bpms_and_times = timing_data:GetBPMsAndTimes(true)<br />
+-- do something with the bpms and times because they are already numbers.
+</code>
 	</Description>
 	<Function name='GetActualBPM' return='{float}' arguments=''>
 		Returns the minimum and maximum BPM of the song in a table (in that order).
