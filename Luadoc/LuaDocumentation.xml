@@ -790,10 +790,10 @@ save yourself some time, copy this for undocumented things:
 <Description>
 	The StepMania engine makes some of its namespaces available to Lua.  These can be thought of as collections of utility functions.<br />
 	Example using <code>SongUtil</code> to get playable <Link class='Steps' /> from a song given the current <Link class='Game' />:<br/>
-	<code>
-		local song = GAMESTATE:GetCurrentSong()<br/>
-		local playable_steps = SongUtil.GetPlayableSteps(song)
-	</code>
+<code>
+local song = GAMESTATE:GetCurrentSong()<br/>
+local playable_steps = SongUtil.GetPlayableSteps(song)
+</code>
 </Description>
 <Namespace name='ActorUtil'>
 	<Function name='GetFileType' return='FileType' arguments='string sPath'>
@@ -898,10 +898,10 @@ save yourself some time, copy this for undocumented things:
 	<Function name='Reverse' return='{int}' arguments='Enum e'>
 		Returns a reverse lookup table for the enumerated type <code>e</code>. For
 		example: <br />
-		<code>
-			local r = PlayerNumber:Reverse()<br />
-			local n = r['PlayerNumber_P2']
-		</code><br />
+<code>
+local r = PlayerNumber:Reverse()<br />
+local n = r['PlayerNumber_P2']
+</code><br />
 		The value of <code>n</code> in this case would be <code>1</code> corresponding
 		to the 0-based indexing using in C++ and not <code>2</code> as might be
 		expected for the 1-based indexing used in Lua.
@@ -2744,12 +2744,12 @@ save yourself some time, copy this for undocumented things:
 		Might not work in all cases, but will catch things like a player not having
 		steps set or no current song or style.  Mainly exists for people with a custom ScreenSelectMusic replacement.<br />
 		Example:<br />
-		<code>
-			local can, reason = GAMESTATE:CanSafelyEnterGameplay()<br />
-			if not can then<br />
-				lua.ReportScriptError("Cannot safely enter gameplay: " .. tostring(reason))<br />
-			end<br />
-		</code>
+<code>
+local can, reason = GAMESTATE:CanSafelyEnterGameplay()<br />
+if not can then<br />
+	lua.ReportScriptError("Cannot safely enter gameplay: " .. tostring(reason))<br />
+end
+</code>
 	</Function>
 	<Function name='ClearStageModifiersIllegalForCourse' return='void' arguments=''>
 		Removes any stage modifiers that are illegal for course play.
@@ -4717,7 +4717,7 @@ save yourself some time, copy this for undocumented things:
 		Sets the target number to <code>f</code>.
 	</Function>
 </Class>
-<Class name='Screen'>
+<Class name='Screen' grouping='Screen'>
 	<Function name='AddInputCallback' return='void' arguments='function callback'>
 		This adds the lua function "callback" to the list of functions the screen will pass input to.  Whenever an input event occurs, callback will be passed a table with the details of the event.  callback must return a bool to indicate whether the event was handled.  If callback returns true, the event will not be passed any further.<br/>
 		This should not be used to provide text input because that would not handle localization or different keyboard layouts.<br/>
@@ -4773,17 +4773,17 @@ save yourself some time, copy this for undocumented things:
 		[02 Other.lua] Gets a string from the current Screen in the current language.
 	</Function>
 </Class>
-<Class name='ScreenEdit'>
+<Class name='ScreenEdit' grouping='Screen'>
 	<Function name='GetEditState' return='EditState' arguments=''>
 		Returns the current <Link class='ENUM' function='EditState' />.
 	</Function>
 </Class>
-<Class name='ScreenEvaluation'>
+<Class name='ScreenEvaluation' grouping='Screen'>
 	<Function name='GetStageStats' return='StageStats' arguments=''>
 		Returns the current StageStats.
 	</Function>
 </Class>
-<Class name='ScreenGameplay'>
+<Class name='ScreenGameplay' grouping='Screen'>
 	<Function name='begin_backing_out' return='' arguments=''>
 		This should behave identically to the normal back button behavior.  This function is for the pause menu to use when the player forfeits or restarts, so that a score isn't saved.
 	</Function>
@@ -4836,7 +4836,7 @@ save yourself some time, copy this for undocumented things:
 		Pauses or unpauses the game, depending on the value of <code>bPause</code>.
 	</Function>
 </Class>
-<Class name='ScreenHowToPlay'>
+<Class name='ScreenHowToPlay' grouping='Screen'>
 	<Function name='GetLifeMeter' return='LifeMeter' arguments=''>
 		Returns the LifeMeter.
 	</Function>
@@ -4889,7 +4889,7 @@ save yourself some time, copy this for undocumented things:
 		Broadcasts a system message.
 	</Function>
 </Class>
-<Class name='ScreenNameEntryTraditional'>
+<Class name='ScreenNameEntryTraditional' grouping='Screen'>
 	<Function name='Backspace' return='bool' arguments='PlayerNumber pn'>
 		Returns <code>true</code> if Player <code>pn</code> backspaced successfully.
 	</Function>
@@ -4917,12 +4917,12 @@ save yourself some time, copy this for undocumented things:
 		Gets the currently selected letter of Player <code>pn</code>.
 	</Function>
 </Class>
-<Class name='ScreenNetEvaluation'>
+<Class name='ScreenNetEvaluation' grouping='Screen'>
 	<Function name='GetNumActivePlayers' return='int' arguments=''>
 		Returns the number of active players.
 	</Function>
 </Class>
-<Class name='ScreenOptions'>
+<Class name='ScreenOptions' grouping='Screen'>
 	<Function name='AllAreOnLastRow' return='bool'  arguments=''>
 		Returns <code>true</code> if all active players are on the last options row.
 	</Function>
@@ -4939,12 +4939,12 @@ save yourself some time, copy this for undocumented things:
 		Returns the specified OptionRow.
 	</Function>
 </Class>
-<Class name='ScreenPlayerOptions'>
+<Class name='ScreenPlayerOptions' grouping='Screen'>
 	<Function name='GetGoToOptions' return='bool' arguments=''>
 		Returns <code>true</code> if we are going to PlayerOptions.
 	</Function>
 </Class>
-<Class name='ScreenProfileLoad'>
+<Class name='ScreenProfileLoad' grouping='Screen'>
 	<Function name='Continue' return='void' arguments=''>
 		Continues to the next screen.
 	</Function>
@@ -4952,7 +4952,7 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if there is a profile that can be loaded.
 	</Function>
 </Class>
-<Class name='ScreenProfileSave'>
+<Class name='ScreenProfileSave' grouping='Screen'>
 	<Function name='Continue' return='void' arguments=''>
 		Continues to the next screen.
 	</Function>
@@ -4960,12 +4960,12 @@ save yourself some time, copy this for undocumented things:
 		Returns <code>true</code> if there is a profile that can be saved.
 	</Function>
 </Class>
-<Class name='ScreenSelectMaster'>
+<Class name='ScreenSelectMaster' grouping='Screen'>
 	<Function name='GetSelectionIndex' return='int' arguments='PlayerNumber pn'>
 		Returns player <code>pn</code>'s current selected item as an integer.
 	</Function>
 </Class>
-<Class name='ScreenSelectMusic'>
+<Class name='ScreenSelectMusic' grouping='Screen'>
 	<Function name='CanOpenOptionsList' return='bool' arguments=''>
 		Returns false if the options list is already open or the UseOptionsList metric is false.
 	</Function>
@@ -4985,7 +4985,7 @@ save yourself some time, copy this for undocumented things:
 		[02 StageMods.lua] Sets up modifiers for non-course modes.
 	</Function>
 </Class>
-<Class name='ScreenSelectProfile'>
+<Class name='ScreenSelectProfile' grouping='Screen'>
 	<Function name='Cancel' return='void' arguments=''>
 		Tells the screen to go to the previous screen.
 	</Function>
@@ -5003,7 +5003,7 @@ save yourself some time, copy this for undocumented things:
 		• <code>-2</code>: unjoin the player, unlock their MemoryCard, and unmount their MemoryCard
 	</Function>
 </Class>
-<Class name='ScreenTextEntry'>
+<Class name='ScreenTextEntry' grouping='Screen'>
 	<Description>
 		TextEntrySettings is implemented similar to the Attributes in BitmapText. Formatting issues prevent the sample from being properly shown here.<br />Please see docs/Themerdocs/ScreenTextEntry.txt for the TextEntrySettings format.
 	</Description>
@@ -5011,7 +5011,7 @@ save yourself some time, copy this for undocumented things:
 		Sets up a ScreenTextEntry's values.
 	</Function>
 </Class>
-<Class name='ScreenWithMenuElements'>
+<Class name='ScreenWithMenuElements' grouping='Screen'>
 	<Function name='Cancel' return='void' arguments=''>
 		Tells the screen to go to the previous screen.
 	</Function>
@@ -5892,19 +5892,19 @@ save yourself some time, copy this for undocumented things:
 		If the argument is <code>true</code>, they return tables of tables, and the inner tables contain numbers as described for each function.<br />
 		The first form is kept as the default to maintain compatibility with older themes.  The second form can be convenient because there is no need to transform the string into a table of numbers before using it.<br />
 		Example of first form:<br />
-		<code>
-		local bpms_and_times = timing_data:GetBPMsAndTimes()<br />
-		for i, s in ipairs(bpms_and_times) do<br />
-		   local bpm_and_time = split("=", s)<br />
-		   bpms_and_times[i] = {tonumber(bpm_and_time[1]), tonumber(bpm_and_time[2])}<br />
-		end<br />
-		-- do something with the bpms and times now that they are numbers.
-		</code><br/>
+<code>
+local bpms_and_times = timing_data:GetBPMsAndTimes()<br />
+for i, s in ipairs(bpms_and_times) do<br />
+	local bpm_and_time = split("=", s)<br />
+	bpms_and_times[i] = {tonumber(bpm_and_time[1]), tonumber(bpm_and_time[2])}<br />
+end<br />
+-- do something with the bpms and times now that they are numbers.
+</code><br/>
 		Example of second form:<br />
-		<code>
-			local bpms_and_times = timing_data:GetBPMsAndTimes(true)<br />
-			-- do something with the bpms and times because they are already numbers.
-		</code>
+<code>
+local bpms_and_times = timing_data:GetBPMsAndTimes(true)<br />
+-- do something with the bpms and times because they are already numbers.
+</code>
 	</Description>
 	<Function name='GetActualBPM' return='{float}' arguments=''>
 		Returns the minimum and maximum BPM of the song in a table (in that order).
