@@ -4773,6 +4773,8 @@ end
 		[02 Other.lua] Gets a string from the current Screen in the current language.
 	</Function>
 </Class>
+<Class name='ScreenAttract' grouping='Screen'>
+</Class>
 <Class name='ScreenEdit' grouping='Screen'>
 	<Function name='GetEditState' return='EditState' arguments=''>
 		Returns the current <Link class='ENUM' function='EditState' />.
@@ -4922,6 +4924,12 @@ end
 		Returns the number of active players.
 	</Function>
 </Class>
+<Class name='ScreenNetRoom' grouping='Screen'>
+</Class>
+<Class name='ScreenNetSelectBase' grouping='Screen'>
+</Class>
+<Class name='ScreenNetSelectMusic' grouping='Screen'>
+</Class>
 <Class name='ScreenOptions' grouping='Screen'>
 	<Function name='AllAreOnLastRow' return='bool'  arguments=''>
 		Returns <code>true</code> if all active players are on the last options row.
@@ -5024,6 +5032,8 @@ end
 	<Function name='SetAllowLateJoin' return='void' arguments='bool'>
 		Sets whether the screen allows late joining.  This only works for screens that are just ScreenWithMenuElements, as most derived screens have their own hard coded function for whether late joining is allowed.
 	</Function>
+</Class>
+<Class name='ScreenWithMenuElementsSimple' grouping='Screen'>
 </Class>
 <Class name='Song'>
 	<Function name='GetAllSteps' return='{Steps}' arguments=''>
