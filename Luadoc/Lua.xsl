@@ -2,7 +2,7 @@
 
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:sm="https://www.stepmania.com"
+	xmlns:sm="http://www.stepmania.com"
 	xmlns="http://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="sm">
 <xsl:output method="xml"
@@ -169,7 +169,7 @@
 				var listid = 'list_' + id;
 				var img = document.getElementById( imgid );
 				var list = document.getElementById( listid );
-
+			
 				img.setAttribute( 'src', 'open.gif' );
 				list.style.display = 'block';
 			}
@@ -191,7 +191,7 @@
 				var listid = 'list_' + id;
 				var img = document.getElementById( imgid );
 				var list = document.getElementById( listid );
-
+				
 				if( img.getAttribute('src') == 'closed.gif' )
 				{
 					img.setAttribute( 'src', 'open.gif' );
@@ -658,7 +658,7 @@
 				<xsl:sort select="@name" />
 				<tr class="code">
 					<td>
-
+					
 					<xsl:value-of select="@name" />
 					</td>
 					<td><xsl:value-of select="@value" /></td>
