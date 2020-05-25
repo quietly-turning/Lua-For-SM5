@@ -275,6 +275,8 @@ class LuaAPI extends Component {
 			// has a corresponding explanation written by a human in LuaDocumentation.xml
 			const documentation = {
 				classes:          lua_api.docs.luadoc.children("Classes"),
+				actors:           lua_api.docs.luadoc.children("Actors"),
+				screens:          lua_api.docs.luadoc.children("Screens"),
 				namespaces:       lua_api.docs.luadoc.children("Namespaces"),
 				enums:            lua_api.docs.luadoc.children("Enums"),
 				singletons:       lua_api.docs.luadoc.children("Singletons"),
@@ -328,8 +330,8 @@ class LuaAPI extends Component {
 			// ---------------------------------------------------------------------
 
 			const G = [
-				{ data: [], desc: "" },                                                                         // 0: actors
-				{ data: [], desc: "" },                                                                         // 1: screens
+				{ data: [], desc: lua_api.check_for_links(documentation.actors.children("Description")[0]) },           // 0: actors
+				{ data: [], desc: lua_api.check_for_links(documentation.screens.children("Description")[0]) },        // 1: screens
 				{ data: [], desc: lua_api.check_for_links(documentation.classes.children("Description")[0]) },          // 2: classes
 				{ data: [], desc: lua_api.check_for_links(documentation.namespaces.children("Description")[0]) },       // 3: namespaces
 				{ data: [], desc: lua_api.check_for_links(documentation.enums.children("Description")[0]) },            // 4: enums
@@ -707,12 +709,14 @@ class LuaAPI extends Component {
 					<span className="octicon-link" onClick={() => this.updateHash("Actors")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Actors
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[0].desc}} />
 				<div>{elements.Actors}</div>
 
 				<h2 id="Screens" className="API-Category">
 					<span className="octicon-link" onClick={() => this.updateHash("Screens")}><Octicon size="medium" icon={getIconByName("link")} /></span>
 					Screens
 				</h2>
+				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[1].desc}} />
 				<div>{elements.Screens}</div>
 
 				<h2 id="Classes" className="API-Category">

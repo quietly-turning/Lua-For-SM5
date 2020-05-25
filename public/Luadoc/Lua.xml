@@ -1641,7 +1641,6 @@
 			<Function name='String'/>
 			<Function name='lockinput'/>
 		</Class>
-		<Class base='ScreenWithMenuElements' name='ScreenAttract'/>
 		<Class base='ScreenWithMenuElements' name='ScreenEdit'>
 			<Function name='GetEditState'/>
 		</Class>
@@ -1762,7 +1761,6 @@
 			<Function name='SetAllowLateJoin'/>
 			<Function name='StartTransitioningScreen'/>
 		</Class>
-		<Class base='ScreenWithMenuElements' name='ScreenWithMenuElementsSimple'/>
 		<Class name='Song'>
 			<Function name='GetAllSteps'/>
 			<Function name='GetBackgroundPath'/>

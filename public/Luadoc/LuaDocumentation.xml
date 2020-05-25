@@ -6252,4 +6252,57 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 	An example of using the GameState singleton to find the current song in Lua: <code>GAMESTATE:GetCurrentSong()</code>
 </Description>
 </Singletons>
+
+<!--
+	put descriptions for "grouping"s down here
+	these aren't part of the spec in Lua.xsd, so they won't appear
+	when Lua.xml is viewed in a webbrowser, but can still be used
+	by external API doc applications until ExportLuaInformation
+	is fixed/expanded.
+ -->
+
+<!-- Actors -->
+<Actors>
+	<Description>
+		Actors are the basic building blocks used to script content for StepMania.  When the player
+		sees and interacts with something on screen, like a menu system or a 3D model of a dancing
+		character, they are seeing an actor.<br />
+		<br />
+		Each of these actors is available to Lua as a function within the global <code>Def</code> table.<br />
+		<br />
+		As functions, each actor accepts a table as an argument, and that table contains attributes
+		and commands that define how the actor will behave when rendered by the StepMania engine.<br />
+		<br />
+		For example:<br />
+<code>
+local spr = Def.Sprite{ Texture="./path/to/image.png" }<br />
+local snd = Def.Sound{ File="./path/to/soundeffect.ogg" }<br />
+local sqr = Def.Quad{ InitCommand=function(self) self:xy(80, 100) end }<br />
+<br />
+-- common convention is to not use () with actor<br />
+-- functions but syntax like this is also valid<br />
+local args = { Texture="./path/to/image.png" }<br />
+local spr  = Def.Sprite(args)<br />
+</code>
+	</Description>
+</Actors>
+
+<Screens>
+	<Description>
+		For players, screens are individual units of a game cycle that they interact with.  Even without technical
+		knowledge of StepMania, most players understand there is a place where gameplay occurs (ScreenGameplay) which
+		is different than the place used to choose the next song (ScreenSelectMusic).<br />
+		<br />
+		For scripters, screens are collections of actors with distinct purposes wrapped up in a a single
+		ActorFrame.  That ActorFrame is the "screen" that players interact with.<br />
+		<br />
+		To be available in a theme, screens must be defined in that theme's metrics.ini file like:
+		<code>[ScreenTitleJoin]</code> or <code>[ScreenPlayerOptions]</code>.<br />
+		<br />
+		The StepMania engine defines many, many classes of screens, each with unique specialization.  For now,
+		the screens documented here are only those with methods available to Lua.
+	</Description>
+</Screens>
+
+
 </Documentation>
