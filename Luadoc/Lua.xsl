@@ -106,7 +106,7 @@
 				font-family: monospace;
 			}
 			.descriptionText {
-				text-indent: 2em;
+				padding-left: 2em;
 				margin-top: 0;
 				margin-bottom: 0;
 			}
@@ -169,7 +169,7 @@
 				var listid = 'list_' + id;
 				var img = document.getElementById( imgid );
 				var list = document.getElementById( listid );
-			
+
 				img.setAttribute( 'src', 'open.gif' );
 				list.style.display = 'block';
 			}
@@ -191,7 +191,7 @@
 				var listid = 'list_' + id;
 				var img = document.getElementById( imgid );
 				var list = document.getElementById( listid );
-				
+
 				if( img.getAttribute('src') == 'closed.gif' )
 				{
 					img.setAttribute( 'src', 'open.gif' );
@@ -658,7 +658,7 @@
 				<xsl:sort select="@name" />
 				<tr class="code">
 					<td>
-					
+
 					<xsl:value-of select="@name" />
 					</td>
 					<td><xsl:value-of select="@value" /></td>
@@ -679,6 +679,14 @@
 			<xsl:with-param name="curclass" select="$curclass" />
 		</xsl:apply-templates>
 	</code>
+</xsl:template>
+<xsl:template match="sm:pre">
+	<xsl:param name="curclass" />
+	<pre>
+		<xsl:apply-templates>
+			<xsl:with-param name="curclass" select="$curclass" />
+		</xsl:apply-templates>
+	</pre>
 </xsl:template>
 <xsl:template match="sm:br"><br /></xsl:template>
 <xsl:template match="sm:del">
