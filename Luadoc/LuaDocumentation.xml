@@ -197,8 +197,8 @@ save yourself some time, copy this for undocumented things:
 	<Function name='find_missing_strings_in_theme_translations' return='' arguments='string theme_name, string master_lang_name'>
 		This function creates files in the theme's Languages folder listing all the strings that have no translation and all the strings that are unused.<br />
 		Strings that do not have an entry in the master language are considered unused.<br />
-		master_lang_name is the name of the ini file that contains the language with all strings used by the theme.<br />
-		Example:  find_missing_strings_in_theme_translations("my_best_theme", "en.ini")
+		<code>master_lang_name</code> is the name of the ini file that contains the language with all strings used by the theme.<br />
+		Example:  find_missing_strings_in_theme_translations( "my_best_theme", "en.ini" )
 	</Function>
 	<Function name='FindSelection' theme='_fallback' return='int' arguments='table list'>
 		[02 Utilities.lua] Return the index of a true value in <code>list</code>.
@@ -207,7 +207,7 @@ save yourself some time, copy this for undocumented things:
 		[02 Utilities.lua] Find a key in <code>tab</code> with the given <code>value</code>.
 	</Function>
 	<Function name='foreach_ordered' theme='_fallback' return='void' arguments='table t, function f'>
-		<code>func</code> takes a key and a value.
+		<code>f</code> takes a key and a value.
 	</Function>
 	<Function name='FormatNumberAndSuffix' return='string' arguments='int num'>
 		Returns the number passed to the function followed by its suffix (&quot;th&quot;, &quot;nd&quot;, and so on).
@@ -288,7 +288,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='GetThemeAspectRatio' return='float' arguments=''>
 		Returns the theme's aspect ratio.<br />
-		This is specifically the result of dividing <code>ScreenWidth</code> by <code>ScreenHeight</code> as each is defined under the theme's <code>[Common]</code> metric.
+		Specifically, this is the result of dividing <code>ScreenWidth</code> by <code>ScreenHeight</code> as each is defined under the theme's <code>[Common]</code> metric.
 	</Function>
 	<Function name='GetThemePref' theme='_fallback' return='various' arguments='string pref'>
 		[03 ThemePrefs.lua] Alias for <Link class='ThemePrefs' function='Get' />.
@@ -330,7 +330,7 @@ save yourself some time, copy this for undocumented things:
 		[03 Gameplay.lua] Returns <code>true</code> if you need to step on hold heads to activate them.
 	</Function>
 	<Function name='HoldTiming' theme='_fallback' return='float' arguments=''>
-		[03 Gameplay.lua] Returns 0 in <code>pump</code> mode, <code>TimingWindowSecondsHold</code> preference value in any other game mode.
+		[03 Gameplay.lua] Returns 0 when the current <Link class='Game' /> is pump.  Returns the <code>TimingWindowSecondsHold</code> preference value in other games.
 	</Function>
 	<Function name='Hour' return='int' arguments=''>
 		Returns the current hour.
@@ -6325,7 +6325,7 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 	<Description>
 		Actors are the basic building blocks used to script content for StepMania.  When the player
 		sees and interacts with something on-screen, like a menu system or a 3D model of a dancing
-		character, that something is an actor.<br />
+		character, that <em>something</em> is an actor.<br />
 		<br />
 		Each of these actors is available to Lua as a function within the global <code>Def</code> table.<br />
 		<br />
