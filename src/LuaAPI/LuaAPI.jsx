@@ -227,14 +227,10 @@ class LuaAPI extends Component {
 	// ---------------------------------------------------------------------
 
 	check_for_code(element){
-		$(element).find("code").each(function(i, code){
-			if ($(code).has("br").length){
-
-				let txt = (code.textContent).replace(/<br\s*\/>/g, "")
-				// trim leading newline if one is found
-				if (txt.charAt(0)==="\n"){ txt = txt.substr(1) }
-				$(code).replaceWith("<pre><code class='lua'>" + txt + "</code></pre>")
-			}
+		$(element).find("pre code").each(function(i, code){
+			// trim leading newline if one is found
+			const txt = code.textContent.charAt(0)==="\n" ? code.textContent.substr(1) : code.textContent
+			$(code).replaceWith("<pre><code class='lua'>" + txt + "</code></pre>")
 		})
 		return element
 	}
