@@ -4762,7 +4762,7 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 		This adds the Lua function <code>callback</code> to the list of functions the screen will pass input to, giving Lua access to player input as it occurs.<br />
 		When an input event occurs, <code>callback</code> will be passed a table with the details of the event.  <code>callback</code> must return a bool to indicate whether the event was handled.  If <code>callback</code> returns <code>true</code>, the event will not be passed any further.<br />
 		This method does not handle localization or different keyboard layouts, so <Link class='ScreenTextEntry' /> is better suited to getting text input from players.<br />
-		Note that both the screen (as handled by the StepMania engine) and your Lua callbacks will be passed input events, and this can result in undesirable side effects.<br />
+		Be aware that both the screen (as handled by the StepMania engine) and your Lua callbacks will be passed input events, and this can result in undesirable side effects.<br />
 		Basic usage example:
 <pre><code>
 local InputHandler = function( event )
@@ -4814,13 +4814,13 @@ Details of the <code>event</code> table:
 	-- The details of the event.
 	DeviceInput = {
 		-- The type of device.  The first half of the string will
-		be "Device_", the second half will be from InputDeviceNames
-		in RageInputDevice.cpp.
+		-- be "Device_", the second half will be from InputDeviceNames
+		-- in RageInputDevice.cpp.
 		device = string,
 
 		-- The button that was pressed. The first half of the string
-		will be "DeviceButton_", the second half will be from InitNames
-		in RageInputDevice.cpp.
+		-- will be "DeviceButton_", the second half will be from InitNames
+		-- in RageInputDevice.cpp.
 		button = string,
 
 		-- A floating point value for analog input.
@@ -4920,19 +4920,19 @@ Details of the <code>event</code> table:
 	</Function>
 	<Function name='HasteAddAmounts' return='{float}' arguments='{float}'>
 		This is part of the system for controlling how haste behaves. <br />
-		Read Docs/Themerdocs/haste.txt.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/haste.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/haste.txt</a>.
 	</Function>
 	<Function name='HasteLifeSwitchPoint' return='float' arguments='float'>
 		This is part of the system for controlling how haste behaves. <br />
-		Read Docs/Themerdocs/haste.txt.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/haste.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/haste.txt</a>.
 	</Function>
 	<Function name='HasteTimeBetweenUpdates' return='float' arguments='float'>
 		This is part of the system for controlling how haste behaves. <br />
-		Read Docs/Themerdocs/haste.txt.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/haste.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/haste.txt</a>.
 	</Function>
 	<Function name='HasteTurningPoints' return='{float}' arguments='{float}'>
 		This is part of the system for controlling how haste behaves. <br />
-		Read Docs/Themerdocs/haste.txt.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/haste.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/haste.txt</a>.
 	</Function>
 	<Function name='SetNewScreen' return='void' arguments='string s'>
 		Sets the next Screen to be loaded.
@@ -6409,7 +6409,7 @@ local spr  = Def.Sprite(args)
 		understand there is a place where gameplay occurs (ScreenGameplay) that is different than the
 		place used to choose the next song (ScreenSelectMusic).<br />
 		<br />
-		For scripters, screens are collections of distinct actors wrapped up in a a single
+		For scripters, screens are collections of distinct actors wrapped up in a single
 		ActorFrame.  That ActorFrame is the "screen" that players interact with.<br />
 		<br />
 		To be available in a theme, screens must be defined in that theme's metrics.ini file with the
