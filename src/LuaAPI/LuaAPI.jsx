@@ -240,9 +240,7 @@ class LuaAPI extends Component {
 	}
 
 	componentDidUpdate(){
-		document.querySelectorAll("pre code").forEach(block => {
-			hljs.highlightBlock(block);
-		})
+		this.scroll_window_after_hashchange()
 	}
 
 	componentDidMount(){
