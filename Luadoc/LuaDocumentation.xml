@@ -789,7 +789,7 @@ save yourself some time, copy this for undocumented things:
 <Namespaces>
 <Description>
 	The StepMania engine makes some of its namespaces available to Lua.  These can be thought of as collections of utility functions.<br />
-	Example using <code>SongUtil</code> to get playable <Link class='Steps' /> from a song given the current <Link class='Game' />:<br />
+	Example using <code>SongUtil</code> to get playable <Link class='Steps' /> from a song given the current <Link class='Game' />:
 <pre><code>
 local song = GAMESTATE:GetCurrentSong()
 local playable_steps = SongUtil.GetPlayableSteps(song)
@@ -897,7 +897,7 @@ local playable_steps = SongUtil.GetPlayableSteps(song)
 	</Function>
 	<Function name='Reverse' return='{int}' arguments='Enum e'>
 		Returns a reverse lookup table for the enumerated type <code>e</code>. For
-		example: <br />
+		example:
 <pre><code>
 local r = PlayerNumber:Reverse()
 local n = r['PlayerNumber_P2']
@@ -1814,7 +1814,7 @@ local n = r['PlayerNumber_P2']
 		<code>First</code> is the index of the first vertex to draw.<br />
 		<code>Num</code> is the number of vertices to draw.  -1 for <code>Num</code> means draw all verts after <code>First</code>.<br />
 		Any value not in the table defaults to the already set value.<br />
-		Examples:<br />
+		Examples:
 <pre><code>
 -- Sets all three parts of the draw state.
 self:SetDrawState{Mode="DrawMode_Quads", First= 1, Num= -1}
@@ -1959,7 +1959,7 @@ self:SetDrawState{First= 3, Num= 4}
 <Class name='ActorSound' grouping='Actor'>
 	<Description>
 		This actor represents a playable sound.  Though the C++ class is ActorSound, it is accessible to Lua via <code>Def.Sound</code>.<br />
-		You must provide <em>ActorSound</em>s with a filepath to the asset using their <code>File</code> attribute.<br />
+		You must provide <em>ActorSound</em>s with a filepath to the asset using their <code>File</code> attribute.
 <pre><code>
 Def.Sound{
 	File="./path/to/soundeffect.ogg",
@@ -2767,7 +2767,7 @@ Def.Sound{
 		Checks various things to determine whether the game will crash when gameplay starts.  Returns <code>false</code> and an error string if gameplay cannot be entered safely.<br />
 		Might not work in all cases, but will catch things like a player not having
 		steps set or no current song or style.  Mainly exists for people with a custom ScreenSelectMusic replacement.<br />
-		Example:<br />
+		Example:
 <pre><code>
 local can, reason = GAMESTATE:CanSafelyEnterGameplay()
 if not can then
@@ -3644,7 +3644,7 @@ end
 		If approach_speed is a float, sets the speed of the transition to approach_speed.  Returns the previous values of both.<br />
 		approach_speed is in units of n per second.  value will be approached at the rate of approach_speed per second.<br />
 		Note that the value and the approach speed arguments are both independently optional.<br />
-		Example:<br />
+		Example:
 <pre><code>
 -- Sets a to the current value and b to the current approach_speed
 a,b = options:Boost()
@@ -3893,7 +3893,7 @@ a,b = options:Boost(5)
 	<Function name='NoteSkin' return='string, bool' arguments='string name'>
 		Sets the NoteSkin to the named noteskin, unless name is <code>nil</code> or the NoteSkin does not exist.  Returns the name of the previous NoteSkin and whether the set attempt succeeded.<br />
 		Changing the NoteSkin during gameplay is not supported.<br />
-		Example:<br />
+		Example:
 <pre><code>
 -- Sets note_name to the player's current noteskin
 note_name = options:NoteSkin()
@@ -5533,7 +5533,7 @@ Details of the <code>event</code> table:
 		<em>Sprite</em> actors can be used to display images and video.  If you want to load a png as part of your UI,
 		or animate a visual effect from a sprite sheet, or play a video file, <em>Sprite</em> is what you're looking for.<br />
 		<br />
-		You must provide <em>Sprite</em>s with a filepath to the asset you wish to load using their <code>Texture</code> attribute.<br />
+		You must provide <em>Sprite</em>s with a filepath to the asset you wish to load using their <code>Texture</code> attribute.
 <pre><code>
 local spr = Def.Sprite{
 	Texture="path/to/mycoolimage.png"
@@ -6018,7 +6018,7 @@ local spr = Def.Sprite{
 		If <code>false</code> (or nothing) is the argument to these functions, they return tables of strings.  The strings are numbers separated by '='.<br />
 		If the argument is <code>true</code>, they return tables of tables, and the inner tables contain numbers as described for each function.<br />
 		The first form is kept as the default to maintain compatibility with older themes.  The second form can be convenient because there is no need to transform the string into a table of numbers before using it.<br />
-		Example of first form:<br />
+		Example of first form:
 <pre><code>
 local bpms_and_times = timing_data:GetBPMsAndTimes()
 for i, s in ipairs(bpms_and_times) do
@@ -6028,7 +6028,7 @@ end
 -- do something with the bpms and times now that they are numbers.
 </code></pre>
 		<br />
-		Example of second form:<br />
+		Example of second form:
 <pre><code>
 local bpms_and_times = timing_data:GetBPMsAndTimes(true)
 -- do something with the bpms and times because they are already numbers.
@@ -6388,7 +6388,7 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 		As functions, each actor accepts a table as an argument, and that table contains attributes
 		and commands that define how the actor will behave when rendered by the StepMania engine.<br />
 		<br />
-		Basic examples:<br />
+		Basic examples:
 <pre><code>
 -- Sprite, Sound, and Quad are each Actors with unique specializations
 local spr = Def.Sprite{ Texture="./path/to/image.png" }
