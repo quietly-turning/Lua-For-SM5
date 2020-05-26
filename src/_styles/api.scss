@@ -6,6 +6,11 @@
 
 div.LuaAPI{
 
+	// for hightlightjs code examples
+	code{
+		border-radius: 8px;
+	}
+
 	// mobile-filter contains a LuaAPIFilter component that
 	// appears when Bootstrap detects width to be less than md
 	div.mobile-filter{

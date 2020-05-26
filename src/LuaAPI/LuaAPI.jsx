@@ -12,12 +12,9 @@ import csvparse from "csv-parse/lib/sync"
 import $ from "jquery"
 import "../_styles/api.css"
 
-
 // ------- highlightjs for syntax coloring
-// import highlightjs modules last so that hljs.registerLanguage()
-// doesn't trigger eslint-plugin-import's import/first rule
+import hljs from "highlight.js"
 
-import hljs from "highlight.js/lib/core"
 
 class LuaAPI extends Component {
 
@@ -232,12 +229,20 @@ class LuaAPI extends Component {
 	check_for_code(element){
 		$(element).find("code").each(function(i, code){
 			if ($(code).has("br").length){
-				const txt = (code.textContent).replace(/<br\s*\/>/g, "")
 
+				let txt = (code.textContent).replace(/<br\s*\/>/g, "")
+				// trim leading newline if one is found
+				if (txt.charAt(0)==="\n"){ txt = txt.substr(1) }
 				$(code).replaceWith("<pre><code class='lua'>" + txt + "</code></pre>")
 			}
 		})
 		return element
+	}
+
+	componentDidUpdate(){
+		document.querySelectorAll("pre code").forEach(block => {
+			hljs.highlightBlock(block);
+		})
 	}
 
 	componentDidMount(){
@@ -527,7 +532,9 @@ class LuaAPI extends Component {
 
 		}).then(function(){
 			// highlightjs
-			hljs.initHighlighting()
+			document.querySelectorAll("pre code").forEach(block => {
+				hljs.highlightBlock(block);
+			})
 		})
 	}
 
@@ -678,9 +685,6 @@ class LuaAPI extends Component {
 		// to determine whether to show/hide the header for the constants table
 		// (having a table header with 0 rows of data is confusing)
 		const num_constants = elements.Constants.props.children[1].props.children.length
-
-		// // highlightjs
-		// hljs.initHighlighting()
 
 		return (
 			<div className="LuaAPI pl-md-4">
