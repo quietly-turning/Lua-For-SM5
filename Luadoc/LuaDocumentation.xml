@@ -3877,12 +3877,12 @@ a,b = options:Boost(5)
 		Example:<br />
 <code>
 -- Sets note_name to the player's current noteskin<br />
-note_name= options:NoteSkin()<br />
+note_name = options:NoteSkin()<br />
 <br />
 -- Sets prev_note_name to the noteskin the player had set<br />
 -- changes the current noteskin to "cel"<br />
 -- sets succeeded to true if the "cel" noteskin exists.<br />
-prev_note_name, succeeded= options:NoteSkin("cel")
+prev_note_name, succeeded = options:NoteSkin("cel")
 </code>
 	</Function>
 	<Function name='Overhead' return='bool' arguments='bool'>
@@ -4775,7 +4775,7 @@ prev_note_name, succeeded= options:NoteSkin("cel")
 		z = float,<br />
 		<br />
 		-- Whether the button is down.  This is level with a threshold<br />
-		and debouncing applied.<br />
+		-- and debouncing applied.<br />
 		down = bool,<br />
 		<br />
 		-- How long ago this input occurred, in seconds.<br />
