@@ -6339,7 +6339,7 @@ local snd = Def.Sound{ File="./path/to/soundeffect.ogg" }<br />
 local sqr = Def.Quad{ InitCommand=function(self) self:xy(80, 100) end }<br />
 <br />
 -- common convention is to not use () with actor<br />
--- functions but syntax like this is also valid<br />
+-- functions, but syntax like this is also valid<br />
 local args = { Texture="./path/to/image.png" }<br />
 local spr  = Def.Sprite(args)<br />
 </code>
