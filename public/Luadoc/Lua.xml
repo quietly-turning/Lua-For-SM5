@@ -1537,6 +1537,8 @@
 			<Function name='SaveProfile'/>
 			<Function name='SetStatsPrefix'/>
 		</Class>
+		<Class base='Sprite' name='Quad'>
+		</Class>
 		<Class name='RadarValues'>
 			<Function name='GetValue'/>
 		</Class>
