@@ -7,8 +7,11 @@
 div.LuaAPI{
 
 	// for hightlightjs code examples
-	code{
-		border-radius: 8px;
+	pre{
+		margin: 0.5em 0em;
+		code{
+			border-radius: 8px;
+		}
 	}
 
 	// mobile-filter contains a LuaAPIFilter component that
