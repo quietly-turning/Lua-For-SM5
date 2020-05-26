@@ -979,6 +979,11 @@ local n = r['PlayerNumber_P2']
 <!-- Classes -->
 <Classes>
 <Class name='Actor' grouping='Actor'>
+	<Description>
+		<em>Actor</em> is the base class containing common methods that all specialized actor classes inherit.
+		For example, <Link class='Actor' function='GetX'>GetX</Link> is a method belonging to <em>Actor</em>,
+		but <Link class='Sprite' />s, <Link class='BitmapText' />s, and <Link class='Quad' />s can use <code>GetX()</code>.
+	</Description>
 	<Function name='AddWrapperState' return='ActorFrame' arguments=''>
 		This adds a wrapper state around the Actor, which is like wrapping the Actor in an ActorFrame, except that you can use it on any actor, and add or remove wrapper states in response to things that happen while the screen is being used. (wrapping an Actor in an ActorFrame normally requires setting it up before the screen starts)<br />
 		The ActorFrame that is returned is the wrapper state, for convenience.<br />
@@ -4726,24 +4731,67 @@ prev_note_name, succeeded= options:NoteSkin("cel")
 		This should not be used to provide text input because that would not handle localization or different keyboard layouts.<br />
 		The screen and the callbacks will both be passed input events, so be aware of what input the current screen responds to and consider the effects.<br />
 		Details of the table containing the event data:<br />
-		{<br />
-		DeviceInput= { -- The raw details of the event.<br />
-		device= string, -- The type of device.  The first half of the string will be "Device_", the second half will be from InputDeviceNames in RageInputDevice.cpp.<br />
-		button= string, -- The button that was pressed.  the first half of the string will be "DeviceButton_", the second half will be from InitNames in RageInputDevice.cpp.<br />
-		level= float, -- A floating point value for analog input.<br />
-		z= float, -- Mousewheel input.<br />
-		down= bool, -- Whether the button is down.  This is level with a threshold and debouncing applied.<br />
-		ago= float, -- How long ago this input occurred, in seconds.<br />
-		is_joystick= bool, -- True if the device is a joystick.<br />
-		is_mouse= bool -- True if the device is a mouse.<br />
-		}, -- This ends the list of things inside the DeviceInput part of the table.<br />
-		controller= string, -- The game controller this event was mapped to.  "GameController_1" or "GameController_2", or nil if the event wasn't mapped to either controller.<br />
-		button= string, -- The semi-raw button that was pressed.  This is what the button was mapped to by the keymap settings, but without the conversions that occur when OnlyDedicatedMenuButtons is true.  Will be empty if the button was not mapped.<br />
-		type= string, -- The type of event.  "InputEventType_FirstPress", "InputEventType_Repeat", or "InputEventType_Release".<br />
-		GameButton= string, -- The cooked button that was pressed.  This is button with mapping that occurs when OnlyDedicatedMenuButtons is true applied.  This is nil for unmapped buttons.<br />
-		PlayerNumber= PlayerNumber, -- The player that the controller is mapped to, or nil.<br />
-		MultiPlayer= string, -- Unknown purpose.<br />
-		}
+<code>
+{<br />
+	-- The "semi-raw" button that was pressed. This is what<br />
+	-- the button was mapped to by the keymap settings, without<br />
+	-- the conversions that occur when OnlyDedicatedMenuButtons<br />
+	--  is true. Will be empty if the button was not mapped.<br />
+	button = string,<br />
+	<br />
+	-- "InputEventType_FirstPress", "InputEventType_Repeat",<br />
+	-- or "InputEventType_Release".<br />
+	type = string,<br />
+	<br />
+	-- The "cooked" button that was pressed.  This is button with<br />
+	-- mapping that occurs when OnlyDedicatedMenuButtons is true<br />
+	-- applied.  This is nil for unmapped buttons.<br />
+	GameButton = string,<br />
+	<br />
+	-- The player that the controller is mapped to, or nil.<br />
+	PlayerNumber = PlayerNumber,<br />
+	<br />
+	-- The game controller this event was mapped to.<br />
+	-- "GameController_1" or "GameController_2", or nil if the event<br />
+	-- wasn't mapped to either controller.<br />
+	controller = string,<br />
+	<br />
+	-- The details of the event.<br />
+	DeviceInput = {<br />
+		-- The type of device.  The first half of the string will<br />
+		be "Device_", the second half will be from InputDeviceNames<br />
+		in RageInputDevice.cpp.<br />
+		device = string,<br />
+		<br />
+		-- The button that was pressed. The first half of the string<br />
+		will be "DeviceButton_", the second half will be from InitNames<br />
+		in RageInputDevice.cpp.<br />
+		button = string,<br />
+		<br />
+		-- A floating point value for analog input.<br />
+		level = float,<br />
+		<br />
+		-- Mousewheel input.<br />
+		z = float,<br />
+		<br />
+		-- Whether the button is down.  This is level with a threshold<br />
+		and debouncing applied.<br />
+		down = bool,<br />
+		<br />
+		-- How long ago this input occurred, in seconds.<br />
+		ago = float,<br />
+		<br />
+		-- True if the device is a joystick.<br />
+		is_joystick = bool,<br />
+		<br />
+		-- True if the device is a mouse.<br />
+		is_mouse = bool<br />
+		<br />
+	},<br />
+	-- Unknown purpose. SMOnline?
+	MultiPlayer = string<br />
+}
+</code>
 	</Function>
 	<Function name='GetNextScreenName' return='string' arguments=''>
 		Returns the name of the next Screen.
@@ -5426,6 +5474,17 @@ prev_note_name, succeeded= options:NoteSkin("cel")
 	</Function>
 </Class>
 <Class name='Sprite' grouping='Actor'>
+	<Description>
+		<em>Sprite</em> actors can be used to display images and video.  If you want to load a png as part of your UI,
+		or animate a visual effect from a sprite sheet, or play a video file, <em>Sprite</em> is what you're looking for.<br />
+		<br />
+		You must provide <em>Sprite</em>s with filepath to the asset you wish to load using their <code>Texture</code> attribute.<br />
+<code>
+local spr = Def.Sprite{<br />
+	Texture="path/to/mycoolimage.png"<br />
+}
+</code>
+	</Description>
 	<Function name='GetAnimationLengthSeconds' return='float' arguments=''>
 		Returns the length of the animation in seconds.
 	</Function>
@@ -6293,7 +6352,7 @@ local spr  = Def.Sprite(args)<br />
 		knowledge of StepMania, most players understand there is a place where gameplay occurs (ScreenGameplay) which
 		is different than the place used to choose the next song (ScreenSelectMusic).<br />
 		<br />
-		For scripters, screens are collections of actors with distinct purposes wrapped up in a a single
+		For scripters, screens are collections of distinct actors wrapped up in a a single
 		ActorFrame.  That ActorFrame is the "screen" that players interact with.<br />
 		<br />
 		To be available in a theme, screens must be defined in that theme's metrics.ini file like:
