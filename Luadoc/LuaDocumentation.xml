@@ -6324,8 +6324,8 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 <Actors>
 	<Description>
 		Actors are the basic building blocks used to script content for StepMania.  When the player
-		sees and interacts with something on screen, like a menu system or a 3D model of a dancing
-		character, they are seeing an actor.<br />
+		sees and interacts with something on-screen, like a menu system or a 3D model of a dancing
+		character, that something is an actor.<br />
 		<br />
 		Each of these actors is available to Lua as a function within the global <code>Def</code> table.<br />
 		<br />

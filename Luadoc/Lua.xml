@@ -2977,5 +2977,5 @@
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
 	<Version>StepMania5.1-git-6bea7639e8</Version>
-	<Date>2020-05-11</Date>
+	<Date>2020-05-16</Date>
 </Lua>
