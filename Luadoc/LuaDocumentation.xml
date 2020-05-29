@@ -986,7 +986,7 @@ local n = r['PlayerNumber_P2']
 	<Description>
 		<em>Actor</em> is the base class containing common methods that all specialized actor classes inherit.
 		For example, <Link class='Actor' function='GetX'>GetX</Link> is a method belonging to <em>Actor</em>,
-		but <Link class='Sprite' />s, <Link class='BitmapText' />s, and <Link class='Quad' />s can use <code>GetX()</code>.
+		but <Link class='Sprite' />s, <Link class='BitmapText' />s, <Link class='Quad' />s, and so on can use <code>GetX()</code>.
 	</Description>
 	<Function name='AddWrapperState' return='ActorFrame' arguments=''>
 		This adds a wrapper state around the Actor, which is like wrapping the Actor in an ActorFrame, except that you can use it on any actor, and add or remove wrapper states in response to things that happen while the screen is being used. (wrapping an Actor in an ActorFrame normally requires setting it up before the screen starts)<br />
