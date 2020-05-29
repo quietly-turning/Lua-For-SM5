@@ -150,9 +150,8 @@ save yourself some time, copy this for undocumented things:
 		[02 Utilities.lua] Utillity function used to format log output for presenting on-screen.  <code>indent</code> is the number of pixels to indent lines.  <code>width</code> is the width in pixels that lines should be constrained to.
 	</Function>
 	<Function name='convert_xml_bgs' return='' arguments='string dir'>
-		Recursively searches <code>dir</code> for xml files of actors and
-		converts them to equivalent lua files.  See Docs/Themerdocs/XmlToLua.txt
-		for details.
+		Recursively searches <code>dir</code> for xml files of actors and converts them to equivalent lua files.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/XmlToLua.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/XmlToLua.txt</a>.
 	</Function>
 	<Function name='create_bezier' return='RageBezier2D' arguments=''>
 		Creates a RageBezier2D for you to use.  Make sure you destroy the RageBezier2D when you're done with it, or you will have a memory leak.
@@ -208,6 +207,8 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='foreach_ordered' theme='_fallback' return='void' arguments='table t, function f'>
 		<code>f</code> takes a key and a value.
+	</Function>
+	<Function name='force_to_range' theme='default' return='float' args='float min, float number, float max'>
 	</Function>
 	<Function name='FormatNumberAndSuffix' return='string' arguments='int num'>
 		Returns the number passed to the function followed by its suffix (&quot;th&quot;, &quot;nd&quot;, and so on).
@@ -485,6 +486,7 @@ save yourself some time, copy this for undocumented things:
 	<Function name='OptionRowProTiming' theme='default' return='LuaOptionRow' arguments=''>
 		[03 ThemePrefs.lua] Returns a Lua option row for ProTiming.
 	</Function>
+	<Function name='OptionRowScreenFilter' return='OptionRow' arguments=''></Function>
 	<Function name='pairs' return='function' arguments='table t'>
 		Returns three values: the <Link class='GLOBAL' function='next' /> function, the table <code>t</code>, and <code>nil</code>,
 		so that the construction <code>for k,v in pairs(t) do body end</code>
@@ -599,6 +601,8 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='ScreenMetric' theme='_fallback' return='string' arguments='string s'>
 		[02 Other.lua] alias for <Link class='Screen' function='Metric' />.
+	</Function>
+	<Function name='ScreenSelectStylePositions' arguments='int count' return='{{float, float}}'>
 	</Function>
 	<Function name='ScreenString' theme='_fallback' return='string' arguments='string s'>
 		[02 Other.lua] alias for <Link class='Screen' function='String' />.
@@ -1160,7 +1164,9 @@ local n = r['PlayerNumber_P2']
 		Sets the Actor's alpha level to <code>fAlpha</code>, where <code>fAlpha</code> is in the range 0..1.
 	</Function>
 	<Function name='diffuseblink' return='void' arguments=''>
-		Makes the Actor switch between two colors immediately.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor switch between two colors immediately.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='diffusebottomedge' return='void' arguments=''>
 		Sets the Actor's bottom edge color to <code>c</code>.
@@ -1178,13 +1184,17 @@ local n = r['PlayerNumber_P2']
 		Sets the Actor's lower right corner color to <code>c</code>.
 	</Function>
 	<Function name='diffuseramp' return='void' arguments=''>
-		Makes the Actor switch between two colors, jumping back to the first after reaching the second.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor switch between two colors, jumping back to the first after reaching the second.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='diffuserightedge' return='void' arguments='color c'>
 		Sets the Actor's right edge color to <code>c</code>.
 	</Function>
 	<Function name='diffuseshift' return='void' arguments=''>
-		Makes the Actor shift between two colors smoothly.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor shift between two colors smoothly.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='diffusetopedge' return='void' arguments='color c'>
 		Sets the Actor's top edge color to <code>c</code>.
@@ -1340,13 +1350,19 @@ local n = r['PlayerNumber_P2']
 		Sets the Actor's glow color.
 	</Function>
 	<Function name='glowblink' return='void' arguments=''>
-		Makes the Actor glow between two colors immediately.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor glow between two colors immediately.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='glowramp' return='void' arguments=''>
-		Makes the Actor glow between two colors smoothly, jumping back to the first at the end.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor glow between two colors smoothly, jumping back to the first at the end.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='glowshift' return='void' arguments=''>
-		Makes the Actor glow between two colors smoothly.  See Themerdocs/effect_colors.txt for an example.
+		Makes the Actor glow between two colors smoothly.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
+		for an example.
 	</Function>
 	<Function name='halign' return='void' arguments='float fAlign'>
 		Set the fractional horizontal alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is left aligned while an alignment of 1 is right aligned. See <Link function='horizalign' /> for the common case.
@@ -5119,7 +5135,8 @@ Details of the <code>event</code> table:
 </Class>
 <Class name='ScreenTextEntry' grouping='Screen'>
 	<Description>
-		TextEntrySettings is implemented similar to the Attributes in BitmapText. Formatting issues prevent the sample from being properly shown here.<br />Please see docs/Themerdocs/ScreenTextEntry.txt for the TextEntrySettings format.
+		TextEntrySettings is implemented similar to the Attributes in BitmapText.
+		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/ScreenTextEntry.txt</a> for the TextEntrySettings format.
 	</Description>
 	<Function name='Load' return='void' arguments='TextEntrySettings args'>
 		Sets up a ScreenTextEntry's values.
