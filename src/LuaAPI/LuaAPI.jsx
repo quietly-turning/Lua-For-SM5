@@ -6,14 +6,23 @@ import Namespace       from "./Namespace"
 import Enum            from "./Enum"
 import Singleton       from "./Singleton"
 import GlobalFunctions from "./GlobalFunctions"
+
 import LuaAPIFilter    from "./LuaAPIFilter"
 
-import csvparse from "csv-parse/lib/sync"
+// ------- jQuery for parsing the existing XML files
+// -------    where most of the documentation is
 import $ from "jquery"
-import "../_styles/api.css"
 
-// ------- highlightjs for syntax coloring
+// ------- csvparse for getting extra data from GlobalFunctions.csv
+// -------    to generate links to GitHub
+import csvparse from "csv-parse/lib/sync"
+
+// ------- highlightjs sot that multiline <code> blocks can
+// -------     have syntax coloring
 import hljs from "highlight.js"
+
+// ------- custom stylesheet for LuaAPI
+import "../_styles/api.css"
 
 
 class LuaAPI extends Component {

@@ -1,6 +1,14 @@
-.LuaAPI-filter input{
-	&::placeholder{
-		color: #bbb;
+.LuaAPI-filter{
+	.input-group-text {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		height: 2.375em;
+	}
+
+	input{
+		&::placeholder{
+			color: rgb(194, 200, 206);
+		}
 	}
 }
 
