@@ -986,7 +986,7 @@ local n = r['PlayerNumber_P2']
 	<Description>
 		<em>Actor</em> is the base class containing common methods that all specialized actor classes inherit.
 		For example, <Link class='Actor' function='GetX'>GetX</Link> is a method belonging to <em>Actor</em>,
-		but <Link class='Sprite' />s, <Link class='BitmapText' />s, and <Link class='Quad' />s can use <code>GetX()</code>.
+		but <Link class='Sprite' />s, <Link class='BitmapText' />s, <Link class='Quad' />s, and so on can use <code>GetX()</code>.
 	</Description>
 	<Function name='AddWrapperState' return='ActorFrame' arguments=''>
 		This adds a wrapper state around the Actor, which is like wrapping the Actor in an ActorFrame, except that you can use it on any actor, and add or remove wrapper states in response to things that happen while the screen is being used. (wrapping an Actor in an ActorFrame normally requires setting it up before the screen starts)<br />
@@ -5135,11 +5135,68 @@ Details of the <code>event</code> table:
 </Class>
 <Class name='ScreenTextEntry' grouping='Screen'>
 	<Description>
-		TextEntrySettings is implemented similar to the Attributes in BitmapText.
-		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/ScreenTextEntry.txt</a> for the TextEntrySettings format.
+		Using ScreenTextEntry is the preferred way to get text input from players.<br />
+		For theming, ScreenTextEntry is unique because it is typically added temporarily to the engine's
+		screen stack to be popped off the stack when the player is done entering text.<br />
+		As such, it is commonly styled to appear to players as an overlay or modal.<br />
+		Basic usage example:
+<pre><code>
+local args = {
+	Question="Do you like Waffles?",
+	InitialAnswer="Yeah, we like waffles!",
+	MaxInputLength=300,
+	OnOK=function(answer)
+		-- answer is what the player typed
+		local msg = "Your response was: " .. answer
+		SCREENMAN:SystemMessage(msg)
+	end
+}
+
+SCREENMAN:AddNewScreenToTop("ScreenTextEntry")
+SCREENMAN:GetTopScreen():Load( args )
+</code></pre>
 	</Description>
 	<Function name='Load' return='void' arguments='TextEntrySettings args'>
-		Sets up a ScreenTextEntry's values.
+		Sets up a ScreenTextEntry's values using <code>args</code>.<br />
+		TextEntrySettings is special struct for ScreenTextEntry, and
+		as a Lua table, it should contain specific attributes:
+<pre><code>
+local args = {
+	-- ScreenMessage to send on pop
+	-- optional, "SM_None" if omitted
+	SendOnPop = "",
+
+	-- the question text to display
+	Question = "",
+
+	-- initial answer text
+	InitialAnswer = "",
+
+	-- Maximum amount of characters
+	MaxInputLength = 0,
+
+	-- mask character input (optional)
+	Password = false,
+
+	-- validation function
+	-- must return boolean and string
+	Validate = function(answer, errorStr) end,
+
+	-- function called on ok
+	OnOK = function(answer) end,
+
+	-- function called on cancel
+	OnCancel = function() end,
+
+	-- Validate appending a character <!-- what does this mean? -quietly -->
+	-- must return boolean
+	ValidateAppend = function(answer, append) end,
+
+	-- Format answer for display
+	-- must return string
+	FormatAnswerForDisplay = function(answer) end
+}
+</code></pre>
 	</Function>
 </Class>
 <Class name='ScreenWithMenuElements' grouping='Screen'>
@@ -6381,7 +6438,7 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 <Description>
 	The StepMania engine uses singletons internally when it needs only one instance of a class.<br />
 	Each singleton here has a class name (e.g. RageDisplay, NoteSkinManager, etc.) that is used in the C++ engine, and a similar but different Lua userdata name (e.g. <code>DISPLAY</code>, <code>NOTESKIN</code>, etc.).<br />
-	An example of using the GameState singleton to find the current song in Lua: <code>GAMESTATE:GetCurrentSong()</code>
+	Simple example of using the GameState singleton to find the current song in Lua: <code>GAMESTATE:GetCurrentSong()</code>
 </Description>
 </Singletons>
 
