@@ -330,7 +330,7 @@ class LuaAPI extends Component {
 
 			const G = [
 				{ data: [], desc: lua_api.check_for_links(documentation.actors.children("Description")[0]) },           // 0: actors
-				{ data: [], desc: lua_api.check_for_links(documentation.screens.children("Description")[0]) },        // 1: screens
+				{ data: [], desc: lua_api.check_for_links(documentation.screens.children("Description")[0]) },          // 1: screens
 				{ data: [], desc: lua_api.check_for_links(documentation.classes.children("Description")[0]) },          // 2: classes
 				{ data: [], desc: lua_api.check_for_links(documentation.namespaces.children("Description")[0]) },       // 3: namespaces
 				{ data: [], desc: lua_api.check_for_links(documentation.enums.children("Description")[0]) },            // 4: enums
@@ -367,7 +367,7 @@ class LuaAPI extends Component {
 				// ... and get just the method data we want (name, return, args, description) for each method
 				const sorted_methods = unsorted_methods.map(function(method, i){
 
-					const method_name = method.attributes.name.textContent
+					const method_name = $(method).attr("name")
 					const method_doc  = $(class_doc).find("Function[name=" + method_name + "]")
 
 					return {
@@ -414,65 +414,59 @@ class LuaAPI extends Component {
 			// ---------------------------------------------------------------------
 			// next, process each namespace...
 			namespaces.forEach(function(namespace){
-				const namespace_name = namespace.attributes.name.textContent
-				const namespace_doc = $(documentation.namespaces).find("Namespace[name=" + namespace_name + "]")
+				const _name = $(namespace).attr("name")
+				const _doc  = $(documentation.namespaces).find("Namespace[name=" + _name + "]")
+				const funcs = []
 
-				const _funcs = Array.from($(namespace).find("Function"))
-
-				const funcs = _funcs.map(function(func, i){
-					const func_name = func.attributes.name.textContent
-					const func_doc  = $(documentation.namespaces).find("Function[name=" + func_name + "]")[0]
-					return {
-						name: func.attributes.name.textContent,
-						return: func_doc !== undefined ? lua_api.getReturnValue( func_doc.attributes.return.textContent ) : "",
-						arguments: func_doc !== undefined ? func_doc.attributes.arguments.textContent : "",
-						desc: lua_api.check_for_links(func_doc)
-					}
+				$(namespace).children("Function").each(function(i,func){
+					const fname = $(func).attr("name")
+					const fdoc  = $(documentation.namespaces).find("Function[name=" + fname + "]")
+					funcs.push({
+						name: $(func).attr("name"),
+						return: lua_api.getReturnValue( fdoc.attr("return") ),
+						arguments: fdoc.attr("arguments") || "",
+						desc: lua_api.check_for_links(fdoc[0])
+					})
 				})
 
-				// some namespaces have <Description> tags which contain text describing the overall class
-				const namespace_desc = $(namespace_doc).find("Description")[0]
-
 				G[3].data.push({
-					name: namespace.attributes.name.textContent,
+					name: _name,
 					methods: funcs,
-					desc: lua_api.check_for_links(namespace_desc),
+					desc: lua_api.check_for_links( _doc.find("Description")[0] ),
 				})
 			})
 
 			// ---------------------------------------------------------------------
 			// next, process each enum...
 			enums.forEach(function(e){
-				const enum_name = e.attributes.name.textContent
-				const enum_doc  = $(documentation.enums).find("Enum[name=" + enum_name + "]")
-				const enum_desc = enum_doc.find("Description")[0]
+				const _name = $(e).attr("name")
+				const _doc  = $(documentation.enums).find("Enum[name=" + _name + "]")
+				const values = []
 
-				const _values   = Array.from($(e).find("EnumValue"))
-				const values = _values.map(function(v, i){
-					return {
-						name: v.attributes.name.textContent,
-						value: v.attributes.value.textContent
-					}
+				$(e).children("EnumValue").each(function(i, v){
+					values.push({
+						name: $(v).attr("name"),
+						value: $(v).attr("value")
+					})
 				})
 
 				G[4].data.push({
-					name: enum_name,
+					name:  _name,
 					values: values,
-					desc: lua_api.check_for_links(enum_desc)
+					desc: lua_api.check_for_links(_doc.find("Description")[0])
 				})
 			})
 
 			// ---------------------------------------------------------------------
 			// almost done now; process each singleton...
 			singletons.forEach(function(s){
-				const sm_class = s.attributes.class.textContent
-				const _name    = s.attributes.name.textContent
+				const sm_class = $(s).attr("class")
+				const _name    = $(s).attr("name")
 				const _doc     = $(documentation.classes).find("Class[name=" + sm_class + "]")
-				const _desc    = _doc.find("Description")[0]
 
-				const _methods = Array.from(_doc.find("Function")).map(function(method, i){
+				const methods = Array.from(_doc.find("Function")).map(function(method, i){
 
-					const method_name = method.attributes.name.textContent
+					const method_name = $(method).attr("name")
 					const method_doc  = $(_doc).find("Function[name=" + method_name + "]")
 
 					return {
@@ -486,24 +480,30 @@ class LuaAPI extends Component {
 				G[5].data.push({
 					sm_class: sm_class,
 					name: _name,
-					methods: _methods,
-					desc: lua_api.check_for_links(_desc)
+					methods: methods,
+					desc: lua_api.check_for_links( _doc.find("Description")[0] )
 				})
 			})
 
 			// ---------------------------------------------------------------------
 			// almost done! process each global function...
 			global_functions.forEach(function(f){
-				const gfunc_name = f.attributes.name.textContent
-				const gfunc_doc  = $(documentation.global_functions).find("Function[name=" + gfunc_name + "]")[0]
+				const _name = $(f).attr("name")
+				const _doc  = $(documentation.global_functions).find("Function[name=" + _name + "]")
+				const theme = _doc.attr("theme")
+
+				// don't show Global Functions from the Default theme here; most
+				// themes will not use it as their base and won't have its functions
+				// just skip to the next forEach() iteration
+				if (theme === "default"){ return }
 
 				G[6].data.push({
-					name: f.attributes.name.textContent,
-					return: gfunc_doc !== undefined ? lua_api.getReturnValue(gfunc_doc.attributes.return.textContent) : "",
-					arguments: gfunc_doc !== undefined ? gfunc_doc.attributes.arguments.textContent : "",
-					desc: lua_api.check_for_links(gfunc_doc),
-					theme: (gfunc_doc !== undefined && gfunc_doc.attributes.theme !== undefined) ? gfunc_doc.attributes.theme.textContent : "",
-					url: lua_api.docs.github.gfuncs[gfunc_name]
+					name: _name,
+					return: lua_api.getReturnValue( _doc.attr("return") ),
+					arguments: _doc.attr("arguments"),
+					desc: lua_api.check_for_links( _doc[0] ),
+					theme: _doc.attr("theme") || "",
+					url: lua_api.docs.github.gfuncs[_name]
 				})
 			})
 
@@ -511,8 +511,8 @@ class LuaAPI extends Component {
 			// finally! process each Lua constant, and we're done
 			constants.forEach(function(c){
 				G[7].data.push({
-					name: c.attributes.name.textContent,
-					value: c.attributes.value !== undefined ? c.attributes.value.textContent : ""
+					name: $(c).attr("name"),
+					value: $(c).attr("value") || ""
 				})
 			})
 
