@@ -71,7 +71,7 @@ class LuaAPI extends Component {
 		const lua_api = this
 		let anchors = []
 
-		for (const l of $(element).find("Link")){
+		for (const l of element.find("Link")){
 
 			// find the function and class attributes of this <Link>
 			// as well as text (jQuery will return an empty string for self-closing elements without text)
@@ -92,29 +92,30 @@ class LuaAPI extends Component {
 				// *within* the current Class using a compact syntax like <Link function="zoomy"/>
 				// Unfortunately, that leaves us trying to figure out what the "current Class" is
 				// in the context of this React app.  We'll get the parentNode of the method object.
-				const _parent = element.parentNode.attributes.getNamedItem("name")
+
+				const parent_name = element.parent().attr("name")
 				const text = link.t !== "" ? link.t : link.f
 
-				if (_parent){
+				if (parent_name){
 
-					if (lua_api.classes[_parent.nodeValue]){
-						const anchor = "<a href='#Classes-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+					if (lua_api.classes[parent_name]){
+						const anchor = "<a href='#Classes-" + parent_name + "-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 
-					} else if (lua_api.actors[_parent.nodeValue]){
-						const anchor = "<a href='#Actors-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+					} else if (lua_api.actors[parent_name]){
+						const anchor = "<a href='#Actors-" + parent_name + "-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 
-					} else if (lua_api.screens[_parent.nodeValue]){
-						const anchor = "<a href='#Screens-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+					} else if (lua_api.screens[parent_name]){
+						const anchor = "<a href='#Screens-" + parent_name + "-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 
-					} else if (lua_api.singletons[_parent.nodeValue]){
-						const anchor = "<a href='#Singletons-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+					} else if (lua_api.singletons[parent_name]){
+						const anchor = "<a href='#Singletons-" + parent_name + "-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 
-					} else if (lua_api.namespaces[_parent.nodeValue]){
-						const anchor = "<a href='#Namespaces-" + _parent.nodeValue + "-" + link.f + "'>" + text + "</a>"
+					} else if (lua_api.namespaces[parent_name]){
+						const anchor = "<a href='#Namespaces-" + parent_name + "-" + link.f + "'>" + text + "</a>"
 						anchors.push(anchor)
 					}
 
@@ -221,16 +222,24 @@ class LuaAPI extends Component {
 			$(this).replaceWith(anchors[i])
 		})
 
-		return (lua_api.check_for_code(element)).innerHTML.trim()
+		$(element).find("pre code").each(function(i, code){
+			// trim leading newline if one is found
+			const txt = code.textContent.charAt(0)==="\n" ? code.textContent.substr(1) : code.textContent
+			$(code).replaceWith("<code class='lua'>" + txt + "</code>")
+		})
+
+		// console.log( (element.html() || "").trim() )
+
+		return (element.html() || "").trim()
 	}
 
 	// ---------------------------------------------------------------------
 
 	check_for_code(element){
-		$(element).find("pre code").each(function(i, code){
+		element.find("pre code").each(function(i, code){
 			// trim leading newline if one is found
 			const txt = code.textContent.charAt(0)==="\n" ? code.textContent.substr(1) : code.textContent
-			$(code).replaceWith("<pre><code class='lua'>" + txt + "</code></pre>")
+			$(code).replaceWith("<code class='lua'>" + txt + "</code>")
 		})
 		return element
 	}
@@ -329,14 +338,14 @@ class LuaAPI extends Component {
 			// ---------------------------------------------------------------------
 
 			const G = [
-				{ data: [], desc: lua_api.check_for_links(documentation.actors.children("Description")[0]) },           // 0: actors
-				{ data: [], desc: lua_api.check_for_links(documentation.screens.children("Description")[0]) },          // 1: screens
-				{ data: [], desc: lua_api.check_for_links(documentation.classes.children("Description")[0]) },          // 2: classes
-				{ data: [], desc: lua_api.check_for_links(documentation.namespaces.children("Description")[0]) },       // 3: namespaces
-				{ data: [], desc: lua_api.check_for_links(documentation.enums.children("Description")[0]) },            // 4: enums
-				{ data: [], desc: lua_api.check_for_links(documentation.singletons.children("Description")[0]) },       // 5: singletons
-				{ data: [], desc: lua_api.check_for_links(documentation.global_functions.children("Description")[0]) }, // 6: global_functions
-				{ data: [], desc: lua_api.check_for_links(documentation.constants.children("Description")[0]) },        // 7: constants
+				{ data: [], desc: lua_api.check_for_links(documentation.actors.children("Description")) },           // 0: actors
+				{ data: [], desc: lua_api.check_for_links(documentation.screens.children("Description")) },          // 1: screens
+				{ data: [], desc: lua_api.check_for_links(documentation.classes.children("Description")) },          // 2: classes
+				{ data: [], desc: lua_api.check_for_links(documentation.namespaces.children("Description")) },       // 3: namespaces
+				{ data: [], desc: lua_api.check_for_links(documentation.enums.children("Description")) },            // 4: enums
+				{ data: [], desc: lua_api.check_for_links(documentation.singletons.children("Description")) },       // 5: singletons
+				{ data: [], desc: lua_api.check_for_links(documentation.global_functions.children("Description")) }, // 6: global_functions
+				{ data: [], desc: lua_api.check_for_links(documentation.constants.children("Description")) },        // 7: constants
 			]
 
 			// ---------------------------------------------------------------------
@@ -374,12 +383,9 @@ class LuaAPI extends Component {
 						name: method_name,
 						return: lua_api.getReturnValue( method_doc.attr("return") ),
 						arguments: method_doc.attr("arguments") || "",
-						desc: lua_api.check_for_links(method_doc[0])
+						desc: lua_api.check_for_links(method_doc)
 					}
 				})
-
-				// some classes have <Description> tags which contain text describing the overall class
-				const class_desc = class_doc.find("Description")[0]
 
 				const class_grouping = class_doc.attr("grouping") || "SMClass"
 				const index = {
@@ -406,7 +412,7 @@ class LuaAPI extends Component {
 				G[index[class_grouping]].data.push({
 					name: class_name,
 					base: sm_class.attributes.base !== undefined ? {name: base, grouping: base_grouping} : undefined,
-					desc: lua_api.check_for_links(class_desc),
+					desc: lua_api.check_for_links(class_doc.find("Description")),
 					methods: sorted_methods
 				})
 			})
@@ -425,14 +431,14 @@ class LuaAPI extends Component {
 						name: $(func).attr("name"),
 						return: lua_api.getReturnValue( fdoc.attr("return") ),
 						arguments: fdoc.attr("arguments") || "",
-						desc: lua_api.check_for_links(fdoc[0])
+						desc: lua_api.check_for_links(fdoc)
 					})
 				})
 
 				G[3].data.push({
 					name: _name,
 					methods: funcs,
-					desc: lua_api.check_for_links( _doc.find("Description")[0] ),
+					desc: lua_api.check_for_links(_doc.find("Description")),
 				})
 			})
 
@@ -453,7 +459,7 @@ class LuaAPI extends Component {
 				G[4].data.push({
 					name:  _name,
 					values: values,
-					desc: lua_api.check_for_links(_doc.find("Description")[0])
+					desc: lua_api.check_for_links(_doc.find("Description"))
 				})
 			})
 
@@ -473,7 +479,7 @@ class LuaAPI extends Component {
 						name: method_name,
 						return: lua_api.getReturnValue( method_doc.attr("return") ),
 						arguments: method_doc.attr("arguments") || "",
-						desc: lua_api.check_for_links(method_doc[0])
+						desc: lua_api.check_for_links(method_doc)
 					}
 				})
 
@@ -481,7 +487,7 @@ class LuaAPI extends Component {
 					sm_class: sm_class,
 					name: _name,
 					methods: methods,
-					desc: lua_api.check_for_links( _doc.find("Description")[0] )
+					desc: lua_api.check_for_links(_doc.find("Description"))
 				})
 			})
 
@@ -501,7 +507,7 @@ class LuaAPI extends Component {
 					name: _name,
 					return: lua_api.getReturnValue( _doc.attr("return") ),
 					arguments: _doc.attr("arguments"),
-					desc: lua_api.check_for_links( _doc[0] ),
+					desc: lua_api.check_for_links(_doc),
 					theme: _doc.attr("theme") || "",
 					url: lua_api.docs.github.gfuncs[_name]
 				})
@@ -627,27 +633,31 @@ class LuaAPI extends Component {
 		const _r = r.match(/{(.+)}/)
 		if (_r) { r = _r[1] }
 
+		let anchor = undefined
+
 		// check to see if the return text matches any of the StepMania classes
 		if (this.classes[r]){
-			return (_r ? "{ " : "") + "<a href='#Classes-" + r +"'>" + r + "</a>" + (_r ? " }" : "")
+			anchor = "<a href='#Classes-" + r +"'>" + r + "</a>"
 
 		// or any of the actor classes
 		} else if (this.actors[r]){
-			return (_r ? "{ " : "") + "<a href='#Actors-" + r +"'>" + r + "</a>" + (_r ? " }" : "")
+			anchor = "<a href='#Actors-" + r +"'>" + r + "</a>"
 
-		// or any of the screen classes
-		// SCREENMAN:GetTopScreen() is the only function I see that returns a screen; handle this by
-		// just linking to the Screens section, rather than the Screen object in the Screens section
+		// or any of the screen classes; handle this by linking to the Screesn section
+		// rather than the Screen object in the Screens section
 		} else if (this.screens[r]){
-			return (_r ? "{ " : "") + "<a href='#Screens'>" + r + "</a>" + (_r ? " }" : "")
+			anchor = "<a href='#Screens'>" + r + "</a>"
 
 		// or any of the enums
 		} else if (this.enums[r]){
-			return (_r ? "{ " : "") + "<a href='#Enums-" + r +"'>" + r + "</a>" + (_r ? " }" : "")
+			anchor = "<a href='#Enums-" + r +"'>" + r + "</a>"
+
+		} else {
+			// otherwise, we have something like "bool" or "int"; just return it
+			anchor = r
 		}
 
-		// otherwise, we have something like "bool" or "int"; just return it
-		return r
+		return (_r ? "{ " : "") + anchor + (_r ? " }" : "")
 	}
 
 
