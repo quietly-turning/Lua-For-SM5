@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- Before checking the documentation in, make sure that it validates by
-     going to http://www.corefiling.com/opensource/schemaValidate.html and using
+     going to https://www.corefiling.com/opensource/schemaValidate.html and using
      Lua.xsd for the XML Schema and this file for the XML Instance. -->
 
 <!-- Using Link:
@@ -25,7 +25,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
   -->
 
-<Documentation xmlns='http://www.stepmania.com' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.stepmania.com Lua.xsd'>
+<Documentation xmlns='https://www.stepmania.com' xmlns:xsi='https://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://www.stepmania.com Lua.xsd'>
 <!-- Global functions -->
 <GlobalFunctions>
 	<Function name='AllowOptionsMenu' theme='_fallback' return='bool' arguments=''>
@@ -60,7 +60,7 @@ save yourself some time, copy this for undocumented things:
 		[04 SetBGFitHelpers.lua] Returns an ActorFrame containing examples of how a given background image (with set aspect ratio) will appear in a particular <Link class='ENUM' function='BackgroundFitMode' />.<br />
 		The _fallback theme uses this to visually represent choices for ScreenSetBGFit, intended to help players choose a BackgroundFitMode preference.
 	</Function>
-	<Function name='BGFitInputActor' theme='_fallback' return='ActorFrame' arguments='table choices, function LoseFocus, GainFocus'>
+	<Function name='BGFitInputActor' theme='_fallback' return='ActorFrame' arguments='table choices, function LoseFocus, function GainFocus'>
 		[04 SetBGFitHelpers.lua] Returns an ActorFrame with an <Link class='Screen' Function='AddInputCallback'>InputCallback</Link> attached.<br />
 		The _fallback theme uses this to manage input on ScreenSetBGFit, intended to help players choose a <Link class='ENUM' function='BackgroundFitMode' /> preference.
 	</Function>
@@ -4526,7 +4526,7 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 <Class name='Quad' grouping='Actor'>
 	<Description>
 	 A rectangular Actor that can have color.<br />
-	 Somewhat confusingly, <em>Quad</em> inherits from <Link class='Sprite' />, though support for loading textures
+	 Curiously, <em>Quad</em> inherits from <Link class='Sprite' />, though support for loading textures
 	 <a href="https://github.com/stepmania/stepmania/blob/6bea7639e8c184ca5d681d5d2f665c71eef64d44/src/Quad.cpp#L15-L16" target="_blank" rel="noopener noreferrer">is absent</a>.
 	</Description>
 </Class>

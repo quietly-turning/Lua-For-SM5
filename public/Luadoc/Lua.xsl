@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:sm="http://www.stepmania.com"
-	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:xsl="https://www.w3.org/1999/XSL/Transform"
+	xmlns:sm="https://www.stepmania.com"
+	xmlns="https://www.w3.org/1999/xhtml"
 	exclude-result-prefixes="sm">
 <xsl:output method="xml"
 	version="1.0"
 	encoding="UTF-8"
-	doctype-system="http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-strict.dtd"
+	doctype-system="https://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-strict.dtd"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	media-type="application/xhtml+xml" />
 <!-- Use xsltproc - -stringparam browser no (without a space) to generate the .html. -->
@@ -264,15 +264,15 @@
 	<xsl:choose>
 		<xsl:when test="$browser = 'no'">
 			<a href="http://validator.w3.org/check?uri=referer"><img
-			class="validate" src="http://www.w3.org/Icons/valid-xhtml10-blue"
+			class="validate" src="https://www.w3.org/Icons/valid-xhtml10-blue"
 			alt="Valid XHTML 1.0 Strict" /></a>
-			<a href="http://jigsaw.w3.org/css-validator/check/referer"><img
-			class="validate" src="http://www.w3.org/Icons/valid-css2-blue"
+			<a href="https://jigsaw.w3.org/css-validator/check/referer"><img
+			class="validate" src="https://www.w3.org/Icons/valid-css2-blue"
 			alt="Valid CSS Level 2.1" /></a>
 		</xsl:when>
 		<xsl:otherwise>
-			<a href="http://validator.w3.org/check?uri=referer"><img
-			class="validate" src="http://www.w3.org/Icons/valid-xml10-blue"
+			<a href="https://validator.w3.org/check?uri=referer"><img
+			class="validate" src="https://www.w3.org/Icons/valid-xml10-blue"
 			alt="Valid XML 1.0" /></a>
 		</xsl:otherwise>
 	</xsl:choose>
