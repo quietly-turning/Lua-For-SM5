@@ -4526,7 +4526,7 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 <Class name='Quad' grouping='Actor'>
 	<Description>
 	 A rectangular Actor that can have color.<br />
-	 Somewhat confusingly, <em>Quad</em> inherits from <Link class='Sprite' />, though support for loading textures
+	 Curiously, <em>Quad</em> inherits from <Link class='Sprite' />, though support for loading textures
 	 <a href="https://github.com/stepmania/stepmania/blob/6bea7639e8c184ca5d681d5d2f665c71eef64d44/src/Quad.cpp#L15-L16" target="_blank" rel="noopener noreferrer">is absent</a>.
 	</Description>
 </Class>
