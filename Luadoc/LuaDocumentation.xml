@@ -39,7 +39,7 @@ save yourself some time, copy this for undocumented things:
 		Note:  When you see the error "approach: speed 1 is negative." it means that the speed value passed was negative.  The 1 is there because approach and multiapproach use the same internal function and can be ignored when using approach.
 	</Function>
 	<Function name='ArbitrarySpeedMods' theme='_fallback' return='LuaOptionRow' arguments=''>
-		[03 CustomSpeedMods.lua] Returns an <Link class='OptionRow' /> of speed mod choices generated from the comma-delimited list of speed mods in <em>SpeedMods.txt</em> in the root of the current Profile directory (player if available, machine otherwise).
+		[03 CustomSpeedMods.lua] Returns an <Link class='OptionRow' /> of speed mod choices generated from the comma-delimited list in <em>SpeedMods.txt</em> in the root of the current Profile directory (player if available, machine otherwise).
 	</Function>
 	<Function name='AreStagePlayerModsForced' theme='_fallback' return='bool' arguments=''>
 		[02 StageMods.lua] Returns <code>true</code> if player modifiers should be forced.  This is effectively the negation of <Link class='GLOBAL' function='AllowOptionsMenu' />.
