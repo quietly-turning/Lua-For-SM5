@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { NavLink } from "react-router-dom"
-import LuaAPIFilter from "../LuaAPI/LuaAPIFilter"
 
 class Sidebar extends Component {
 
@@ -85,7 +84,6 @@ class Sidebar extends Component {
 						<span className="githash">commit <a href={"https://github.com/stepmania/stepmania/tree/" + this.sm_version.githash} target="_blank" rel="noopener noreferrer">{this.sm_version.githash}</a></span>
 					</div>
 
-					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
 					<hr />
 				</div>
 

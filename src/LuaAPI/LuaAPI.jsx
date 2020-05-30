@@ -7,8 +7,6 @@ import Enum            from "./Enum"
 import Singleton       from "./Singleton"
 import GlobalFunctions from "./GlobalFunctions"
 
-import LuaAPIFilter    from "./LuaAPIFilter"
-
 // ------- jQuery for parsing the existing XML files
 // -------    where most of the documentation is
 import $ from "jquery"
@@ -706,17 +704,6 @@ class LuaAPI extends Component {
 					This version of SM5&apos;s Lua API doc is in beta, so some information may be missing!
 					<br /><br />
 					The original, full API doc can <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">still be accessed here</a>.
-				</div>
-
-				{
-					// set a bootstrap class of display-none when mobile_nav prop is true to hide this div
-					// when the mobile navigation menu (should fill the entire the screen) is active
-					// otherwise, use d-md-none so that this div only appears when bootstrap detects page
-					// width is smaller than md
-				}
-				<div className={(this.props.mobile_nav ? "d-none" : "d-md-none") + " sticky-top mobile-filter"}>
-					<LuaAPIFilter onFilterChange={this.handleFilterChange} />
-					<hr />
 				</div>
 
 
