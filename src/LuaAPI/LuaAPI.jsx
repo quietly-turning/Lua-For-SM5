@@ -51,7 +51,6 @@ class LuaAPI extends Component {
 
 		// ensure that the following functions have access to "this"
 		this.getReturnValue      = this.getReturnValue.bind(this)
-		this.handleFilterChange  = this.handleFilterChange.bind(this)
 		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
 
 		// trigger a custom page scroll now
@@ -615,17 +614,6 @@ class LuaAPI extends Component {
 				}
 			}
 		}
-	}
-
-
-	// -----------------------------------------------------------------------------------------
-	// API TEXT FILTER
-	// -----------------------------------------------------------------------------------------
-
-
-	// this method exists to handle the text-input field that appears in mobile layout
-	handleFilterChange(eventValue){
-		this.props.parentFilterChange({text_filter: eventValue})
 	}
 
 

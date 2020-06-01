@@ -62,13 +62,11 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 
-		this.handleFilterChange    = this.handleFilterChange.bind(this)
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
 		this.getClasses            = this.getClasses.bind(this)
 
 		this.state = {
 			mobile_nav: false,
-			text_filter: ""
 		}
 
 		// on URL change
@@ -83,10 +81,6 @@ class App extends Component {
 				this.setState({mobile_nav: false})
 			}
 		})
-	}
-
-	handleFilterChange(eventValue){
-		this.setState({text_filter: eventValue})
 	}
 
 	handleMobileNavToggle(){
@@ -116,7 +110,6 @@ class App extends Component {
 
 						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar
-								onFilterChange={this.handleFilterChange}
 								actors={this.state.actors}
 								screens={this.state.screens}
 								smClasses={this.state.sm_classes}
@@ -130,7 +123,7 @@ class App extends Component {
 						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 pl-lg-4 pr-lg-4 pl-md-5 pr-md-5 pl-4 pr-4">
 							<Switch>
 								<Route exact path="/" 		component={Home} />
-								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} parentFilterChange={(p)=>this.handleFilterChange(p.text_filter)} />))} />
+								<Route path="/LuaAPI"		render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} />))} />
 								<Route path="/resources"	component={Resources} />
 
 								<Route path="/foreword"		component={Foreword}/>
@@ -163,7 +156,6 @@ class App extends Component {
 
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
 					<Sidebar
-						onFilterChange={this.handleFilterChange}
 						actors={this.state.actors}
 						screens={this.state.screens}
 						smClasses={this.state.sm_classes}

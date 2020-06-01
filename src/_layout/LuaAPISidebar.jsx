@@ -5,7 +5,6 @@ class Sidebar extends Component {
 
 	constructor(props) {
 		super(props)
-		this.handleFilterChange = this.handleFilterChange.bind(this)
 
 		this.sm_version = {}
 	}
@@ -29,10 +28,6 @@ class Sidebar extends Component {
 				}
 			}
 		}
-	}
-
-	handleFilterChange(eventValue){
-		this.props.onFilterChange(eventValue)
 	}
 
 	render() {

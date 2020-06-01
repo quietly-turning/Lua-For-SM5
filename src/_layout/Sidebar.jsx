@@ -5,22 +5,11 @@ import LuaAPISidebar from "./LuaAPISidebar"
 
 class Sidebar extends Component {
 
-	constructor(){
-		super()
-		this.handleFilterChange = this.handleFilterChange.bind(this)
-	}
-
-
-	handleFilterChange(eventValue){
-		this.props.onFilterChange(eventValue)
-	}
-
 	render() {
 		return(
 			<Switch>
 				<Route path="/LuaAPI">
 					<LuaAPISidebar
-						onFilterChange={this.handleFilterChange}
 						actors={this.props.actors}
 						screens={this.props.screens}
 						smClasses={this.props.smClasses}
