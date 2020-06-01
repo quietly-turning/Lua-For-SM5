@@ -2979,6 +2979,6 @@
 		<Constant name='right' value='&apos;HorizAlign_Right&apos;'/>
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
-	<Version>StepMania5.1-git-6bea7639e8</Version>
-	<Date>2020-05-16</Date>
+	<Version>StepMania5.1-git-b3bd9a3117</Version>
+	<Date>2020-05-30</Date>
 </Lua>
