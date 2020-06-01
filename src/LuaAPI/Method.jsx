@@ -39,7 +39,7 @@ class Method extends Component {
 				</div>
 
 				<span className="method-return"><em>return: </em> <span dangerouslySetInnerHTML={{__html: this.props.method.return}} />  </span>
-				<span className="method-description" dangerouslySetInnerHTML={{ __html: this.props.method.desc }} />
+				<span className="description description" dangerouslySetInnerHTML={{ __html: this.props.method.desc }} />
 			</div>
 		)
 	}

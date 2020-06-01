@@ -6,16 +6,17 @@ class Header extends Component {
 	constructor(props){
 		super(props)
 
+		const grouping = this.props.grouping || ""
+		const dash = this.props.level > 2 ? "-" : ""
+		const _name = this.props.name || ""
+		this.id = grouping + dash + _name
+
 		// ensure that updateHash() has access to "this"
 		this.updateHash = this.updateHash.bind(this)
 	}
 
-	updateHash(n){
-		const grouping = this.props.grouping || ""
-		const dash = this.props.level > 2 ? "-" : ""
-		const _name = n || ""
-
-		window.location.hash = "#" + grouping + dash + _name
+	updateHash(){
+		window.location.hash = "#" + this.id
 	}
 
 	generateBase(base){
@@ -28,7 +29,7 @@ class Header extends Component {
 
 		return(
 			<HeaderTag id={this.props.name} className="API-Category-Header">
-				<span className="octicon-link" onClick={() => this.updateHash(this.props.name)}>
+				<span className="octicon-link" onClick={() => this.updateHash()}>
 					<Octicon size="medium" icon={getIconByName("link")} />
 				</span>
 

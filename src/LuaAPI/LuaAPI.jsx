@@ -531,10 +531,10 @@ class LuaAPI extends Component {
 				})
 
 				G[5].data.push({
-					sm_class: sm_class,
-					name: _name,
+					name: sm_class,
 					methods: methods,
-					desc: lua_api.check_for_links(_doc.find("Description"))
+					desc: lua_api.check_for_links(_doc.find("Description")),
+					grouping: "Singletons"
 				})
 			})
 
