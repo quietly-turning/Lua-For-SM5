@@ -581,6 +581,12 @@ class LuaAPI extends Component {
 			document.querySelectorAll("pre code").forEach(block => {
 				hljs.highlightBlock(block);
 			})
+
+			// this second .then() handler is VERY likely to called after React
+			// has already mounted the LuaAPI component
+			// so once we are here, trigger a window scroll to ensure the user
+			// is the correct section of the document
+			lua_api.scroll_window_after_hashchange()
 		})
 	}
 
@@ -609,7 +615,7 @@ class LuaAPI extends Component {
 			if (el){
 				const y_offset = el.offsetTop
 				if (y_offset){
-					const topbar_height = this.props.mobile_nav ? 128 : 75
+					const topbar_height = 60
 					window.scrollTo(0, y_offset-topbar_height)
 				}
 			}
