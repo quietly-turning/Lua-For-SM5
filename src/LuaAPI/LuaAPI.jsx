@@ -1,11 +1,9 @@
 import React, { Component } from "react"
-import Octicon, {getIconByName} from '@primer/octicons-react'
 
-import ActorClass      from "./ActorClass"
-import Namespace       from "./Namespace"
-import Enum            from "./Enum"
-import Singleton       from "./Singleton"
-import GlobalFunctions from "./GlobalFunctions"
+import SectionSMClass        from "./SectionSMClass"
+import SectionEnum           from "./SectionEnum"
+import SectionGlobalFunction from "./SectionGlobalFunction"
+import SectionConstants      from "./SectionConstants"
 
 // ------- jQuery for parsing the existing XML files
 // -------    where most of the documentation is
@@ -52,7 +50,6 @@ class LuaAPI extends Component {
 		this.enums      = {}
 
 		// ensure that the following functions have access to "this"
-		this.getElementsToRender = this.getElementsToRender.bind(this)
 		this.getReturnValue      = this.getReturnValue.bind(this)
 		this.handleFilterChange  = this.handleFilterChange.bind(this)
 		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
@@ -235,8 +232,6 @@ class LuaAPI extends Component {
 			$(code).replaceWith("<code class='lua'>" + txt + "</code>")
 		})
 
-		// console.log( (element.html() || "").trim() )
-
 		return (element.html() || "").trim()
 	}
 
@@ -250,6 +245,50 @@ class LuaAPI extends Component {
 		})
 		return element
 	}
+
+	// ---------------------------------------------------------------------
+	// a helper function to determine whether the "return" type of each API method
+	// should be static text or an anchor linking to elsewhere in the document
+
+	getReturnValue(r){
+		if (r === undefined) { return "" }
+
+		// if the return text for this method exactly matches "void" just use that
+		if (r === "void"){ return r }
+
+		// maybe this method's return value is wrapped in curly braces
+		// indicating that this method returns a table of something
+		const _r = r.match(/{(.+)}/)
+		if (_r) { r = _r[1] }
+
+		let anchor = undefined
+
+		// check to see if the return text matches any of the StepMania classes
+		if (this.classes[r]){
+			anchor = "<a href='#Classes-" + r +"'>" + r + "</a>"
+
+		// or any of the actor classes
+		} else if (this.actors[r]){
+			anchor = "<a href='#Actors-" + r +"'>" + r + "</a>"
+
+		// or any of the screen classes; handle this by linking to the Screesn section
+		// rather than the Screen object in the Screens section
+		} else if (this.screens[r]){
+			anchor = "<a href='#Screens'>" + r + "</a>"
+
+		// or any of the enums
+		} else if (this.enums[r]){
+			anchor = "<a href='#Enums-" + r +"'>" + r + "</a>"
+
+		} else {
+			// otherwise, we have something like "bool" or "int"; just return it
+			anchor = r
+		}
+
+		return (_r ? "{ " : "") + anchor + (_r ? " }" : "")
+	}
+
+	// ---------------------------------------------------------------------
 
 	componentDidUpdate(){
 		this.scroll_window_after_hashchange()
@@ -401,18 +440,17 @@ class LuaAPI extends Component {
 					SMClass: 2,
 				}
 
-
-				const base = $(sm_class).attr("base")
-				let base_grouping = undefined
-				const base_mapping = {
+				const group_mapping = {
 					Actor: "Actors",
 					Screen: "Screens",
 					SMClass: "Classes",
 				}
+				const base = $(sm_class).attr("base")
+				let base_grouping = undefined
 
 				if (base !== undefined){
 					const base_doc = $(documentation.classes).find("Class[name=" + base + "]")
-					base_grouping = base_mapping[(base_doc.attr("grouping") || "SMClass")]
+					base_grouping = group_mapping[(base_doc.attr("grouping") || "SMClass")]
 				}
 
 				// push a new object representing this sm_class to the overall data array
@@ -420,7 +458,8 @@ class LuaAPI extends Component {
 					name: class_name,
 					base: sm_class.attributes.base !== undefined ? {name: base, grouping: base_grouping} : undefined,
 					desc: lua_api.check_for_links(class_doc.find("Description")),
-					methods: sorted_methods
+					methods: sorted_methods,
+					grouping: group_mapping[class_doc.attr("grouping") || "SMClass"]
 				})
 			})
 
@@ -446,6 +485,7 @@ class LuaAPI extends Component {
 					name: _name,
 					methods: funcs,
 					desc: lua_api.check_for_links(_doc.find("Description")),
+					grouping: "Namespaces"
 				})
 			})
 
@@ -516,7 +556,8 @@ class LuaAPI extends Component {
 					arguments: _doc.attr("arguments"),
 					desc: lua_api.check_for_links(_doc),
 					theme: _doc.attr("theme") || "",
-					url: lua_api.docs.github.gfuncs[_name]
+					url: lua_api.docs.github.gfuncs[_name],
+					grouping: "GlobalFunctions"
 				})
 			})
 
@@ -577,96 +618,6 @@ class LuaAPI extends Component {
 		}
 	}
 
-	getElementsToRender(){
-
-		const filter = this.props.text_filter
-
-		return {
-			"Actors": this.state.G[0].data.map(function(a, i){
-				return <ActorClass smclass={a} grouping="Actors" key={a.name} text_filter={filter} />
-			}),
-
-			"Screens": this.state.G[1].data.map(function(s, i){
-				return <ActorClass smclass={s} grouping="Screens" key={s.name} text_filter={filter} />
-			}),
-
-			"Classes": this.state.G[2].data.map(function(c, i){
-				return <ActorClass smclass={c} grouping="Classes" key={c.name} text_filter={filter} />
-			}),
-
-			"Namespaces": this.state.G[3].data.map(function(n, i){
-				return <Namespace namespace={n} key={n.name} text_filter={filter} />
-			}),
-
-			"Enums": this.state.G[4].data.map(function(e, i){
-				return <Enum enum={e} key={e.name} text_filter={filter} />
-			}),
-
-			"Singletons": this.state.G[5].data.map(function(s, i){
-				return <Singleton singleton={s} key={s.name} text_filter={filter} />
-			}),
-
-			"GlobalFunctions": (<GlobalFunctions global_functions={this.state.G[6].data} text_filter={filter} githash={this.docs.sm_version.githash} /> ),
-
-			"Constants": (
-				<table className="table table-hover table-sm table-bordered">
-					<thead className="table-primary"><tr><th>Lua Variable</th><th>Value</th></tr></thead>
-					<tbody>
-						{this.state.G[7].data.map(function(c, i){
-							return(
-								<tr key={"constant-"+c.name}>
-									<td>{c.name}</td>
-									<td>{c.value}</td>
-								</tr>
-							)
-						})}
-					</tbody>
-				</table>
-			)
-		}
-	}
-
-
-	// a helper function to determine whether the "return" type of each API method
-	// should be static text or an anchor linking to elsewhere in the document
-	getReturnValue(r){
-		if (r === undefined) { return "" }
-
-		// if the return text for this method exactly matches "void" just use that
-		if (r === "void"){ return r }
-
-		// maybe this method's return value is wrapped in curly braces
-		// indicating that this method returns a table of something
-		const _r = r.match(/{(.+)}/)
-		if (_r) { r = _r[1] }
-
-		let anchor = undefined
-
-		// check to see if the return text matches any of the StepMania classes
-		if (this.classes[r]){
-			anchor = "<a href='#Classes-" + r +"'>" + r + "</a>"
-
-		// or any of the actor classes
-		} else if (this.actors[r]){
-			anchor = "<a href='#Actors-" + r +"'>" + r + "</a>"
-
-		// or any of the screen classes; handle this by linking to the Screesn section
-		// rather than the Screen object in the Screens section
-		} else if (this.screens[r]){
-			anchor = "<a href='#Screens'>" + r + "</a>"
-
-		// or any of the enums
-		} else if (this.enums[r]){
-			anchor = "<a href='#Enums-" + r +"'>" + r + "</a>"
-
-		} else {
-			// otherwise, we have something like "bool" or "int"; just return it
-			anchor = r
-		}
-
-		return (_r ? "{ " : "") + anchor + (_r ? " }" : "")
-	}
-
 
 	// -----------------------------------------------------------------------------------------
 	// API TEXT FILTER
@@ -688,14 +639,6 @@ class LuaAPI extends Component {
 		if (this.state === undefined || this.state.isLoaded === false){ return null }
 
 		// ---------------------------------------------------------------------
-		// let elements = null
-		const elements = this.getElementsToRender()
-
-		// by default there are 22 constants, but text filtering may result in fewer or none
-		// so, store the curent number of constants in num_constants now and use it below
-		// to determine whether to show/hide the header for the constants table
-		// (having a table header with 0 rows of data is confusing)
-		const num_constants = elements.Constants.props.children[1].props.children.length
 
 		return (
 			<div className="LuaAPI pl-md-4">
@@ -709,68 +652,14 @@ class LuaAPI extends Component {
 
 				<h1>SM5 Lua API</h1>
 
-				<h2 id="Actors" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Actors")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Actors
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[0].desc}} />
-				<div>{elements.Actors}</div>
-
-				<h2 id="Screens" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Screens")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Screens
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[1].desc}} />
-				<div>{elements.Screens}</div>
-
-				<h2 id="Classes" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Classes")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Other Classes
-				</h2>
-				<div>{elements.Classes}</div>
-
-
-				<h2 id="Singletons" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Singletons")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Singletons
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[5].desc}} />
-				<div>{elements.Singletons}</div>
-
-
-
-				<h2 id="Namespaces" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Namespaces")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Namespaces
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[3].desc}} />
-				<div>{elements.Namespaces}</div>
-
-
-
-				<h2 id="Enums" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Enums")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Enums
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[4].desc}} />
-				<div>{elements.Enums}</div>
-
-
-
-				<h2 id="GlobalFunctions" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("GlobalFunctions")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Global Functions
-				</h2>
-				<div className="API-Category-description" dangerouslySetInnerHTML={{__html: this.state.G[6].desc}} />
-				<div>{elements.GlobalFunctions}</div>
-
-
-
-				<h2 id="Constants" className="API-Category">
-					<span className="octicon-link" onClick={() => this.updateHash("Constants")}><Octicon size="medium" icon={getIconByName("link")} /></span>
-					Constants
-				</h2>
-				<div>{num_constants > 0 && elements.Constants}</div>
+				<SectionSMClass        name="Actors"          desc={this.state.G[0].desc} data={this.state.G[0].data} />
+				<SectionSMClass        name="Screens"         desc={this.state.G[1].desc} data={this.state.G[1].data} />
+				<SectionSMClass        name="Singletons"      desc={this.state.G[5].desc} data={this.state.G[5].data} />
+				<SectionSMClass        name="Classes"         desc={this.state.G[2].desc} data={this.state.G[2].data} />
+				<SectionSMClass        name="Namespaces"      desc={this.state.G[3].desc} data={this.state.G[3].data} />
+				<SectionEnum           name="Enums"           desc={this.state.G[4].desc} data={this.state.G[4].data} />
+				<SectionGlobalFunction name="GlobalFunctions" desc={this.state.G[6].desc} data={this.state.G[6].data} />
+				<SectionConstants      name="Constants"       desc={this.state.G[7].desc} data={this.state.G[7].data} />
 			</div>
 		)
 	}

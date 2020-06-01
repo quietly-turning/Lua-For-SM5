@@ -48,7 +48,7 @@ div.LuaAPI{
 	}
 
 	// API Categories include: ActorClases, Namespaces, Enums, Singletons, GlobalFunctions, Constants
-	h2.API-Category {
+	h2.API-Category-Header {
 		margin: 0.5em 0em;
 		padding: 0.2em 0.5em;
 		color: #fff;
@@ -68,7 +68,7 @@ div.LuaAPI{
 		}
 	}
 
-	div.actor-class, div.enum{
+	div.section-child{
 		h3{
 			margin: 0.5em 0em 0em 0em;
 			padding: 0.2em 0em;
@@ -104,11 +104,7 @@ div.LuaAPI{
 
 	// treat <br> elements within <Description> tags
 	// more like paragraphs; see: https://stackoverflow.com/a/31633969
-	span.actorclass-description,
-	span.namespace-description,
-	span.method-description,
-	span.enum-description,
-	div.API-Category-description
+	.description
 	{
 		br{
 			display: block;
