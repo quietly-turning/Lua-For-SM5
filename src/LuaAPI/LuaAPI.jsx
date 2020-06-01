@@ -514,7 +514,6 @@ class LuaAPI extends Component {
 			// almost done now; process each singleton...
 			singletons.forEach(function(s){
 				const sm_class = $(s).attr("class")
-				const _name    = $(s).attr("name")
 				const _doc     = $(documentation.classes).find("Class[name=" + sm_class + "]")
 
 				const methods = Array.from(_doc.find("Function")).map(function(method, i){

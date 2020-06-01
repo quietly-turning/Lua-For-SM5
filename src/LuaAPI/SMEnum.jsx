@@ -22,7 +22,7 @@ class Enum extends Component {
 		return(
 			<div id={"Enums-" + this.props.name} className="section-child">
 
-				<Header name={this.props.name} smclass={{}} level={3} />
+				<Header name={this.props.name} grouping="Enums" smclass={{}} level={3} />
 
 				<Description desc={this.props.desc} />
 
