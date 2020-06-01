@@ -19,7 +19,7 @@ class Method extends Component {
 		const sm_url  = "https://github.com/quietly-turning/stepmania/tree/"
 		const sm_hash = "HEAD"
 
-		this.github_anchor = this.props.method.url !== undefined ? <a className="logo-github" href={sm_url + sm_hash + "/" + this.props.method.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
+		this.github_anchor = this.props.method.url !== undefined ? <a className="logo-github" href={sm_url + sm_hash + this.props.method.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
 	}
 
 	updateHash(){
