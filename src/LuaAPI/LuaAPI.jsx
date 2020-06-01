@@ -235,17 +235,6 @@ class LuaAPI extends Component {
 	}
 
 	// ---------------------------------------------------------------------
-
-	check_for_code(element){
-		element.find("pre code").each(function(i, code){
-			// trim leading newline if one is found
-			const txt = code.textContent.charAt(0)==="\n" ? code.textContent.substr(1) : code.textContent
-			$(code).replaceWith("<code class='lua'>" + txt + "</code>")
-		})
-		return element
-	}
-
-	// ---------------------------------------------------------------------
 	// a helper function to determine whether the "return" type of each API method
 	// should be static text or an anchor linking to elsewhere in the document
 

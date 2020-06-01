@@ -19,6 +19,17 @@ div.LuaAPI{
 		margin: 0.5em 0em;
 		code{
 			border-radius: 8px;
+
+			&.hljs{
+				// need to explicitly set "word-wrap: normal;" and "overflow-x: scroll;"
+				// for Safari, both macOS and iOS
+				// otherwise multiline code.hljs blocks wrap lines
+				// instead of allowing horizontal scrolling
+				// normally, auto wrapping lines of text is good
+				// but it's less good for code examples
+				word-wrap: normal;
+				overflow-x: scroll;
+			}
 		}
 	}
 
