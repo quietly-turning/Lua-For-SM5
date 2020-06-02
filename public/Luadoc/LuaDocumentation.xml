@@ -28,6 +28,13 @@ save yourself some time, copy this for undocumented things:
 <Documentation xmlns='https://www.stepmania.com' xmlns:xsi='https://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://www.stepmania.com Lua.xsd'>
 <!-- Global functions -->
 <GlobalFunctions>
+	<Description>
+		Many global functions are available when scripting with Lua for StepMania.<br />
+		Some, like <Link class='GLOBAL' function='collectgarbage' />, are core functions of Lua's basic Library.<br />
+		Others, like <Link class='GLOBAL' function='Basename' />, are defined in the StepMania engine's C++ but made available to Lua.<br />
+	  And others, like <Link class='GLOBAL' function='DeepCopy' />, are defined in the _fallback theme's Lua files.<br />
+		When scripting with StepMania, keep in mind that if you do not scope your functions (and variables) using the <code>local</code> keyword, they will be global.
+	</Description>
 	<Function name='AllowOptionsMenu' theme='_fallback' return='bool' arguments=''>
 		[03 Gameplay.lua] Returns <code>false</code> if the player should be disallowed from entering the options menu from ScreenSelectMusic (i.e. during <Link class='GameState' function='IsAnExtraStage'>an ExtraStage</Link> or when the <Link class='ENUM' function='PlayMode' /> is Oni).  Returns <code>true</code> otherwise.
 	</Function>
@@ -214,7 +221,7 @@ save yourself some time, copy this for undocumented things:
 		Returns the number passed to the function followed by its suffix (&quot;th&quot;, &quot;nd&quot;, and so on).
 	</Function>
 	<Function name='FormatNumSongsPlayed' return='string' arguments='int num'>
-		[02 Other.lua] Appends <code>num</code> to " songs played" and returns the resulting string.
+		[02 Other.lua] Concatenates <code>num</code> with " songs played" and returns the resulting string.
 	</Function>
 	<Function name='FormatPercentScore' return='string' arguments='float fPercentDancePoints'>
 		Returns <code>fPercentDancePoints</code> formatted as a percentage.
@@ -536,16 +543,16 @@ save yourself some time, copy this for undocumented things:
 		Returns <Link class='ENUM' function='RadarCategory' /> <code>cat</code> localized for the current language using strings defined under <code>[RadarCategory]</code>.
 	</Function>
 	<Function name='rawequal' return='bool' arguments='various v1, various v2'>
-		Checks whether <code>v1</code> is equal to <code>v2</code>, without invoking any metamethod.
+		Checks whether <code>v1</code> is equal to <code>v2</code>, without invoking any metamethod.<br />
 		<code>rawequal</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='rawget' return='various' arguments='table t, various index'>
-		Gets the real value of <code>t[index]</code>, without invoking any metamethod.
+		Gets the real value of <code>t[index]</code>, without invoking any metamethod.<br />
 		<code>rawget</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='rawset' return='table' arguments='table t, int index, various value'>
 		Sets the real value of <code>t[index]</code> to <code>value</code>, without invoking any metamethod.
-		The modified <code>t</code> is then returned.
+		The modified <code>t</code> is then returned.<br />
 		<code>rawset</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
 	<Function name='ResolveRelativePath' theme='_fallback' return='string' arguments='string path, int level, bool optional'>
