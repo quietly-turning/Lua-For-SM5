@@ -1644,12 +1644,15 @@ return af
 <pre><code>
 local af = Def.ActorFrame{}
 
+-- move the ActorFrame +100px
+-- over a 2 second duration
+-- its children will move with it
 af.OnCommand=function(self)
 	self:linear(2):addx(100)
 end
 
--- add various children actors to
--- the parent ActorFrame
+-- add various children actors
+-- to the parent ActorFrame
 af[#af+1] = Def.Sprite{
 	Texture="taro.png"
 }
@@ -1657,6 +1660,7 @@ af[#af+1] = Def.Sprite{
 af[#af+1] = Def.Sprite{
 	Texture="laer.png"
 }
+
 -- etc.
 
 return af
@@ -4625,8 +4629,8 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 </Class>
 <Class name='Quad' grouping='Actor'>
 	<Description>
-	 A rectangular Actor that can have color.<br />
-	 Curiously, <em>Quad</em> inherits from <Link class='Sprite' />, though support for loading textures
+	 Quads are rectangular actors that players can see.  A Quad can have color, size, position, etc. – all <Link class='Actor' /> methods can be used.<br />
+	 As a technical note, <em>Quad</em> curiously inherits from <Link class='Sprite' />, but support for loading textures
 	 <a href="https://github.com/stepmania/stepmania/blob/6bea7639e8c184ca5d681d5d2f665c71eef64d44/src/Quad.cpp#L15-L16" target="_blank" rel="noopener noreferrer">is absent</a>.
 	</Description>
 </Class>
@@ -5707,7 +5711,7 @@ local args = {
 		<em>Sprite</em> actors can be used to display images and video.  If you want to load a png as part of your UI,
 		or animate a visual effect from a sprite sheet, or play a video file, <em>Sprite</em> is what you're looking for.<br />
 		<br />
-		You must provide <em>Sprite</em>s with a filepath to the asset you wish to load using their <code>Texture</code> attribute.
+		You must provide <em>Sprite</em>s with a filepath to the graphic asset using their <code>Texture</code> attribute.
 <pre><code>
 local spr = Def.Sprite{
 	Texture="path/to/mycoolimage.png"
