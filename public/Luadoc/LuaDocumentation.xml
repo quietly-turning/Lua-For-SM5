@@ -1611,10 +1611,9 @@ local n = r['PlayerNumber_P2']
 	<Description>
 		ActorFrames are containers that allow multiple children actors to be grouped and scripted together.<br />
 		In theming, the StepMania engine expects a screen layer (underlay, overlay, decorations, in, out, cancel)
-		file to return one actor, and it is typically necessary to return one ActorFrame that contains many
-		actors of various specialization.<br />
-		A common convention in StepMania scripting is to add children to an ActorFrame as the next numerical
-		index.<br />
+		file to return one actor, and it is common to return one ActorFrame that contains many actors of various
+		specialization.<br />
+		A common convention is to add children at the next index (current size of the table plus <code>1</code>).<br />
 		Basic example:
 <pre><code>
 -- in the context of a lua file as a screen layer
@@ -1637,10 +1636,31 @@ af[#af+1] = Def.BitmapText{
 return af
 </code></pre>
 	When actor commands like <Link class='Actor' function='xy' /> and <Link class='Actor' function='zoom' />
-	are used to position and scale an ActorFrame, the ActorFrame's children will move and scale proportionally.<br />
-	For example, if you want to animate 50 actors moving 100px to the right in unison, it is easier to call
-	<code>self:linear(2):addx(100)</code> on their parent ActorFrame once, rather than scripting it
-	individually within each actor.<br />
+	can be used to position and scale an ActorFrame, its children will position relative to the parent ActorFrame
+	and scale proportionally.<br />
+	For example, if you want to animate 50 actors moving 100px to the right in unison, it is easier to move the
+	parent ActorFrame than each actor individually.<br />
+	Basic example:
+<pre><code>
+local af = Def.ActorFrame{}
+
+af.OnCommand=function(self)
+	self:linear(2):addx(100)
+end
+
+-- add various children actors to
+-- the parent ActorFrame
+af[#af+1] = Def.Sprite{
+	Texture="taro.png"
+}
+
+af[#af+1] = Def.Sprite{
+	Texture="laer.png"
+}
+-- etc.
+
+return af
+</code></pre>
 	ActorFrames can contain ActorFrames, and doing so is good design for sufficiently complex screens.
 	</Description>
 
