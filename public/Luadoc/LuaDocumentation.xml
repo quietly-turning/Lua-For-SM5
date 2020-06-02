@@ -2097,6 +2097,40 @@ Def.Sound{
 	</Function>
 </Class>
 <Class name='BitmapText' grouping='Actor'>
+	<Description>
+		<em>BitmapText</em> actors are used to display text on-screen.<br />
+		The font can be specified using the <code>Font</code> attribute. It takes a font name a string,
+		pathed relative to the current theme's <code>./Fonts/</code> directory.<br />
+		StepMania expects fonts to be formatted as spritesheets with accompanying ini files.
+		These can be generated from ttf files using <em>Texture Font Generator.exe</em> in the
+		<code>./Program/</code> directory of packaged StepMania releases.<br />
+		The text displayed can be initially set using the <code>Text</code> attribute, and changed
+		later using <Link class='BitmapText' function='settext'>settext()</Link>.<br />
+		Basic usage example:
+<pre><code>
+Def.BitmapText{
+	Font="Common normal",
+	Text="Hello!",
+	OnCommand=function(self)
+		self:sleep(2):settext("Hey!")
+	end
+}
+</code></pre>
+<br />
+	The font can alternatively be specified with the <code>File</code> attribute,
+	which takes the path to the ini file as a string, relative to the root of StepMania.<br />
+	Basic example:
+<pre><code>
+-- use a custom font from a simfile
+local song_dir = GAMESTATE:GetCurrentSong():GetSongDir()
+local ini_path = "Fonts/courier/_courier 20px.ini"
+
+Def.BitmapText{
+	File=song_dir .. ini_path,
+	Text="Hello, World!"
+}
+</code></pre>
+	</Description>
 	<Function name='AddAttribute' return='void' arguments='int iPos, Attribute attr'>
 		Add the attribute <code>attr</code> to the string at position
 		<code>iPos</code>.<br />

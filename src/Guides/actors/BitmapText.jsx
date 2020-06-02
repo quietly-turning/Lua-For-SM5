@@ -52,7 +52,7 @@ class BitmapText extends Component {
 </Highlight>
 
 			<p>The program used to turn ttf fonts into spritesheets that StepMania can use comes bundled with release versions of SM5 for Windows in the <code>./Program/</code> folder, and is titled <strong>Texture Font Generator.exe</strong>.
-				While is it Windows-only, it works great on macOS using <a href="https://www.davidbaumgold.com/tutorials/wine-mac/">Wine</a>.</p>
+				It is only available for Windows.</p>
 
 			<p>When loading custom fonts within scripted simfiles like this, it may be necessary to modify the ini file that <em>Texture Font Generator.exe</em> outputs for character widths to be respected.</p>
 
