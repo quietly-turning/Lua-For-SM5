@@ -162,12 +162,11 @@ a{
 		// the LuaAPI <input> used to filter the API doc is sticky-top, so
 		// it needs a background-color to cover text that scrolls under it
 		div.sidebar-filter{
-			padding-top: 8px;
+			padding-top: 1em;
 			background-color: #f7f7f7;
 
 			div.version{
 				text-align:center;
-				padding-bottom: 8px;
 
 				span{ white-space: nowrap; }
 				span.smversion{ font-size: 1.315em; }
