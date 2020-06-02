@@ -1608,6 +1608,42 @@ local n = r['PlayerNumber_P2']
 	</Function>
 </Class>
 <Class name='ActorFrame' grouping='Actor'>
+	<Description>
+		ActorFrames are containers that allow multiple children actors to be grouped and scripted together.<br />
+		In theming, the StepMania engine expects a screen layer (underlay, overlay, decorations, in, out, cancel)
+		file to return one actor, and it is typically necessary to return one ActorFrame that contains many
+		actors of various specialization.<br />
+		A common convention in StepMania scripting is to add children to an ActorFrame as the next numerical
+		index.<br />
+		Basic example:
+<pre><code>
+-- in the context of a lua file as a screen layer
+-- this ActorFrame is a table
+local af = Def.ActorFrame{}
+
+-- add a Sprite at the next index
+af[#af+1] = Def.Sprite{
+	Texture="smilingsun.png"
+}
+
+-- add a BitmapText at the next index
+af[#af+1] = Def.BitmapText{
+	Font="Common normal",
+	Text="Yo!"
+}
+
+-- have the file return the ActorFrame
+-- for the StepMania engine to interpret
+return af
+</code></pre>
+	When actor commands like <Link class='Actor' function='xy' /> and <Link class='Actor' function='zoom' />
+	are used to position and scale an ActorFrame, the ActorFrame's children will move and scale proportionally.<br />
+	For example, if you want to animate 50 actors moving 100px to the right in unison, it is easier to call
+	<code>self:linear(2):addx(100)</code> on their parent ActorFrame once, rather than scripting it
+	individually within each actor.<br />
+	ActorFrames can contain ActorFrames, and doing so is good design for sufficiently complex screens.
+	</Description>
+
 	<Function name='AddChildFromPath' return='bool' arguments='string sPath'>
 		Adds a child to the ActorFrame from the specified path.
 	</Function>
