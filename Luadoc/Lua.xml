@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="Lua.xsl"?>
 
-<Lua xmlns='https://www.stepmania.com' xmlns:xsi='https://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://www.stepmania.com Lua.xsd'>
+<Lua xmlns='http://www.stepmania.com' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.stepmania.com Lua.xsd'>
 	<GlobalFunctions>
 		<Function name='AllowOptionsMenu'/>
 		<Function name='Alpha'/>
