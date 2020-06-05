@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- Before checking the documentation in, make sure that it validates by
-     going to https://www.corefiling.com/opensource/schemaValidate.html and using
+     going to http://www.corefiling.com/opensource/schemaValidate.html and using
      Lua.xsd for the XML Schema and this file for the XML Instance. -->
 
 <!-- Using Link:
@@ -25,7 +25,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
   -->
 
-<Documentation xmlns='https://www.stepmania.com' xmlns:xsi='https://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://www.stepmania.com Lua.xsd'>
+<Documentation xmlns='http://www.stepmania.com' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.stepmania.com Lua.xsd'>
 <!-- Global functions -->
 <GlobalFunctions>
 	<Description>
