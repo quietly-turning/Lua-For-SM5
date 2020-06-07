@@ -28,7 +28,7 @@ class Header extends Component {
 							<NavLink className="nav-link" to="/LuaAPI">Lua API</NavLink>
 						</li>
 						<li className="nav-item">
-							<NavLink className="nav-link" to="/resources">Other Resources</NavLink>
+							<NavLink className="nav-link" to="/Resources">Other Resources</NavLink>
 						</li>
 					</ul>
  				</div>

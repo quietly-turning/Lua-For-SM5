@@ -1,0 +1,9 @@
+<h1>ActorMultiVertex</h1>
+
+<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
+
+<p>An <em>ActorMultiVertex</em> actor has seven possible <a href="/LuaAPI#Enums-DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
+
+<p>For example, calling <code>{` self:SetDrawState({Mode="DrawMode_Quads"}) `}</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/quietl-turning/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
+
+<p>Another <em>ActorMultiVertex</em> DrawMode is <code>DrawMode_LineStrip</code>, in which your table of vertex data will be rendered as a single, continuous line.  An example of <code>DrawMode_LineStrip</code> in action can be seen in <a href="https://www.youtube.com/watch?v=hKd4xkULxFk">this scripted simfile</a> from the U.P.S. 2 pack.</p>
