@@ -29,18 +29,18 @@
 -- a Lua file can only return one Actor
 -- so the common strategy is to return one ActorFrame that contains many sub-Actors
 return Def.ActorFrame{
--- keep-alive Actor
--- this will allow the file to persist for 999 seconds
--- (or, until the end of the stepchart)
-Def.Actor{ OnCommand=function(self) self:sleep(999) end },
+   -- keep-alive Actor
+   -- this will allow the file to persist for 999 seconds
+   -- (or, until the end of the stepchart)
+   Def.Actor{ OnCommand=function(self) self:sleep(999) end },
 
--- the Sprite Actor
-Def.Sprite{
-   Texture="awesome.png",
-   OnCommand=function(self)
-      self:Center():FullScreen():sleep(3):diffusealpha(0)
-   end
-}
+   -- the Sprite Actor
+   Def.Sprite{
+      Texture="awesome.png",
+      OnCommand=function(self)
+         self:Center():FullScreen():sleep(3):diffusealpha(0)
+      end
+   }
 }
 </code></pre>
 <p>

@@ -9,14 +9,13 @@
 <span class="CodeExample-Title">A very simple Sprite example:</span>
 <pre><code class="lua">
 Def.Sprite{
-Name="Girlfriend",
-Texture="OverlayAttachedGirlfriend.png",
-InitCommand=function(self)
-self:zoom(0.5):Center()
-end
+   Texture="WhatAreBirds.png",
+   InitCommand=function(self)
+      self:zoom(0.5):Center()
+   end
 }
 </code></pre>
-<p>This example will load a file titled <em>OverlayAttachedGirlfriend.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).</p>
+<p>This example will load a file titled <em>WhatAreBirds.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).</p>
 
 <p>A common question that people new to StepMania scripting have is:</p>
 
