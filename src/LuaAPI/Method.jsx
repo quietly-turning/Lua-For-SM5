@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Octicon, {getIconByName} from '@primer/octicons-react'
+import Octicon, {Link, LogoGithub} from '@primer/octicons-react'
 
 class Method extends Component {
 
@@ -19,7 +19,7 @@ class Method extends Component {
 		const sm_url  = "https://github.com/quietly-turning/stepmania/tree/"
 		const sm_hash = "HEAD"
 
-		this.github_anchor = this.props.method.url !== undefined ? <a className="logo-github" href={sm_url + sm_hash + this.props.method.url} target="_blank" rel="noopener noreferrer"><Octicon icon={getIconByName("logo-github")} /></a> : ""
+		this.github_anchor = this.props.method.url !== undefined ? <a className="logo-github" href={sm_url + sm_hash + this.props.method.url} target="_blank" rel="noopener noreferrer"><Octicon icon={LogoGithub} /></a> : ""
 	}
 
 	updateHash(){
@@ -30,7 +30,7 @@ class Method extends Component {
 		return(
 			<div id={this.id} className="method">
 				<div className="method-signature">
-					<span className="octicon-link" onClick={this.updateHash}><Octicon icon={getIconByName("link")} /></span>
+					<span className="octicon-link" onClick={this.updateHash}><Octicon icon={Link} /></span>
 					<span>
 						{this.props.method.name}
 						(<code>{this.props.method.arguments}</code>)
