@@ -28,13 +28,13 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "start": "npm run convert-guides && sass --watch src/_styles/ | react-scripts start",
-    "build": "npm run convert-guides && sass src/_styles && react-scripts build",
+    "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
+    "build": "npm run convert-pages && sass src/_styles && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "convert-guides": "node src/html-to-json.js"
+    "convert-pages": "node src/html-to-json.js"
   },
   "homepage": "https://quietly-turning.github.io/Lua-For-SM5/"
 }
