@@ -1,49 +1,73 @@
 -- ------------------------------------------
--- generate auxiliary csv files that can enhance the Lua API docs
+-- generate an auxiliary json file that can enhance the Lua API docs
+
+-- StepMania objects to inspect for theme-side function defs
+-- hardcoded keys for now (how to traverse Def userdata?)
+local sm_objs = {
+   ["GlobalFunctions"]   = _G,
+   ["Actor"]             = Actor,
+   ["Sprite"]            = Sprite,
+   ["HelpDisplay"]       = HelpDisplay,
+   ["Sound"]             = Sound,
+   ["Song"]              = Song,
+   ["ThemeManager"]      = THEMEMAN,
+   ["ScreenSelectMusic"] = ScreenSelectMusic,
+   ["Screen"]            = Screen,
+}
 
 -- ------------------------------------------
-local global_functions = function()
-   local s = ""
+-- ugly
+-- TODO: find a Lua library for JSON output
 
-   for k,v in pairs(_G) do
-      if type(v)=="function" then
-         local info = debug.getinfo(v)
+local function_definitions = function()
 
-         -- skip global functions from C; line numbers aren't available via debug.getinfo
-         if info.short_src ~= "[C]" then
-         local url = URLEncode( ("%s#L%s-L%s"):format(info.short_src, info.linedefined, info.lastlinedefined) )
-         s = s .. ("%s,%s\n"):format( k, url )
+   local first_section_done = false
+   local json = "{"
+
+   for section, obj in pairs(sm_objs) do
+      if first_section_done then json = json.."," end
+      first_section_done = true
+
+      json = json .. ("\n\t\"%s\": {"):format(section)
+
+      local first_func_done = false
+
+      for k,v in pairs(obj) do
+         if type(v)=="function" then
+            local info = debug.getinfo(v)
+
+            -- skip functions definined in-engine; line numbers aren't available via debug.getinfo
+            if info.short_src ~= "[C]" then
+               if first_func_done then json = json.."," end
+               first_func_done = true
+
+               local url = URLEncode( ("%s#L%s-L%s"):format(info.short_src, info.linedefined, info.lastlinedefined) )
+               json = json .. ("\n\t\t\"%s\": \"%s\""):format( k, url )
+            end
          end
       end
+      json = json .. "\n\t}"
    end
 
-   -- return csv data as string
-   return s
-end
+   json = json .. "\n}"
 
--- local actor_classes = function()
--- end
+   -- return json data as string
+   return json
+end
 -- ------------------------------------------
 
 local theme = THEME:GetCurrentThemeDirectory()
 local file  = RageFileUtil.CreateRageFile()
+local path  = theme .. "FunctionDefinitions.json"
 
--- file path as key                 function as value
-local files = {
-   [theme.."GlobalFunctions.csv"] = global_functions,
-   -- [theme.."ActorClasses.csv"]    = actor_classes,
-}
+if file:Open(path, 2) then
+   file:Write( function_definitions() )
 
-for path, func in pairs(files) do
-   if file:Open(path, 2) then
-      file:Write( func() )
-
-   else
-      local fError = file:GetError()
-      SCREENMAN:SystemMessage("uh oh.")
-      Trace( "[FileUtils] Error writing to ".. path ..": ".. fError )
-      file:ClearError()
-   end
+else
+   local fError = file:GetError()
+   SCREENMAN:SystemMessage("uh oh.")
+   Trace( "[FileUtils] Error writing to ".. path ..": ".. fError )
+   file:ClearError()
 end
 
 file:destroy()
