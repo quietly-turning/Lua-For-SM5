@@ -82,11 +82,12 @@ a{
 			// span is nested in section h5 and handles url hash updating onClick
 			// these were orginally normal <a href="#thing"> elements but I think
 			// Bootstrap's collapse component was interfering with hash updating
+			// (But, it's more likely that I don't know what I'm doing.)
 			span{
 				// specify to be 100% width so that clickable area is as wide as
 				// possible for the the jsx onClick
 				width: 100%;
-				padding-top: 0.35em;
+				padding-top: 0.45em;
 			}
 
 			// pull the caret symbol right
