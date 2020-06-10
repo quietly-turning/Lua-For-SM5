@@ -1,4 +1,4 @@
-import React           from "react"
+import React, { useEffect }  from "react"
 import { Link, useLocation } from "react-router-dom"
 import hljs            from "highlight.js"
 import ReactHtmlParser from 'react-html-parser'
@@ -19,7 +19,7 @@ function Page(){
 	}
 
 	// on url change
-	React.useEffect(() => {
+	useEffect(() => {
 		// scroll to top
 		window.scrollTo(0, 0)
 

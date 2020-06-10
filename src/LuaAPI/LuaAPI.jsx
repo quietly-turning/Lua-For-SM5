@@ -338,10 +338,14 @@ class LuaAPI extends Component {
 			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
 			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
+			// also include the SM5 Lua Namespace names
+			namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
+			// and Enums strings, too
+			enums.forEach(e => lua_api.enums[e.attributes.name.textContent] = true)
 
 			// next, do similarly with lua_api.classes, filling it with the names of
 			// each stepmania class.  Note that lua_api.classes contains info for what
-			// this React presents as "Actors", "Screens", "Other Classes", and Singletons!
+			// this React app presents as "Actors", "Screens", "Other Classes", and Singletons!
 			classes.forEach(cls => {
 				const class_name = cls.attributes.name.textContent
 
@@ -359,11 +363,6 @@ class LuaAPI extends Component {
 
 				lua_api[mapping[grouping]][class_name] = true
 			})
-
-			// also include the SM5 Lua Namespace names
-			namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
-			// and Enums strings, too
-			enums.forEach(e => lua_api.enums[e.attributes.name.textContent] = true)
 
 			lua_api.bubbleDataUp()
 
