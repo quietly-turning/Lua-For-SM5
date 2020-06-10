@@ -4780,7 +4780,7 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 		This singleton is accessible to Lua via <code>INPUTMAN</code>.
 	</Description>
 	<Function name='GetDescriptions' return='{string}' arguments=''>
-		Return an array of connected input device descriptions.
+		Returns an array of connected input device descriptions.
 	</Function>
 </Class>
 <Class name='RageQuadratic'>
@@ -6571,8 +6571,15 @@ GAMESTATE:SetPreferredDifficulty( PlayerNumber[1], Difficulty[4] )
 <Singletons>
 <Description>
 	The StepMania engine uses singletons internally when it needs only one instance of a class.<br />
-	Each singleton here has a class name (e.g. RageDisplay, NoteSkinManager, etc.) that is used in the C++ engine, and a similar but different Lua userdata name (e.g. <code>DISPLAY</code>, <code>NOTESKIN</code>, etc.).<br />
-	Simple example of using the GameState singleton to find the current song in Lua: <code>GAMESTATE:GetCurrentSong()</code>
+	Each singleton has a class name (e.g. RageDisplay, NoteSkinManager, etc.) from the C++ engine, and a similar (but different) userdata name available to Lua (e.g. <code>DISPLAY</code>, <code>NOTESKIN</code>, etc.).<br />
+Simple examples:
+<pre><code>
+-- use GameState's singleton to get the current song
+local song = GAMESTATE:GetCurrentSong()
+
+-- use ScreenManager's singleton to briefly show text on-screen
+SCREENMAN:SystemMessage("hello from Lua!")
+</code></pre>
 </Description>
 </Singletons>
 
