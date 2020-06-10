@@ -25,7 +25,7 @@ class GuidesSidebar extends Component {
 			<nav id="GuidesSidebar">
 				<section>
 					<h5 id="heading-1" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						Introduction
+						<span>Introduction</span>
 					</h5>
 
 					<div id="collapse-1" className="collapse no-transition" aria-labelledby="heading-1">
@@ -41,7 +41,7 @@ class GuidesSidebar extends Component {
 
 				<section>
 					<h5 id="heading-2" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						Actors
+						<span>Actors</span>
 					</h5>
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
 						<ul>
@@ -61,7 +61,7 @@ class GuidesSidebar extends Component {
 
 				<section>
 					<h5 id="heading-3" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-						Singletons
+						<span>Singletons</span>
 					</h5>
 					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
 						<ul>
@@ -74,7 +74,7 @@ class GuidesSidebar extends Component {
 
 				<section>
 					<h5 id="heading-4" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-						Best Practices
+						<span>Best Practices</span>
 					</h5>
 					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
 						<ul>
@@ -87,7 +87,7 @@ class GuidesSidebar extends Component {
 
 				<section>
 					<h5 id="heading-5" className="collapsed expandable" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-						Examples
+						<span>Examples</span>
 					</h5>
 					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
 						<ul>
