@@ -4642,9 +4642,7 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 </Class>
 <Class name='Quad' grouping='Actor'>
 	<Description>
-	 Quads are rectangular actors that players can see.  A Quad can have color, size, position, etc. – all <Link class='Actor' /> methods can be used.<br />
-	 As a technical note, <em>Quad</em> curiously inherits from <Link class='Sprite' />, but support for loading textures
-	 <a href="https://github.com/stepmania/stepmania/blob/6bea7639e8c184ca5d681d5d2f665c71eef64d44/src/Quad.cpp#L15-L16" target="_blank" rel="noopener noreferrer">is absent</a>.
+	 Quads are rectangular actors that players can see.  A Quad can have color, size, position, etc.
 	</Description>
 </Class>
 <Class name='RadarValues'>
