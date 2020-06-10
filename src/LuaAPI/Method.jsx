@@ -15,11 +15,16 @@ class Method extends Component {
 		// ensure that updateHash has access to "this"
 		this.updateHash = this.updateHash.bind(this)
 
-		// temp for now; can make less hardcoded later
-		const sm_url  = "https://github.com/quietly-turning/stepmania/tree/"
-		const sm_hash = "HEAD"
+		if (this.props.method.url !== undefined){
+			const base = "https://github.com/stepmania/stepmania/tree/"
+			const hash = "HEAD"
+			const url  = base + hash + this.props.method.url
 
-		this.github_anchor = this.props.method.url !== undefined ? <a className="logo-github" href={sm_url + sm_hash + this.props.method.url} target="_blank" rel="noopener noreferrer"><Octicon icon={LogoGithub} /></a> : ""
+			this.github_anchor = <a className="logo-github" href={url} target="_blank" rel="noopener noreferrer"><Octicon icon={LogoGithub} /></a>
+
+		} else {
+			this.github_anchor = ""
+		}
 	}
 
 	updateHash(){
