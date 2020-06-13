@@ -1649,7 +1649,7 @@ af[#af+1] = Def.BitmapText{
 return af
 </code></pre>
 	When actor commands like <Link class='Actor' function='xy' /> and <Link class='Actor' function='zoom' />
-	can be used to position and scale an ActorFrame, its children will position relative to the parent ActorFrame
+	are used position and scale an ActorFrame, its children will position relative to the parent ActorFrame
 	and scale proportionally.<br />
 	For example, if you want to animate 50 actors moving 100px to the right in unison, it is easier to move the
 	parent ActorFrame than each actor individually.<br />
