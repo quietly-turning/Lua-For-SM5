@@ -6199,6 +6199,16 @@ local spr = Def.Sprite{
 	<Function name='GetThemeDisplayName' return='string' arguments=''>
 		Returns the display name of the current theme.
 	</Function>
+	<Function name='get_theme_fallback_list' return='{ string }' arguments=''>
+		Returns a table of strings showing what themes the current theme falls back on.<br />
+		For example, if the current theme is in a folder named "Home", and the "Home" theme falls back on the "default" theme, which itself falls back on the "_fallback" theme, the table would be:
+<pre><code>
+{
+	[1]="Home",
+	[2]="default",
+	[3]="_fallback"
+}</code></pre>
+	</Function>
 	<Function name='HasMetric' return='bool' arguments='string section, string value'>
 		Returns <code>true</code> if the theme has the specified metric.
 	</Function>
