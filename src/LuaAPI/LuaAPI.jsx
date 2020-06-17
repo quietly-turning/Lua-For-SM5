@@ -336,6 +336,28 @@ class LuaAPI extends Component {
 			lua_api.docs.sm_version.githash = (smver[2] !== undefined) ? smver[2] : ""
 
 			// ---------------------------------------------------------------------
+			// sort arrays alphabetically; sorting now ensures sequence within sidebar expandables
+			// matches sequence in document
+
+			const sortByAttr = function(attr){
+			  return function(a, b){
+					if ($(a).attr(attr).toUpperCase() < $(b).attr(attr).toUpperCase()){ return -1}
+					if ($(a).attr(attr).toUpperCase() > $(b).attr(attr).toUpperCase()){ return 1}
+					return 0
+				}
+			}
+
+			classes.sort(sortByAttr("name"))
+			namespaces.sort(sortByAttr("name"))
+			enums.sort(sortByAttr("name"))
+			singletons.sort(sortByAttr("class"))
+
+			// not sorted for now; these don't have expandable lists in the sidebar
+			// TODO: think about how to helpfully organize Global Functions
+			// global_functions.sort(sortByAttr("name"))
+			// constants.sort(sortByAttr("name"))
+
+			// ---------------------------------------------------------------------
 			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
 			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
 			// also include the SM5 Lua Namespace names
