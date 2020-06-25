@@ -83,9 +83,6 @@ save yourself some time, copy this for undocumented things:
 	<Function name='Center1Player' theme='_fallback' return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if Center 1P is being used.
 	</Function>
-	<Function name='check_stop_course_early' theme='default' return='bool' arguments=''>
-		[04 Other.lua] Returns <code>true</code> if the current course was exited early via the pause menu.
-	</Function>
 	<Function name='CheckpointsTapsSeparateJudgment' theme='_fallback' return='bool' arguments=''>
 		[03 Gameplay.lua] Returns <code>true</code> if checkpoint judgments and tap judgments
 		are considered separate, or <code>false</code> otherwise.
@@ -131,9 +128,6 @@ save yourself some time, copy this for undocumented things:
 	<Function name='ComboTransformCommand' theme='_fallback' return='void' arguments='Actor self, params p'>
 		[02 Other.lua] Defines the transform function used to position player combo during gameplay.  <code>params</code> will contain two boolean values indexed by <code>bReverse</code> and <code>bCentered</code>.<br />
 		Not intended to be called directly by themes.
-	</Function>
-	<Function name='ComboUnderField' theme='default' return='bool' arguments=''>
-		[03 Gameplay.lua] Returns the <code>ComboUnderField</code> ThemePref value.
 	</Function>
 	<Function name='commify' return='string' arguments='string number, string comma, string dot'>
 		This will take the number and insert a comma every three digits, as normal in English for writing large numbers.<br />
@@ -779,9 +773,6 @@ save yourself some time, copy this for undocumented things:
 	<Function name='WrapInActorFrame' theme='_fallback' return='ActorFrame' arguments='table children'>
 		[02 ActorDef.lua] Wraps the children in an ActorFrame.
 	</Function>
-	<Function name='wrapped_index' theme='default' return='int' arguments='int start, int offset, int set_size'>
-		[04 item_scroller.lua]
-	</Function>
 	<Function name='WriteFile' theme='_fallback' return='bool' arguments='string path, string buf'>
 		[04 FileUtils.lua] Writes <code>buf</code> to the file at <code>path</code>.
 	</Function>
@@ -874,7 +865,8 @@ local playable_steps = SongUtil.GetPlayableSteps(song)
 		Returns the zoom of a note for the provided PlayerState.
 	</Function>
 	<Function name='GetFrameWidthScale' return='float' arguments='PlayerState ps, float fYOffset, float fOverlappedTime'>
-		Returns the FrameWidthScale of a hold part with a Y offset of <code>fYOffset</code> for the provided PlayerState.<br /> <code>fOverlappedTime</code> is optional and will default to 0.
+		Returns the FrameWidthScale of a hold part with a Y offset of <code>fYOffset</code> for the provided PlayerState.<br />
+		<code>fOverlappedTime</code> is optional and will default to 0.
 	</Function>
 </Namespace>
 <Namespace name='Enum'>
@@ -6596,7 +6588,7 @@ SCREENMAN:SystemMessage("hello from Lua!")
 <!--
 	put descriptions for "grouping"s down here
 	these aren't part of the spec in Lua.xsd, so they won't appear
-	when Lua.xml is viewed in a webbrowser, but can still be used
+	when Lua.xml is viewed in a web browser, but can still be used
 	by external API doc applications until ExportLuaInformation
 	is fixed/expanded.
  -->
@@ -6646,6 +6638,5 @@ local spr  = Def.Sprite(args)
 		available to Lua.
 	</Description>
 </Screens>
-
 
 </Documentation>
