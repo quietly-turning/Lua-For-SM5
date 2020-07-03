@@ -21,7 +21,7 @@
     "react-html-parser": "^2.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.6"
   },
   "scripts": {
     "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
