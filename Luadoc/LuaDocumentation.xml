@@ -1172,7 +1172,7 @@ local n = r['PlayerNumber_P2']
 		See <a href="https://github.com/stepmania/stepmania/blob/HEAD/Docs/Themerdocs/effect_colors.txt" target="_blank" rel="noopener noreferrer">Docs/Themerdocs/effect_colors.txt</a>
 		for an example.
 	</Function>
-	<Function name='diffusebottomedge' return='void' arguments=''>
+	<Function name='diffusebottomedge' return='void' arguments='color c'>
 		Sets the Actor's bottom edge color to <code>c</code>.
 	</Function>
 	<Function name='diffusecolor' return='void' arguments='color c'>
