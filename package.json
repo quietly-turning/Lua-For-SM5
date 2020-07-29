@@ -12,7 +12,7 @@
     "@primer/octicons-react": "^9.6.0",
     "bootstrap": "github:twbs/bootstrap",
     "gh-pages": "^2.2.0",
-    "highlight.js": "^10.1.1",
+    "highlight.js": "^10.1.2",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
     "popper.js": "^1.16.1",
@@ -21,7 +21,7 @@
     "react-html-parser": "^2.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
