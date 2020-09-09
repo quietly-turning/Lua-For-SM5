@@ -12,7 +12,7 @@
     "@primer/octicons-react": "^9.6.0",
     "bootstrap": "github:twbs/bootstrap",
     "gh-pages": "^2.2.0",
-    "highlight.js": "^10.1.2",
+    "highlight.js": "^10.2.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "popper.js": "^1.16.1",
