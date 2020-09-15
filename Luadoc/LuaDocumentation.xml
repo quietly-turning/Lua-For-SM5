@@ -5920,6 +5920,9 @@ local spr = Def.Sprite{
 	<Function name='GetCurStageStats' return='StageStats' arguments=''>
 		Returns the current StageStats.
 	</Function>
+	<Function name='GetFinalEvalStageStats' return='Grade' arguments='PlayerNumber pn'>
+		Returns player <code>pn</code>'s final grade.
+	</Function>
 	<Function name='GetFinalGrade' return='Grade' arguments='PlayerNumber pn'>
 		Returns player <code>pn</code>'s final grade.
 	</Function>
