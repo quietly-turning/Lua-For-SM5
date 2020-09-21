@@ -16,12 +16,12 @@ class Header extends Component {
 	}
 
 	updateHash(){
-		window.location.hash = "#" + this.id
+		window.location.hash = `#${this.id}`
 	}
 
 	generateBase(base){
 		if (base === undefined){ return }
-		return " : <a href='#" + base.grouping + "-" + base.name + "'>" + base.name + "</a>"
+		return ` : <a title="${this.props.name} inherits from ${base.name}" href="#${base.grouping}-${base.name}"> ${base.name} </a>`
 	}
 
 	render(){
