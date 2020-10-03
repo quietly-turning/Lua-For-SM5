@@ -1,10 +1,17 @@
 <h1>Sprite</h1>
 
-<p><em>Sprite</em> actors can be used to load, display, and manipulate image and video data in StepMania 5.  If you want to load a png graphic and move it around, or animate a character from a sprite sheet, or play a video file, then the <em>Sprite</em> actor is what you&apos;re looking for.</p>
+<p>
+   <em>Sprite</em> actors can be used to load, display, and manipulate image and video data in StepMania 5. If you want to load a png graphic and move it around, or animate a character from a sprite sheet, or play a video file, then the <em>Sprite</em> actor is what you're looking for.
+</p>
 
-<p>See the page on <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> for a complete list of which filetypes are supported.</p>
+<p>
+   See the page on <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> for a complete list of which filetypes are supported.
+</p>
 
-<p>As Lua tables, Sprite actors have one unique attribute that is worth knowing about, <code>Texture</code>.  Let&apos;s start with a very simple example of Sprite usage.</p>
+<p>
+   As Lua tables, Sprite actors have one unique attribute that is worth knowing about, <code>Texture</code>. Let's start with a very simple example of Sprite usage.
+</p>
+
 
 <span class="CodeExample-Title">A very simple Sprite example:</span>
 <pre><code class="lua">
@@ -15,29 +22,48 @@ Def.Sprite{
    end
 }
 </code></pre>
-<p>This example will load a file titled <em>WhatAreBirds.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).</p>
 
-<p>A common question that people new to StepMania scripting have is:</p>
+<p>
+   This example will load a file titled <em>WhatAreBirds.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).
+</p>
 
-<p><strong>Where are those commands like</strong> <code>zoom()</code> <strong>and</strong> <code>Center()</code> <strong>coming from?</strong></p>
+<p>
+   A common question that people new to StepMania scripting have is:
+</p>
 
-<p>Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available first to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor</a> and then to <a data-component="Link" href="/LuaAPI#Actors-Sprite">Sprite</a> specifically.</p>
+<p>
+   <strong>Where are those commands like</strong> <code>zoom()</code> <strong>and</strong> <code>Center()</code> <strong>coming from?</strong>
+</p>
+
+<p>
+   Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania's Lua API for a complete list of methods available first to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor</a> and then to <a data-component="Link" href="/LuaAPI#Actors-Sprite">Sprite</a> specifically.
+</p>
+
 
 <h2>Animated Spritesheets</h2>
+<p>
+   What about sprite sheets for animated sprites? StepMania's engine is hardcoded to look for patterns in the filename with Sprite actors. If you are loading a sprite sheet that you intend to animate through, you'll want to ensure that the filename of the png you are loading ends with the pattern: <em>(columns)</em>x<em>(rows)</em>
+</p>
 
-<p>What about sprite sheets for animated sprites?  StepMania&apos;s engine is hardcoded to look for patterns in the filename with Sprite actors.  If you are loading a sprite sheet that you intend to animate through, you&apos;ll want to ensure that the filename of the png you are loading ends with the pattern: <em>(columns)</em>x<em>(rows)</em></p>
+<p>
+   For example, this sprite of Dr. Wily has 6 columns across 1 row.
+</p>
 
-<p>For example, this sprite of Dr. Wily has 6 columns across 1 row.</p>
+<p>
+   <img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily%206x1.png">
+</p>
 
-<p><img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily%206x1.png" /></p>
+<p>
+   For StepMania to recognize it properly as a sprite sheet, you would want to append <strong>6x1</strong> to the end of the filename, resulting in something like <strong>Wily 6x1.png</strong>.
+</p>
 
-<p>For StepMania to recognize it properly as a sprite sheet, you would want to append <strong>6x1</strong> to the end of the filename, resulting in something like <strong>Wily 6x1.png</strong>.</p>
+<p>
+   When working with sprite sheets, <em>Sprite</em> actors can have infinitely many more attributes for each <code>Frame</code> and each Frame's <code>Delay</code> values, but there are better ways of doing handling those. Let's look at an old example from <a href="https://www.youtube.com/watch?v=KhwxI60WeWU">The Ballad of Ian</a> from the D.O.W.N.S. 3 ITG tournament in January 2013.
+</p>
 
-<p>When working with sprite sheets, <em>Sprite</em> actors can have infinitely many more attributes for each <code>Frame</code> and each Frame&apos;s <code>Delay</code> values, but there are better ways of doing handling those.  Let&apos;s look at an old example from <a href="https://www.youtube.com/watch?v=KhwxI60WeWU">The Ballad of Ian</a> from the D.O.W.N.S. 3 ITG tournament in January 2013.</p>
-
-<span class="CodeExample-Title">Old example from The Ballad of Ian.  There's a better way!</span>
+<span class="CodeExample-Title">Old example from The Ballad of Ian. There's a better way!</span>
 <pre><code class="lua">
-Def.Sprite {
+Def.Sprite{
    Texture="spin 13x1.png",
    Frame0000=0,
    Delay0000=0.0516,
@@ -70,7 +96,10 @@ Def.Sprite {
 }
 </code></pre>
 
-<p>While it is possible to specify frames and frame durations (delays) like this, you&apos;ll probably get the idea that this style is repetitive and prone to typos.  Here&apos;s a much more condensed version that accomplishes the same thing.</p>
+<p>
+   While it is possible to specify frames and frame durations (delays) like this, you'll probably get the idea that this style is repetitive and prone to typos. Here's a much more condensed version that accomplishes the same thing.
+</p>
+
 
 <span class="CodeExample-Title">A better way to manage sprite sheets:</span>
 <pre><code class="lua">
@@ -86,13 +115,22 @@ Def.Sprite {
 }
 </code></pre>
 
-<p>Since the the time between each frame of animation is set globally using the <code>SetAllStateDelays()</code> method, the code is overall less prone to mistakes via typos.</p>
+<p>
+   Since the the time between each frame of animation is set globally using the <code>SetAllStateDelays()</code> method, the code is overall less prone to mistakes via typos.
+</p>
 
-<p>It is worth noting that in the above, animated examples, StepMania&apos;s engine will start with the first frame and progress to the last one in order.  There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:</p>
+<p>
+   It is worth noting that in the above, animated examples, StepMania's engine will start with the first frame and progress to the last one in order. There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:
+</p>
 
-<p><img alt="a 4 by 4 spritesheet of SteveReen" src="/Lua-For-SM5/img/Reen 4x4.png" /></p>
+<p>
+   <img alt="a 4 by 4 spritesheet of SteveReen" src="/Lua-For-SM5/img/Reen%204x4.png">
+</p>
 
-<p>If we want the <em>Sprite</em> actor to appear to be facing downward, then we&apos;d only want StepMania to be animating through the first row of the sprite sheet.  Here&apos;s a way to handle that.</p>
+<p>
+   If we want the <em>Sprite</em> actor to appear to be facing downward, then we'd only want StepMania to be animating through the first row of the sprite sheet. Here's a way to handle that.
+</p>
+
 
 <span class="CodeExample-Title">A complex Sprite example:</span>
 <pre><code class="lua">
@@ -112,28 +150,28 @@ local duration_between_frames = 0.15
 
 local frames = {
    Down = {
-      { Frame=0,	Delay=duration_between_frames},
-      { Frame=1,	Delay=duration_between_frames},
-      { Frame=2,	Delay=duration_between_frames},
-      { Frame=3,	Delay=duration_between_frames}
+      { Frame=0,  Delay=duration_between_frames},
+      { Frame=1,  Delay=duration_between_frames},
+      { Frame=2,  Delay=duration_between_frames},
+      { Frame=3,  Delay=duration_between_frames}
    },
    Left = {
-      { Frame=4,	Delay=duration_between_frames},
-      { Frame=5,	Delay=duration_between_frames},
-      { Frame=6,	Delay=duration_between_frames},
-      { Frame=7,	Delay=duration_between_frames}
+      { Frame=4,  Delay=duration_between_frames},
+      { Frame=5,  Delay=duration_between_frames},
+      { Frame=6,  Delay=duration_between_frames},
+      { Frame=7,  Delay=duration_between_frames}
    },
    Right = {
-      { Frame=8,	Delay=duration_between_frames},
-      { Frame=9,	Delay=duration_between_frames},
-      { Frame=10,	Delay=duration_between_frames},
-      { Frame=11,	Delay=duration_between_frames}
+      { Frame=8,  Delay=duration_between_frames},
+      { Frame=9,  Delay=duration_between_frames},
+      { Frame=10, Delay=duration_between_frames},
+      { Frame=11, Delay=duration_between_frames}
    },
    Up = {
-      { Frame=12,	Delay=duration_between_frames},
-      { Frame=13,	Delay=duration_between_frames},
-      { Frame=14,	Delay=duration_between_frames},
-      { Frame=15,	Delay=duration_between_frames}
+      { Frame=12, Delay=duration_between_frames},
+      { Frame=13, Delay=duration_between_frames},
+      { Frame=14, Delay=duration_between_frames},
+      { Frame=15, Delay=duration_between_frames}
    }
 }
 
@@ -184,23 +222,23 @@ af[#af+1] = Def.Sprite{
 
          -- LEFT
          if params.Column == 0 then
-         	self:SetStateProperties( frames.Left )
-         	self:x(self:GetX() + (-1 * self:GetWidth()))
+            self:SetStateProperties( frames.Left )
+            self:x(self:GetX() + (-1 * self:GetWidth()))
 
          -- DOWN
          elseif params.Column == 1 then
-         	self:SetStateProperties( frames.Down )
-         	self:y(self:GetY() + self:GetWidth())
+            self:SetStateProperties( frames.Down )
+            self:y(self:GetY() + self:GetWidth())
 
          -- UP
          elseif params.Column == 2 then
-         	self:SetStateProperties( frames.Up )
-         	self:y(self:GetY() + (-1 * self:GetWidth()))
+            self:SetStateProperties( frames.Up )
+            self:y(self:GetY() + (-1 * self:GetWidth()))
 
          -- RIGHT
          elseif params.Column == 3 then
-         	self:SetStateProperties( frames.Right )
-         	self:x(self:GetX() + self:GetWidth() )
+            self:SetStateProperties( frames.Right )
+            self:x(self:GetX() + self:GetWidth() )
 
          end
 
