@@ -27,7 +27,8 @@ function Page(){
 		document.querySelectorAll("pre code").forEach(block => {
 			hljs.highlightBlock(block)
 		})
-	})
+
+	}, [location.pathname]) // only re-render if url's path changes
 
 	return <div>{ ReactHtmlParser(content[location.pathname], {transform: transform}) }</div>;
 }
