@@ -1244,12 +1244,9 @@ local n = r['PlayerNumber_P2']
 		Set the Actor's effect period to <code>fTime</code>.
 	</Function>
 	<Function name='effecttiming' return='void' arguments='float ramp_to_half, float hold_at_half, float ramp_to_full, float hold_at_zero, float hold_at_full'>
-		Set the Actor's effect timing.<br />
-		hold_at_zero is before hold_at_full in the argument list for compatibility.  A future version will probably swap them because it makes more sense to have hold_at_full come before hold_at_zero.<br />
+		Set the Actor's effect timing.  The effect timing controls how long it takes an effect to cycle and how long it spends in each phase.<br /><br />
 		All effect timings must be greater than or equal to zero, at least one of them must be greater than zero.<br />
-		The effect timing controls how long it takes an effect to cycle and how long it spends in each phase.<br />
 		Depending on the effect clock, the actor's time into effect is updated every frame.  That time is then translated into a percent_through_effect using the parameters to this function.<br />
-		<br />
 		ramp_to_half is the amount of time for percent_through_effect to reach 0.5.<br />
 		hold_at_half is the amount of time percent_through_effect will stay at 0.5.<br />
 		ramp_to_full is the amount of time percent_through_effect will take to go from 0.5 to 1.0.<br />
@@ -1257,8 +1254,8 @@ local n = r['PlayerNumber_P2']
 		After reaching the end of hold_at_full, percent_through_effect stays at 0 until hold_at_zero is over.<br />
 		<br />
 		The different effects use percent_through_effect in different ways.  Some use it to calculate percent_between_colors with this sine wave:  sin((percent_through_effect + 0.25f) * 2 * PI ) / 2 + 0.5f<br />
-		Some effects check the internal bool blink_on.  blink_on is true if percent_through_effect is greater than 0.5 and false if percent_through_effect is less than or equal to 0.5.<br />
-		Check the effect functions for individual explanations:  diffuseblink, diffuseshift, glowblink, glowshift, glowramp, rainbow, wag, bounce, bob, pulse, spin, vibrate.
+		Some effects check the internal bool blink_on.  blink_on is true if percent_through_effect is greater than 0.5 and false if percent_through_effect is less than or equal to 0.5.<br /><br />
+		Check the effect functions for individual explanations:  <Link  function="diffuseblink" />, <Link  function="diffuseshift" />, <Link  function="glowblink" />, <Link  function="glowshift" />, <Link  function="glowramp" />, <Link  function="rainbow" />, <Link  function="wag" />, <Link  function="bounce" />, <Link  function="bob" />, <Link  function="pulse" />, <Link  function="spin" />, <Link  function="vibrate" />.
 	</Function>
 	<Function name='effect_hold_at_full' return='void' arguments='float hold_at_full'>
 		Set the hold_at_full part of the effect timing while leaving the others unchanged.
@@ -3530,20 +3527,23 @@ end
 	<Function name='ChangeSort' return='bool' arguments='SortOrder so'>
 		Changes the sort order of the wheel.  Returns <code>true</code> if the order was changed.
 	</Function>
+	<Function name='GetCurrentSections' return='{string}' arguments=''>
+		Returns a string array of the currently displayed sections in the MusicWheel.
+	</Function>
 	<Function name='GetSelectedSection' return='string' arguments=''>
 		Returns the name of the currently selected section.
 	</Function>
 	<Function name='IsRouletting' return='bool' arguments=''>
 		Returns <code>true</code> if the MusicWheel is currently handling Roulette selection.
 	</Function>
-	<Function name='SelectSong' return='bool' arguments='Song sSong'>
-		Selects a song. Returns <code>false</code> on failure.
+	<Function name='Move' return='void' arguments='int n'>
+		Moves the wheel by <code>n</code>.
 	</Function>
 	<Function name='SelectCourse' return='bool' arguments='Course cCourse'>
 		Selects a course. Returns <code>false</code> on failure.
 	</Function>
-	<Function name='GetCurrentSections' return='{string}' arguments=''>
-		Returns a string array of the currently displayed sections in the MusicWheel.
+	<Function name='SelectSong' return='bool' arguments='Song sSong'>
+		Selects a song. Returns <code>false</code> on failure.
 	</Function>
 </Class>
 <Class name='NoteSkinManager'>
@@ -4602,10 +4602,11 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 		Returns the profile for player <code>pn</code>.
 	</Function>
 	<Function name='GetProfileDir' return='string' arguments='ProfileSlot slot'>
-		Returns the profile directory of the specified <code>ProfileSlot</code>.
+		Returns the profile directory for the provided <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link>, formatted like <code>/Save/LocalProfiles/00000001/</code>.<br />
+		Returns an empty string if the the provided <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link> does not have a <Link class="Profile" /> loaded.
 	</Function>
 	<Function name='GetSongNumTimesPlayed' return='int' arguments='Song s, ProfileSlot ps'>
-		Returns the number of times Song s has been played with the specified ProfileSlot.
+		Returns the number of times Song <code>s</code> has been played with the specified <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link>.
 	</Function>
 	<Function name='GetStatsPrefix' return='string' arguments=''>
 		Returns the current stats prefix.
