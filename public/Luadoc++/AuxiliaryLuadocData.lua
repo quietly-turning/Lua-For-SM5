@@ -10,7 +10,8 @@ local sm_objs = {
    ["HelpDisplay"]       = HelpDisplay,
    ["Sound"]             = Sound,
    ["Song"]              = Song,
-   ["ThemeManager"]      = THEMEMAN,
+   ["GameState"]         = GameState,
+   ["ThemeManager"]      = ThemeManager,
    ["ScreenSelectMusic"] = ScreenSelectMusic,
    ["Screen"]            = Screen,
 }
@@ -58,7 +59,7 @@ end
 
 local theme = THEME:GetCurrentThemeDirectory()
 local file  = RageFileUtil.CreateRageFile()
-local path  = theme .. "FunctionDefinitions.json"
+local path  = theme .. "FunctionDefs.json"
 
 if file:Open(path, 2) then
    file:Write( function_definitions() )

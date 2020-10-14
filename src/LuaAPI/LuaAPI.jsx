@@ -533,7 +533,8 @@ class LuaAPI extends Component {
 						name: method_name,
 						return: lua_api.getReturnValue( method_doc.attr("return") ),
 						arguments: method_doc.attr("arguments") || "",
-						desc: lua_api.check_for_links(method_doc)
+						desc: lua_api.check_for_links(method_doc),
+						url: lua_api.docs.github.funcdefs[sm_class] && lua_api.docs.github.funcdefs[sm_class][method_name]
 					}
 				})
 
