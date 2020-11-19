@@ -26,9 +26,6 @@ class LuaAPI extends Component {
 			isLoaded: false,
 		}
 
-		// maintain a handle on this class to be used within the functions below
-		const lua_api = this
-
 		// docs will contain documentation data read in from outside files
 		// Lua.xml, LuaDocumentation.xml, and FunctionDefinitions.csv
 		this.docs = {
@@ -36,25 +33,24 @@ class LuaAPI extends Component {
 			github: {},
 		}
 
+		this.sections = [ "Actors", "Screens", "Classes", "Singletons", "Namespaces", "Enums" ]
+
 		// pojos containing just the actor/singleton class names, namespace names, and enum strings as keys
 		// used for convenient lookup in getReturnValue() and to pass up to LuaAPISidebar
-		this.actors     = {}
-		this.screens    = {}
-		this.classes    = {}
-		this.singletons = {}
-		this.namespaces = {}
-		this.enums      = {}
+		for (const i in this.sections){
+			this[this.sections[i]] = {}
+		}
 
 		// ensure that the following functions have access to "this"
-		this.getReturnValue      = this.getReturnValue.bind(this)
-		this.bubbleDataUp        = this.bubbleDataUp.bind(this)
+		this.getReturnValue = this.getReturnValue.bind(this)
+		this.bubbleDataUp   = this.bubbleDataUp.bind(this)
 
 		// trigger a custom page scroll now
-		lua_api.scroll_window_after_hashchange()
+		this.scroll_window_after_hashchange()
 
 		// and set up future hashchanges to use the custom scroll as well
 		props.history.listen((location, action) => {
-			lua_api.scroll_window_after_hashchange(location.hash)
+			this.scroll_window_after_hashchange(location.hash)
 		})
 	}
 
@@ -68,7 +64,7 @@ class LuaAPI extends Component {
 
 		// maintain a handle on this class to be used within the functions below
 		const lua_api = this
-		let anchors = []
+		const anchors = []
 
 		for (const l of element.find("Link")){
 
@@ -84,7 +80,8 @@ class LuaAPI extends Component {
 			// attempt to recreate the logic from Lua.xsl for handling <Link> elements
 			// look for   <xsl:template match="sm:Link">
 
-			// Linking to a function in the current class/namespace.
+			// class attribute is absent and function attribute is present
+			// so we're linking to a function in the current class/namespace.
 			if (link.c === undefined && link.f !== undefined){
 
 				// It was possible in LuaDocumentation.xml to create a <Link> to some other method
@@ -97,65 +94,32 @@ class LuaAPI extends Component {
 
 				if (parent_name){
 
-					if (lua_api.classes[parent_name]){
-						const anchor = "<a href='#Classes-" + parent_name + "-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-
-					} else if (lua_api.actors[parent_name]){
-						const anchor = "<a href='#Actors-" + parent_name + "-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-
-					} else if (lua_api.screens[parent_name]){
-						const anchor = "<a href='#Screens-" + parent_name + "-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-
-					} else if (lua_api.singletons[parent_name]){
-						const anchor = "<a href='#Singletons-" + parent_name + "-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
-
-					} else if (lua_api.namespaces[parent_name]){
-						const anchor = "<a href='#Namespaces-" + parent_name + "-" + link.f + "'>" + text + "</a>"
-						anchors.push(anchor)
+					// check Actors, Screens, Classes, Singletons, Namespaces, and Enums first
+					for (const i in lua_api.sections){
+						if (lua_api[lua_api.sections[i]][parent_name]){
+							anchors.push( `<a href="#${lua_api.sections[i]}-${parent_name}-${link.f}">${text}</a>` )
+							break
+						}
 					}
 
+				// if not, assume we're linking to a GlobalFunction
 				} else {
-					const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
-					anchors.push(anchor)
+					anchors.push( `<a href="#GlobalFunctions-${link.f}">${text}</a>` )
 				}
 
 
-			// Linking to a class/namespace.
+			// class attribute is present and function attribute is absent
+			// so we're linking to a class/namespace
 			} else if (link.c !== undefined && link.f === undefined){
 
 				const text = link.t !== "" ? link.t : link.c
-				let anchor
 
-				// linking to a particular StepMania class
-				if (lua_api.classes[link.c]){
-		 			anchor = "<a href='#Classes-" + link.c + "'>" + text + "</a>"
-
-				// linking to a particular Actor class
-				} else if (lua_api.actors[link.c]){
-		 			anchor = "<a href='#Actors-" + link.c + "'>" + text + "</a>"
-
-				// linking to a particular Screen class
-				} else if (lua_api.screens[link.c]){
-		 			anchor = "<a href='#Screens-" + link.c + "'>" + text + "</a>"
-
-				// linking to a particular singleton
-				} else if (lua_api.singletons[link.c]){
-		 			anchor = "<a href='#Singletons-" + link.c + "'>" + text + "</a>"
-
-				// linking to a particular Namespace
-				} else if (lua_api.namespaces[link.c]){
-					anchor = "<a href='#Namespaces-" + link.c + "'>" + text + "</a>"
-
-				// linking somewhere else in the document
-				} else {
-					anchor = "<a href='#" + link.c + "'>" + text + "</a>"
+				for (const i in lua_api.sections){
+					if (lua_api[lua_api.sections[i]][link.c]){
+						anchors.push( `<a href='#${lua_api.sections[i]}-${link.c}'>${text}</a>` )
+						break
+					}
 				}
-
-				anchors.push(anchor)
 
 
 			// Linking to a global function or an enum.
@@ -165,56 +129,49 @@ class LuaAPI extends Component {
 
 				if (link.c === "GLOBAL"){
 					// create the anchor string for this Global Function
-		 			const anchor = "<a href='#GlobalFunctions-" + link.f + "'>" + text + "</a>"
-					anchors.push(anchor)
+					anchors.push( `<a href='#GlobalFunctions-${link.f}'>${text}</a>` )
 
 				} else if (link.c === "ENUM") {
 					// create the anchor string for this Enum
-					const anchor = "<a href='#Enums-" + link.f + "'>" + text + "</a>"
-					anchors.push(anchor)
+					anchors.push( `<a href='#Enum-${link.f}'>${text}</a>` )
 				}
 
 
 			// Linking to a function in a class/namespace.
 			} else if (link.c !== undefined && link.f !== undefined) {
 
-				// if this was a <Link>text</Link> element, use the text provided
-				// if this was a self-closing link, use class.function and append "()"
-				let text = link.t !== "" ? link.t : (link.c + "." + link.f + "()")
-				let anchor = ""
+				let anchor
 
 				// ensure that link.c matches an ActorClass before creating an anchor to it
-				// lua_api.classes is a convenience object with string keys that match Class names
-				if (lua_api.classes[link.c]){
-					anchor = "<a href='#Classes-" + link.c + "-" + link.f + "'>" + text + "</a>"
+				// lua_api.Classes is a convenience object with string keys that match Class names
+				for (const i in lua_api.sections){
+					if (lua_api[lua_api.sections[i]][link.c] ){
 
-				} else if (lua_api.actors[link.c]){
-					anchor = "<a href='#Actors-" + link.c + "-" + link.f + "'>" + text + "</a>"
+						let text
+						// if this was a <Link>text</Link> element, use the text provided
+						// if this was a self-closing link, use class.function and append "()"
+						if (lua_api.sections[i] === "Singletons"){
+							text = link.t !== "" ? link.t : (`${lua_api.Singletons[link.c]}:${link.f}()`)
+						} else {
+							text = link.t !== "" ? link.t : (`${link.c}.${link.f}()`)
+						}
 
-				} else if (lua_api.screens[link.c]){
-					anchor = "<a href='#Screens-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-				// if link.c wasn't an Actor, Screen, or general Class, look for it in singletons next
-				// lua_api.singletons is a convenience object with C++ class names as keys and Lua userdata names as values
-				} else if (lua_api.singletons[link.c]){
-					text = link.t !== "" ? link.t : (lua_api.singletons[link.c] + ":" + link.f + "()")
-					anchor = "<a href='#Singletons-" + link.c + "-" + link.f + "'>" + text + "</a>"
-
-				// if link.c wasn't an ActorClass, look for it in Namespaces next
-				// lua_api.namespaces is a convenience object with string keys that match Namespaces
-				} else if (lua_api.namespaces[link.c]){
-					anchor = "<a href='#Namespaces-" + link.c + "-" + link.f + "'>" + text + "</a>"
+						anchor = `<a href='#${lua_api.sections[i]}-${link.c}-${link.f}'>${text}</a>`
+						break
+					}
+				}
 
 				// <Link> element was found with no documentation to link to...
 				// a current example is <Link class='ThemePrefs' function='Get' />
-				} else {
-					anchor = "<code>" + text + "</code>"
+				if (anchor === undefined){
+					anchor = "<code>" + (link.t !== "" ? link.t : (link.c + "." + link.f + "()")) + "</code>"
+
 				}
 
 				anchors.push(anchor)
 			}
 
-			// else "Ignore this Link."
+			// else ignore this <Link>.
 		}
 
 		$(element).find("Link").each(function(i, obj){
@@ -245,26 +202,17 @@ class LuaAPI extends Component {
 		const _r = r.match(/{(.+)}/)
 		if (_r) { r = _r[1] }
 
-		let anchor = undefined
+		let anchor
 
-		// check to see if the return text matches any of the StepMania classes
-		if (this.classes[r]){
-			anchor = "<a href='#Classes-" + r +"'>" + r + "</a>"
+		const _sections = ["Classes", "Actors", "Screens", "Enums"]
+		for (const i in _sections){
+			if (this[_sections[i]][r]){
+				anchor = `<a href='#${_sections[i]}-${r}'>${r}</a>`
+				break
+			}
+		}
 
-		// or any of the actor classes
-		} else if (this.actors[r]){
-			anchor = "<a href='#Actors-" + r +"'>" + r + "</a>"
-
-		// or any of the screen classes; handle this by linking to the Screesn section
-		// rather than the Screen object in the Screens section
-		} else if (this.screens[r]){
-			anchor = "<a href='#Screens'>" + r + "</a>"
-
-		// or any of the enums
-		} else if (this.enums[r]){
-			anchor = "<a href='#Enums-" + r +"'>" + r + "</a>"
-
-		} else {
+		if (anchor === undefined){
 			// otherwise, we have something like "bool" or "int"; just return it
 			anchor = r
 		}
@@ -358,29 +306,29 @@ class LuaAPI extends Component {
 			// constants.sort(sortByAttr("name"))
 
 			// ---------------------------------------------------------------------
-			// first, populate lua_api.singletons object with the names of each singleton and retain it as state
-			singletons.forEach(s => lua_api.singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
+			// first, populate lua_api.Singletons object with the names of each singleton and retain it as state
+			singletons.forEach(s => lua_api.Singletons[s.attributes.class.textContent] = s.attributes.name.textContent)
 			// also include the SM5 Lua Namespace names
-			namespaces.forEach(namespace => lua_api.namespaces[namespace.attributes[0].nodeValue] = true)
+			namespaces.forEach(namespace => lua_api.Namespaces[namespace.attributes[0].nodeValue] = true)
 			// and Enums strings, too
-			enums.forEach(e => lua_api.enums[e.attributes.name.textContent] = true)
+			enums.forEach(e => lua_api.Enums[e.attributes.name.textContent] = true)
 
-			// next, do similarly with lua_api.classes, filling it with the names of
-			// each stepmania class.  Note that lua_api.classes contains info for what
+			// next, do similarly with lua_api.Classes, filling it with the names of
+			// each stepmania class.  Note that lua_api.Classes contains info for what
 			// this React app presents as "Actors", "Screens", "Other Classes", and Singletons!
 			classes.forEach(cls => {
 				const class_name = cls.attributes.name.textContent
 
-				// don't add singletons here; those have already been added to lua_api.singletons
+				// don't add singletons here; those have already been added to lua_api.Singletons
 				// just skip to the next classes.forEach iteration
-				if (class_name in lua_api.singletons){ return }
+				if (class_name in lua_api.Singletons){ return }
 
 				const class_doc = $(documentation.classes).find("Class[name=" + class_name + "]")
 				const grouping  = class_doc.attr("grouping") || "SMClass"
 				const mapping = {
-					Actor: "actors",
-					Screen: "screens",
-					SMClass: "classes",
+					Actor: "Actors",
+					Screen: "Screens",
+					SMClass: "Classes",
 				}
 
 				lua_api[mapping[grouping]][class_name] = true
@@ -410,7 +358,7 @@ class LuaAPI extends Component {
 
 				// if this class is a singleton, skip to the next forEach iteration
 				// so its methods and description don't get put in with actor, screen, or class methods
-				if (lua_api.singletons[class_name]){ return }
+				if (lua_api.Singletons[class_name]){ return }
 
 				const class_doc = $(documentation.classes).find("Class[name=" + class_name + "]")
 
@@ -426,7 +374,7 @@ class LuaAPI extends Component {
 					return 0
 				})
 
-				// ... and get just the method data we want (name, return, args, description) for each method
+				// ... and get just the method data we want (name, return, args, desc, url to GitHub) for each method
 				const sorted_methods = unsorted_methods.map(function(method, i){
 
 					const method_name = $(method).attr("name")
@@ -579,7 +527,7 @@ class LuaAPI extends Component {
 			})
 
 			// ---------------------------------------------------------------------
-			// we're out of the "heavy lifting" forEach loop; it's time to setState
+			// we're out of the heavy lifting forEach loop; it's time to setState
 			lua_api.setState({
 				isLoaded: true,
 				G: G,
@@ -603,12 +551,12 @@ class LuaAPI extends Component {
 	bubbleDataUp(){
 		this.props.parentCallback({
 			sm_version: this.docs.sm_version,
-			actors: Object.keys(this.actors),
-			screens: Object.keys(this.screens),
-			sm_classes: Object.keys(this.classes),
-			namespaces: Object.keys(this.namespaces),
-			enums: Object.keys(this.enums),
-			singletons: Object.keys(this.singletons)
+			actors:     Object.keys(this.Actors),
+			screens:    Object.keys(this.Screens),
+			sm_classes: Object.keys(this.Classes),
+			namespaces: Object.keys(this.Namespaces),
+			enums:      Object.keys(this.Enums),
+			singletons: Object.keys(this.Singletons)
 		})
 	}
 
@@ -639,7 +587,7 @@ class LuaAPI extends Component {
 
 	render() {
 
-		if (this.state === undefined || this.state.isLoaded === false){ return null }
+      if (this.state === undefined || this.state.isLoaded === false){ return null }
 
 		// ---------------------------------------------------------------------
 
@@ -647,7 +595,7 @@ class LuaAPI extends Component {
 			<div className="LuaAPI pl-md-4">
 
 				<div className="alert alert-info">
-					ℹ️ The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.
+					<span role="img" aria-label="info">ℹ️</span> The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.
 				</div>
 
 
