@@ -592,7 +592,7 @@ class LuaAPI extends Component {
 		// ---------------------------------------------------------------------
 
 		return (
-			<div className="LuaAPI pl-md-4">
+			<div className="LuaAPI ps-md-4">
 
 				<div className="alert alert-info">
 					<span role="img" aria-label="info">ℹ️</span> The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.

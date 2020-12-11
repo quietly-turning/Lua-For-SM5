@@ -95,7 +95,7 @@ class App extends Component {
 							/>
 						</div>
 
-						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 pl-lg-4 pr-lg-4 pl-md-5 pr-md-5 pl-4 pr-4">
+						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
 							<Switch>
 								<Route path="/LuaAPI" render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} />))} />
 								<Route children={<Page />} />
@@ -116,7 +116,7 @@ class App extends Component {
 					/>
 				</div>
 
-				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-toggle="collapse" data-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				  <div className={this.state.mobile_nav ? "x bar1" : "bar1"}></div>
 				  <div className={this.state.mobile_nav ? "x bar2" : "bar2"}></div>
 				  <div className={this.state.mobile_nav ? "x bar3" : "bar3"}></div>

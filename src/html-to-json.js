@@ -6,7 +6,7 @@ const path = "src/Pages"
 
 recursive(path, function(err, files){
 
-	let obj = {}
+	const obj = {}
 
 	files.forEach(file => {
 		// only read files with ".html" extensions

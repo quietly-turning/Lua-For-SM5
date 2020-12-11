@@ -43,7 +43,7 @@ class Sidebar extends Component {
 			<section>
 				<h5
 					className="collapsed expandable" id={"heading-"  + index}
-					data-toggle="collapse" data-target={"#collapse-" + index}
+					data-bs-toggle="collapse" data-bs-target={"#collapse-" + index}
 					aria-expanded="false" aria-controls={"collapse-" + index}
 				>
 					<span onClick={() => this.updateHash(hash)}>{text}</span>
