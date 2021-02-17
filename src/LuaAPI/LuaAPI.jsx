@@ -133,7 +133,7 @@ class LuaAPI extends Component {
 
 				} else if (link.c === "ENUM") {
 					// create the anchor string for this Enum
-					anchors.push( `<a href='#Enum-${link.f}'>${text}</a>` )
+					anchors.push( `<a href='#Enums-${link.f}'>${text}</a>` )
 				}
 
 
