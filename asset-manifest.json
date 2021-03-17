@@ -1,25 +1,23 @@
 {
   "files": {
-    "main.css": "/Lua-For-SM5/static/css/main.467bac9d.chunk.css",
-    "main.js": "/Lua-For-SM5/static/js/main.18b3cd6f.chunk.js",
-    "main.js.map": "/Lua-For-SM5/static/js/main.18b3cd6f.chunk.js.map",
-    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.0c5332da.js",
-    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.0c5332da.js.map",
-    "static/css/2.bf573c02.chunk.css": "/Lua-For-SM5/static/css/2.bf573c02.chunk.css",
-    "static/js/2.b3fd25a7.chunk.js": "/Lua-For-SM5/static/js/2.b3fd25a7.chunk.js",
-    "static/js/2.b3fd25a7.chunk.js.map": "/Lua-For-SM5/static/js/2.b3fd25a7.chunk.js.map",
+    "main.css": "/Lua-For-SM5/static/css/main.397b30eb.chunk.css",
+    "main.js": "/Lua-For-SM5/static/js/main.aab7bf40.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.aab7bf40.chunk.js.map",
+    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.dbd859d2.js",
+    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.dbd859d2.js.map",
+    "static/css/2.9488a139.chunk.css": "/Lua-For-SM5/static/css/2.9488a139.chunk.css",
+    "static/js/2.a0bcb430.chunk.js": "/Lua-For-SM5/static/js/2.a0bcb430.chunk.js",
+    "static/js/2.a0bcb430.chunk.js.map": "/Lua-For-SM5/static/js/2.a0bcb430.chunk.js.map",
     "index.html": "/Lua-For-SM5/index.html",
-    "precache-manifest.3343d5180b31f5bef3c3f9f0ef258542.js": "/Lua-For-SM5/precache-manifest.3343d5180b31f5bef3c3f9f0ef258542.js",
-    "service-worker.js": "/Lua-For-SM5/service-worker.js",
-    "static/css/2.bf573c02.chunk.css.map": "/Lua-For-SM5/static/css/2.bf573c02.chunk.css.map",
-    "static/css/main.467bac9d.chunk.css.map": "/Lua-For-SM5/static/css/main.467bac9d.chunk.css.map",
-    "static/js/2.b3fd25a7.chunk.js.LICENSE.txt": "/Lua-For-SM5/static/js/2.b3fd25a7.chunk.js.LICENSE.txt"
+    "static/css/2.9488a139.chunk.css.map": "/Lua-For-SM5/static/css/2.9488a139.chunk.css.map",
+    "static/css/main.397b30eb.chunk.css.map": "/Lua-For-SM5/static/css/main.397b30eb.chunk.css.map",
+    "static/js/2.a0bcb430.chunk.js.LICENSE.txt": "/Lua-For-SM5/static/js/2.a0bcb430.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.0c5332da.js",
-    "static/css/2.bf573c02.chunk.css",
-    "static/js/2.b3fd25a7.chunk.js",
-    "static/css/main.467bac9d.chunk.css",
-    "static/js/main.18b3cd6f.chunk.js"
+    "static/js/runtime-main.dbd859d2.js",
+    "static/css/2.9488a139.chunk.css",
+    "static/js/2.a0bcb430.chunk.js",
+    "static/css/main.397b30eb.chunk.css",
+    "static/js/main.aab7bf40.chunk.js"
   ]
 }
