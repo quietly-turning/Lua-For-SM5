@@ -25,7 +25,7 @@ function Page(){
 
 		// highlight code blocks
 		document.querySelectorAll("pre code").forEach(block => {
-			hljs.highlightBlock(block)
+			hljs.highlightElement(block)
 		})
 
 	}, [location.pathname]) // only re-render if url's path changes

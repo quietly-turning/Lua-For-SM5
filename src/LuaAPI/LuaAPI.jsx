@@ -537,7 +537,7 @@ class LuaAPI extends Component {
 		}).then(function(){
 			// highlightjs
 			document.querySelectorAll("pre code").forEach(block => {
-				hljs.highlightBlock(block);
+				hljs.highlightElement(block);
 			})
 
 			// this second .then() handler is VERY likely to called after React
