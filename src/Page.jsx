@@ -11,7 +11,7 @@ function Page(){
 	const transform = function(node, index){
 		// transform internal <a> elements to react <Link> elements
 		if (node.type==="tag" && node.name==="a" && node.attribs && node.attribs["data-component"]==="Link"){
-			return <Link to={node.attribs.href}>{node.children[0].data}</Link>
+			return <Link key={index} to={node.attribs.href}>{node.children[0].data}</Link>
 		}
 
 		// if undefined is returned from transform(), the default behavior of
