@@ -1,7 +1,7 @@
 import React, { useEffect }  from "react"
 import { Link, useLocation } from "react-router-dom"
 import hljs            from "highlight.js"
-import ReactHtmlParser from 'react-html-parser'
+import parse from 'html-react-parser'
 
 import content from "./page-content.js"
 
@@ -30,7 +30,7 @@ function Page(){
 
 	}, [location.pathname]) // only re-render if url's path changes
 
-	return <div>{ ReactHtmlParser(content[location.pathname], {transform: transform}) }</div>;
+	return <div>{ parse(content[location.pathname], {transform: transform}) }</div>;
 }
 
 export default Page
