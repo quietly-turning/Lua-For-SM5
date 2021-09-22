@@ -6,7 +6,10 @@
 local sm_objs = {
    ["GlobalFunctions"]   = _G,
    ["Actor"]             = Actor,
+   ["ActorFrame"]        = ActorFrame,
+   ["ActorSound"]        = ActorSound,
    ["Sprite"]            = Sprite,
+   ["BitmapText"]        = BitmapText,
    ["HelpDisplay"]       = HelpDisplay,
    ["Sound"]             = Sound,
    ["Song"]              = Song,

@@ -2172,7 +2172,7 @@ Def.Sound{
 <Class name='BitmapText' grouping='Actor'>
 	<Description>
 		<em>BitmapText</em> actors are used to display text on-screen.<br />
-		The font can be specified using the <code>Font</code> attribute. It takes a font name a string,
+		The font can be specified using the <code>Font</code> attribute. It takes a font name as a string,
 		pathed relative to the current theme's <code>./Fonts/</code> directory.<br />
 		StepMania expects fonts to be formatted as spritesheets with accompanying ini files.
 		These can be generated from ttf files using <em>Texture Font Generator.exe</em> in the

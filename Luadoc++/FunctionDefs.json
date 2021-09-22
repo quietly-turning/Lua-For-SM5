@@ -236,7 +236,20 @@
 	"HelpDisplay": {
 		"setfromsongorcourse": "/Themes/_fallback/Scripts/02%20Actor.lua#L371-L386"
 	},
+	"ActorSound": {
+		"playforplayer": "/Themes/_fallback/Scripts/02%20Actor.lua#L390-L395"
+	},
 	"Song": {
 		"GetStageCost": "/Themes/_fallback/Scripts/02%20Other.lua#L132-L134"
+	},
+	"ActorFrame": {
+		"propagatecommand": "/Themes/_fallback/Scripts/02%20Actor.lua#L143-L148"
+	},
+	"BitmapText": {
+		"Stroke": "/Themes/_fallback/Scripts/02%20Actor.lua#L293-L296",
+		"NoStroke": "/Themes/_fallback/Scripts/02%20Actor.lua#L300-L303",
+		"DiffuseAndStroke": "/Themes/_fallback/Scripts/02%20Actor.lua#L314-L318",
+		"settextf": "/Themes/_fallback/Scripts/02%20Actor.lua#L307-L310",
+		"PixelFont": "/Themes/_fallback/Scripts/02%20Actor.lua#L286-L289"
 	}
 }

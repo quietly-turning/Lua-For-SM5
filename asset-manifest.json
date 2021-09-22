@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Lua-For-SM5/static/css/main.4c89a944.chunk.css",
-    "main.js": "/Lua-For-SM5/static/js/main.ee9cb490.chunk.js",
-    "main.js.map": "/Lua-For-SM5/static/js/main.ee9cb490.chunk.js.map",
+    "main.js": "/Lua-For-SM5/static/js/main.24608793.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.24608793.chunk.js.map",
     "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.48a3a9d1.js",
     "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.48a3a9d1.js.map",
     "static/css/2.38444dec.chunk.css": "/Lua-For-SM5/static/css/2.38444dec.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.38444dec.chunk.css",
     "static/js/2.ad780d12.chunk.js",
     "static/css/main.4c89a944.chunk.css",
-    "static/js/main.ee9cb490.chunk.js"
+    "static/js/main.24608793.chunk.js"
   ]
 }
