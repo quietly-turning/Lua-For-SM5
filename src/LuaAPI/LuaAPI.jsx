@@ -579,7 +579,11 @@ class LuaAPI extends Component {
 				const y_offset = el.offsetTop
 				if (y_offset){
 					const topbar_height = depth > 1 ? 108 : 60
-					window.scrollTo(0, y_offset-topbar_height)
+
+					// offset for #GlobalFunctions-[thing] is special-cased for now
+					const h3_height = depth > 0 && hash.substring(0, 15)==="GlobalFunctions" ? 40 : 0
+
+					window.scrollTo(0, y_offset-topbar_height-h3_height)
 				}
 			}
 		}
