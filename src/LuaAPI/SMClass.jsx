@@ -22,9 +22,8 @@ class SMClass extends Component {
 			<div id={this.props.grouping + "-" + this.props.smclass.name} className="section-child">
 
 				<Header grouping={this.props.grouping} name={this.props.smclass.name} smclass={this.props.smclass} level={3} />
-				<hr />
-				<Description desc={this.props.smclass.desc} />
 
+				{this.props.smclass.desc != "" && <Description desc={this.props.smclass.desc} />}
 				{this.methods}
 			</div>
 		)

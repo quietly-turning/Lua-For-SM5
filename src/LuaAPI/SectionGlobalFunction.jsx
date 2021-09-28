@@ -17,7 +17,7 @@ class SectionGlobalFunction extends Component {
 	render(){
 		return(
 			<section>
-				<Header name={this.props.name} smclass={{}} level={2} />
+				<Header name={this.props.name} className="sticky" smclass={{}} level={2} />
 
 				<Description desc={this.props.desc} />
 

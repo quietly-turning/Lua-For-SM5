@@ -568,12 +568,17 @@ class LuaAPI extends Component {
 		hash = (hash || window.location.hash)
 
 		if (hash) {
+			// hack: use hyphens in the url hash as a way of measuring "depth"
+			// that is, ar we on #Screens, #Screens-Screen, or #Screens-Screen-AddInputCallback
+			// offset by different amounts to accommodate sticky headers
+			const depth = (hash.match(/-/g) || []).length
+
 			hash = hash.replace("#","")
 			const el = document.getElementById(hash)
 			if (el){
 				const y_offset = el.offsetTop
 				if (y_offset){
-					const topbar_height = 60
+					const topbar_height = depth > 1 ? 108 : 60
 					window.scrollTo(0, y_offset-topbar_height)
 				}
 			}

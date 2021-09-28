@@ -67,6 +67,12 @@ div.LuaAPI{
 		display: flex;
 		justify-content: flex-start;
 
+		&.sticky{
+		  position: -webkit-sticky;
+		  position: sticky;
+		  top: 48px;
+		}
+
 		span.octicon-link{
 			color:rgb(92, 96, 100);
 			margin: 0.1em 0.5em 0em -1.85em;
@@ -79,9 +85,20 @@ div.LuaAPI{
 		}
 	}
 
+	h3.API-Category-Header {
+		position: -webkit-sticky;
+		position: sticky;
+		background-color: #ffffff;
+		top: 48px;
+
+		hr {
+			margin-top: 4px;
+		}
+	}
+
 	div.section-child{
 		h3{
-			margin: 0.5em 0em 0em 0em;
+			margin: 0em;
 			padding: 0.2em 0em;
 			text-indent: -0.6em;
 
@@ -117,6 +134,8 @@ div.LuaAPI{
 	// more like paragraphs; see: https://stackoverflow.com/a/31633969
 	.description
 	{
+		margin-bottom: 1em;
+
 		br{
 			display: block;
 			content: "";
@@ -127,7 +146,8 @@ div.LuaAPI{
 	// div.method is a CSS class for each method belonging to a particular ActorClass
 	div.method{
 
-		margin-top: 1.5em;
+		margin-bottom: 1.5em;
+
 
 		div.method-signature{
 			font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -168,6 +188,12 @@ div.LuaAPI{
 		text-decoration: none;
 		position:relative;
 		bottom: 0.125em;
+
+		// ensure that the github logo anchors scroll underneath the sticky headers
+		svg{
+			position: relative;
+			z-index: -1;
+		}
 	}
 
 	div.enum{

@@ -26,15 +26,20 @@ class Header extends Component {
 
 	render(){
 		const HeaderTag = `h${this.props.level}`
+		let clsName = "API-Category-Header"
+		if (HeaderTag==="h3" || HeaderTag==="h2" && this.props.name==="GlobalFunctions") {
+			clsName = clsName + " sticky"
+		}
 
 		return(
-			<HeaderTag id={this.props.name} className="API-Category-Header">
+			<HeaderTag id={this.props.name} className={clsName}>
 				<span className="octicon-link" onClick={() => this.updateHash()}>
 					<Octicon size="medium" icon={Link} />
 				</span>
 
 				{this.props.name}
 				{this.props.smclass.base && <span className="base" dangerouslySetInnerHTML={{ __html: this.generateBase(this.props.smclass.base) }}  />}
+				<hr />
 			</HeaderTag>
 		)
 	}
