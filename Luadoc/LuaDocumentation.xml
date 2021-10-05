@@ -1789,7 +1789,7 @@ return af
 		Clears all the textures from the ActorMultiTexture.
 	</Function>
 	<Function name='SetEffectMode' return='void' arguments='EffectMode em'>
-		Sets the EffectMode on the ActorMultiTexture.
+		Sets the <Link class='ENUM' function='EffectMode' /> on the ActorMultiTexture.
 	</Function>
 	<Function name='SetSizeFromTexture' return='void' arguments='RageTexture tex'>
 		Sets the size of the ActorMultiTexture from the specified texture.
@@ -1798,7 +1798,7 @@ return af
 		Sets the coordinates of the ActorMultiTexture.
 	</Function>
 	<Function name='SetTextureMode' return='void' arguments='int iIndex, TextureMode tm'>
-		Sets a TextureMode on the specified index.
+		Sets a <Link class='ENUM' function='TextureMode' /> on the specified index.
 	</Function>
 </Class>
 <Class name='ActorMultiVertex' grouping='Actor'>
@@ -1935,10 +1935,10 @@ self:SetDrawState{First= 3, Num= 4}
 		Returns the ActorMultiVertex's texture.
 	</Function>
 	<Function name='SetEffectMode' return='void' arguments='EffectMode em'>
-		Sets the <Link class='ENUM' function='EffectMode'>EffectMode</Link> of the ActorMultiVertex.
+		Sets the <Link class='ENUM' function='EffectMode' /> of the ActorMultiVertex.
 	</Function>
 	<Function name='SetTextureMode' return='void' arguments='TextureMode tm'>
-		Sets the <Link class='ENUM' function='TextureMode'>TextureMode</Link> of the ActorMultiVertex.
+		Sets the <Link class='ENUM' function='TextureMode' /> of the ActorMultiVertex.
 	</Function>
 	<Function name='SetLineWidth' return='void' arguments='float width'>
 		Sets the width of the line for DrawMode_LineStrip.
