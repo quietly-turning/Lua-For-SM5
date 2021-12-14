@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/Lua-For-SM5/static/css/main.e90968f4.chunk.css",
-    "main.js": "/Lua-For-SM5/static/js/main.16365a13.chunk.js",
-    "main.js.map": "/Lua-For-SM5/static/js/main.16365a13.chunk.js.map",
-    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.955e0849.js",
-    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.955e0849.js.map",
+    "main.js": "/Lua-For-SM5/static/js/main.57362e93.chunk.js",
+    "main.js.map": "/Lua-For-SM5/static/js/main.57362e93.chunk.js.map",
+    "runtime-main.js": "/Lua-For-SM5/static/js/runtime-main.28044864.js",
+    "runtime-main.js.map": "/Lua-For-SM5/static/js/runtime-main.28044864.js.map",
     "static/css/2.5ec92682.chunk.css": "/Lua-For-SM5/static/css/2.5ec92682.chunk.css",
-    "static/js/2.6ae9da65.chunk.js": "/Lua-For-SM5/static/js/2.6ae9da65.chunk.js",
-    "static/js/2.6ae9da65.chunk.js.map": "/Lua-For-SM5/static/js/2.6ae9da65.chunk.js.map",
+    "static/js/2.50416ea5.chunk.js": "/Lua-For-SM5/static/js/2.50416ea5.chunk.js",
+    "static/js/2.50416ea5.chunk.js.map": "/Lua-For-SM5/static/js/2.50416ea5.chunk.js.map",
     "index.html": "/Lua-For-SM5/index.html",
     "static/css/2.5ec92682.chunk.css.map": "/Lua-For-SM5/static/css/2.5ec92682.chunk.css.map",
     "static/css/main.e90968f4.chunk.css.map": "/Lua-For-SM5/static/css/main.e90968f4.chunk.css.map",
-    "static/js/2.6ae9da65.chunk.js.LICENSE.txt": "/Lua-For-SM5/static/js/2.6ae9da65.chunk.js.LICENSE.txt"
+    "static/js/2.50416ea5.chunk.js.LICENSE.txt": "/Lua-For-SM5/static/js/2.50416ea5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.955e0849.js",
+    "static/js/runtime-main.28044864.js",
     "static/css/2.5ec92682.chunk.css",
-    "static/js/2.6ae9da65.chunk.js",
+    "static/js/2.50416ea5.chunk.js",
     "static/css/main.e90968f4.chunk.css",
-    "static/js/main.16365a13.chunk.js"
+    "static/js/main.57362e93.chunk.js"
   ]
 }
