@@ -32,7 +32,7 @@ save yourself some time, copy this for undocumented things:
 		Many global functions are available when scripting with Lua for StepMania.<br />
 		Some, like <Link class='GLOBAL' function='collectgarbage' />, are core functions of Lua 5.1's <a href="https://www.lua.org/manual/5.1/manual.html#5.1" target="_blank" rel="noopener noreferrer">basic Library</a>.<br />
 		Others, like <Link class='GLOBAL' function='Basename' />, are defined in the StepMania engine's C++ but made available to Lua.<br />
-	  And others, like <Link class='GLOBAL' function='DeepCopy' />, are defined in the _fallback theme's Lua files.<br />
+		And others, like <Link class='GLOBAL' function='DeepCopy' />, are defined in the _fallback theme's Lua files.<br />
 		When scripting with StepMania, keep in mind that if you do not scope your functions (and variables) using the <code>local</code> keyword, they will be global.
 	</Description>
 	<Function name='AllowOptionsMenu' theme='_fallback' return='bool' arguments=''>
@@ -688,6 +688,14 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='StandardDecorationFromFileOptional' theme='_fallback' return='Actor' arguments='string sMetricsName, string sFileName'>
 		[02 ActorDef.lua]
+	</Function>
+	<Function name='StringToBlend' theme='_fallback' return='string' arguments='string s'>
+		[01 Alias.lua] Given the short form of a <Link class='ENUM' function='BlendMode' /> string, returns the full version of the string.<br />
+		Returns <code>nil</code> if the string passed in does not match any valid BlendModes.
+<pre><code>
+local b = StringToBlend("AlphaMask")
+Trace(b)  -- "BlendMode_AlphaMask"
+</code></pre>
 	</Function>
 	<Function name='tableshuffle' theme='_fallback' return='table' arguments='table t'>
 		[02 Utilities.lua] Returns a shuffled version of <code>t</code>.
@@ -1372,7 +1380,8 @@ local n = r['PlayerNumber_P2']
 		for an example.
 	</Function>
 	<Function name='halign' return='void' arguments='float fAlign'>
-		Set the fractional horizontal alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is left aligned while an alignment of 1 is right aligned. See <Link function='horizalign' /> for the common case.
+		Set the fractional horizontal alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is left-aligned while an alignment of 1 is right-aligned.<br />
+		Use <Link function='horizalign' /> for the common case.
 	</Function>
 	<Function name='heading' return='void' arguments='float fHeading'>
 		Sets the heading of this Actor to <code>fHeading</code>.
@@ -1387,7 +1396,14 @@ local n = r['PlayerNumber_P2']
 		[02 Actor.lua] "Hide if <code>b</code> is <code>true</code>, but don't unhide if <code>b</code> is <code>false</code>."
 	</Function>
 	<Function name='horizalign' return='void' arguments='HorizAlign align'>
-		Set the horizontal alignment of the Actor according to <code>align</code>. See <Link function='halign' /> for fractional alignment.
+		Set the <Link class='ENUM' function='HorizAlign'/> of the Actor according to <code>align</code>.<br />
+<pre><code>
+local spr = LoadActor('awesome.png')
+spr.InitCommand=function(self)
+	self:horizalign('HorizAlign_Left')
+end
+</code></pre>
+		Use <Link function='halign' /> for fractional alignment.
 	</Function>
 	<Function name='hurrytweening' return='void' arguments='float factor'>
 		Hurries up an Actor's tweening by <code>factor</code>.
@@ -1525,10 +1541,18 @@ local n = r['PlayerNumber_P2']
 		It's usually more convenient to use <Link function='linear' />, <Link function='accelerate' />, <Link function='decelerate' />, or <Link function='spring' /> rather than using Actor:tween() directly.
 	</Function>
 	<Function name='valign' return='void' arguments='float fAlign'>
-		Set the fractional vertical alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is top aligned while an alignment of 1 is bottom aligned. See <Link function="vertalign" /> for the common case.
+		Set the fractional vertical alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is top-aligned while an alignment of 1 is bottom-aligned.<br />
+		Use <Link function="vertalign" /> for the common case.
 	</Function>
 	<Function name='vertalign' return='void' arguments='VertAlign align'>
-		Set the vertical alignment of the Actor according to <code>align</code>. See <Link function="valign" /> for fractional alignment.
+		Set the <Link class='ENUM' function='VertAlign' /> of the Actor according to <code>align</code>.<br />
+<pre><code>
+local spr = LoadActor('awesome.png')
+spr.InitCommand=function(self)
+	self:vertalign('VertAlign_Bottom')
+end
+</code></pre>
+		See <Link function="valign" /> for fractional alignment.
 	</Function>
 	<Function name='vibrate' return='void' arguments=''>
 		Makes the Actor vibrate violently. Can use <Link function='effectmagnitude' /> to define different vibration behavior.
