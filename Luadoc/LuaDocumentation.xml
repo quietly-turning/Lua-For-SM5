@@ -162,7 +162,7 @@ save yourself some time, copy this for undocumented things:
 		Creates a RageBezier2D for you to use.  Make sure you destroy the RageBezier2D when you're done with it, or you will have a memory leak.
 	</Function>
 	<Function name='create_spline' return='CubicSplineN' arguments=''>
-		Creates a CubicSplineN for you to use.  Make sure you destroy the CubicSplineN when you're done with it, or you will have a memory leak.
+		Creates a CubicSplineN for you to use.  Make sure you <Link class="CubicSplineN" function='destroy'>destroy</Link> the CubicSplineN when you're done with it, or you will have a memory leak.
 	</Function>
 	<Function name='CustomDifficultyToColor' theme='_fallback' return='color' arguments='string cd'>
 		[02 Colors.lua]
@@ -2628,7 +2628,7 @@ Def.BitmapText{
 		Returns whether the spline is currently dirty.
 	</Function>
 	<Function name='destroy' return='' arguments=''>
-		Destroys the spline, freeing the memory allocated for it.  This can only be called on splines created with create_spline().
+		Destroys the spline, freeing the memory allocated for it.  This can only be called on splines created with <Link class='GLOBAL' function='create_spline'>create_spline()</Link>.
 	</Function>
 </Class>
 <Class name='DeviceList' grouping='Actor'>
