@@ -1943,6 +1943,7 @@
 		</Class>
 		<Class name='StageStats'>
 			<Function name='AllFailed'/>
+			<Function name='GaveUp'/>
 			<Function name='GetEarnedExtraStage'/>
 			<Function name='GetGameplaySeconds'/>
 			<Function name='GetMultiPlayerStageStats'/>
@@ -2984,6 +2985,6 @@
 		<Constant name='right' value='&apos;HorizAlign_Right&apos;'/>
 		<Constant name='top' value='&apos;VertAlign_Top&apos;'/>
 	</Constants>
-	<Version>StepMania5.1-git-6a645b4710</Version>
+	<Version>StepMania5.1-git-a1984e4f65</Version>
 	<Date>2020-09-09</Date>
 </Lua>
