@@ -76,7 +76,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='BinaryToHex' return='string' arguments='string s'>
 		Converts a binary formatted string to hexadecimal format.
-		This can be useful in conjunction with <Link class="CryptManager" />'s MD5 and SHA functions.
+		This can be useful in conjunction with <Link class='CryptManager' />'s MD5 and SHA functions.
 	</Function>
 	<Function name='BoostColor' theme='_fallback' return='color' arguments='color c, float fBoost'>
 		[02 Colors.lua] Returns the color that results from multiplying <code>c</code>'s R, G, and B values by <code>fBoost</code>.
@@ -163,7 +163,7 @@ save yourself some time, copy this for undocumented things:
 		Creates a RageBezier2D for you to use.  Make sure you destroy the RageBezier2D when you're done with it, or you will have a memory leak.
 	</Function>
 	<Function name='create_spline' return='CubicSplineN' arguments=''>
-		Creates a CubicSplineN for you to use.  Make sure you <Link class="CubicSplineN" function='destroy'>destroy</Link> the CubicSplineN when you're done with it, or you will have a memory leak.
+		Creates a CubicSplineN for you to use.  Make sure you <Link class='CubicSplineN' function='destroy'>destroy</Link> the CubicSplineN when you're done with it, or you will have a memory leak.
 	</Function>
 	<Function name='CustomDifficultyToColor' theme='_fallback' return='color' arguments='string cd'>
 		[02 Colors.lua]
@@ -188,7 +188,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='dofile' theme='_fallback' return='chunk' arguments='string sFilePath'>
 		<code>dofile</code> is normally a core function of Lua's basic library.  StepMania overrides this in
-		[01 base.lua] to use <Link function="loadfile">loadfile</Link>, which itself has been overridden.
+		[01 base.lua] to use <Link function='loadfile'>loadfile</Link>, which itself has been overridden.
 	</Function>
 	<Function name='EvalUsesCheckpointsWithJudgments' theme='_fallback' return='bool' arguments=''>
 		[03 Gameplay.lua]
@@ -272,10 +272,10 @@ save yourself some time, copy this for undocumented things:
 	<Function name='GetRandomSongBackground' theme='_fallback' return='string' arguments=''>
 		[02 Utilities.lua] Returns a path to a random song background.
 	</Function>
-	<Function name='GetReal' theme="_fallback" return='float' arguments=''>
+	<Function name='GetReal' theme='_fallback' return='float' arguments=''>
 		[02 Actor.lua]
 	</Function>
-	<Function name='GetRealInverse' theme="_fallback" return='float' arguments=''>
+	<Function name='GetRealInverse' theme='_fallback' return='float' arguments=''>
 		[02 Actor.lua]
 	</Function>
 	<Function name='GetScreenAspectRatio' return='float' arguments=''>
@@ -372,20 +372,20 @@ save yourself some time, copy this for undocumented things:
 		will iterate over the pairs (1,t[1]), (2,t[2]), ···, up to the first integer key absent from the table.<br />
 		<code>ipairs</code> is a core function of Lua's basic library; see the Lua manual for more details.
 	</Function>
-	<Function name='IsArcade' theme="_fallback" return='bool' arguments=''>
+	<Function name='IsArcade' theme='_fallback' return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if the coin mode is not set to <Link class='ENUM' function='CoinMode'>CoinMode_Home</Link>.
 	</Function>
-	<Function name='IsCourse' theme="_fallback" return='bool' arguments=''>
+	<Function name='IsCourse' theme='_fallback' return='bool' arguments=''>
 		Returns <code>true</code> if the current <Link class='ENUM' function='PlayMode' /> is Nonstop, Oni, or Endless.<br />
 		This is effectively the same as <Link class='GameState' function='IsCourseMode' />.
 	</Function>
-	<Function name='IsFreePlay' theme="_fallback" return='bool' arguments=''>
+	<Function name='IsFreePlay' theme='_fallback' return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if <Link function='IsArcade'>IsArcade()</Link> and the coin mode is <Link class='ENUM' function='CoinMode'>CoinMode_Free</Link>.
 	</Function>
 	<Function name='IsGame' theme='_fallback' return='bool' arguments='string sGame'>
 		[03 Gameplay.lua] Returns <code>true</code> if the current game is <code>sGame</code>.
 	</Function>
-	<Function name='IsHome' theme="_fallback" return='bool' arguments=''>
+	<Function name='IsHome' theme='_fallback' return='bool' arguments=''>
 		[02 Utilities.lua] Returns <code>true</code> if the coin mode is set to <Link class='ENUM' function='CoinMode'>CoinMode_Home</Link>.
 	</Function>
 	<Function name='IsNetConnected' return='bool' arguments=''>
@@ -438,7 +438,7 @@ save yourself some time, copy this for undocumented things:
 	</Function>
 	<Function name='loadfile' theme='_fallback' return='chunk' arguments='string sFilePath'>
 		<code>loadfile</code> is normally a core function of Lua's basic library.  StepMania overrides this in
-		[01 base.lua] to use <Link class="lua" function="ReadFile">lua.ReadFile</Link>.
+		[01 base.lua] to use <Link class='lua' function='ReadFile'>lua.ReadFile</Link>.
 	</Function>
 	<Function name='LoadFallbackB' theme='_fallback' return='ActorDef' arguments=''>
 		[02 ActorDef.lua] Load the fallback BGA for the element that is currently being loaded.
@@ -754,7 +754,7 @@ Trace(b)  -- "BlendMode_AlphaMask"
 		This way, a theme can implement a custom interactive screen for adjusting those preferences.
 	</Function>
 	<Function name='Var' theme='_fallback' return='ThreadVariable' arguments=''>
-		[01 base.lua] Alias for <Link class="lua" function="GetThreadVariable">lua.GetThreadVariable</Link>.
+		[01 base.lua] Alias for <Link class='lua' function='GetThreadVariable'>lua.GetThreadVariable</Link>.
 	</Function>
 	<Function name='VersionDate' return='string' arguments=''>
 		Returns the current version's build date, formatted as YYYYMMDD.
@@ -1264,7 +1264,7 @@ local n = r['PlayerNumber_P2']
 		<br />
 		The different effects use percent_through_effect in different ways.  Some use it to calculate percent_between_colors with this sine wave:  sin((percent_through_effect + 0.25f) * 2 * PI ) / 2 + 0.5f<br />
 		Some effects check the internal bool blink_on.  blink_on is true if percent_through_effect is greater than 0.5 and false if percent_through_effect is less than or equal to 0.5.<br /><br />
-		Check the effect functions for individual explanations:  <Link  function="diffuseblink" />, <Link  function="diffuseshift" />, <Link  function="glowblink" />, <Link  function="glowshift" />, <Link  function="glowramp" />, <Link  function="rainbow" />, <Link  function="wag" />, <Link  function="bounce" />, <Link  function="bob" />, <Link  function="pulse" />, <Link  function="spin" />, <Link  function="vibrate" />.
+		Check the effect functions for individual explanations:  <Link  function='diffuseblink' />, <Link  function='diffuseshift' />, <Link  function='glowblink' />, <Link  function='glowshift' />, <Link  function='glowramp' />, <Link  function='rainbow' />, <Link  function='wag' />, <Link  function='bounce' />, <Link  function='bob' />, <Link  function='pulse' />, <Link  function='spin' />, <Link  function='vibrate' />.
 	</Function>
 	<Function name='effect_hold_at_full' return='void' arguments='float hold_at_full'>
 		Set the hold_at_full part of the effect timing while leaving the others unchanged.
@@ -1459,10 +1459,10 @@ end
 		Set the Actor's rotation on the Z axis to <code>fRotation</code> degrees.
 	</Function>
 	<!-- RunCommandsRecursively -->
-	<Function name='scale_or_crop_alternative' theme="_fallback" return='void' arguments=''>
+	<Function name='scale_or_crop_alternative' theme='_fallback' return='void' arguments=''>
 		[02 Actor.lua] An alternative version of <Link function='scale_or_crop_background' />.
 	</Function>
-	<Function name='scale_or_crop_background' theme="_fallback" return='void' arguments=''>
+	<Function name='scale_or_crop_background' theme='_fallback' return='void' arguments=''>
 		[02 Actor.lua]
 	</Function>
 	<Function name='scaletocover' return='void' arguments='float fLeft, float fTop, float fRight, float fBottom'>
@@ -1543,7 +1543,7 @@ end
 	</Function>
 	<Function name='valign' return='void' arguments='float fAlign'>
 		Set the fractional vertical alignment of the Actor according to <code>fAlign</code> which should be a float in the range 0..1. An alignment of 0 is top-aligned while an alignment of 1 is bottom-aligned.<br />
-		Use <Link function="vertalign" /> for the common case.
+		Use <Link function='vertalign' /> for the common case.
 	</Function>
 	<Function name='vertalign' return='void' arguments='VertAlign align'>
 		Set the <Link class='ENUM' function='VertAlign' /> of the Actor according to <code>align</code>.<br />
@@ -1553,7 +1553,7 @@ spr.InitCommand=function(self)
 	self:vertalign('VertAlign_Bottom')
 end
 </code></pre>
-		See <Link function="valign" /> for fractional alignment.
+		See <Link function='valign' /> for fractional alignment.
 	</Function>
 	<Function name='vibrate' return='void' arguments=''>
 		Makes the Actor vibrate violently. Can use <Link function='effectmagnitude' /> to define different vibration behavior.
@@ -4627,11 +4627,11 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 		Returns the profile for player <code>pn</code>.
 	</Function>
 	<Function name='GetProfileDir' return='string' arguments='ProfileSlot slot'>
-		Returns the profile directory for the provided <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link>, formatted like <code>/Save/LocalProfiles/00000001/</code>.<br />
-		Returns an empty string if the the provided <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link> does not have a <Link class="Profile" /> loaded.
+		Returns the profile directory for the provided <Link class='ENUM' function='ProfileSlot'>ProfileSlot</Link>, formatted like <code>/Save/LocalProfiles/00000001/</code>.<br />
+		Returns an empty string if the the provided <Link class='ENUM' function='ProfileSlot'>ProfileSlot</Link> does not have a <Link class='Profile' /> loaded.
 	</Function>
 	<Function name='GetSongNumTimesPlayed' return='int' arguments='Song s, ProfileSlot ps'>
-		Returns the number of times Song <code>s</code> has been played with the specified <Link class="ENUM" function="ProfileSlot">ProfileSlot</Link>.
+		Returns the number of times Song <code>s</code> has been played with the specified <Link class='ENUM' function='ProfileSlot'>ProfileSlot</Link>.
 	</Function>
 	<Function name='GetStatsPrefix' return='string' arguments=''>
 		Returns the current stats prefix.
@@ -5177,7 +5177,7 @@ Details of the <code>event</code> table:
 	</Function>
 	<Function name='GetAnyStillEntering' return='bool' arguments=''>
 		Returns <code>true</code> if anyone is still entering their name.<br />
-		(As opposed to those who are Finalized; see <Link function="GetFinalized" />)
+		(As opposed to those who are Finalized; see <Link function='GetFinalized' />)
 	</Function>
 	<Function name='GetEnteringName' return='bool' arguments='PlayerNumber pn'>
 		Returns <code>true</code> if Player <code>pn</code> is entering their name.
@@ -5910,7 +5910,7 @@ local spr = Def.Sprite{
 		Returns <code>true</code> if any player has given up on the song.
 	</Function>
 	<Function name='GetEarnedExtraStage' return='EarnedExtraStage' arguments=''>
-		Returns the <Link class="ENUM" function="EarnedExtraStage">EarnedExtraStage</Link> value.
+		Returns the <Link class='ENUM' function='EarnedExtraStage'>EarnedExtraStage</Link> value.
 	</Function>
 	<Function name='GetGameplaySeconds' return='float' arguments=''>
 		Returns the number of seconds played.
@@ -5924,7 +5924,7 @@ local spr = Def.Sprite{
 	</Function>
 	<Function name='GetPossibleSongs' return='{Song}' arguments='' />
 	<Function name='GetStage' return='Stage' arguments=''>
-		Returns the <Link class="ENUM" function="Stage">Stage</Link> value.
+		Returns the <Link class='ENUM' function='Stage'>Stage</Link> value.
 	</Function>
 	<Function name='GetStageIndex' return='int' arguments=''>
 		Returns the stage index.
