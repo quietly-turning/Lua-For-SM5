@@ -85,7 +85,8 @@ save yourself some time, copy this for undocumented things:
 		[02 Colors.lua] Modifies the brightness of the specified color.
 	</Function>
 	<Function name='Center1Player' theme='_fallback' return='bool' arguments=''>
-		[02 Utilities.lua] Returns <code>true</code> if Center 1P is being used.
+		[02 Utilities.lua] Returns <code>true</code> if the <code>Center1Player</code> preference is enabled during single style.   Returns <code>true</code> when the style is double or routine, regardless of the <code>Center1Player</code> preference.<br />
+		Returns <code>false</code> otherwise.
 	</Function>
 	<Function name='CheckpointsTapsSeparateJudgment' theme='_fallback' return='bool' arguments=''>
 		[03 Gameplay.lua] Returns <code>true</code> if checkpoint judgments and tap judgments
@@ -5056,7 +5057,10 @@ Details of the <code>event</code> table:
 		This should behave identically to the normal back button behavior.  This function is for the pause menu to use when the player forfeits or restarts, so that a score isn't saved.
 	</Function>
 	<Function name='Center1Player' return='bool' arguments=''>
-		Returns <code>true</code> if a single <Link class='Player' /> has its NoteField centered.
+		Returns <code>true</code> if a single <Link class='Player' /> has its NoteField centered using the <code>Center1Player</code> preference.<br />
+		Will return <code>false</code> if the current theme has <code>AllowCenter1Player=false</code> under <code>[ScreenGameplay]</code>.<br />
+		Notably, this can return <code>false</code> when the player's NoteField is visually centered, as is convention in <Link class='ENUM' function='StyleType'>double style</Link> or <Link class='ENUM' function='StepsType'>Techno_Single8</Link>.<br />
+		Refer to the global function <Link class='GLOBAL' function='Center1Player' /> for a somewhat more robust check.
 	</Function>
 	<Function name='GetDummyPlayerInfo' return='PlayerInfo' arguments='int index'>
 		Returns a dummy PlayerInfo for the specified index.
