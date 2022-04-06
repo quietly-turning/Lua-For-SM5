@@ -113,13 +113,18 @@ class LuaAPI extends Component {
 			} else if (link.c !== undefined && link.f === undefined){
 
 				const text = link.t !== "" ? link.t : link.c
+				// e.g. <Link class='Enums' />
+				let anchor = `<a href='#${link.c}'>${text}</a>`
 
 				for (const i in lua_api.sections){
 					if (lua_api[lua_api.sections[i]][link.c]){
-						anchors.push( `<a href='#${lua_api.sections[i]}-${link.c}'>${text}</a>` )
+						// e.g. <Link class='LifeMeter' />
+						anchor = `<a href='#${lua_api.sections[i]}-${link.c}'>${text}</a>`
 						break
 					}
 				}
+
+				anchors.push(anchor)
 
 
 			// Linking to a global function or an enum.
