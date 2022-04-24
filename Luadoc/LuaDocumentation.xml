@@ -1753,7 +1753,26 @@ return af
 		Runs the commands in <code>cmds</code> on the ActorFrame's children.
 	</Function>
 	<Function name='runcommandsonleaves' return='void' arguments='LuaReference cmds'>
-		Runs the commands in <code>cmds</code> on the ActorFrame's leaves.
+		Runs the commands in <code>cmds</code> on the ActorFrame's leaves.  Leaves are nodes in the ActorFrame tree that have no further child nodes.<br />
+		<code>runcommandsonleaves</code> is similar to <Link function='RunCommandsOnChildren' />; both can be used to run commands on an ActorFrame's children, and both will do so recursively, running comands on an ActorFrame's children's children (and so on).<br />
+		<code>runcommandsonleaves</code> will only run the <code>cmds</code> directly on leaf nodes, while <code>RunCommandsOnChildren</code> will run the <code>cmds</code> on all children, ActorFrames and Actors alike.<br />
+		Example:
+<pre><code>
+Def.ActorFrame{ 
+	InitCommand=function(self)
+		-- bounce() will be applied to both Sprites and the BitmapText
+		-- but not the ActorFrame
+		self:runcommandsonleaves( function(leaf) leaf:bounce() end )
+	end,
+	
+	Def.Sprite{ Texture="sun.png" },
+	
+	Def.ActorFrame{
+		Def.Sprite{ Texture="airhorn.png" },
+		Def.BitmapText{ Text="Yo!" }
+	}
+}
+</code></pre>
 	</Function>
 	<Function name='SetAmbientLightColor' return='void' arguments='Color c'>
 		Sets the ActorFrame's ambient light color to <code>c</code>.
