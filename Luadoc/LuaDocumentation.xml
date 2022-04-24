@@ -1127,7 +1127,7 @@ local pn2 = PlayerNumber:Reverse()['PlayerNumber_P2']
 		Sets the Actor's base Z zoom to <code>zoom</code>.
 	</Function>
 	<Function name='blend' return='void' arguments='BlendMode mode'>
-		Sets the Actor to use the specified blend mode.
+		Sets the Actor to use the specified <Link class='ENUM' function='BlendMode' />.
 	</Function>
 	<Function name='bob' return='void' arguments=''>
 		Makes the Actor bob up and down. Can use <Link function='effectmagnitude' /> to define different bobbing behavior.
