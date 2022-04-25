@@ -1127,7 +1127,7 @@ local pn2 = PlayerNumber:Reverse()['PlayerNumber_P2']
 		Sets the Actor's base Z zoom to <code>zoom</code>.
 	</Function>
 	<Function name='blend' return='void' arguments='BlendMode mode'>
-		Sets the Actor to use the specified blend mode.
+		Sets the Actor to use the specified <Link class='ENUM' function='BlendMode' />.
 	</Function>
 	<Function name='bob' return='void' arguments=''>
 		Makes the Actor bob up and down. Can use <Link function='effectmagnitude' /> to define different bobbing behavior.
@@ -1464,7 +1464,30 @@ end
 	<Function name='rotationz' return='void' arguments='float fRotation'>
 		Set the Actor's rotation on the Z axis to <code>fRotation</code> degrees.
 	</Function>
-	<!-- RunCommandsRecursively -->
+	<Function name='RunCommandsRecursively' return='void' arguments='LuaReference cmds'>
+		Recursively runs the commands in <code>cmds</code> on the Actor's children, as well as the Actor itself.<br />
+		Since <code>RunCommandsRecursively</code> belongs to StepMania's base <code>Actor</code> class, it is available to all specialized actors.  Calling it from an ActorFrame or ActorFrameTexture can be helpful, as those specialized actors can contain children actors.<br />
+		See <Link class='ActorFrame' function='RunCommandsOnChildren' /> and <Link class='ActorFrame' function='runcommandsonleaves' /> for related needs.<br />
+		Example:
+<pre><code>
+Def.ActorFrame{
+	Name="AF",
+	
+	Def.Sprite{ Name="sun", Texture="sun.png" },
+	
+	Def.ActorFrame{
+		Name="AF2",
+		InitCommand=function(self)
+			-- bounce() will be applied to AF2, airhorn, and catchphrase
+			self:RunCommandsRecursively( function(actor) actor:bounce() end )
+		end,
+		
+		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
+		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+	}
+}
+</code></pre>
+	</Function>
 	<Function name='scale_or_crop_alternative' theme='_fallback' return='void' arguments=''>
 		[02 Actor.lua] An alternative version of <Link function='scale_or_crop_background' />.
 	</Function>
@@ -1750,10 +1773,48 @@ return af
 		Removes the specified child from the ActorFrame.
 	</Function>
 	<Function name='RunCommandsOnChildren' return='void' arguments='LuaReference cmds'>
-		Runs the commands in <code>cmds</code> on the ActorFrame's children.
+		Runs the commands in <code>cmds</code> on the ActorFrame's immediate children. <br />
+		See <Link class='Actor' function='RunCommandsRecursively' /> and <Link function='runcommandsonleaves' /> for related needs.<br />
+		Example:
+<pre><code>
+Def.ActorFrame{
+	Name="AF",
+	InitCommand=function(self)
+		-- bounce() will be applied to sun and AF2
+		self:RunCommandsOnChildren( function(child) child:bounce() end )
+	end,
+	
+	Def.Sprite{ Name="sun", Texture="sun.png" },
+	
+	Def.ActorFrame{
+		Name="AF2",
+		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
+		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+	}
+}
+</code></pre>
 	</Function>
 	<Function name='runcommandsonleaves' return='void' arguments='LuaReference cmds'>
-		Runs the commands in <code>cmds</code> on the ActorFrame's leaves.
+		Runs the commands in <code>cmds</code> on the ActorFrame's leaves.  Leaves are nodes in the ActorFrame tree that have no further child nodes.<br />
+		See <Link function='RunCommandsOnChildren' /> and <Link class='Actor' function='RunCommandsRecursively' /> for related needs.<br />
+		Example:
+<pre><code>
+Def.ActorFrame{
+	Name="AF",
+	InitCommand=function(self)
+		-- bounce() will be applied to sun, airhorn, and catchphrase
+		self:runcommandsonleaves( function(leaf) leaf:bounce() end )
+	end,
+	
+	Def.Sprite{ Name="sun", Texture="sun.png" },
+	
+	Def.ActorFrame{
+		Name="AF2",
+		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
+		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+	}
+}
+</code></pre>
 	</Function>
 	<Function name='SetAmbientLightColor' return='void' arguments='Color c'>
 		Sets the ActorFrame's ambient light color to <code>c</code>.
