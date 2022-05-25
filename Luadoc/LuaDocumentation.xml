@@ -1483,7 +1483,7 @@ Def.ActorFrame{
 		end,
 		
 		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
-		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+		Def.BitmapText{ Name="catchphrase", Font="Common Normal", Text="Yo!" }
 	}
 }
 </code></pre>
@@ -1676,8 +1676,8 @@ end
 		A common convention is to add children at the next index (current size of the table plus <code>1</code>).<br />
 		Basic example:
 <pre><code>
--- in the context of a lua file as a screen layer
--- this ActorFrame is a table
+-- in the context of a .lua file as a screen layer
+-- this ActorFrame can be thought of as a Lua table
 local af = Def.ActorFrame{}
 
 -- add a Sprite at the next index
@@ -1696,7 +1696,7 @@ af[#af+1] = Def.BitmapText{
 return af
 </code></pre>
 	When actor commands like <Link class='Actor' function='xy' /> and <Link class='Actor' function='zoom' />
-	are used position and scale an ActorFrame, its children will position relative to the parent ActorFrame
+	are used to position and scale an ActorFrame, its children will position relative to the parent ActorFrame
 	and scale proportionally.<br />
 	For example, if you want to animate 50 actors moving 100px to the right in unison, it is easier to move the
 	parent ActorFrame than each actor individually.<br />
@@ -1725,6 +1725,8 @@ af[#af+1] = Def.Sprite{
 
 return af
 </code></pre>
+	Likewise, if you stop drawing an ActorFrame by applying <code>visible(false)</code> to it, its children
+	will drop drawing with it.<br />
 	ActorFrames can contain ActorFrames, and doing so is good design for sufficiently complex screens.
 	</Description>
 
@@ -1789,7 +1791,7 @@ Def.ActorFrame{
 	Def.ActorFrame{
 		Name="AF2",
 		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
-		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+		Def.BitmapText{ Name="catchphrase", Font="Common Normal", Text="Yo!" }
 	}
 }
 </code></pre>
@@ -1811,7 +1813,7 @@ Def.ActorFrame{
 	Def.ActorFrame{
 		Name="AF2",
 		Def.Sprite{ Name="airhorn", Texture="airhorn.png" },
-		LoadFont("Common Normal")..{ Name="catchphrase", Text="Yo!" }
+		Def.BitmapText{ Name="catchphrase", Font="Common Normal", Text="Yo!" }
 	}
 }
 </code></pre>
