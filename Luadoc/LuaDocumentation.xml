@@ -1726,7 +1726,7 @@ af[#af+1] = Def.Sprite{
 return af
 </code></pre>
 	Likewise, if you stop drawing an ActorFrame by applying <code>visible(false)</code> to it, its children
-	will drop drawing with it.<br />
+	will stop drawing with it.<br />
 	ActorFrames can contain ActorFrames, and doing so is good design for sufficiently complex screens.
 	</Description>
 
