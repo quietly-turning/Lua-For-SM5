@@ -4851,8 +4851,8 @@ prev_note_name, succeeded = options:NoteSkin("cel")
 	<Function name='ReadBytes' return='string' arguments='int length'>
 		Returns <code>length</code> bytes from the RageFile's current position.
 	</Function>
-	<Function name='Seek' return='int' arguments='int offset'>
-		Seeks to position <code>offset</code> in the file and returns the new position.
+	<Function name='Seek' return='int' arguments=''>
+		Seeks to a position in the file and returns the new position.
 	</Function>
 	<Function name='Tell' return='int' arguments=''>
 		Returns the current position in the file.
