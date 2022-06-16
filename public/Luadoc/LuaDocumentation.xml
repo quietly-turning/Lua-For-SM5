@@ -969,7 +969,11 @@ local pn2 = PlayerNumber:Reverse()['PlayerNumber_P2']
 </Namespace>
 <Namespace name='RageFileUtil'>
 	<Function name='CreateRageFile' return='RageFile' arguments=''>
-		Creates a RageFile handle with which one can use the commands in <Link class='RageFile' />.
+		Creates a RageFile handle with which one can use the commands in <Link class='RageFile' />.<br />
+		Example:
+<pre><code>
+local file = RageFileUtil.CreateRageFile()
+</code></pre>
 	</Function>
 </Namespace>
 <Namespace name='ScreenSystemLayerHelpers'>
