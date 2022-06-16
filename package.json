@@ -32,6 +32,7 @@
   },
   "homepage": "https://quietly-turning.github.io/Lua-For-SM5/",
   "devDependencies": {
-    "recursive-readdir": "^2.2.2"
+    "recursive-readdir": "^2.2.2",
+    "sass": "^1.52.3"
   }
 }
