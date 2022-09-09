@@ -6753,9 +6753,9 @@ SCREENMAN:SystemMessage("hello from Lua!")
 		Basic examples:
 <pre><code>
 -- Sprite, Sound, and Quad are each Actors with unique specializations
-local spr = Def.Sprite{ Texture="./path/to/image.png" }
-local snd = Def.Sound{ File="./path/to/soundeffect.ogg" }
-local sqr = Def.Quad{ InitCommand=function(self) self:xy(80, 100) end }
+local spr  = Def.Sprite{ Texture="./path/to/image.png" }
+local snd  = Def.Sound{ File="./path/to/soundeffect.ogg" }
+local quad = Def.Quad{ InitCommand=function(self) self:xy(80, 100) end }
 
 -- common convention is to not use () with actor
 -- functions, but syntax like this is also valid
