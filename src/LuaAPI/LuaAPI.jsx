@@ -47,11 +47,6 @@ class LuaAPI extends Component {
 
 		// trigger a custom page scroll now
 		this.scroll_window_after_hashchange()
-
-		// and set up future hashchanges to use the custom scroll as well
-		props.history.listen((location, action) => {
-			this.scroll_window_after_hashchange(location.hash)
-		})
 	}
 
 	// ---------------------------------------------------------------------

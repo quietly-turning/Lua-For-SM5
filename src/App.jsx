@@ -1,10 +1,10 @@
 // ------- components for React
 import React, { Component } from "react"
-import { Route, Switch }    from "react-router-dom"
+import { Route, Routes }    from "react-router-dom"
 
 // withRouter allows us access to app url history
 // and, more importantly here, hook events into url changes
-import { withRouter }       from "react-router"
+import { withRouter }       from "./withRouter.js"
 
 // ------- primary stylesheet
 import "./_styles/custom.css"
@@ -43,19 +43,6 @@ class App extends Component {
 		this.state = {
 			mobile_nav: false,
 		}
-
-		// on URL change
-		props.history.listen((location, action) => {
-			// if mobile_nav is true (suggesting  that #mobileNav is fullscreen)
-			if (this.state.mobile_nav === true){
-				// assume that the URL has changed because the user clicked an anchor
-				// within mobileNav, and remove bootstrap's "show" class,
-				// which has the effect of hiding it
-				const mobileNav = document.getElementById("mobileNav")
-				mobileNav.classList.remove("show")
-				this.setState({mobile_nav: false})
-			}
-		})
 	}
 
 	handleMobileNavToggle(){
@@ -64,11 +51,11 @@ class App extends Component {
 
 	getClasses(data){
 		this.setState({
-			actors: data.actors,
-			screens: data.screens,
+			actors:     data.actors,
+			screens:    data.screens,
 			sm_classes: data.sm_classes,
 			namespaces: data.namespaces,
-			enums: data.enums,
+			enums:      data.enums,
 			singletons: data.singletons,
 			sm_version: data.sm_version
 		})
@@ -96,10 +83,12 @@ class App extends Component {
 						</div>
 
 						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
-							<Switch>
-								<Route path="/LuaAPI" render={(routeProps =>(<LuaAPI {...routeProps} {...this.state} parentCallback={this.getClasses} />))} />
-								<Route children={<Page />} />
-							</Switch>
+							<Routes>
+								<Route path="/"             element={<Page />} />
+								<Route path="/Resources"    element={<Page />} />
+								<Route path="/:group/:page" element={<Page />} />
+								<Route path="/LuaAPI" element={<LuaAPI {...this.state} parentCallback={this.getClasses} />} />
+							</Routes>
 						</div>
 					</div>
 				</div>
