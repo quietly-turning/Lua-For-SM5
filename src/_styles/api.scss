@@ -1,17 +1,3 @@
-.LuaAPI-filter{
-	.input-group-text {
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		height: 2.375em;
-	}
-
-	input{
-		&::placeholder{
-			color: rgb(194, 200, 206);
-		}
-	}
-}
-
 div.LuaAPI{
 
 	// for hightlightjs code examples
@@ -30,18 +16,6 @@ div.LuaAPI{
 				word-wrap: normal;
 				overflow-x: scroll;
 			}
-		}
-	}
-
-	// mobile-filter contains a LuaAPIFilter component that
-	// appears when Bootstrap detects width to be less than md
-	div.mobile-filter{
-		padding-top:4em;
-		margin-bottom:1em;
-		background-color: #ffffff;
-
-		input{
-			margin-bottom:0.5em;
 		}
 	}
 

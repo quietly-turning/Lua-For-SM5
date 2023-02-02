@@ -16,13 +16,15 @@ class Sidebar extends Component {
 					path="/LuaAPI"
 					element={
 						<LuaAPISidebar
+							setSelectedAPI={this.props.setSelectedAPI}
 							actors={this.props.actors}
 							screens={this.props.screens}
 							smClasses={this.props.smClasses}
 							namespaces={this.props.namespaces}
 							enums={this.props.enums}
 							singletons={this.props.singletons}
-							smVersion={this.props.smVersion}
+							supportedAPIs={this.props.supportedAPIs}
+							isAPILoaded={this.props.isAPILoaded}
 						/>
 					}
 				/>

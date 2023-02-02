@@ -39,9 +39,11 @@ class App extends Component {
 
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
 		this.getClasses            = this.getClasses.bind(this)
+		this.setSelectedAPI        = this.setSelectedAPI.bind(this)
 
 		this.state = {
 			mobile_nav: false,
+			isAPILoaded: false,
 		}
 	}
 
@@ -51,13 +53,20 @@ class App extends Component {
 
 	getClasses(data){
 		this.setState({
-			actors:     data.actors,
-			screens:    data.screens,
-			sm_classes: data.sm_classes,
-			namespaces: data.namespaces,
-			enums:      data.enums,
-			singletons: data.singletons,
-			sm_version: data.sm_version
+			actors:        data.actors,
+			screens:       data.screens,
+			sm_classes:    data.sm_classes,
+			namespaces:    data.namespaces,
+			enums:         data.enums,
+			singletons:    data.singletons,
+			supportedAPIs: data.supportedAPIs,
+			isAPILoaded:   data.isLoaded,
+		})
+	}
+
+	setSelectedAPI(data){
+		this.setState({
+			selectedAPIurl: data.selectedAPIurl
 		})
 	}
 
@@ -72,13 +81,15 @@ class App extends Component {
 
 						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar
+								setSelectedAPI={this.setSelectedAPI}
 								actors={this.state.actors}
 								screens={this.state.screens}
 								smClasses={this.state.sm_classes}
 								namespaces={this.state.namespaces}
 								enums={this.state.enums}
 								singletons={this.state.singletons}
-								smVersion={this.state.sm_version}
+								supportedAPIs={this.state.supportedAPIs}
+								isAPILoaded={this.state.isAPILoaded}
 							/>
 						</div>
 
@@ -95,13 +106,15 @@ class App extends Component {
 
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
 					<Sidebar
+						setSelectedAPI={this.setSelectedAPI}
 						actors={this.state.actors}
 						screens={this.state.screens}
 						smClasses={this.state.sm_classes}
 						namespaces={this.state.namespaces}
 						enums={this.state.enums}
 						singletons={this.state.singletons}
-						smVersion={this.state.sm_version}
+						supportedAPIs={this.state.supportedAPIs}
+						isAPILoaded={this.state.isAPILoaded}
 					/>
 				</div>
 

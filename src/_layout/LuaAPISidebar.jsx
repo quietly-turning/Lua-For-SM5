@@ -1,7 +1,43 @@
 import React, { Component } from "react"
 import { NavLink } from "react-router-dom"
 
+
+// create a default url for API retrieval
+// the user can change this later using a <select> element
+const base     = "https://raw.githubusercontent.com/"
+
+const project  = "stepmania/stepmania"
+const git_hash = "HEAD"
+const default_url = {
+	github_user: "stepmania",
+	github_project: "stepmania",
+	github_hash: "HEAD"
+}
+
+const build_url = (base, github_user, github_project, github_hash) => {
+	return `${base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
+}
+
 class Sidebar extends Component {
+	constructor(props){
+		super(props)
+		this.state = { selectedAPIurl: null }
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+		
+		// XXX
+		this.actorsCount = 0
+		this.screensCount= 0
+	}
+
+	componentDidMount(){
+		this.setState({ selectedAPIurl: build_url(base, default_url.github_user, default_url.github_project, default_url.github_hash)})
+	}
+
+	handleSelectChange(event) {
+		this.setState({ selectedAPIurl: event.target.value }, ()=>{
+			this.props.setSelectedAPI( {selectedAPIurl: this.state.selectedAPIurl} )
+		})
+	}
 
 	updateHash(hash){
 		window.location.hash = "#" + hash
@@ -24,7 +60,35 @@ class Sidebar extends Component {
 		}
 	}
 
+	selectOptions(){
+		const options = this.props.supportedAPIs.map(supportedAPI => {
+
+			const github_user    = supportedAPI.github.user
+			const github_project = supportedAPI.github.project
+
+			return supportedAPI.versions.map(version => {
+				const git_hash = version.githash
+
+				return (
+					// each <option>'s value is corresponding github url
+					<option
+						key={supportedAPI.name + "-" + version.name}
+						value={ build_url(base, github_user, github_project, git_hash) }
+					>
+						{supportedAPI.name} {version.name}
+					</option>
+				)
+			})
+		})
+
+		// console.log(options)
+		return options
+	}
+
+
 	sidebarSection(index, hash, text, key){
+
+		// GlobalFunctions and Constants
 		if (index === null){
 			return(
 				<section>
@@ -38,6 +102,28 @@ class Sidebar extends Component {
 		const items = this.props[key].map(function(item, i){
 			return <li key={item + i}><NavLink to={"#" + hash + "-" + item}>{item}</NavLink></li>
 		})
+
+		// -------------------------------------------------------
+		// XXX: backwards-compat for older versions of the API doc
+
+		// older version of the API docs did not distinguish between [Actors, Screens, Other Classes]
+		// and only had Classes.  in those cases, Actors and Screens will be empty arrays.
+				
+		if (index === 1){ this.actorsCount = items.length }
+		else if (index === 2){ this.screensCount = items.length }
+		
+		if (items.length == 0){			
+			return <section />
+		}
+		
+		// change sidebar header text from "Other Classes" to "Classes"
+		if (index === 3) {
+			if (this.actorsCount==0 && this.screensCount==0){
+				text = "Classes"
+			}
+		}
+		// XXX: end backwards-compat ------------------------------
+		
 
 		return(
 			<section>
@@ -60,16 +146,25 @@ class Sidebar extends Component {
 	render() {
 
 		// oof
-		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums){ return null }
+		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums || !this.props.supportedAPIs){ return null }
+
+    if (this.state === undefined || this.props.isAPILoaded === false){
+			return(
+				<div id="LuaAPISidebar">
+					<div className="sidebar-API-version"></div>
+				</div>
+			)
+		}
+
 
 		return (
 			<div id="LuaAPISidebar">
 
-				<div className="d-none d-md-block sticky-top sidebar-filter">
-					<div className="version">
-						<span className="smversion">StepMania {this.props.smVersion.release}</span> &nbsp;
-						<span className="githash">commit <a href={"https://github.com/stepmania/stepmania/tree/" + this.props.smVersion.githash} target="_blank" rel="noopener noreferrer">{this.props.smVersion.githash}</a></span>
-					</div>
+				<div className="sidebar-API-version">
+
+					<select value={this.state.selectedAPIurl} onChange={this.handleSelectChange} className="form-select">
+						{this.selectOptions()}
+				  </select>
 
 					<hr />
 				</div>

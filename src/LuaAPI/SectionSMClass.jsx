@@ -15,6 +15,11 @@ class SectionSMClass extends Component {
 	}
 
 	render(){
+		// if this section has no classes, don't render the section name or description
+		if (this.smclasses.length < 1){
+			return(<section/>)
+		}
+
 		return(
 			<section>
 				<Header name={this.props.name} smclass={{}} level={2} />
