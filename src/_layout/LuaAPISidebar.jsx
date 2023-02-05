@@ -1,18 +1,41 @@
 import { Component } from "react"
 import { NavLink } from "react-router-dom"
-import { supportedAPIs, supportedAPIsMap, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
+import { supportedAPIs, supportedAPIsMap, default_key, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
 
 const param_key = "apiVersion"
 
+// options for the <select>
+const options = supportedAPIs.map(supportedAPI => {
+	return supportedAPI.versions.map(version => {
+		const val = supportedAPI.name + "-" + version.name
+		return (
+			<option key={val} value={val}>
+				{supportedAPI.name} {version.name}
+			</option>
+		)
+	})
+})
+
+
+// update GET params in window's URL
 const set_search_params = (val) => {
-	const url_params = (new URL(window.location.href)).searchParams
-	console.log(url_params)
-	url_params.set(param_key, val)
-	console.log(url_params)
-	window.location.search = url_params.get(param_key)
-	console.log(window.location)
+	const urlParams = (new URL(window.location.href)).searchParams
+	urlParams.set(param_key, val)
+
+	// use history.pushState() to update the GET param without refreshing the window
+  const newurl = window.location.protocol
+									+ "//"
+									+ window.location.host
+									+ window.location.pathname
+									+ '?'
+									+ param_key + "=" + urlParams.get(param_key).toString()
+									+ window.location.hash
+
+  window.history.pushState({path: newurl}, '', newurl)
 }
 
+// build a url string that can be used to fetch an API doc from GitHub
+// XXX: extract to SupportedAPIs.js module and dedup
 const build_url = (github_user, github_project, github_hash) => {
 	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
 }
@@ -20,8 +43,18 @@ const build_url = (github_user, github_project, github_hash) => {
 class Sidebar extends Component {
 	constructor(props){
 		super(props)
-		this.state = { selectedAPIurl: default_url }
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+
+		const param = new URLSearchParams(window.location.search).get(param_key)
+		if (supportedAPIsMap[param]){
+			const [project, version] = supportedAPIsMap[param]
+			const selected_url = build_url(project.github.user, project.github.project, version.githash)
+			this.state = { selectedAPIurl: selected_url, selectedAPIurlKey: param}
+			this.props.setSelectedAPI( {selectedAPIurl: selected_url} )
+		} else {
+			this.state = { selectedAPIurl: default_url,  selectedAPIurlKey: default_key}
+		}
+
+		this.handleSelectChange = this.handleSelectChange.bind(this);
 
 		// XXX: kind of hacky — use these to count actors and screens
 		// if they stay 0, it means the user requested an older version of the API doc
@@ -32,24 +65,35 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount(){
-		const param = (new URL(window.location.href)).searchParams.get(param_key)
+		this.set_state()
+	}
+
+	set_state(val){
+		const param = val || (new URL(window.location.href)).searchParams.get(param_key)
 		if (supportedAPIsMap[param]){
 			const [project, version] = supportedAPIsMap[param]
 			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.setState({ selectedAPIurl: selected_url})
-		} else{
-			this.setState({ selectedAPIurl: default_url})
+
+			this.setState({ selectedAPIurl: selected_url, selectedAPIurlKey: param}, () => {
+				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
+				this.props.setSelectedAPI( {selectedAPIurl: selected_url} )
+			})
+
+		} else {
+			this.setState({ selectedAPIurl: default_url,  selectedAPIurlKey: default_key}, () => {
+				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
+				this.props.setSelectedAPI( {selectedAPIurl: default_url} )
+			})
 		}
 	}
 
 	handleSelectChange(event) {
 		if (supportedAPIsMap[event.target.value]){
+			// update GET params in window's URL
 			set_search_params(event.target.value)
-			const [project, version] = supportedAPIsMap[event.target.value]
-			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.setState({ selectedAPIurl: selected_url }, ()=>{
-				this.props.setSelectedAPI( {selectedAPIurl: this.state.selectedAPIurl} )
-			})
+
+			// update this component's local state
+			this.set_state(event.target.value)
 		}
 	}
 
@@ -74,22 +118,43 @@ class Sidebar extends Component {
 		}
 	}
 
-	selectOptions(){
-		const options = supportedAPIs.map(supportedAPI => {
-			return supportedAPI.versions.map(version => {
-				const val = supportedAPI.name + "-" + version.name
-				return (
-					<option key={val} value={val}>
-						{supportedAPI.name} {version.name}
-					</option>
-				)
-			})
-		})
+	sidebarHeader(){
+    if (this.state === undefined || this.props.isAPILoaded === false){ return null }
 
-		// console.log(options)
-		return options
+		return (
+			<div className="sticky-top sidebar-API-select">
+				<select value={this.state.selectedAPIurlKey} onChange={this.handleSelectChange} className="form-select">
+					{options}
+			  </select>
+
+				<hr />
+			</div>
+		)
 	}
 
+	sidebarSections(){
+		// XXX: oof
+		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums){ return null }
+
+		return (
+			<div>
+				{this.sidebarSection(1, "Actors", "Actors", "actors")}
+				{this.sidebarSection(2, "Screens", "Screens", "screens")}
+				{this.sidebarSection(3, "Classes", "Other Classes", "smClasses")}
+				{this.sidebarSection(4, "Singletons", "Singletons", "singletons")}
+
+				<hr />
+
+				{this.sidebarSection(5, "Namespaces", "Namespaces", "namespaces")}
+				{this.sidebarSection(6, "Enums", "Enums", "enums")}
+
+				<hr />
+
+				{this.sidebarSection(null, "GlobalFunctions", "Global Functions")}
+				{this.sidebarSection(null, "Constants", "Constants")}
+			</div>
+		)
+	}
 
 	sidebarSection(index, hash, text, key){
 
@@ -149,45 +214,10 @@ class Sidebar extends Component {
 
 
 	render() {
-
-		// oof
-		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums){ return null }
-
-    if (this.state === undefined || this.props.isAPILoaded === false){
-			return(
-				<div id="LuaAPISidebar">
-					<div className="sidebar-API-version"></div>
-				</div>
-			)
-		}
-
-
 		return (
 			<div id="LuaAPISidebar">
-
-				<div className="sidebar-API-version">
-
-					<select value={this.state.selectedAPIurl} onChange={this.handleSelectChange} className="form-select">
-						{this.selectOptions()}
-				  </select>
-
-					<hr />
-				</div>
-
-				{this.sidebarSection(1, "Actors", "Actors", "actors")}
-				{this.sidebarSection(2, "Screens", "Screens", "screens")}
-				{this.sidebarSection(3, "Classes", "Other Classes", "smClasses")}
-				{this.sidebarSection(4, "Singletons", "Singletons", "singletons")}
-
-				<hr />
-
-				{this.sidebarSection(5, "Namespaces", "Namespaces", "namespaces")}
-				{this.sidebarSection(6, "Enums", "Enums", "enums")}
-
-				<hr />
-
-				{this.sidebarSection(null, "GlobalFunctions", "Global Functions")}
-				{this.sidebarSection(null, "Constants", "Constants")}
+				{this.sidebarHeader()}
+				{this.sidebarSections()}
 			</div>
 		)
 	}

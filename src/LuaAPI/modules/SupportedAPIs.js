@@ -52,6 +52,7 @@ for (const supportedAPI of supportedAPIs){
 const url_base    = "https://raw.githubusercontent.com/"
 const project     = `${supportedAPIs[0].github.user}/${supportedAPIs[0].github.project}`
 const git_hash    = supportedAPIs[0].versions[0].githash
+const default_key = supportedAPIs[0].name + "-" + supportedAPIs[0].versions[0].name
 const default_url = `${url_base}${project}/${git_hash}/Docs/Luadoc/`
 
-export { supportedAPIs, supportedAPIsMap, url_base, default_url }
+export { supportedAPIs, supportedAPIsMap, url_base, default_key, default_url }

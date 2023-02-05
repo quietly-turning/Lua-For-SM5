@@ -16,17 +16,24 @@ import hljs from "highlight.js"
 // ------- custom stylesheet for LuaAPI
 import "../_styles/api.css"
 
-import { default_url } from "./modules/SupportedAPIs.js"
+import { url_base, supportedAPIsMap, default_url } from "./modules/SupportedAPIs.js"
 
+const build_url = (github_user, github_project, github_hash) => {
+	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
+}
 
 class LuaAPI extends Component {
 
 	constructor(props){
 		super()
 
-		this.state = {
-			isLoaded: false,
-			selectedAPIurl: default_url,
+		const param = new URLSearchParams(window.location.search).get("apiVersion")
+		if (supportedAPIsMap[param]){
+			const [project, version] = supportedAPIsMap[param]
+			const selected_url = build_url(project.github.user, project.github.project, version.githash)
+			this.state = { isLoaded: false, selectedAPIurl: selected_url}
+		} else{
+			this.state = { isLoaded: false, selectedAPIurl: default_url}
 		}
 
 		// docs will contain documentation data read in from outside files
