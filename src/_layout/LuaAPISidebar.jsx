@@ -1,18 +1,6 @@
 import { Component } from "react"
 import { NavLink } from "react-router-dom"
-
-
-// create a default url for API retrieval
-// the user can change this later using a <select> element
-const base     = "https://raw.githubusercontent.com/"
-
-const project  = "stepmania/stepmania"
-const git_hash = "HEAD"
-const default_url = {
-	github_user: "stepmania",
-	github_project: "stepmania",
-	github_hash: "HEAD"
-}
+import { supportedAPIs, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
 
 const build_url = (base, github_user, github_project, github_hash) => {
 	return `${base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
@@ -21,7 +9,7 @@ const build_url = (base, github_user, github_project, github_hash) => {
 class Sidebar extends Component {
 	constructor(props){
 		super(props)
-		this.state = { selectedAPIurl: null }
+		this.state = { selectedAPIurl: default_url }
     this.handleSelectChange = this.handleSelectChange.bind(this);
 		
 		// XXX: kind of hacky — use these to count actors and screens
@@ -33,7 +21,7 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount(){
-		this.setState({ selectedAPIurl: build_url(base, default_url.github_user, default_url.github_project, default_url.github_hash)})
+		// this.setState({ selectedAPIurl: build_url(base, default_url.github_user, default_url.github_project, default_url.github_hash)})
 	}
 
 	handleSelectChange(event) {
@@ -64,7 +52,7 @@ class Sidebar extends Component {
 	}
 
 	selectOptions(){
-		const options = this.props.supportedAPIs.map(supportedAPI => {
+		const options = supportedAPIs.map(supportedAPI => {
 
 			const github_user    = supportedAPI.github.user
 			const github_project = supportedAPI.github.project
@@ -76,7 +64,7 @@ class Sidebar extends Component {
 					// each <option>'s value is corresponding github url
 					<option
 						key={supportedAPI.name + "-" + version.name}
-						value={ build_url(base, github_user, github_project, git_hash) }
+						value={ build_url(url_base, github_user, github_project, git_hash) }
 					>
 						{supportedAPI.name} {version.name}
 					</option>
@@ -149,7 +137,7 @@ class Sidebar extends Component {
 	render() {
 
 		// oof
-		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums || !this.props.supportedAPIs){ return null }
+		if (!this.props.actors || !this.props.screens || !this.props.smClasses || !this.props.singletons || !this.props.namespaces || !this.props.enums){ return null }
 
     if (this.state === undefined || this.props.isAPILoaded === false){
 			return(

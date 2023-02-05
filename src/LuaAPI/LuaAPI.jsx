@@ -16,14 +16,7 @@ import hljs from "highlight.js"
 // ------- custom stylesheet for LuaAPI
 import "../_styles/api.css"
 
-import { supportedAPIs } from "./modules/SupportedAPIs.js"
-
-// create a default url for API retrieval
-// the user can change this later using a <select> element
-const base     = "https://raw.githubusercontent.com/"
-const project  = `${supportedAPIs[0].github.user}/${supportedAPIs[0].github.project}`
-const git_hash = supportedAPIs[0].versions[0].githash
-const default_url = `${base}${project}/${git_hash}/Docs/Luadoc/`
+import { supportedAPIs, default_url } from "./modules/SupportedAPIs.js"
 
 
 class LuaAPI extends Component {

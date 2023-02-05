@@ -1,5 +1,5 @@
 // ------- supported versions of the API to let users view
-export const supportedAPIs = [
+const supportedAPIs = [
 	{
 		name: "StepMania",
 		github: {
@@ -39,3 +39,12 @@ export const supportedAPIs = [
 		],
 	},
 ]
+
+// create a default url for API retrieval
+// the user can change this later using a <select> element
+const url_base    = "https://raw.githubusercontent.com/"
+const project     = `${supportedAPIs[0].github.user}/${supportedAPIs[0].github.project}`
+const git_hash    = supportedAPIs[0].versions[0].githash
+const default_url = `${url_base}${project}/${git_hash}/Docs/Luadoc/`
+
+export { supportedAPIs, url_base, default_url }
