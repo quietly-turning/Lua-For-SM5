@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { NavLink } from "react-router-dom"
 
 
@@ -24,7 +24,10 @@ class Sidebar extends Component {
 		this.state = { selectedAPIurl: null }
     this.handleSelectChange = this.handleSelectChange.bind(this);
 		
-		// XXX
+		// XXX: kind of hacky — use these to count actors and screens
+		// if they stay 0, it means the user requested an older version of the API doc
+		// where everything was lumped together as a "class" and we should change the UI
+		// text from "other classes" to just "classes" to accommodate
 		this.actorsCount = 0
 		this.screensCount= 0
 	}

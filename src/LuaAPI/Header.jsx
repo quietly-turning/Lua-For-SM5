@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import Octicon, { Link } from '@primer/octicons-react'
 
 class Header extends Component {

@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 
 import SectionSMClass        from "./SectionSMClass"
 import SectionEnum           from "./SectionEnum"
