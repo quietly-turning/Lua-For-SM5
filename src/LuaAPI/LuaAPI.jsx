@@ -628,6 +628,37 @@ class LuaAPI extends Component {
 		}
 	}
 
+	headerUI(){
+		return (
+			<section>
+				<div className="alert alert-info">
+					<span role="img" aria-label="info">ℹ️</span> The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.
+				</div>
+				<h1>SM5 Lua API</h1>
+			</section>
+		)
+	}
+
+	contentUI(){
+    if (this.state === undefined || this.state.isLoaded === false){
+			return null
+		} else {
+			return (
+				<section>
+					<SectionSMClass        name="Actors"          desc={this.state.G[0].desc} data={this.state.G[0].data} />
+					<SectionSMClass        name="Screens"         desc={this.state.G[1].desc} data={this.state.G[1].data} />
+					<SectionSMClass        name="Classes"         desc={this.state.G[2].desc} data={this.state.G[2].data} />
+					<SectionSMClass        name="Singletons"      desc={this.state.G[5].desc} data={this.state.G[5].data} />
+					<SectionSMClass        name="Namespaces"      desc={this.state.G[3].desc} data={this.state.G[3].data} />
+					<SectionEnum           name="Enums"           desc={this.state.G[4].desc} data={this.state.G[4].data} />
+					<SectionGlobalFunction name="GlobalFunctions" desc={this.state.G[6].desc} data={this.state.G[6].data} />
+					<SectionConstants      name="Constants"       desc={this.state.G[7].desc} data={this.state.G[7].data} />
+				</section>
+			)
+		}
+
+
+	}
 
 	// -----------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------
@@ -635,28 +666,12 @@ class LuaAPI extends Component {
 
 	render() {
 
-    if (this.state === undefined || this.state.isLoaded === false){ return null }
-
 		// ---------------------------------------------------------------------
 
 		return (
 			<div className="LuaAPI ps-md-4">
-
-				<div className="alert alert-info">
-					<span role="img" aria-label="info">ℹ️</span> The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.
-				</div>
-
-
-				<h1>SM5 Lua API</h1>
-
-				<SectionSMClass        name="Actors"          desc={this.state.G[0].desc} data={this.state.G[0].data} />
-				<SectionSMClass        name="Screens"         desc={this.state.G[1].desc} data={this.state.G[1].data} />
-				<SectionSMClass        name="Classes"         desc={this.state.G[2].desc} data={this.state.G[2].data} />
-				<SectionSMClass        name="Singletons"      desc={this.state.G[5].desc} data={this.state.G[5].data} />
-				<SectionSMClass        name="Namespaces"      desc={this.state.G[3].desc} data={this.state.G[3].data} />
-				<SectionEnum           name="Enums"           desc={this.state.G[4].desc} data={this.state.G[4].data} />
-				<SectionGlobalFunction name="GlobalFunctions" desc={this.state.G[6].desc} data={this.state.G[6].data} />
-				<SectionConstants      name="Constants"       desc={this.state.G[7].desc} data={this.state.G[7].data} />
+				{this.headerUI()}
+				{this.contentUI()}
 			</div>
 		)
 	}
