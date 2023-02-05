@@ -1,9 +1,20 @@
 import { Component } from "react"
 import { NavLink } from "react-router-dom"
-import { supportedAPIs, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
+import { supportedAPIs, supportedAPIsMap, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
 
-const build_url = (base, github_user, github_project, github_hash) => {
-	return `${base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
+const param_key = "apiVersion"
+
+const set_search_params = (val) => {
+	const url_params = (new URL(window.location.href)).searchParams
+	console.log(url_params)
+	url_params.set(param_key, val)
+	console.log(url_params)
+	window.location.search = url_params.get(param_key)
+	console.log(window.location)
+}
+
+const build_url = (github_user, github_project, github_hash) => {
+	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
 }
 
 class Sidebar extends Component {
@@ -11,7 +22,7 @@ class Sidebar extends Component {
 		super(props)
 		this.state = { selectedAPIurl: default_url }
     this.handleSelectChange = this.handleSelectChange.bind(this);
-		
+
 		// XXX: kind of hacky — use these to count actors and screens
 		// if they stay 0, it means the user requested an older version of the API doc
 		// where everything was lumped together as a "class" and we should change the UI
@@ -21,13 +32,25 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount(){
-		// this.setState({ selectedAPIurl: build_url(base, default_url.github_user, default_url.github_project, default_url.github_hash)})
+		const param = (new URL(window.location.href)).searchParams.get(param_key)
+		if (supportedAPIsMap[param]){
+			const [project, version] = supportedAPIsMap[param]
+			const selected_url = build_url(project.github.user, project.github.project, version.githash)
+			this.setState({ selectedAPIurl: selected_url})
+		} else{
+			this.setState({ selectedAPIurl: default_url})
+		}
 	}
 
 	handleSelectChange(event) {
-		this.setState({ selectedAPIurl: event.target.value }, ()=>{
-			this.props.setSelectedAPI( {selectedAPIurl: this.state.selectedAPIurl} )
-		})
+		if (supportedAPIsMap[event.target.value]){
+			set_search_params(event.target.value)
+			const [project, version] = supportedAPIsMap[event.target.value]
+			const selected_url = build_url(project.github.user, project.github.project, version.githash)
+			this.setState({ selectedAPIurl: selected_url }, ()=>{
+				this.props.setSelectedAPI( {selectedAPIurl: this.state.selectedAPIurl} )
+			})
+		}
 	}
 
 	updateHash(hash){
@@ -53,19 +76,10 @@ class Sidebar extends Component {
 
 	selectOptions(){
 		const options = supportedAPIs.map(supportedAPI => {
-
-			const github_user    = supportedAPI.github.user
-			const github_project = supportedAPI.github.project
-
 			return supportedAPI.versions.map(version => {
-				const git_hash = version.githash
-
+				const val = supportedAPI.name + "-" + version.name
 				return (
-					// each <option>'s value is corresponding github url
-					<option
-						key={supportedAPI.name + "-" + version.name}
-						value={ build_url(url_base, github_user, github_project, git_hash) }
-					>
+					<option key={val} value={val}>
 						{supportedAPI.name} {version.name}
 					</option>
 				)
@@ -99,14 +113,14 @@ class Sidebar extends Component {
 
 		// older version of the API docs did not distinguish between [Actors, Screens, Other Classes]
 		// and only had Classes.  in those cases, Actors and Screens will be empty arrays.
-				
+
 		if (index === 1){ this.actorsCount = items.length }
 		else if (index === 2){ this.screensCount = items.length }
-		
-		if (items.length == 0){			
+
+		if (items.length == 0){
 			return <section />
 		}
-		
+
 		// change sidebar header text from "Other Classes" to "Classes"
 		if (index === 3) {
 			if (this.actorsCount==0 && this.screensCount==0){
@@ -114,7 +128,7 @@ class Sidebar extends Component {
 			}
 		}
 		// XXX: end backwards-compat ------------------------------
-		
+
 
 		return(
 			<section>

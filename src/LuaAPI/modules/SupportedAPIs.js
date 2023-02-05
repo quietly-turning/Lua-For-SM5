@@ -40,6 +40,13 @@ const supportedAPIs = [
 	},
 ]
 
+const supportedAPIsMap = {}
+for (const supportedAPI of supportedAPIs){
+	for (const version of supportedAPI.versions){
+		supportedAPIsMap[`${supportedAPI.name}-${version.name}`] = [supportedAPI, version]
+	}
+}
+
 // create a default url for API retrieval
 // the user can change this later using a <select> element
 const url_base    = "https://raw.githubusercontent.com/"
@@ -47,4 +54,4 @@ const project     = `${supportedAPIs[0].github.user}/${supportedAPIs[0].github.p
 const git_hash    = supportedAPIs[0].versions[0].githash
 const default_url = `${url_base}${project}/${git_hash}/Docs/Luadoc/`
 
-export { supportedAPIs, url_base, default_url }
+export { supportedAPIs, supportedAPIsMap, url_base, default_url }
