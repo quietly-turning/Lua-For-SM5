@@ -59,7 +59,6 @@ class App extends Component {
 			namespaces:    data.namespaces,
 			enums:         data.enums,
 			singletons:    data.singletons,
-			supportedAPIs: data.supportedAPIs,
 			isAPILoaded:   data.isLoaded,
 		})
 	}
@@ -88,7 +87,6 @@ class App extends Component {
 								namespaces={this.state.namespaces}
 								enums={this.state.enums}
 								singletons={this.state.singletons}
-								supportedAPIs={this.state.supportedAPIs}
 								isAPILoaded={this.state.isAPILoaded}
 							/>
 						</div>
@@ -113,7 +111,6 @@ class App extends Component {
 						namespaces={this.state.namespaces}
 						enums={this.state.enums}
 						singletons={this.state.singletons}
-						supportedAPIs={this.state.supportedAPIs}
 						isAPILoaded={this.state.isAPILoaded}
 					/>
 				</div>

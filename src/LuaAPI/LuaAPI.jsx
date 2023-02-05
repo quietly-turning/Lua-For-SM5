@@ -16,7 +16,7 @@ import hljs from "highlight.js"
 // ------- custom stylesheet for LuaAPI
 import "../_styles/api.css"
 
-import { supportedAPIs, default_url } from "./modules/SupportedAPIs.js"
+import { default_url } from "./modules/SupportedAPIs.js"
 
 
 class LuaAPI extends Component {
@@ -595,7 +595,6 @@ class LuaAPI extends Component {
 			namespaces: Object.keys(this.Namespaces),
 			enums:      Object.keys(this.Enums),
 			singletons: Object.keys(this.Singletons),
-			supportedAPIs: supportedAPIs,
 			isLoaded: this.state.isLoaded,
 		})
 	}

@@ -23,7 +23,6 @@ class Sidebar extends Component {
 							namespaces={this.props.namespaces}
 							enums={this.props.enums}
 							singletons={this.props.singletons}
-							supportedAPIs={this.props.supportedAPIs}
 							isAPILoaded={this.props.isAPILoaded}
 						/>
 					}
