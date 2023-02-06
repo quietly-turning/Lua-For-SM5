@@ -10,7 +10,7 @@ class SectionSMClass extends Component {
 		super(props)
 
 		this.smclasses = this.props.data.map(function(cls, i){
-			return <SMClass grouping={cls.grouping} smclass={cls} key={cls.name}  />
+			return <SMClass grouping={cls.grouping} smclass={cls} key={cls.name} {...props} />
 		})
 	}
 

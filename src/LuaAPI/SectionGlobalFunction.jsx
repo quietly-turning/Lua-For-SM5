@@ -8,9 +8,8 @@ class SectionGlobalFunction extends Component {
 
 	constructor(props){
 		super(props)
-
 		this.funcs = this.props.data.map(function(gfunc, i){
-			return <Method grouping={gfunc.grouping} method={gfunc} url key={gfunc.name}  />
+			return <Method grouping={gfunc.grouping} method={gfunc} url key={gfunc.name} {...props}  />
 		})
 	}
 

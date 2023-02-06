@@ -76,13 +76,13 @@ class Sidebar extends Component {
 
 			this.setState({ selectedAPIurl: selected_url, selectedAPIurlKey: param}, () => {
 				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
-				this.props.setSelectedAPI( {selectedAPIurl: selected_url} )
+				this.props.setSelectedAPI( {selectedAPIurl: selected_url, selectedAPIproject: project.name, selectedAPIversion: version.name} )
 			})
 
 		} else {
 			this.setState({ selectedAPIurl: default_url,  selectedAPIurlKey: default_key}, () => {
 				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
-				this.props.setSelectedAPI( {selectedAPIurl: default_url} )
+				this.props.setSelectedAPI( {selectedAPIurl: default_url, selectedAPIproject: supportedAPIs[0].name, selectedAPIversion: supportedAPIs[0].versions[0].name} )
 			})
 		}
 	}

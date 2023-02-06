@@ -16,7 +16,7 @@ import hljs from "highlight.js"
 // ------- custom stylesheet for LuaAPI
 import "../_styles/api.css"
 
-import { url_base, supportedAPIsMap, default_url } from "./modules/SupportedAPIs.js"
+import { url_base, supportedAPIs, supportedAPIsMap, default_url } from "./modules/SupportedAPIs.js"
 
 const build_url = (github_user, github_project, github_hash) => {
 	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
@@ -31,9 +31,9 @@ class LuaAPI extends Component {
 		if (supportedAPIsMap[param]){
 			const [project, version] = supportedAPIsMap[param]
 			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.state = { isLoaded: false, selectedAPIurl: selected_url}
+			this.state = { isLoaded: false, selectedAPI: { url: selected_url, projectName: project.name, versionName: version.name}}
 		} else{
-			this.state = { isLoaded: false, selectedAPIurl: default_url}
+			this.state = { isLoaded: false, selectedAPI: { url: default_url,  projectName: supportedAPIs[0].name, versionName: supportedAPIs[0].versions[0].name}}
 		}
 
 		// docs will contain documentation data read in from outside files
@@ -236,9 +236,13 @@ class LuaAPI extends Component {
 		this.scroll_window_after_hashchange()
 
 		if (this.props.selectedAPIurl !== undefined){
-			if (this.state.selectedAPIurl !== this.props.selectedAPIurl){
+			if (this.state.selectedAPI.url !== this.props.selectedAPIurl){
 				const lua_api = this
-				this.setState({	selectedAPIurl: this.props.selectedAPIurl }, () => {
+				this.setState({	selectedAPI: {
+					url: this.props.selectedAPIurl,
+					projectName: this.props.selectedAPIproject,
+					versionName: this.props.selectedAPIversion,
+				}}, () => {
 					lua_api.fetchAndParseXML()
 				})
 			}
@@ -271,7 +275,7 @@ class LuaAPI extends Component {
 		// get documentation files using jQuery
 		// then parse them into a usable data structure for this React app
 
-		const url = this.state.selectedAPIurl
+		const url = this.state.selectedAPI.url
 
 		// ------------------------
 
@@ -304,8 +308,14 @@ class LuaAPI extends Component {
 				lua_api.docs.luadotxml = $($.parseXML(luadotxml)).children()
 			}),
 
-			$.get("./Luadoc++/FunctionDefs.json", (funcdefs) => {
-				lua_api.docs.github.funcdefs = funcdefs;
+			$.get(`./Luadoc++/${this.state.selectedAPI.projectName}/${this.state.selectedAPI.versionName}.json`, (funcdefs) => {
+				// XXX: fetching a non-existent json file returns the stringified html content instead of json
+				// checking to see if the response is an object or a string is realllllllly hacky
+				if (typeof funcdefs == "object"){
+					lua_api.docs.github.funcdefs = funcdefs
+				} else {
+					lua_api.docs.github.funcdefs = {};
+				}
 			})
 
 		).then(function(){
@@ -557,7 +567,7 @@ class LuaAPI extends Component {
 					arguments: _doc.attr("arguments"),
 					desc: lua_api.check_for_links(_doc),
 					theme: _doc.attr("theme") || "",
-					url: lua_api.docs.github.funcdefs.GlobalFunctions[_name],
+					url: lua_api.docs.github.funcdefs.GlobalFunctions && lua_api.docs.github.funcdefs.GlobalFunctions[_name],
 					grouping: "GlobalFunctions"
 				})
 			})
@@ -656,13 +666,13 @@ class LuaAPI extends Component {
 		} else {
 			return (
 				<section>
-					<SectionSMClass        name="Actors"          desc={this.state.G[0].desc} data={this.state.G[0].data} />
-					<SectionSMClass        name="Screens"         desc={this.state.G[1].desc} data={this.state.G[1].data} />
-					<SectionSMClass        name="Classes"         desc={this.state.G[2].desc} data={this.state.G[2].data} />
-					<SectionSMClass        name="Singletons"      desc={this.state.G[5].desc} data={this.state.G[5].data} />
-					<SectionSMClass        name="Namespaces"      desc={this.state.G[3].desc} data={this.state.G[3].data} />
+					<SectionSMClass        name="Actors"          desc={this.state.G[0].desc} data={this.state.G[0].data} {...this.state} />
+					<SectionSMClass        name="Screens"         desc={this.state.G[1].desc} data={this.state.G[1].data} {...this.state} />
+					<SectionSMClass        name="Classes"         desc={this.state.G[2].desc} data={this.state.G[2].data} {...this.state} />
+					<SectionSMClass        name="Singletons"      desc={this.state.G[5].desc} data={this.state.G[5].data} {...this.state} />
+					<SectionSMClass        name="Namespaces"      desc={this.state.G[3].desc} data={this.state.G[3].data} {...this.state} />
 					<SectionEnum           name="Enums"           desc={this.state.G[4].desc} data={this.state.G[4].data} />
-					<SectionGlobalFunction name="GlobalFunctions" desc={this.state.G[6].desc} data={this.state.G[6].data} />
+					<SectionGlobalFunction name="GlobalFunctions" desc={this.state.G[6].desc} data={this.state.G[6].data} {...this.state} />
 					<SectionConstants      name="Constants"       desc={this.state.G[7].desc} data={this.state.G[7].data} />
 				</section>
 			)

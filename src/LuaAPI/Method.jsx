@@ -1,5 +1,6 @@
 import { Component } from "react"
 import Octicon, {Link, LogoGithub} from '@primer/octicons-react'
+import { supportedAPIs } from "./modules/SupportedAPIs.js"
 
 class Method extends Component {
 
@@ -16,8 +17,32 @@ class Method extends Component {
 		this.updateHash = this.updateHash.bind(this)
 
 		if (this.props.method.url !== undefined){
-			const base = "https://github.com/stepmania/stepmania/tree/"
-			const hash = "HEAD"
+
+			// FIXME: we shouldn't need to derive the project name and version
+			//        both should be passed in as props
+			let i = 0
+			for (const supportedAPI of supportedAPIs){
+				if (supportedAPI.name == this.props.selectedAPI.projectName){
+					break
+				} else {
+					i = i + 1
+				}
+			}
+
+			let j = 0
+			for (const version of supportedAPIs[i].versions){
+				if (version.name == this.props.selectedAPI.versionName){
+					break
+				} else {
+					j = j + 1
+				}
+			}
+
+			const github_user    = supportedAPIs[i].github.user
+			const github_project = supportedAPIs[i].github.project
+			const hash = supportedAPIs[i].versions[j].githash
+
+			const base = `https://github.com/${github_user}/${github_project}/tree/`
 			const url  = base + hash + this.props.method.url
 
 			this.github_anchor = <a className="logo-github" href={url} target="_blank" rel="noopener noreferrer"><Octicon icon={LogoGithub} /></a>

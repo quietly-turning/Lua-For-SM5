@@ -13,7 +13,7 @@ class SMClass extends Component {
 		const grouping = this.props.grouping
 
 		this.methods = this.props.smclass.methods.map(function(method, j){
-			return <Method grouping={grouping} sm_class={_name} method={method} key={_name + "-" + method.name + j} />
+			return <Method grouping={grouping} sm_class={_name} method={method} key={_name + "-" + method.name + j} {...props}/>
 		})
 	}
 
