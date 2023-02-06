@@ -308,15 +308,19 @@ class LuaAPI extends Component {
 				lua_api.docs.luadotxml = $($.parseXML(luadotxml)).children()
 			}),
 
-			$.get(`./Luadoc++/${this.state.selectedAPI.projectName}/${this.state.selectedAPI.versionName}.json`, (funcdefs) => {
-				// XXX: fetching a non-existent json file returns the stringified html content instead of json
-				// checking to see if the response is an object or a string is realllllllly hacky
-				if (typeof funcdefs == "object"){
-					lua_api.docs.github.funcdefs = funcdefs
-				} else {
+			$.get(`./Luadoc++/${this.state.selectedAPI.projectName}/${this.state.selectedAPI.versionName}.json`)
+				.done((funcdefs) => {
+					// XXX: fetching a non-existent json file returns the stringified html content instead of json
+					// checking to see if the response is an object or a string is realllllllly hacky
+					if (typeof funcdefs == "object"){
+						lua_api.docs.github.funcdefs = funcdefs
+					} else {
+						lua_api.docs.github.funcdefs = {};
+					}
+				})
+				.fail(()=>{
 					lua_api.docs.github.funcdefs = {};
-				}
-			})
+				})
 
 		).then(function(){
 
