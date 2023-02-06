@@ -178,6 +178,13 @@
 				Open( classid );
 				location.hash = classid + '_' + functionid;
 			}
+			function OpenOnLoad()
+			{
+				var hash = window.location.hash;
+				if (hash){
+					Open( hash.replace("#","") );
+				}
+			}
 			function Toggle( id )
 			{
 				var imgid = 'img_' + id;
@@ -200,7 +207,10 @@
 		<link rel="icon" type="image/vnd.microsoft.icon" href="./favicon.ico"/>
 		</head>
 		<body>
-			<xsl:apply-templates />\
+			<xsl:apply-templates />
+			<script>
+				OpenOnLoad();
+			</script>
 		</body>
 	</html>
 </xsl:template>
