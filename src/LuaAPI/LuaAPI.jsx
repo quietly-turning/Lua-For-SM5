@@ -636,12 +636,19 @@ class LuaAPI extends Component {
 	}
 
 	headerUI(){
+		let name
+		const param = new URLSearchParams(window.location.search).get("apiVersion")
+		if (supportedAPIsMap[param]){
+			const [project, version] = supportedAPIsMap[param]
+			name = `${project.name} ${version.name}`
+		}
+
 		return (
 			<section>
 				<div className="alert alert-info">
 					<span role="img" aria-label="info">ℹ️</span> The original API doc can still be found <a target="_blank" rel="noopener noreferrer" href="/Lua-For-SM5/Luadoc/Lua.xml">here</a>.
 				</div>
-				<h1>SM5 Lua API</h1>
+				<h1>{name || "SM5"} Lua API</h1>
 			</section>
 		)
 	}
