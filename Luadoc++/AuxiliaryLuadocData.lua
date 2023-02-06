@@ -20,29 +20,43 @@ local sm_objs = {
 }
 
 -- ------------------------------------------
+-- ugly
+-- TODO: find a Lua library for JSON output
 
 local function_definitions = function()
 
-   local data = {}
-   
+   local first_section_done = false
+   local json = "{"
+
    for section, obj in pairs(sm_objs) do
-      local t = {}
+      if first_section_done then json = json.."," end
+      first_section_done = true
+
+      json = json .. ("\n\t\"%s\": {"):format(section)
+
+      local first_func_done = false
 
       for k,v in pairs(obj) do
-         if type(v) == "function" then
+         if type(v)=="function" then
             local info = debug.getinfo(v)
 
             -- skip functions definined in-engine; line numbers aren't available via debug.getinfo
             if info.short_src ~= "[C]" then
+               if first_func_done then json = json.."," end
+               first_func_done = true
+
                local url = URLEncode( ("%s#L%s-L%s"):format(info.short_src, info.linedefined, info.lastlinedefined) )
-               table.insert(t, url)
+               json = json .. ("\n\t\t\"%s\": \"%s\""):format( k, url )
             end
          end
       end
-      table.insert(data, t)
+      json = json .. "\n\t}"
    end
 
-   return data
+   json = json .. "\n}"
+
+   -- return json data as string
+   return json
 end
 -- ------------------------------------------
 
@@ -51,7 +65,7 @@ local file  = RageFileUtil.CreateRageFile()
 local path  = theme .. "FunctionDefs.json"
 
 if file:Open(path, 2) then
-   file:Write(JsonEncode(function_definitions()))
+   file:Write( function_definitions() )
 
 else
    local fError = file:GetError()
