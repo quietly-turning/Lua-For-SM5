@@ -37,7 +37,7 @@ const set_search_params = (val) => {
 // build a url string that can be used to fetch an API doc from GitHub
 // XXX: extract to SupportedAPIs.js module and dedup
 const build_url = (github_user, github_project, github_hash) => {
-	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
+	return `${url_base}${github_user}/${github_project}/${github_hash}/Docs/Luadoc/`
 }
 
 class Sidebar extends Component {

@@ -19,7 +19,7 @@ import "../_styles/api.css"
 import { url_base, supportedAPIs, supportedAPIsMap, default_url } from "./modules/SupportedAPIs.js"
 
 const build_url = (github_user, github_project, github_hash) => {
-	return `${url_base}${github_project}/${github_user}/${github_hash}/Docs/Luadoc/`
+	return `${url_base}${github_user}/${github_project}/${github_hash}/Docs/Luadoc/`
 }
 
 class LuaAPI extends Component {
