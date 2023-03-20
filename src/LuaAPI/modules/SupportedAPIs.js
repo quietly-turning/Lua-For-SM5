@@ -33,6 +33,10 @@ const supportedAPIs = [
 				githash: "beta",
 			},
 			{
+				name: "v0.6.0",
+				githash: "222fd619e77b661839a7d0428e79e9335ac22bcb",
+			},
+			{
 				name: "v0.5.1",
 				githash: "e2a48eb7267103b28436760a839819a2ec006e7d",
 			},
