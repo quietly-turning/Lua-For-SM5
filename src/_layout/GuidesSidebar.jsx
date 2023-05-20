@@ -87,12 +87,13 @@ class GuidesSidebar extends Component {
 
 				<section>
 					<h5 id="heading-5" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-						<span>Examples</span>
+						<span>Theming</span>
 					</h5>
 					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
 						<ul>
-							<li><NavLink to="/Examples/Arbitrary-Input">Handling Arbitrary Input</NavLink></li>
-							<li><NavLink to="/Examples/Simple-Tweens">Simple Tweens</NavLink></li>
+							<li><NavLink to="/Theming/Arbitrary-Input">Handling Arbitrary Input</NavLink></li>
+							<li><NavLink to="/Theming/Simple-Tweens">Simple Tweens</NavLink></li>
+							<li><NavLink to="/Theming/Keyboard-Commands">Keyboard Commands</NavLink></li>
 						</ul>
 					</div>
 				</section>
