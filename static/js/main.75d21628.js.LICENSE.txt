@@ -1,32 +1,18 @@
 /*!
-   * Sizzle CSS Selector Engine v2.3.10
-   * https://sizzlejs.com/
-   *
-   * Copyright JS Foundation and other contributors
-   * Released under the MIT license
-   * https://js.foundation/
-   *
-   * Date: 2023-02-14
-   */
-
-/*!
   * Bootstrap v5.2.3 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
 /*!
- * jQuery JavaScript Library v3.6.4
+ * jQuery JavaScript Library v3.7.0
  * https://jquery.com/
- *
- * Includes Sizzle.js
- * https://sizzlejs.com/
  *
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2023-03-08T15:28Z
+ * Date: 2023-05-11T18:29Z
  */
 
 /**
@@ -70,7 +56,7 @@
  */
 
 /**
- * @remix-run/router v1.5.0
+ * @remix-run/router v1.6.2
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -81,7 +67,7 @@
  */
 
 /**
- * React Router DOM v6.10.0
+ * React Router DOM v6.11.2
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -92,7 +78,7 @@
  */
 
 /**
- * React Router v6.10.0
+ * React Router v6.11.2
  *
  * Copyright (c) Remix Software Inc.
  *
