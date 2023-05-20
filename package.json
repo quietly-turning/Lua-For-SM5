@@ -6,17 +6,17 @@
     "defaults"
   ],
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
+    "@popperjs/core": "^2.11.7",
     "@primer/octicons-react": "^9.6.0",
     "bootstrap": "^5.2.3",
     "gh-pages": "^3.2.3",
-    "highlight.js": "^11.7.0",
+    "highlight.js": "^11.8.0",
     "html-react-parser": "^1.3.0",
-    "jquery": "^3.6.3",
+    "jquery": "^3.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router": "^6.6.1",
-    "react-router-dom": "^6.6.1"
+    "react-router": "^6.11.2",
+    "react-router-dom": "^6.11.2"
   },
   "scripts": {
     "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
@@ -31,6 +31,6 @@
   "devDependencies": {
     "react-scripts": "^5.0.1",
     "recursive-readdir": "^2.2.3",
-    "sass": "^1.57.1"
+    "sass": "^1.62.1"
   }
 }
