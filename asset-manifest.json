@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Lua-For-SM5/static/css/main.3ce234f2.css",
-    "main.js": "/Lua-For-SM5/static/js/main.75d21628.js",
+    "main.js": "/Lua-For-SM5/static/js/main.b81d20da.js",
     "index.html": "/Lua-For-SM5/index.html",
     "main.3ce234f2.css.map": "/Lua-For-SM5/static/css/main.3ce234f2.css.map",
-    "main.75d21628.js.map": "/Lua-For-SM5/static/js/main.75d21628.js.map"
+    "main.b81d20da.js.map": "/Lua-For-SM5/static/js/main.b81d20da.js.map"
   },
   "entrypoints": [
     "static/css/main.3ce234f2.css",
-    "static/js/main.75d21628.js"
+    "static/js/main.b81d20da.js"
   ]
 }
