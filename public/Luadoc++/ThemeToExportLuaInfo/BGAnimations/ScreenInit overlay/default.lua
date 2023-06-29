@@ -62,7 +62,7 @@ end
 
 local theme = THEME:GetCurrentThemeDirectory()
 local file  = RageFileUtil.CreateRageFile()
-local path  = theme .. "FunctionDefs.json"
+local path  = theme .. ProductVersion() .. ".json"
 
 if file:Open(path, 2) then
    file:Write( function_definitions() )
@@ -76,3 +76,5 @@ end
 
 file:destroy()
 -- ------------------------------------------
+
+return Def.Actor{}
