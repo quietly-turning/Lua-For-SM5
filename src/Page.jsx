@@ -5,7 +5,7 @@ import parse from 'html-react-parser'
 
 import content from "./page-content.js"
 
-function Page(){
+function Page(props){
 	let location = useLocation()
 
 	const transform = function(node){
@@ -18,6 +18,9 @@ function Page(){
 
 	// on url change
 	useEffect(() => {
+		// hide #mobileNav (regardless of whether it's open or not)
+		props.hideMobileNav()
+
 		// scroll to top
 		window.scrollTo(0, 0)
 

@@ -38,6 +38,7 @@ class App extends Component {
 		super(props)
 
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
+		this.hideMobileNav         = this.hideMobileNav.bind(this)
 		this.getClasses            = this.getClasses.bind(this)
 		this.setSelectedAPI        = this.setSelectedAPI.bind(this)
 
@@ -49,6 +50,12 @@ class App extends Component {
 
 	handleMobileNavToggle(){
 		this.setState({mobile_nav: !this.state.mobile_nav})
+	}
+
+	hideMobileNav(){
+		this.setState({mobile_nav: false})
+		const classes = document.getElementById('mobileNav')?.classList
+		classes.remove('show')
 	}
 
 	getClasses(data){
@@ -95,9 +102,9 @@ class App extends Component {
 
 						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
 							<Routes>
-								<Route path="/"             element={<Page />} />
-								<Route path="/Resources"    element={<Page />} />
-								<Route path="/:group/:page" element={<Page />} />
+								<Route path="/"             element={<Page hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/Resources"    element={<Page hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/:group/:page" element={<Page hideMobileNav={this.hideMobileNav} />} />
 								<Route path="/LuaAPI" element={<LuaAPI {...this.state} parentCallback={this.getClasses} />} />
 							</Routes>
 						</div>
