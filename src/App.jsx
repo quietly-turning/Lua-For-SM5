@@ -105,7 +105,7 @@ class App extends Component {
 								<Route path="/"             element={<Page hideMobileNav={this.hideMobileNav} />} />
 								<Route path="/Resources"    element={<Page hideMobileNav={this.hideMobileNav} />} />
 								<Route path="/:group/:page" element={<Page hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/LuaAPI" element={<LuaAPI {...this.state} parentCallback={this.getClasses} />} />
+								<Route path="/LuaAPI" element={<LuaAPI {...this.state} parentCallback={this.getClasses} hideMobileNav={this.hideMobileNav} />} />
 							</Routes>
 						</div>
 					</div>

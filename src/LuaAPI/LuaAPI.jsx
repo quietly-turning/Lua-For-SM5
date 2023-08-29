@@ -31,9 +31,9 @@ class LuaAPI extends Component {
 		if (supportedAPIsMap[param]){
 			const [project, version] = supportedAPIsMap[param]
 			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.state = { isLoaded: false, selectedAPI: { url: selected_url, projectName: project.name, versionName: version.name}}
+			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: selected_url, projectName: project.name, versionName: version.name}}
 		} else{
-			this.state = { isLoaded: false, selectedAPI: { url: default_url,  projectName: supportedAPIs[0].name, versionName: supportedAPIs[0].versions[0].name}}
+			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: default_url,  projectName: supportedAPIs[0].name, versionName: supportedAPIs[0].versions[0].name}}
 		}
 
 		// docs will contain documentation data read in from outside files
@@ -233,6 +233,7 @@ class LuaAPI extends Component {
 	// ---------------------------------------------------------------------
 
 	componentDidUpdate(){
+
 		this.scroll_window_after_hashchange()
 
 		if (this.props.selectedAPIurl !== undefined){
@@ -643,7 +644,18 @@ class LuaAPI extends Component {
 					// offset for #GlobalFunctions-[thing] is special-cased for now
 					const h3_height = depth > 0 && hash.substring(0, 15)==="GlobalFunctions" ? 40 : 0
 
-					window.scrollTo(0, y_offset - topbar_height - h3_height)
+					const yOffset = y_offset - topbar_height - h3_height
+
+					// only call setState if the value has changed
+					if (this.state.yOffset !== yOffset){
+						this.setState({yOffset: yOffset})
+						window.scrollTo(0, yOffset)
+
+						// hide #mobileNav if it's open
+						if (this.props?.mobile_nav === true) {
+							this.props?.hideMobileNav()
+						}
+					}
 				}
 			}
 		}
