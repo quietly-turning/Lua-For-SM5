@@ -1,18 +1,18 @@
 /*!
-  * Bootstrap v5.3.0 (https://getbootstrap.com/)
+  * Bootstrap v5.3.1 (https://getbootstrap.com/)
   * Copyright 2011-2023 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
 /*!
- * jQuery JavaScript Library v3.7.0
+ * jQuery JavaScript Library v3.7.1
  * https://jquery.com/
  *
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2023-05-11T18:29Z
+ * Date: 2023-08-28T13:37Z
  */
 
 /**
@@ -56,7 +56,7 @@
  */
 
 /**
- * @remix-run/router v1.7.1
+ * @remix-run/router v1.8.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -67,7 +67,7 @@
  */
 
 /**
- * React Router DOM v6.14.1
+ * React Router DOM v6.15.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -78,7 +78,7 @@
  */
 
 /**
- * React Router v6.14.1
+ * React Router v6.15.0
  *
  * Copyright (c) Remix Software Inc.
  *
