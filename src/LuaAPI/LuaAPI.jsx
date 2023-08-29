@@ -659,6 +659,13 @@ class LuaAPI extends Component {
 				}
 			}
 		}
+
+		// hide top navbar if it's open
+		// XXX: this feels like a kludgy place to do this
+		const navbarClasslist = document.getElementById('navbarNav')?.classList
+		if (navbarClasslist?.contains('show')){
+			navbarClasslist?.remove('show')
+		}
 	}
 
 	headerUI(){

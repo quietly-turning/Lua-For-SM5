@@ -54,8 +54,10 @@ class App extends Component {
 
 	hideMobileNav(){
 		this.setState({mobile_nav: false})
-		const classes = document.getElementById('mobileNav')?.classList
-		classes.remove('show')
+		const bottomNavbarClasses = document.getElementById('mobileNav')?.classList
+		const topNavbarClasses    = document.getElementById('navbarNav')?.classList
+		bottomNavbarClasses.remove('show')
+		topNavbarClasses.remove('show')
 	}
 
 	getClasses(data){
@@ -102,10 +104,10 @@ class App extends Component {
 
 						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
 							<Routes>
-								<Route path="/"             element={<Page hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/Resources"    element={<Page hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/:group/:page" element={<Page hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/LuaAPI" element={<LuaAPI {...this.state} parentCallback={this.getClasses} hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/"             element={<Page   hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/Resources"    element={<Page   hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/:group/:page" element={<Page   hideMobileNav={this.hideMobileNav} />} />
+								<Route path="/LuaAPI"       element={<LuaAPI hideMobileNav={this.hideMobileNav} {...this.state} parentCallback={this.getClasses} />} />
 							</Routes>
 						</div>
 					</div>
