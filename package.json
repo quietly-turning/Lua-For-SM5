@@ -8,15 +8,15 @@
   "dependencies": {
     "@popperjs/core": "^2.11.7",
     "@primer/octicons-react": "^9.6.0",
-    "bootstrap": "^5.3.0",
-    "gh-pages": "^5.0.0",
+    "bootstrap": "^5.3.1",
+    "gh-pages": "^6.0.0",
     "highlight.js": "^11.8.0",
-    "html-react-parser": "^4.0.0",
-    "jquery": "^3.7.0",
+    "html-react-parser": "^4.2.1",
+    "jquery": "^3.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router": "^6.14.0",
-    "react-router-dom": "^6.14.0"
+    "react-router": "^6.15.0",
+    "react-router-dom": "^6.15.0"
   },
   "scripts": {
     "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
@@ -32,6 +32,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "react-scripts": "^5.0.1",
     "recursive-readdir": "^2.2.3",
-    "sass": "^1.63.6"
+    "sass": "^1.66.1"
   }
 }
