@@ -1,60 +1,72 @@
 import { Component } from "react"
 import { NavLink } from "react-router-dom"
-import { supportedAPIs, supportedAPIsMap, default_key, default_url, url_base } from "../LuaAPI/modules/SupportedAPIs.js"
+import { supportedAPIs, supportedAPIsMap, default_engineString, default_versionString, default_url, getAPIdocURL } from "../LuaAPI/modules/SupportedAPIs.js"
 
-const param_key = "apiVersion"
+const urlParamKeys = {
+	engine: "engine",
+	version: "version"
+}
 
-// options for the <select>
-const options = supportedAPIs.map(supportedAPI => {
-	return supportedAPI.versions.map(version => {
-		const val = supportedAPI.name + "-" + version.name
-		return (
-			<option key={val} value={val}>
-				{supportedAPI.name} {version.name}
-			</option>
-		)
-	})
+
+// options for the engine <select>
+const engineOptions = supportedAPIs.map(supportedAPI => {
+	return (
+		<option key={supportedAPI.name} value={supportedAPI.name}>
+			{supportedAPI.name}
+		</option>
+	)
 })
 
-
-// update GET params in window's URL
-const set_search_params = (val) => {
+// update GET params in browser's URL
+const set_GET_params = (engineString, versionString) => {
 	const urlParams = (new URL(window.location.href)).searchParams
-	urlParams.set(param_key, val)
+
+	urlParams.set(urlParamKeys.engine, engineString)
+	urlParams.set(urlParamKeys.version, versionString)
 
 	// use history.pushState() to update the GET param without refreshing the window
+	// XXX: is there a vanilla-JS way to build a URL like this?
   const newurl = window.location.protocol
 									+ "//"
 									+ window.location.host
 									+ window.location.pathname
 									+ '?'
-									+ param_key + "=" + urlParams.get(param_key).toString()
+									+ urlParamKeys.engine  + "=" + engineString
+									+ "&"
+									+ urlParamKeys.version + "=" + versionString
 									+ window.location.hash
 
   window.history.pushState({path: newurl}, '', newurl)
-}
-
-// build a url string that can be used to fetch an API doc from GitHub
-// XXX: extract to SupportedAPIs.js module and dedup
-const build_url = (github_user, github_project, github_hash) => {
-	return `${url_base}${github_user}/${github_project}/${github_hash}/Docs/Luadoc/`
 }
 
 class Sidebar extends Component {
 	constructor(props){
 		super(props)
 
-		const param = new URLSearchParams(window.location.search).get(param_key)
-		if (supportedAPIsMap[param]){
-			const [project, version] = supportedAPIsMap[param]
-			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.state = { selectedAPIurl: selected_url, selectedAPIurlKey: param}
-			this.props.setSelectedAPI( {selectedAPIurl: selected_url} )
-		} else {
-			this.state = { selectedAPIurl: default_url,  selectedAPIurlKey: default_key}
+		const urlParams    = new URLSearchParams(window.location.search)
+		const _engineString = urlParams.get(urlParamKeys.engine)
+		const _versionString= urlParams.get(urlParamKeys.version)
+
+		// basic validation in case user types non-existent engines/versions in the url
+		const engineString = supportedAPIsMap[_engineString] ? _engineString : default_engineString
+		const versionString = supportedAPIsMap[engineString][_versionString] ? _versionString : default_versionString
+		set_GET_params(engineString, versionString)
+
+
+		const urlString = getAPIdocURL(engineString, versionString)
+		const version_options = engineString ? supportedAPIs.find(engine=>engine.name===engineString)?.versions : supportedAPIs[0].versions
+
+		this.state = {
+			selectedEngine:  engineString  ?? default_engineString,
+			selectedVersion: versionString ?? default_versionString,
+			selectedAPIurl:  urlString,
+			versionOptions:  this.setVersionOptions( version_options ),
 		}
 
-		this.handleSelectChange = this.handleSelectChange.bind(this);
+		this.props.setSelectedAPI( {selectedAPIurl: urlString} )
+
+		this.handleEngineSelectChange  = this.handleEngineSelectChange.bind(this);
+		this.handleVersionSelectChange = this.handleVersionSelectChange.bind(this);
 
 		// XXX: kind of hacky — use these to count actors and screens
 		// if they stay 0, it means the user requested an older version of the API doc
@@ -65,36 +77,89 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount(){
-		this.set_state()
-	}
+		const urlParams     = new URLSearchParams(window.location.search)
+		const engineString  = urlParams.get(urlParamKeys.engine)
+		const versionString = urlParams.get(urlParamKeys.version)
 
-	set_state(val){
-		const param = val || (new URL(window.location.href)).searchParams.get(param_key)
-		if (supportedAPIsMap[param]){
-			const [project, version] = supportedAPIsMap[param]
-			const selected_url = build_url(project.github.user, project.github.project, version.githash)
+		if (supportedAPIsMap[engineString] && supportedAPIsMap[engineString][versionString]){
 
-			this.setState({ selectedAPIurl: selected_url, selectedAPIurlKey: param}, () => {
+			const selected_url = getAPIdocURL(engineString, versionString)
+
+			this.setState({ selectedAPIurl: selected_url, selectedVersion: versionString}, () => {
 				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
-				this.props.setSelectedAPI( {selectedAPIurl: selected_url, selectedAPIproject: project.name, selectedAPIversion: version.name} )
+				this.props.setSelectedAPI( {selectedAPIurl: selected_url, selectedAPIengine: engineString, selectedAPIversion: versionString} )
 			})
 
 		} else {
-			this.setState({ selectedAPIurl: default_url,  selectedAPIurlKey: default_key}, () => {
+			this.setState({ selectedAPIurl: default_url,  selectedVersion: default_versionString}, () => {
 				// pass the newly selected value back to LuaAPI component via callback function so it can update its state
-				this.props.setSelectedAPI( {selectedAPIurl: default_url, selectedAPIproject: supportedAPIs[0].name, selectedAPIversion: supportedAPIs[0].versions[0].name} )
+				this.props.setSelectedAPI( {selectedAPIurl: default_url, selectedAPIengine: default_engineString, selectedAPIversion: default_versionString} )
 			})
 		}
 	}
 
-	handleSelectChange(event) {
-		if (supportedAPIsMap[event.target.value]){
-			// update GET params in window's URL
-			set_search_params(event.target.value)
 
-			// update this component's local state
-			this.set_state(event.target.value)
-		}
+
+	// -------------------------------------------------------
+	// handler for <select> with [StepMania, ITGMania]
+	handleEngineSelectChange(event) {
+		const engineName = event.target.value
+		const engine = supportedAPIs.find(engine => engine.name === engineName)
+
+		if (!(engineName && engine) ){ return false }
+
+		this.setVersionOptions(engine.versions)
+
+		// set local state and pass to LuaAPI component via callback so it can fetch, parse, and display
+		this.setState({
+			selectedEngine: engineName,
+			selectedVersion: engine.versions[0].name,
+			selectedAPIurl: getAPIdocURL(engineName, engine.versions[0].name)
+		}, () => {
+			this.props.setSelectedAPI({
+				selectedAPIurl:     this.state.selectedAPIurl,
+				selectedAPIengine:  this.state.selectedEngine,
+				selectedAPIversion: this.state.selectedVersion,
+			})
+
+			if (supportedAPIsMap[this.state.selectedEngine] && supportedAPIsMap[this.state.selectedEngine][this.state.selectedVersion]){
+				// update GET params in window's URL
+				set_GET_params(this.state.selectedEngine, this.state.selectedVersion)
+			}
+		})
+	}
+
+	// helper function to generate <option> markup as part of `handleEngineSelectChange`
+	setVersionOptions(versions){
+		this.versionOptions = versions.map(version => {
+			return (
+				<option key={version.name} value={version.name}>
+					{version.name}
+				</option>
+			)
+		})
+	}
+
+	handleVersionSelectChange(event) {
+		const versionString = event.target.value
+		if (!versionString){ return false }
+
+		// set local state and pass to LuaAPI component via callback so it can fetch, parse, and display
+		this.setState({
+			selectedVersion: versionString,
+			selectedAPIurl:  getAPIdocURL(this.state.selectedEngine, versionString)
+		}, ()=>{
+			this.props.setSelectedAPI({
+				selectedAPIurl:     this.state.selectedAPIurl,
+				selectedAPIengine:  this.state.selectedEngine,
+				selectedAPIversion: this.state.selectedVersion,
+			})
+
+			if (supportedAPIsMap[this.state.selectedEngine] && supportedAPIsMap[this.state.selectedEngine][this.state.selectedVersion]){
+				// update GET params in window's URL
+				set_GET_params(this.state.selectedEngine, this.state.selectedVersion)
+			}
+		})
 	}
 
 	updateHash(hash){
@@ -123,8 +188,12 @@ class Sidebar extends Component {
 
 		return (
 			<div className="sticky-top sidebar-API-select">
-				<select value={this.state.selectedAPIurlKey} onChange={this.handleSelectChange} className="form-select">
-					{options}
+				<select value={this.state.selectedEngine} onChange={this.handleEngineSelectChange} className="form-select" id="engine">
+					{engineOptions}
+			  </select>
+
+				<select value={this.state.selectedVersion} onChange={this.handleVersionSelectChange} className="form-select" id="version">
+					{this.versionOptions}
 			  </select>
 
 				<hr />

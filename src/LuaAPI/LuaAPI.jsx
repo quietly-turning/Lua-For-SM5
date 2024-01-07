@@ -16,24 +16,22 @@ import hljs from "highlight.js"
 // ------- custom stylesheet for LuaAPI
 import "../_styles/api.css"
 
-import { url_base, supportedAPIs, supportedAPIsMap, default_url } from "./modules/SupportedAPIs.js"
-
-const build_url = (github_user, github_project, github_hash) => {
-	return `${url_base}${github_user}/${github_project}/${github_hash}/Docs/Luadoc/`
-}
+import { supportedAPIs, supportedAPIsMap, default_url, getAPIdocURL } from "./modules/SupportedAPIs.js"
 
 class LuaAPI extends Component {
 
 	constructor(props){
 		super()
 
-		const param = new URLSearchParams(window.location.search).get("apiVersion")
-		if (supportedAPIsMap[param]){
-			const [project, version] = supportedAPIsMap[param]
-			const selected_url = build_url(project.github.user, project.github.project, version.githash)
-			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: selected_url, projectName: project.name, versionName: version.name}}
+		const urlParams    = new URLSearchParams(window.location.search)
+		const engineString = urlParams.get("engine")
+		const versionString= urlParams.get("version")
+
+		if (supportedAPIsMap[engineString] && supportedAPIsMap[engineString][versionString]){
+			const selected_url = getAPIdocURL(engineString, versionString)
+			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: selected_url, engineName: engineString, versionName: versionString}}
 		} else{
-			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: default_url,  projectName: supportedAPIs[0].name, versionName: supportedAPIs[0].versions[0].name}}
+			this.state = { isLoaded: false, yOffset: 0, selectedAPI: { url: default_url,  engineName: supportedAPIs[0].name, versionName: supportedAPIs[0].versions[0].name}}
 		}
 
 		// docs will contain documentation data read in from outside files
@@ -241,7 +239,7 @@ class LuaAPI extends Component {
 				const lua_api = this
 				this.setState({	selectedAPI: {
 					url: this.props.selectedAPIurl,
-					projectName: this.props.selectedAPIproject,
+					engineName:  this.props.selectedAPIengine,
 					versionName: this.props.selectedAPIversion,
 				}}, () => {
 					lua_api.fetchAndParseXML()
@@ -309,7 +307,7 @@ class LuaAPI extends Component {
 				lua_api.docs.luadotxml = $($.parseXML(luadotxml)).children()
 			}),
 
-			$.get(`./Luadoc++/${this.state.selectedAPI.projectName}/${this.state.selectedAPI.versionName}.json`)
+			$.get(`./Luadoc++/${this.state.selectedAPI.engineName}/${this.state.selectedAPI.versionName}.json`)
 				.done((funcdefs) => {
 					// XXX: fetching a non-existent json file returns the stringified html content instead of json
 					// checking to see if the response is an object or a string is realllllllly hacky
@@ -670,15 +668,14 @@ class LuaAPI extends Component {
 
 	headerUI(){
 		let name
-		const param = new URLSearchParams(window.location.search).get("apiVersion")
-		if (supportedAPIsMap[param]){
-			const [project, version] = supportedAPIsMap[param]
-			name = `${project.name} ${version.name}`
+
+		if (this.state.selectedAPI.engineName && this.state.selectedAPI.versionName){
+			name = `${this.state.selectedAPI.engineName} ${this.state.selectedAPI.versionName}`
 		}
 
 		return (
 			<section>
-				<h1>{name || "SM5"} Lua API</h1>
+				<h1>{name ?? "SM5"} Lua API</h1>
 			</section>
 		)
 	}

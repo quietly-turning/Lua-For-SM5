@@ -22,7 +22,7 @@ class Method extends Component {
 			//        both should be passed in as props
 			let i = 0
 			for (const supportedAPI of supportedAPIs){
-				if (supportedAPI.name == this.props.selectedAPI.projectName){
+				if (supportedAPI.name == this.props.selectedAPI.engineName){
 					break
 				} else {
 					i = i + 1

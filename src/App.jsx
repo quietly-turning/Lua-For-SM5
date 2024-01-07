@@ -75,7 +75,7 @@ class App extends Component {
 	setSelectedAPI(data){
 		this.setState({
 			selectedAPIurl:     data.selectedAPIurl,
-			selectedAPIproject: data.selectedAPIproject,
+			selectedAPIengine:  data.selectedAPIengine,
 			selectedAPIversion: data.selectedAPIversion,
 		})
 	}
