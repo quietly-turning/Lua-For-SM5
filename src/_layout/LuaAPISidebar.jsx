@@ -233,19 +233,23 @@ class Sidebar extends Component {
 			if (bsCollapse === null && hash !== "GlobalFunctions" && hash !== "Constants") {
 				bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false })
 			}
+			const headingEl = document.getElementById(`#heading-${index}`)
 
 			if (event.key==='Enter'){
 				this.updateHash(hash)
 				if (bsCollapse) { bsCollapse.toggle() }
+				if (headingEl){ headingEl.classList.toggle('collapsed')}
 
 				const headingEl = document.getElementById(`heading-${index ?? hash}`)
 				if (headingEl){ headingEl.firstChild.focus() }
 
 			} else if (event.key==='ArrowLeft'){
 				if (bsCollapse) { bsCollapse.hide() }
+				if (headingEl){ headingEl.classList.add('collapsed')}
 
 			} else if (event.key==='ArrowRight'){
 				if (bsCollapse) { bsCollapse.show() }
+				if (headingEl){ headingEl.classList.remove('collapsed')}
 			}
 		}
 	}
@@ -256,6 +260,9 @@ class Sidebar extends Component {
 		let bsCollapse = bootstrap.Collapse.getInstance(el)
 		if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
 		bsCollapse.toggle()
+
+		const headingEl = document.getElementById(`heading-${index}`)
+		if (headingEl){ headingEl.classList.toggle('collapsed')}
 	}
 
 	sidebarSection(index, hash, text, key){

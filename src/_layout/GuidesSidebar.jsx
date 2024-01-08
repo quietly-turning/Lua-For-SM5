@@ -26,6 +26,9 @@ class GuidesSidebar extends Component {
 		let bsCollapse = bootstrap.Collapse.getInstance(el)
 		if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
 		bsCollapse.toggle()
+
+		const headingEl = document.getElementById(`heading-${index}`)
+		if (headingEl){ headingEl.classList.toggle('collapsed')}
 	}
 
 	handleKeyPress(event, index){
@@ -33,13 +36,20 @@ class GuidesSidebar extends Component {
 			const el = document.getElementById(`#collapse-${index}`)
 			let bsCollapse = bootstrap.Collapse.getInstance(el)
 			if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
+			const headingEl = document.getElementById(`#heading-${index}`)
 
 			if (event.key==='Enter'){
 				bsCollapse.toggle()
+				if (headingEl){ headingEl.classList.toggle('collapsed')}
+
 			} else if (event.key==='ArrowLeft'){
 				bsCollapse.hide()
+				if (headingEl){ headingEl.classList.add('collapsed')}
+
 			} else if (event.key==='ArrowRight'){
 				bsCollapse.show()
+				if (headingEl){ headingEl.classList.remove('collapsed')}
+
 			}
 		}
 	}
@@ -48,12 +58,14 @@ class GuidesSidebar extends Component {
 		return (
 			<nav tabIndex="-1" id="GuidesSidebar">
 				<section>
-					<h5 id="heading-1" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-						<span tabIndex="0"
-							onKeyDown={(e) => this.handleKeyPress(e, 1) }
-							onClick={() => this.handleClick(1)}
-						>
-								Introduction
+					<h5
+						className="collapsed expandable" id="heading-1"
+						onKeyDown={(e) => this.handleKeyPress(e, 1) }
+						onClick={() => this.handleClick(1)}
+						aria-expanded="false" aria-controls="collapse-1"
+					>
+						<span tabIndex="0">
+							Introduction
 						</span>
 					</h5>
 
@@ -69,12 +81,14 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-2" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-						<span tabIndex="0"
-							onKeyDown={(e) => this.handleKeyPress(e, 2) }
-							onClick={() => this.handleClick(2)}
-						>
-								Actors
+					<h5
+						className="collapsed expandable" id="heading-2"
+						onKeyDown={(e) => this.handleKeyPress(e, 2) }
+						onClick={() => this.handleClick(2)}
+						aria-expanded="false" aria-controls="collapse-2"
+					>
+						<span tabIndex="0">
+							Actors
 						</span>
 					</h5>
 					<div id="collapse-2" className="collapse no-transition" aria-labelledby="heading-2">
@@ -94,12 +108,14 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-3" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-						<span tabIndex="0"
-							onKeyDown={(e) => this.handleKeyPress(e, 3) }
-							onClick={() => this.handleClick(3)}
-						>
-								Singletons
+					<h5
+						className="collapsed expandable" id="heading-3"
+						onKeyDown={(e) => this.handleKeyPress(e, 3) }
+						onClick={() => this.handleClick(3)}
+						aria-expanded="false" aria-controls="collapse-3"
+					>
+						<span tabIndex="0">
+							Singletons
 						</span>
 					</h5>
 					<div id="collapse-3" className="collapse no-transition" aria-labelledby="heading-3">
@@ -112,13 +128,15 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-4" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-						<span tabIndex="0"
-							onKeyDown={(e) => this.handleKeyPress(e, 4) }
-							onClick={() => this.handleClick(4)}
-						>
-								Best
-							Practices</span>
+					<h5
+						className="collapsed expandable" id="heading-4"
+						onKeyDown={(e) => this.handleKeyPress(e, 4) }
+						onClick={() => this.handleClick(4)}
+						aria-expanded="false" aria-controls="collapse-4"
+					>
+						<span tabIndex="0">
+							Best Practices
+						</span>
 					</h5>
 					<div id="collapse-4" className="collapse no-transition" aria-labelledby="heading-4">
 						<ul>
@@ -130,12 +148,14 @@ class GuidesSidebar extends Component {
 
 
 				<section>
-					<h5 id="heading-5" className="collapsed expandable" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-						<span tabIndex="0"
-							onKeyDown={(e) => this.handleKeyPress(e, 5) }
-							onClick={() => this.handleClick(5)}
-						>
-								Theming
+					<h5
+						className="collapsed expandable" id="heading-5"
+						aria-expanded="false" aria-controls="collapse-5"
+						onKeyDown={(e) => this.handleKeyPress(e, 5) }
+						onClick={() => this.handleClick(5)}
+					>
+						<span tabIndex="0">
+							Theming
 						</span>
 					</h5>
 					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">

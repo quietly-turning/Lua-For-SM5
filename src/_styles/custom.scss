@@ -46,6 +46,10 @@ a{
 	.colorMode-toggle {
 		margin-bottom: 0px;
 
+		label{
+			cursor: pointer;
+		}
+
 		input {
 			position: relative;
 			top:2px;
