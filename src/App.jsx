@@ -89,7 +89,7 @@ class App extends Component {
 				<div className="pt-5">
 					<div className="row no-gutters">
 
-						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
+						<div tabIndex="-1" className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar
 								setSelectedAPI={this.setSelectedAPI}
 								actors={this.state.actors}

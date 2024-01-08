@@ -32,6 +32,12 @@ a{
 	a.nav-link{
 		font-weight:lighter;
 		font-size: 1.15em;
+		border-radius: 4px;
+
+		&:focus-visible {
+			outline: 0;
+			box-shadow: 0 0 0 .125rem rgb(52, 120, 247);
+		}
 	}
 }
 
@@ -58,6 +64,7 @@ a{
 	border-right: 1px solid #ececec;
 	padding: 0em;
 	overflow-x: auto;
+	overflow-y: auto;
 
 	a{
 		color: #000000;
@@ -88,6 +95,8 @@ a{
 				// possible for the the jsx onClick
 				width: 100%;
 				padding-top: 0.45em;
+				padding-left: 0.5em;
+				border-radius: 4px;
 			}
 
 			// pull the caret symbol right
@@ -115,6 +124,10 @@ a{
 					content: " ";
 					transform: rotateX(180deg);
 				}
+			}
+
+			&.GlobalFunctions, &.Constants{
+				width: 95%;
 			}
 			// --------------------------------------------------------
 		}
@@ -150,6 +163,11 @@ a{
 		.active{
 			color: #f92672;   // pink
 		}
+
+		padding: 2px 0px;
+
+		overflow-x: hidden;
+		overflow-y: auto;
 	}
 
 	#LuaAPISidebar{
@@ -182,6 +200,11 @@ a{
 
 			select{
 				margin-bottom: 4px;
+
+				&:focus-visible {
+					outline: 0;
+					box-shadow: 0 0 0 .125rem rgb(52, 120, 247);
+				}
 			}
 		}
 	}
@@ -201,7 +224,7 @@ a{
 
 		#GuidesSidebar, #LuaAPISidebar{
 			section h5{
-				padding-left: 1em;
+				padding-left: 0.5em;
 			}
 		}
 
@@ -294,6 +317,11 @@ pre {
 	.bar3.x {
 	  -webkit-transform: rotate(45deg) translate(-6px, -6px) ;
 	  transform: rotate(45deg) translate(-6px, -6px) ;
+	}
+
+	&:focus-visible {
+		outline: 0;
+		box-shadow: 0 0 0 .25rem rgb(52, 120, 247);
 	}
 }
 

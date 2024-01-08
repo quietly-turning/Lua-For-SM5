@@ -1,5 +1,6 @@
 import { Component } from "react"
 import { NavLink } from "react-router-dom"
+import * as bootstrap from "bootstrap"
 import { supportedAPIs, supportedAPIsMap, default_engineString, default_versionString, default_url, getAPIdocURL } from "../LuaAPI/modules/SupportedAPIs.js"
 
 const urlParamKeys = {
@@ -225,14 +226,41 @@ class Sidebar extends Component {
 		)
 	}
 
+	handleKeyPress(event, hash, index){
+		if (event.key==='Enter' || event.key==='ArrowLeft' || event.key==='ArrowRight'){
+			const el = document.getElementById(`#collapse-${index}`)
+			let bsCollapse = bootstrap.Collapse.getInstance(el)
+			if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
+
+			if (event.key==='Enter'){
+				this.updateHash(hash)
+				bsCollapse.toggle()
+
+			} else if (event.key==='ArrowLeft'){
+				bsCollapse.hide()
+
+			} else if (event.key==='ArrowRight'){
+				bsCollapse.show()
+			}
+		}
+	}
+
+	handleClick(hash, index){
+		if (hash){ this.updateHash(hash) }
+		const el = document.getElementById(`#collapse-${index}`)
+		let bsCollapse = bootstrap.Collapse.getInstance(el)
+		if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
+		bsCollapse.toggle()
+	}
+
 	sidebarSection(index, hash, text, key){
 
 		// GlobalFunctions and Constants
 		if (index === null){
 			return(
 				<section>
-					<h5>
-						<span onClick={() => this.updateHash(hash)}>{text}</span>
+					<h5 className={hash}>
+						<span tabIndex="0" onKeyDown={(e) => e.key==='Enter' ? this.updateHash(hash) : '' } onClick={() => this.updateHash(hash)}>{text}</span>
 					</h5>
 				</section>
 			)
@@ -268,10 +296,11 @@ class Sidebar extends Component {
 			<section>
 				<h5
 					className="collapsed expandable" id={"heading-"  + index}
-					data-bs-toggle="collapse" data-bs-target={"#collapse-" + index}
+					onClick={(e) => this.handleClick(hash, index)}
+					onKeyDown={(e) => this.handleKeyPress(e, hash, index) }
 					aria-expanded="false" aria-controls={"collapse-" + index}
 				>
-					<span onClick={() => this.updateHash(hash)}>{text}</span>
+					<span tabIndex="0">{text}</span>
 				</h5>
 
 				<div id={"collapse-" + index} className="collapse no-transition" aria-labelledby={"heading-" + index}>
