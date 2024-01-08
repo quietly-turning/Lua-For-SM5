@@ -91,9 +91,10 @@ class GuidesSidebar extends Component {
 					</h5>
 					<div id="collapse-5" className="collapse no-transition" aria-labelledby="heading-5">
 						<ul>
+							<li><NavLink to="/Theming/Hacking-on-an-Existing-Theme">Hacking on an Existing Theme</NavLink></li>
+							<li><NavLink to="/Theming/Keyboard-Commands">Keyboard Commands</NavLink></li>
 							<li><NavLink to="/Theming/Arbitrary-Input">Handling Arbitrary Input</NavLink></li>
 							<li><NavLink to="/Theming/Simple-Tweens">Simple Tweens</NavLink></li>
-							<li><NavLink to="/Theming/Keyboard-Commands">Keyboard Commands</NavLink></li>
 						</ul>
 					</div>
 				</section>
