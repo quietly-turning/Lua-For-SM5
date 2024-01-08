@@ -22,6 +22,7 @@
     "start": "npm run convert-pages && sass --watch src/_styles/ | react-scripts start",
     "build": "npm run convert-pages && sass src/_styles && react-scripts build",
     "deploy": "gh-pages -d build",
+    "predeploy": "npm run build",
     "convert-pages": "node src/html-to-json.js"
   },
   "homepage": "https://quietly-turning.github.io/Lua-For-SM5/",
