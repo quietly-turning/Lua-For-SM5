@@ -176,3 +176,13 @@ div.LuaAPI{
 		}
 	}
 }
+
+
+// -------------------------------------------------------
+// dark mode
+
+html[data-bs-theme='dark']{
+	h3.API-Category-Header {
+		background-color:var(--bs-body-bg)
+	}
+}

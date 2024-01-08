@@ -26,6 +26,7 @@ a{
 // -------------------------------------------------------
 
 #topbar{
+	color: rgba(255, 255, 255, 0.75);  // specify so SVG icons can use `fill: currentColor`
 	padding: 2px 0px;
 	background-color: #282828;
 
@@ -37,6 +38,17 @@ a{
 		&:focus-visible {
 			outline: 0;
 			box-shadow: 0 0 0 .125rem rgb(52, 120, 247);
+		}
+	}
+
+
+	// darkmode switch in head navbar
+	.colorMode-toggle {
+		margin-bottom: 0px;
+
+		input {
+			position: relative;
+			top:2px;
 		}
 	}
 }
@@ -111,7 +123,7 @@ a{
 				width: 80%;
 
 				&::after{
-					background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="rgba(33,37,41,1)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
+					background-image: url('data:image/svg+xml;utf8,<svg alt="Arrow" xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24"><path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path></svg>');
 					background-repeat: no-repeat;
 					background-size: 2rem 2rem;
 					padding: 0.5em;
@@ -337,4 +349,56 @@ video{
 	border-radius: 8px;
 	object-fit:fill;
 	width:100%
+}
+
+// -------------------------------------------------------
+// dark mode
+
+html[data-bs-theme='dark']{
+	.CodeExample-Title{
+		// position: relative;
+		// top: 1px;
+		border: 1px solid rgb(118, 122, 126);
+	}
+	pre code {
+		border: 1px solid rgb(118, 122, 126);
+	}
+
+
+	h3.API-Category-Header {
+		background-color:var(--bs-body-bg);
+	}
+
+	.sidebar{
+		border-right: 1px solid rgb(81, 84, 87);
+		a{
+			color: rgb(222, 226, 230);
+		}
+
+		section{
+			h5{
+				&.expandable{
+					&::after{
+						filter: invert(94%) sepia(7%) saturate(122%) hue-rotate(167deg) brightness(95%) contrast(95%);
+					}
+				}
+			}
+		}
+	}
+
+	.sidebar,
+	#LuaAPISidebar div.sidebar-API-select{
+		background-color:var(--bs-body-bg)
+	}
+
+	h5, li a{
+		&:hover{
+			background-color: rgb(81, 84, 87);
+		}
+	}
+
+	#topbar{
+		background-color: rgb(33, 37, 41);
+		border-bottom: 1px solid rgb(81, 84, 87);
+	}
 }
