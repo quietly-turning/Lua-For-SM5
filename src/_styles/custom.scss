@@ -80,7 +80,7 @@ a{
 			height: 2.1em;
 
 			// span is nested in section h5 and handles url hash updating onClick
-			// these were orginally normal <a href="#thing"> elements but I think
+			// these were originally normal <a href="#thing"> elements but I think
 			// Bootstrap's collapse component was interfering with hash updating
 			// (But, it's more likely that I don't know what I'm doing.)
 			span{
@@ -173,9 +173,15 @@ a{
 					}
 				}
 			}
+
+			// XXX: does <fieldset> appear in div.sidebar-API-select...?
 			fieldset{
 				padding-left:  0.5em;
 				padding-right: 0.5em;
+			}
+
+			select{
+				margin-bottom: 4px;
 			}
 		}
 	}
