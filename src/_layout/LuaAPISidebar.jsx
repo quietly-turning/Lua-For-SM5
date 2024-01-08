@@ -230,17 +230,22 @@ class Sidebar extends Component {
 		if (event.key==='Enter' || event.key==='ArrowLeft' || event.key==='ArrowRight'){
 			const el = document.getElementById(`#collapse-${index}`)
 			let bsCollapse = bootstrap.Collapse.getInstance(el)
-			if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
+			if (bsCollapse === null && hash !== "GlobalFunctions" && hash !== "Constants") {
+				bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false })
+			}
 
 			if (event.key==='Enter'){
 				this.updateHash(hash)
-				bsCollapse.toggle()
+				if (bsCollapse) { bsCollapse.toggle() }
+
+				const headingEl = document.getElementById(`heading-${index ?? hash}`)
+				if (headingEl){ headingEl.firstChild.focus() }
 
 			} else if (event.key==='ArrowLeft'){
-				bsCollapse.hide()
+				if (bsCollapse) { bsCollapse.hide() }
 
 			} else if (event.key==='ArrowRight'){
-				bsCollapse.show()
+				if (bsCollapse) { bsCollapse.show() }
 			}
 		}
 	}
@@ -259,8 +264,13 @@ class Sidebar extends Component {
 		if (index === null){
 			return(
 				<section>
-					<h5 className={hash}>
-						<span tabIndex="0" onKeyDown={(e) => e.key==='Enter' ? this.updateHash(hash) : '' } onClick={() => this.updateHash(hash)}>{text}</span>
+					<h5 id={"heading-"+hash} className={hash}>
+						<span tabIndex="0"
+							onKeyDown={(e) => this.handleKeyPress(e, hash, index) }
+							onClick={() => this.updateHash(hash)}
+						>
+							{text}
+						</span>
 					</h5>
 				</section>
 			)

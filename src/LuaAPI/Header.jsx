@@ -27,7 +27,10 @@ class Header extends Component {
 	render(){
 		const HeaderTag = `h${this.props.level}`
 		let clsName = "API-Category-Header"
-		if (HeaderTag==="h3" || HeaderTag==="h2" && this.props.name==="GlobalFunctions") {
+		if (HeaderTag==="h3"
+		//  || HeaderTag==="h2" && this.props.name==="GlobalFunctions"
+		)
+		{
 			clsName = clsName + " sticky"
 		}
 
