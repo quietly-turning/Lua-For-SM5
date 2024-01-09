@@ -41,6 +41,13 @@ a{
 		}
 	}
 
+	.navbar-right{
+		flex-grow: 1;
+		display: inline-flex;
+		justify-content: end;
+		align-items: center;
+	}
+
 
 	// darkmode switch in head navbar
 	.colorMode-toggle {
@@ -48,11 +55,8 @@ a{
 
 		label{
 			cursor: pointer;
-		}
-
-		input {
 			position: relative;
-			top:2px;
+			bottom: 2px;
 		}
 	}
 }
@@ -169,7 +173,7 @@ a{
 		}
 	}
 
-	#GuidesSidebar{
+	.GuidesSidebar{
 		// #LuaAPISidebar doesn't need an explicit margin-top
 		// as div.sidebar-filter at the top pushes items down
 		margin-top:16px;
@@ -234,11 +238,19 @@ a{
 		max-width: 800px;
 	}
 
+	// #fullsize-navbarNav{
+	// 	display: flex !important;
+	// }
+
+	// #navbarNav{
+	// 	display: none !important;
+	// }
+
 	.sidebar{
 		min-width:230px;
 		max-width:300px;
 
-		#GuidesSidebar, #LuaAPISidebar{
+		.GuidesSidebar, #LuaAPISidebar{
 			section h5{
 				padding-left: 0.5em;
 			}
@@ -248,6 +260,28 @@ a{
 			li a{
 				padding-left: 1.35em;
 			}
+		}
+	}
+}
+
+@media only screen and (min-width : 576px) {
+	.mobile-only{
+		display: none;
+	}
+}
+
+
+@media only screen and (max-width : 576px) {
+	.fullwidth-only{
+		display: none;
+	}
+
+	ul.navbar-nav li.nav-item{
+		padding-left: 0.75em;
+		width: 95%;
+
+		a.nav-link{
+			padding-left:0.75em;
 		}
 	}
 }
@@ -298,7 +332,7 @@ pre {
 	left: 0;
 	background-color: #eeeeee;
 }
-#mobileNav > #GuidesSidebar {
+#mobileNav > .GuidesSidebar {
 	// enforce a padding-bottom so that fully-expanded contents don't
 	// go out of scrollable bounds
 	padding-bottom: 100px;
@@ -342,6 +376,14 @@ pre {
 }
 
 // -------------------------------------------------------
+
+input[type='checkbox']{
+	&:focus-visible {
+		outline: 0;
+		box-shadow: 0 0 0 .2rem rgb(52, 120, 247);
+	}
+}
+
 div.other-resources{
 	li{
 		list-style-type: none;
@@ -359,19 +401,23 @@ video{
 // dark mode
 
 html[data-bs-theme='dark']{
-	.CodeExample-Title{
-		// position: relative;
-		// top: 1px;
-		border: 1px solid rgb(118, 122, 126);
-	}
-	pre code {
+
+	// things that need a border in dark mode
+	.CodeExample-Title,
+	pre code,
+	#mobileNavToggle {
 		border: 1px solid rgb(118, 122, 126);
 	}
 
-
+	// things that had a light-gray bg specified in light mode,
+	// and need a different background-color specified for dark mode
+	#mobileNav,
+	.sidebar,
+	#LuaAPISidebar div.sidebar-API-select,
 	h3.API-Category-Header {
-		background-color:var(--bs-body-bg);
+		background-color:var(--bs-body-bg)
 	}
+
 
 	.sidebar{
 		border-right: 1px solid rgb(81, 84, 87);
@@ -388,11 +434,6 @@ html[data-bs-theme='dark']{
 				}
 			}
 		}
-	}
-
-	.sidebar,
-	#LuaAPISidebar div.sidebar-API-select{
-		background-color:var(--bs-body-bg)
 	}
 
 	h5, li a{

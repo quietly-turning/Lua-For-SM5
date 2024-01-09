@@ -8,14 +8,15 @@ class Sidebar extends Component {
 	render() {
 		return(
 			<Routes>
-				<Route path="/"             element={<GuidesSidebar />} />
-				<Route path="/Resources"    element={<GuidesSidebar />} />
-				<Route path="/:group/:page" element={<GuidesSidebar />} />
+				<Route path="/"             element={<GuidesSidebar mobile={this.props.mobile} />} />
+				<Route path="/Resources"    element={<GuidesSidebar mobile={this.props.mobile} />} />
+				<Route path="/:group/:page" element={<GuidesSidebar mobile={this.props.mobile} />} />
 
 				<Route
 					path="/LuaAPI"
 					element={
 						<LuaAPISidebar
+							mobile={this.props.mobile}
 							setSelectedAPI={this.props.setSelectedAPI}
 							actors={this.props.actors}
 							screens={this.props.screens}

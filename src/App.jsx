@@ -39,6 +39,7 @@ class App extends Component {
 
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
 		this.hideMobileNav         = this.hideMobileNav.bind(this)
+		this.showMobileNav         = this.showMobileNav.bind(this)
 		this.getClasses            = this.getClasses.bind(this)
 		this.setSelectedAPI        = this.setSelectedAPI.bind(this)
 
@@ -49,7 +50,13 @@ class App extends Component {
 	}
 
 	handleMobileNavToggle(){
-		this.setState({mobile_nav: !this.state.mobile_nav})
+		this.state.mobile_nav ?	this.hideMobileNav() : this.showMobileNav()
+	}
+
+	showMobileNav(){
+		this.setState({mobile_nav: true})
+		const bottomNavbarClasses = document.getElementById('mobileNav')?.classList
+		bottomNavbarClasses.add('show')
 	}
 
 	hideMobileNav(){
@@ -89,8 +96,9 @@ class App extends Component {
 				<div className="pt-5">
 					<div className="row no-gutters">
 
-						<div tabIndex="-1" className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
+						<div className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">
 							<Sidebar
+								mobile={false}
 								setSelectedAPI={this.setSelectedAPI}
 								actors={this.state.actors}
 								screens={this.state.screens}
@@ -115,6 +123,7 @@ class App extends Component {
 
 				<div id="mobileNav" className="sidebar collapse no-transition w-100 h-100 d-md-none">
 					<Sidebar
+						mobile={true}
 						setSelectedAPI={this.setSelectedAPI}
 						actors={this.state.actors}
 						screens={this.state.screens}
@@ -126,7 +135,7 @@ class App extends Component {
 					/>
 				</div>
 
-				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<button id="mobileNavToggle" className="btn btn-dark d-md-none" type="button" onClick={this.handleMobileNavToggle} data-bs-toggle="collapse"  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				  <div className={this.state.mobile_nav ? "x bar1" : "bar1"}></div>
 				  <div className={this.state.mobile_nav ? "x bar2" : "bar2"}></div>
 				  <div className={this.state.mobile_nav ? "x bar3" : "bar3"}></div>
