@@ -42,9 +42,7 @@ a{
 	}
 
 	.navbar-right{
-		flex-grow: 1;
-		display: inline-flex;
-		justify-content: end;
+		display: flex;
 		align-items: center;
 	}
 
@@ -412,12 +410,15 @@ html[data-bs-theme='dark']{
 	// things that had a light-gray bg specified in light mode,
 	// and need a different background-color specified for dark mode
 	#mobileNav,
-	.sidebar,
-	#LuaAPISidebar div.sidebar-API-select,
 	h3.API-Category-Header {
 		background-color:var(--bs-body-bg)
 	}
 
+	#topbar,
+	.sidebar,
+	#LuaAPISidebar div.sidebar-API-select {
+		background-color: rgb(24,28,32) !important;
+	}
 
 	.sidebar{
 		border-right: 1px solid rgb(81, 84, 87);
