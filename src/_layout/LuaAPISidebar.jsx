@@ -228,20 +228,21 @@ class Sidebar extends Component {
 
 	handleKeyPress(event, hash, index){
 		if (event.key==='Enter' || event.key==='ArrowLeft' || event.key==='ArrowRight'){
-			const el = document.getElementById(`#collapse-${index}`)
+
+			const el = document.getElementById(`#${this.props.mobile ? 'mobile-' : ''}collapse-${index}`)
 			let bsCollapse = bootstrap.Collapse.getInstance(el)
+
 			if (bsCollapse === null && hash !== "GlobalFunctions" && hash !== "Constants") {
-				bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false })
+				bsCollapse = new bootstrap.Collapse(`#${this.props.mobile ? 'mobile-' : ''}collapse-${index}`, {toggle: false })
 			}
-			const headingEl = document.getElementById(`#heading-${index}`)
+			const headingEl = document.getElementById(`#${this.props.mobile ? 'mobile-' : ''}heading-${index}`)
 
 			if (event.key==='Enter'){
 				this.updateHash(hash)
 				if (bsCollapse) { bsCollapse.toggle() }
-				if (headingEl){ headingEl.classList.toggle('collapsed')}
-
-				const headingEl = document.getElementById(`heading-${index ?? hash}`)
-				if (headingEl){ headingEl.firstChild.focus() }
+				if (headingEl){
+					headingEl.classList.toggle('collapsed')
+				}
 
 			} else if (event.key==='ArrowLeft'){
 				if (bsCollapse) { bsCollapse.hide() }
@@ -254,14 +255,18 @@ class Sidebar extends Component {
 		}
 	}
 
-	handleClick(hash, index){
-		if (hash){ this.updateHash(hash) }
-		const el = document.getElementById(`#collapse-${index}`)
+	toggleSectionCollapse(e, index){
+		// hack: don't toggle the section's collapse if this event originated from
+		//   clicking a child <a> tag underneath one of the <section> tags
+		//   (those are the <NavLink> components in `items`)
+		if (e.target.nodeName === "A"){ return }
+
+		const el = document.getElementById(`#${this.props.mobile ? 'mobile-' : ''}collapse-${index}`)
 		let bsCollapse = bootstrap.Collapse.getInstance(el)
-		if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#collapse-${index}`, {toggle: false }) }
+		if (bsCollapse === null) { bsCollapse = new bootstrap.Collapse(`#${this.props.mobile ? 'mobile-' : ''}collapse-${index}`, {toggle: false }) }
 		bsCollapse.toggle()
 
-		const headingEl = document.getElementById(`heading-${index}`)
+		const headingEl = document.getElementById(`${this.props.mobile ? 'mobile-' : ''}heading-${index}`)
 		if (headingEl){ headingEl.classList.toggle('collapsed')}
 	}
 
@@ -310,17 +315,22 @@ class Sidebar extends Component {
 
 
 		return(
-			<section>
-				<h5
-					className="collapsed expandable" id={"heading-"  + index}
-					onClick={(e) => this.handleClick(hash, index)}
+			<section
+				className="collapsed expandable"
+				onClick={(e) => this.toggleSectionCollapse(e, index)}
+				aria-expanded="false" aria-controls={(this.props.mobile ? "mobile-" : "") + `collapse-${index}`}
+			>
+				<h5 className="collapsed expandable" id={(this.props.mobile ? "mobile-" : "") + `heading-${index}`}
+					onClick={() => { this.updateHash(hash)} }
 					onKeyDown={(e) => this.handleKeyPress(e, hash, index) }
-					aria-expanded="false" aria-controls={"collapse-" + index}
 				>
 					<span tabIndex="0">{text}</span>
 				</h5>
 
-				<div id={"collapse-" + index} className="collapse no-transition" aria-labelledby={"heading-" + index}>
+				<div id={(this.props.mobile ? "mobile-" : "") + `collapse-${index}`}
+					className="collapse no-transition"
+					aria-labelledby={(this.props.mobile ? "mobile-" : "") + `header-${index}`}
+				>
 					<ul>{items}</ul>
 				</div>
 			</section>
