@@ -1,7 +1,114 @@
 <h1>Keyboard Commands</h1>
 
-<h2 id="pull-back-camera">Pull Back the Camera</h2>
+<p>
+   The StepMania engine provides some keyboard commands specifically to help
+   creators.  Unless otherwise noted, these are globally available — they can
+   be used at any time from any screen.
+</p>
 
+<p class="alert alert-warning">
+   <strong>a note on Apple Keyboards</strong><br>
+   If you're using an Apple keyboard on macOS (for example, the built-in keyboard
+   on a MacBook), any commands that use <em>function</em> keys need to be
+   also be combined with the <kbd>fn</kbd> key.<br><br>
+   For example, to reload metrics.ini on Windows, Linux, or macOS-with-a-non-Apple-keyboard,
+   you'd use <kbd>shift</kbd>+<kbd>F2</kbd>, but on macOS with an Apple keyboard, you'd use
+   <kbd>fn</kbd>+<kbd>shift</kbd>+<kbd>F2</kbd>
+</p>
+
+<hr />
+<!-- ---------------------------------------------------- -->
+
+
+<h2 id="reload-current-screen">Reload the Current Screen</h2>
+<p>
+   First, hold <kbd>F3</kbd> and tap <kbd>F6</kbd> to toggle your <em>Debug Menu</em> into <em>Theme</em> debug mode.<br>
+   Then hold <kbd>F3</kbd> and tap <kbd>2</kbd> to reload the current screen.
+</p>
+
+<p>
+   You'll only need to toggle your <em>Debug Menu</em> into <em>Theme</em> debug mode once.  Once that's
+   toggled, you can directly use <kbd>F3</kbd>+<kbd>2</kbd> to reload the screen.
+</p>
+
+<p>
+   <video controls>
+      <source src="/Lua-For-SM5/img/reload-screen.mp4">
+   </video>
+ </p>
+
+<p>
+   When creating content for StepMania, you'll frequently make a change to Lua and then want to
+   see how it looks in your theme.  For example, a png graphic displayed with
+   <a data-component="Link" href="/Actors/LoadActor">LoadActor</a> might appear on-screen too small,
+   and you want to change its <a data-component="Link" href="/LuaAPI#Actors-Actor-zoom">zoom</a> from
+   <code>1</code> to <code>1.5</code>
+</p>
+<p>
+   To see if <code>1.5</code> is the zoom amount you want, you'll need to:
+</p>
+<ol>
+   <li>edit your Lua file</li>
+   <li>save your Lua file</li>
+   <li>reload the screen with <kbd>F3</kbd>+<kbd>2</kbd></li>
+</ol>
+
+<p>
+   When the screen reloads, you'll see your new code take effect.
+</p>
+<p>
+   <strong>This workflow of <em>edit → save → reload</em> is the most common one you'll use in StepMania theming.</strong>
+</p>
+
+<p>
+   If you theme long enough, you'll develop muscle memory for <kbd>F3</kbd>+<kbd>2</kbd> and invoke
+   it without thinking.  Eventually you'll try to use it on something unrelated like your Twitter feed,
+   and momentarily wonder why it isn't working, and that will be your cue to take a break from
+   StepMania theming.
+</p>
+
+<hr />
+<!-- ---------------------------------------------------- -->
+
+
+
+
+<h2 id="reload-metrics">Reload Metrics.ini</h2>
+<p>
+   Hold <kbd>shift</kbd> and tap <kbd>F2</kbd> reload the current theme's metrics.ini.
+</p>
+
+<hr />
+<!-- ---------------------------------------------------- -->
+
+
+
+
+<h2 id="reload-scripts">Reload <em>Scripts</em> Folder</h2>
+<p>
+   Hold <kbd>control</kbd> and tap <kbd>F2</kbd> reload the current theme's <em>Scripts</em>
+   folder.
+</p>
+
+<hr />
+<!-- ---------------------------------------------------- -->
+
+
+
+
+<h2 id="reload-theme-and-textures">Reload Theme and Textures</h2>
+<p>
+   First, hold <kbd>F3</kbd> and tap <kbd>F6</kbd> to toggle your <em>Debug Menu</em> into Theme debug mode.<br/>
+   Then hold <kbd>F3</kbd> and tap <kbd>6</kbd> to reload theme's cached textures.
+</p>
+
+<hr />
+<!-- ---------------------------------------------------- -->
+
+
+
+
+<h2 id="pull-back-camera">Pull Back the Camera</h2>
 <p>
    Hold <kbd>F3</kbd> and tap <kbd>e</kbd> to pull StepMania's camera back.
    Use the same command again to zoom back in.
