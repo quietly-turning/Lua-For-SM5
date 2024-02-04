@@ -11,7 +11,8 @@
    If you're using an Apple keyboard on macOS (for example, the built-in keyboard
    on a MacBook), any commands that use <em>function</em> keys need to be
    also be combined with the <kbd>fn</kbd> key.<br><br>
-   For example, to reload metrics.ini on Windows, Linux, or macOS-with-a-non-Apple-keyboard,
+
+   For example, to reload <em>metrics.ini</em> on Windows, Linux, or macOS-with-a-non-Apple-keyboard,
    you'd use <kbd>shift</kbd>+<kbd>F2</kbd>, but on macOS with an Apple keyboard, you'd use
    <kbd>fn</kbd>+<kbd>shift</kbd>+<kbd>F2</kbd>
 </p>
@@ -27,8 +28,8 @@
 </p>
 
 <p>
-   You'll only need to toggle your <em>Debug Menu</em> into <em>Theme</em> debug mode once.  Once that's
-   toggled, you can directly use <kbd>F3</kbd>+<kbd>2</kbd> to reload the screen.
+   You'll only need to toggle your <em>Debug Menu</em> into <em>Theme</em> mode once.  Once that's
+   set, you can directly use <kbd>F3</kbd>+<kbd>2</kbd> to reload the screen.
 </p>
 
 <p>
@@ -41,11 +42,11 @@
    When creating content for StepMania, you'll frequently make a change to Lua and then want to
    see how it looks in your theme.  For example, a png graphic displayed with
    <a data-component="Link" href="/Actors/LoadActor">LoadActor</a> might appear on-screen too small,
-   and you want to change its <a data-component="Link" href="/LuaAPI#Actors-Actor-zoom">zoom</a> from
-   <code>1</code> to <code>1.5</code>
+   and you want to try changing its <a data-component="Link" href="/LuaAPI#Actors-Actor-zoom">zoom</a>
+   from <code>1</code> to <code>1.5</code>
 </p>
 <p>
-   To see if <code>1.5</code> is the zoom amount you want, you'll need to:
+   To see if <code>zoom(1.5)</code> is the amount you want, you'll need to:
 </p>
 <ol>
    <li>edit your Lua file</li>
@@ -54,17 +55,26 @@
 </ol>
 
 <p>
-   When the screen reloads, you'll see your new code take effect.
+   When the StepMania engine "reloads the screen," it reads the Lua files for that screen from disk.
+   Any changes you just made will be picked up, and you'll see your new code take effect.
 </p>
+
 <p>
-   <strong>This workflow of <em>edit → save → reload</em> is the most common one you'll use in StepMania theming.</strong>
+   <strong>This workflow of <em>edit → save → reload</em> is the most common
+   one you'll use in StepMania theming.</strong>  You'll change some code and reload
+   the screen to test it.  Change some code, reload the screen.  Repeat.  Repeat.
+</p>
+
+<p>
+   Eventually, you'll get your code where you want, and can stop reloading the screen until
+   you start the next task.
 </p>
 
 <p>
    If you theme long enough, you'll develop muscle memory for <kbd>F3</kbd>+<kbd>2</kbd> and invoke
    it without thinking.  Eventually you'll try to use it on something unrelated like your Twitter feed,
    and momentarily wonder why it isn't working, and that will be your cue to take a break from
-   StepMania theming.
+   StepMania theming.  🙂
 </p>
 
 <hr />
