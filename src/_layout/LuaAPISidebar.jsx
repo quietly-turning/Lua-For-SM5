@@ -48,9 +48,11 @@ class Sidebar extends Component {
 		const _engineString = urlParams.get(urlParamKeys.engine)
 		const _versionString= urlParams.get(urlParamKeys.version)
 
-		// basic validation in case user types non-existent engines/versions in the url
+		// basic validation to ensure user's url has valid "engine" and "version" strings
+		//  we want to handle both nonsense values like /LuaAPI?engine=asdfasdf&version=ghjkghjk
+		//  as well as missing values like /LuaAPI?engine=ITGMania
 		const engineString = supportedAPIsMap[_engineString] ? _engineString : default_engineString
-		const versionString = supportedAPIsMap[engineString][_versionString] ? _versionString : default_versionString
+		const versionString = supportedAPIsMap[engineString][_versionString] ? _versionString : supportedAPIs.find(api=>api.name===engineString).versions[0].name
 		set_GET_params(engineString, versionString)
 
 
