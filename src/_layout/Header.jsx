@@ -7,7 +7,7 @@ class Header extends Component {
 		super(props)
 		this.darkMode = false
 
-		this.toggleColorMode  = this.toggleColorMode.bind(this);
+		this.toggleColorMode       = this.toggleColorMode.bind(this);
 		this.handleMobileNavToggle = this.handleMobileNavToggle.bind(this)
 		this.hideMobileNav         = this.hideMobileNav.bind(this)
 		this.showMobileNav         = this.showMobileNav.bind(this)
@@ -15,6 +15,13 @@ class Header extends Component {
 		this.state = {
 			mobile_nav: false,
 		}
+	}
+
+	// once this Header component loads, retrieve 'bsTheme' from localStorage
+	// and use the value to set darkMode
+	componentDidMount() {
+		this.darkMode = localStorage.getItem('bsTheme') === 'dark'
+		this.toggleColorMode({target:{checked:this.darkMode}})
 	}
 
 	handleMobileNavToggle(){
@@ -47,7 +54,9 @@ class Header extends Component {
 			checkbox.checked = e.target.checked
 		}
 
-		document.documentElement.dataset.bsTheme = this.darkMode ? 'dark' : 'light'
+		const bsTheme = this.darkMode ? 'dark' : 'light'
+		document.documentElement.dataset.bsTheme = bsTheme
+		localStorage.setItem('bsTheme', bsTheme);
 	}
 
 	render() {
