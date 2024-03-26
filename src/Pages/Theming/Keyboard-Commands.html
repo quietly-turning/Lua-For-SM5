@@ -13,8 +13,8 @@
    also be combined with the <kbd>fn</kbd> key.<br><br>
 
    For example, to reload <em>metrics.ini</em> on Windows, Linux, or macOS-with-a-non-Apple-keyboard,
-   you'd use <kbd>shift</kbd>+<kbd>F2</kbd>, but on macOS with an Apple keyboard, you'd use
-   <kbd>fn</kbd>+<kbd>shift</kbd>+<kbd>F2</kbd>
+   you'd use <kbd>shift</kbd> <kbd>F2</kbd>, but on macOS with an Apple keyboard, you'd use
+   <kbd>fn</kbd> <kbd>shift</kbd> <kbd>F2</kbd>
 </p>
 
 <hr />
@@ -29,7 +29,7 @@
 
 <p>
    You'll only need to toggle your <em>Debug Menu</em> into <em>Theme</em> mode once.  Once that's
-   set, you can directly use <kbd>F3</kbd>+<kbd>2</kbd> to reload the screen.
+   set, you can directly use <kbd>F3</kbd> <kbd>2</kbd> to reload the screen.
 </p>
 
 <p>
@@ -51,7 +51,7 @@
 <ol>
    <li>edit your Lua file</li>
    <li>save your Lua file</li>
-   <li>reload the screen with <kbd>F3</kbd>+<kbd>2</kbd></li>
+   <li>reload the screen with <kbd>F3</kbd> <kbd>2</kbd></li>
 </ol>
 
 <p>
@@ -71,10 +71,10 @@
 </p>
 
 <p>
-   If you theme long enough, you'll develop muscle memory for <kbd>F3</kbd>+<kbd>2</kbd> and invoke
+   If you theme long enough, you'll develop muscle memory for <kbd>F3</kbd> <kbd>2</kbd> and invoke
    it without thinking.  Eventually you'll try to use it on something unrelated like your Twitter feed,
    and momentarily wonder why it isn't working, and that will be your cue to take a break from
-   StepMania theming.  🙂
+   StepMania theming.
 </p>
 
 <hr />
@@ -88,6 +88,43 @@
    Hold <kbd>shift</kbd> and tap <kbd>F2</kbd> reload the current theme's metrics.ini.
 </p>
 
+<p>
+   Some theme functionality is controlled by its metrics.ini file.  For example, if you use the MusicWheel supplied
+   by the StepMania engine, you will set whether to show a dedicated MusicWheelItem for "Random" and separately for
+   "Roulette" in your theme's metrics.ini under the <code>[MusicWheel]</code> section.
+</p>
+
+<p>
+   This code comes from SM5's default theme's
+   <a href="https://github.com/stepmania/stepmania/blob/d55acb1ba26f/Themes/default/metrics.ini#L838-L839">
+      metrics.ini
+   </a>:
+</p>
+
+<pre><code class="ini">[MusicWheel]
+ShowRoulette=true
+ShowRandom=true
+</code></pre>
+
+<p>
+ If you want your theme to show a MusicWheelItem for Random but not Roulette, you'd change this to:
+</p>
+
+<pre><code class="ini">[MusicWheel]
+ShowRoulette=false
+ShowRandom=true
+</code></pre>
+
+<p>
+   After saving changes to your theme's metrics.ini file, you'll need to:
+</p>
+
+<ol>
+   <li>reload metrics.ini with <kbd>shift</kbd> <kbd>F2</kbd> so the engine loads your changes</li>
+   <li><a href="#reload-current-screen">reload the current screen</a> with <kbd>F3</kbd> <kbd>2</kbd> so you see your changes</li>
+</ol>
+
+
 <hr />
 <!-- ---------------------------------------------------- -->
 
@@ -100,7 +137,27 @@
    folder.
 </p>
 
+<p>
+   Since current Theming Best Practices™ suggest a theme's global variables and data structures should be
+   defined and initialized in a file from <em>Scripts</em>, reloading your theme's <em>Scripts</em> folder
+   can have the side effect of resetting a theme's working data.  Since most screens also make assumptions about
+   working data, reloading scripts during an active gameplay session can temporarily break things.
+</p>
+
+<p>
+   For example, imagine you play through two songs, then reload the <em>Scripts</em> folder from
+   <em>ScreenSelectMusic</em>.  This screen may expect some working data in memory telling it how many songs have already
+   been played, and that value may now be <code>nil</code>.  This could cause some theme code expecting a number
+   to fail when it receives <em>nil</em>, and your theme will log errors.
+</p>
+
+<p>
+   For this reason, I recommend only reloading Scripts from your theme's title screen.  Fully restarting StepMania also
+   has the effect of loading all files from <em>Scripts</em>.
+</p>
+
 <hr />
+
 <!-- ---------------------------------------------------- -->
 
 
@@ -109,7 +166,13 @@
 <h2 id="reload-theme-and-textures">Reload Theme and Textures</h2>
 <p>
    First, hold <kbd>F3</kbd> and tap <kbd>F6</kbd> to toggle your <em>Debug Menu</em> into Theme debug mode.<br/>
-   Then hold <kbd>F3</kbd> and tap <kbd>6</kbd> to reload theme's cached textures.
+   Then hold <kbd>F3</kbd> and tap <kbd>6</kbd> to reload theme's cached textures.  "Cached textures" are typically any visual files loaded
+   from the <em>Graphics</em> folder.
+</p>
+
+<p>
+   After reloading your theme's cached textures, you'll need to <a href="#reload-current-screen">reload the current screen</a>
+   to see any updated textures appear in your theme.
 </p>
 
 <hr />
