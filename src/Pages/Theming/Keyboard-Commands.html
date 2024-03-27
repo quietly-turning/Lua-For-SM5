@@ -22,7 +22,7 @@
 
 
 <h2 id="reload-current-screen">Reload the Current Screen</h2>
-<p>
+<p class="alert alert-primary">
    First, hold <kbd>F3</kbd> and tap <kbd>F6</kbd> to toggle your <em>Debug Menu</em> into <em>Theme</em> debug mode.<br>
    Then hold <kbd>F3</kbd> and tap <kbd>2</kbd> to reload the current screen.
 </p>
@@ -84,7 +84,7 @@
 
 
 <h2 id="reload-metrics">Reload Metrics.ini</h2>
-<p>
+<p class="alert alert-primary">
    Hold <kbd>shift</kbd> and tap <kbd>F2</kbd> reload the current theme's metrics.ini.
 </p>
 
@@ -132,7 +132,7 @@ ShowRandom=true
 
 
 <h2 id="reload-scripts">Reload <em>Scripts</em> Folder</h2>
-<p>
+<p class="alert alert-primary">
    Hold <kbd>control</kbd> and tap <kbd>F2</kbd> reload the current theme's <em>Scripts</em>
    folder.
 </p>
@@ -148,7 +148,7 @@ ShowRandom=true
    For example, imagine you play through two songs, then reload the <em>Scripts</em> folder from
    <em>ScreenSelectMusic</em>.  This screen may expect some working data in memory telling it how many songs have already
    been played, and that value may now be <code>nil</code>.  This could cause some theme code expecting a number
-   to fail when it receives <em>nil</em>, and your theme will log errors.
+   to fail when it receives <code>nil</code>, and your theme will log errors.
 </p>
 
 <p>
@@ -164,10 +164,13 @@ ShowRandom=true
 
 
 <h2 id="reload-theme-and-textures">Reload Theme and Textures</h2>
-<p>
+<p class="alert alert-primary">
    First, hold <kbd>F3</kbd> and tap <kbd>F6</kbd> to toggle your <em>Debug Menu</em> into Theme debug mode.<br/>
-   Then hold <kbd>F3</kbd> and tap <kbd>6</kbd> to reload theme's cached textures.  "Cached textures" typically
-   correspond with any visual files (png, avi, mp4, etc.) loaded from the <em>Graphics</em> folder.
+   Then hold <kbd>F3</kbd> and tap <kbd>6</kbd> to reload theme's cached textures.
+</p>
+
+<p>
+   "Cached textures" typically correspond with any visual files (png, avi, mp4, etc.) loaded from the <em>Graphics</em> folder.
 </p>
 
 <p>
@@ -182,7 +185,7 @@ ShowRandom=true
 
 
 <h2 id="pull-back-camera">Pull Back the Camera</h2>
-<p>
+<p class="alert alert-primary">
    Hold <kbd>F3</kbd> and tap <kbd>e</kbd> to pull StepMania's camera back.
    Use the same command again to zoom back in.
 </p>
