@@ -137,9 +137,6 @@ kbd {
 
 			// pull the caret symbol right
 			&::after{
-				// specify `pointer-events: none` to nullify clicks on the chevron icon
-				// which is display as part of the h5's ::after
-				pointer-events: none;
 				width: 30%;
 				margin-right: -28%;
 			}
@@ -214,6 +211,12 @@ kbd {
 		// enforce a margin-bottom so that fully-expanded contents don't
 		// go out of scrollable bounds
 		margin-bottom: 100px;
+
+		section > h5::after{
+			// specify `pointer-events: none` to nullify clicks on the chevron icon
+			// which is display as part of the h5's ::after
+			pointer-events: none;
+		}
 
 		div.sidebar-API-select{
 			padding: 1em 0.5em 0 0.5em;
