@@ -22,7 +22,7 @@ const supportedAPIs = [
     ],
   },
   {
-    name: "ITGMania",
+    name: "ITGmania",
     github: {
       user:    "itgmania",
       project: "itgmania",

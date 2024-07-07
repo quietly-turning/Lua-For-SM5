@@ -50,7 +50,7 @@ class Sidebar extends Component {
 
 		// basic validation to ensure user's url has valid "engine" and "version" strings
 		//  we want to handle both nonsense values like /LuaAPI?engine=asdfasdf&version=ghjkghjk
-		//  as well as missing values like /LuaAPI?engine=ITGMania
+		//  as well as missing values like /LuaAPI?engine=ITGmania
 		const engineString = supportedAPIsMap[_engineString] ? _engineString : default_engineString
 		const versionString = supportedAPIsMap[engineString][_versionString] ? _versionString : supportedAPIs.find(api=>api.name===engineString).versions[0].name
 		set_GET_params(engineString, versionString)
@@ -104,7 +104,7 @@ class Sidebar extends Component {
 
 
 	// -------------------------------------------------------
-	// handler for <select> with [StepMania, ITGMania]
+	// handler for <select> with [StepMania, ITGmania]
 	handleEngineSelectChange(event) {
 		const engineName = event.target.value
 		const engine = supportedAPIs.find(engine => engine.name === engineName)
