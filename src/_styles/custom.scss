@@ -89,6 +89,17 @@ kbd {
 	}
 }
 
+#content-container{
+	.bd-toc {
+		position: sticky;
+		top: 80px;
+		right: 0;
+		z-index: 2;
+		height: calc(100vh - 7rem);
+		overflow-y: auto;
+	}
+}
+
 // -------------------------------------------------------
 
 .sidebar{
@@ -253,12 +264,41 @@ kbd {
 	}
 }
 
+#TableOfContents {
+	li{
+		list-style: none;
+		a {
+			display: block;
+			padding: .125rem 0 .125rem .75rem;
+			color: inherit;
+			text-decoration: none;
+			border-left: .125rem solid transparent;
+
+			&:hover, &.active{
+					color: #f92672;
+					border-left-color: #f92672;
+			}
+		}
+	}
+}
+
 // -------------------------------------------------------
 // rules that will only apply when Bootstrap is in lg and xl
 
 @media only screen and (min-width : 767px) {
-	#content{
-		max-width: 800px;
+	#content-container {
+		margin-left: 25%;
+		max-width: 75%;
+
+		#content{
+			max-width: 800px;
+		}
+
+		#TocContainer{
+			display: flex;
+			flex-grow: 1;
+			width: auto;
+		}
 	}
 
 	// #fullsize-navbarNav{
@@ -284,6 +324,13 @@ kbd {
 				padding-left: 1.35em;
 			}
 		}
+	}
+}
+
+@media only screen and (min-width : 1376px) {
+	#content-container {
+		margin-left: 22%;
+		max-width: 78%;
 	}
 }
 
@@ -479,5 +526,11 @@ html[data-bs-theme='dark']{
 	#topbar{
 		background-color: rgb(33, 37, 41);
 		border-bottom: 1px solid rgb(81, 84, 87);
+	}
+
+	#TableOfContents li a {
+		&:hover, &.active{
+			background-color: unset;
+		}
 	}
 }

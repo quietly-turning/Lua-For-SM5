@@ -4,18 +4,19 @@ import { Route, Routes }    from "react-router-dom"
 
 // withRouter allows us access to app url history
 // and, more importantly here, hook events into url changes
-import { withRouter }       from "./withRouter.js"
+import { withRouter } from "./withRouter.js"
 
 // ------- primary stylesheet
 import "./_styles/custom.css"
 
 // ------- components for layout (header, sidebar)
-import Header from "./_layout/Header"
+import Header  from "./_layout/Header"
 import Sidebar from "./_layout/Sidebar"
+import ToC     from "./_layout/ToC"
 
 // ------- components for pages
 
-import Page from "./Page"
+import Page   from "./Page"
 import LuaAPI from "./LuaAPI/LuaAPI"
 
 // ------- highlightjs for syntax coloring
@@ -42,6 +43,7 @@ class App extends Component {
 		this.showMobileNav         = this.showMobileNav.bind(this)
 		this.getClasses            = this.getClasses.bind(this)
 		this.setSelectedAPI        = this.setSelectedAPI.bind(this)
+		this.setToC                = this.setToC.bind(this)
 
 		this.state = {
 			mobile_nav: false,
@@ -87,6 +89,10 @@ class App extends Component {
 		})
 	}
 
+	setToC(data){
+		this.setState({toc: data})
+	}
+
 	render() {
 
 		return (
@@ -110,13 +116,17 @@ class App extends Component {
 							/>
 						</div>
 
-						<div id="content" className="offset-md-3 col-xl-7 col-lg-8 col-md-9 col-sm-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
-							<Routes>
-								<Route path="/"             element={<Page   hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/Resources"    element={<Page   hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/:group/:page" element={<Page   hideMobileNav={this.hideMobileNav} />} />
-								<Route path="/LuaAPI"       element={<LuaAPI hideMobileNav={this.hideMobileNav} {...this.state} parentCallback={this.getClasses} />} />
-							</Routes>
+						<div id="content-container" className="row">
+							<div id="content" className="col-xl-8 col-lg-9 col-md-10 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
+								<Routes>
+									<Route path="/"             element={<Page   hideMobileNav={this.hideMobileNav} />} />
+									<Route path="/Resources"    element={<Page   hideMobileNav={this.hideMobileNav} />} />
+									<Route path="/:group/:page" element={<Page   hideMobileNav={this.hideMobileNav} setToC={this.setToC} />} />
+									<Route path="/LuaAPI"       element={<LuaAPI hideMobileNav={this.hideMobileNav} {...this.state} parentCallback={this.getClasses} />} />
+								</Routes>
+							</div>
+
+							<ToC toc={this.state.toc} />
 						</div>
 					</div>
 				</div>
