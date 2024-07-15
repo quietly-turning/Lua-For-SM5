@@ -1,6 +1,6 @@
 <h1>What are Actors?</h1>
 
-<h2>Tables Within Tables Within...</h2>
+<h2 id="tables-within-tables">Tables Within Tables Within...</h2>
 
 <p>An Actor is the most basic unit of StepMania scripting.  Virtually everything else that you work with in SM5 Lua, be it a Sprite, a BitmapText, or an ActorMultiVertex, is built on top of the foundation that Actor provides.</p>
 
@@ -25,7 +25,8 @@
 
 <p>For a complete list of SM5 Actor types, see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
 
-<h2>An Example SM5 Lua Script</h2>
+<hr />
+<h2 id="example-StepMania-Lua-script">Example StepMania Lua Script</h2>
 
 <p>The most commonly used Actors will each be discussed in detail in the chapters under <strong>Actors</strong> in the navigation menu.  For now, we&#8217;ll start by looking at a simple Lua script for StepMania 5.</p>
 
@@ -69,9 +70,12 @@ return ExampleAF
 </code></pre>
 
 
-<h2>Only one Actor can be returned per file.</h2>
+<h2 id="only-one-actor-returned-per-file">Only one Actor can be returned per file.</h2>
 
-<p>The StepMania engine expects one Actor to be returned per Lua file, yet the example above features four Actors:</p>
+<p>
+   The StepMania engine expects one Actor to be returned per Lua file,
+   yet the example above features four Actors:
+</p>
 
 <ul>
 	<li>1 ActorFrame</li>
@@ -80,10 +84,25 @@ return ExampleAF
 	<li>1 Sprite</li>
 </ul>
 
-<p>How do we make this work?</p>
+<p>
+   How do we make this work?
+</p>
 
-<p>The solution reveals a prominent design paradigm in StepMania scripting – put all other Actors inside the ActorFrame and return the ActorFrame.  An ActorFrame is just one type of Actor, and any valid Actor may be returned.</p>
+<p>
+   The solution reveals a prominent design paradigm
+   in StepMania scripting – put all other Actors inside
+   the ActorFrame and return the ActorFrame.  An ActorFrame
+   is just one type of Actor, and any valid Actor may be returned.
+</p>
 
-<p>If your Lua file is <em>very</em> simple, you may only have one Actor, maybe a Sprite or a Quad.  In such situations, it is not necessary to wrap the single Actor in an ActorFrame; <em>any valid StepMania Actor may be returned.</em></p>
+<p>
+   If your Lua file is <em>very</em> simple, you may only have one
+   Actor, maybe a Sprite or a Quad.  In such situations, it is not
+   necessary to wrap the single Actor in an ActorFrame;
+   <em>any valid StepMania Actor may be returned.</em>
+</p>
 
-<p>Still, most files end up being complex enough to warrant using an ActorFrame.</p>
+<p>
+   Still, most files end up being complex enough to warrant
+   using an ActorFrame.
+</p>
