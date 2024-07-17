@@ -2,7 +2,7 @@
 
 <p><em>LoadActor()</em> is a helper function with some extremely useful properties that make it a staple of any SM5 Lua scripting endeavor.</p>
 
-<h3>First Argument - A file path to Load</h3>
+<h2 id="1st-arg">First Argument - A file path to Load</h2>
 
 <p>The function itself requires at least one argument, a string value of the file to load.  Let&apos;s consider a simple example, the code from <a data-component="Link" href="/Actors/Sprite">the page on Def.Sprite</a>, now rewritten to use <code>LoadActor()</code>:</p>
 
@@ -19,7 +19,7 @@ LoadActor( "WhatAreBirds.png" )..{
 
 <p>As <a href="https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159">its definition</a> in the _fallback theme demonstrates, <em>LoadActor()</em> can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use <code>Def.Sprite{}</code>, <code>Def.Sound{}</code>, <code>Def.Model{}</code> or <code>Def.Actor</code>.</p>
 
-<h3>Second Argument - A table to pass into the loaded file</h3>
+<h2 id="2nd-arg">Second Argument - A table to pass into the loaded file</h2>
 
 <p>The optional second argument of LoadActor() is where it really shines, however.  Let&apos;s look at this slightly more complex example which uses two Lua files.</p>
 

@@ -36,7 +36,7 @@ return Def.Actor{
 }
 </code></pre>
 
-<h3>Using SystemMessage() to display Table output</h3>
+<h2 id="using-systemmessage">Using SystemMessage() to display Table output</h2>
 
 <p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
 
@@ -60,11 +60,22 @@ return Def.Actor{
 
 <p><img src="/Lua-For-SM5/img/using-SM-to-debug-table.png" alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"/></p>
 
-<h3>Knowing when to use Trace()</h3>
+<h2 id="using-trace">Knowing when to use Trace()</h2>
+<p>
+   <code>SystemMessage()</code> is not the only debugging tool available in StepMania.
+   <code>SystemMessage()</code> has limited usefulness since large Lua tables can
+   easily contain more data than StepMania&apos;s window can reasonably display.  In
+   such situations, a proper Lua <code>Trace()</code> is preferred.  Output from
+   <code>Trace()</code> is written to <em>Logs/Log.txt</em>
+</p>
 
-<p>Please note that <code>SystemMessage()</code> is not the only debugging tool available in StepMania.  SystemMessage() actually has a rather limited usefulness because large Lua tables can easily contain more data than StepMania&apos;s window can reasonably display.  In such situations, a proper Lua <code>Trace()</code> is preferred.  Output from <code>Trace()</code> is written to <em>Logs/Log.txt</em></p>
-
-<p>StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code> function to assist with recursively printing deeply nested Lua tables to the Log.txt file.  Here is the example from above, reworked to to use <code>rec_print_table()</code> to write the entire params table to file.</p>
+<h2 id="helper-functions-from-fallback">Helper Functions from <em>_fallback</em></h2>
+<p>
+   StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code>
+   function to assist with recursively printing deeply nested Lua tables to the Log.txt
+   file.  Here is the example from above, reworked to to use <code>rec_print_table()</code>
+   to write the entire params table to file.
+</p>
 
 <span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
 <pre><code class="lua">

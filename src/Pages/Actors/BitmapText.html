@@ -1,5 +1,6 @@
 <h1>BitmapText</h1>
 
+<h2 id="features-and-attributes">BitmapText Features and Attributes</h2>
 <p><em>BitmapText</em> Actors are used to display text on the screen.</p>
 
 <p>As Lua tables, they have two unique elements, <code>Font</code> and <code>Text</code>.  <code>Font</code> should be set to any font in the current or <em>_fallback</em> theme&apos;s <em>./Font</em> directory. <code>Text</code> should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the <code>settext()</code> method.</p>
@@ -26,7 +27,7 @@ LoadFont("Common normal")..{
 
 <hr />
 
-<h3>Loading Custom Fonts within a Scripted Simfile</h3>
+<h2 id="custom-fonts-in-scripted-simfile">Loading Custom Fonts within a Scripted Simfile</h2>
 
 <p>Note that the <code>LoadFont()</code> helper function can only be used to load BitmapText fonts contained within the current theme&apos;s <code>./Fonts/</code> directory.
  If you are working within the context of a <a data-component="Link" href="/Introduction/Mod-Chart-Setup">scripted simfile</a> and are trying to load a custom BitmapText font that is located within the simfile directory itself, you can do so like this:</p>
@@ -100,7 +101,7 @@ Line  4=\\]^_abcdefghij
 
 <hr />
 
-<h3>Dynamically Changing Text Using <code>settext()</code></h3>
+<h2 id="dynamically-changing-text">Dynamically Changing Text Using <code>settext()</code></h2>
 
 <p>Here is a more complex example that display a randomly selected string out of a Lua table of possibilities.</p>
 
@@ -152,6 +153,18 @@ return Def.ActorFrame{
 }
 </code></pre>
 
-<p>The example above is admittedly rather artificial for the sake of demonstrating how to pass variables when issuing a <code>playcommand()</code> call.  The random index <code>i</code> could have just as easily been generated at the top of the file next to <code>local phrases</code> and not needed to be passed between the Actors&apos; functions.</p>
+<p>
+   The example above is admittedly rather artificial for the sake of demonstrating
+   how to pass variables when issuing a <code>playcommand()</code> call. The random
+   index <code>i</code> could have just as easily been generated at the top of the
+   file next to <code>local phrases</code> and not needed to be passed between the
+   Actors&apos; functions.
+</p>
 
-<p>Still, it is good to know that this can be done.  Keeping variables local (to a file, to a function, etc.) is good practice to mitigate polluting the global Lua namespace with an abundance of single-use variables.  In this regard, it can be helpful to know as many ways to pass those local variables (between files, between functions, etc.) as possible.</p>
+<p>
+   Still, it&apos;s good to know that this can be done.  Keeping variables local
+   (to a file, to a function, etc.) is good practice to mitigate polluting the
+   global Lua namespace with an abundance of single-use variables.  In this regard,
+   it can be helpful to know as many ways to pass those local variables (between
+   files, between functions, etc.) as possible.
+</p>
