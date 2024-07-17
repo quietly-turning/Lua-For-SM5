@@ -624,7 +624,7 @@ class LuaAPI extends Component {
 	}
 
 	scroll_window_after_hashchange(hash){
-		hash = (hash || window.location.hash)
+		hash = (hash ?? window.location.hash)
 
 		if (hash) {
 			// hack: use hyphens in the url hash as a way of measuring "depth"

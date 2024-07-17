@@ -171,7 +171,7 @@ class Sidebar extends Component {
 	}
 
 	scroll_window_after_hashchange(hash){
-		hash = (hash || window.location.hash)
+		hash = (hash ?? window.location.hash)
 
 		if (hash) {
 			hash = hash.replace("#","")
