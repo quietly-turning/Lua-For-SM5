@@ -126,7 +126,7 @@ class App extends Component {
 								</Routes>
 							</div>
 
-							<TableOfContents toc={this.state.toc} />
+							<TableOfContents toc={this.state.toc} mobile_nav={this.state.mobile_nav} />
 						</div>
 					</div>
 				</div>
