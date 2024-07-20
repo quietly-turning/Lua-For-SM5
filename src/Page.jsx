@@ -27,7 +27,11 @@ function Page(props){
 		props.hideMobileNav()
 
 		// scroll to top
-		window.scrollTo(0, 0)
+		window.scrollTo({
+			top: 0,
+			left: 0,
+			behavior: "instant"
+		})
 
 		// highlight code blocks
 		document.querySelectorAll("pre code").forEach(block => {
