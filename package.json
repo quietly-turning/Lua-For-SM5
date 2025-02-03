@@ -9,9 +9,9 @@
     "@popperjs/core": "^2.11.8",
     "@primer/octicons-react": "^19.14.0",
     "bootstrap": "^5.3.3",
-    "gh-pages": "^6.2.0",
-    "highlight.js": "^11.10.0",
-    "html-react-parser": "^5.1.18",
+    "gh-pages": "^6.3.0",
+    "highlight.js": "^11.11.1",
+    "html-react-parser": "^5.2.2",
     "jquery": "^3.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -30,6 +30,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "react-scripts": "^5.0.1",
     "recursive-readdir": "^2.2.3",
-    "sass": "^1.81.0"
+    "sass": "^1.83.4"
   }
 }
