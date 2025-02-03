@@ -7,7 +7,7 @@
   ],
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "@primer/octicons-react": "^9.6.0",
+    "@primer/octicons-react": "^19.14.0",
     "bootstrap": "^5.3.3",
     "gh-pages": "^6.2.0",
     "highlight.js": "^11.10.0",

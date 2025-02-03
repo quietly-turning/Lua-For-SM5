@@ -1,5 +1,5 @@
 import { Component } from "react"
-import Octicon, { Link } from '@primer/octicons-react'
+import { LinkIcon }  from "@primer/octicons-react"
 
 class Header extends Component {
 
@@ -37,7 +37,7 @@ class Header extends Component {
 		return(
 			<HeaderTag id={this.props.name} className={clsName}>
 				<span className="octicon-link" onClick={() => this.updateHash()}>
-					<Octicon size="medium" icon={Link} />
+					<LinkIcon size="medium" />
 				</span>
 
 				{this.props.name}

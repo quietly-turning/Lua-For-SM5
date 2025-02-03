@@ -1,5 +1,5 @@
 import { Component } from "react"
-import Octicon, {Link, LogoGithub} from '@primer/octicons-react'
+import { LinkIcon, LogoGithubIcon } from "@primer/octicons-react"
 import { supportedAPIs } from "./modules/SupportedAPIs.js"
 
 class Method extends Component {
@@ -45,7 +45,7 @@ class Method extends Component {
 			const base = `https://github.com/${github_user}/${github_project}/tree/`
 			const url  = base + hash + this.props.method.url
 
-			this.github_anchor = <a className="logo-github" href={url} target="_blank" rel="noopener noreferrer"><Octicon icon={LogoGithub} /></a>
+			this.github_anchor = <a className="logo-github" href={url} target="_blank" rel="noopener noreferrer"><LogoGithubIcon /></a>
 
 		} else {
 			this.github_anchor = ""
@@ -60,7 +60,7 @@ class Method extends Component {
 		return(
 			<div id={this.id} className="method">
 				<div className="method-signature">
-					<span className="octicon-link" onClick={this.updateHash}><Octicon icon={Link} /></span>
+					<span className="octicon-link" onClick={this.updateHash}><LinkIcon /></span>
 					<span>
 						{this.props.method.name}
 						(<code>{this.props.method.arguments}</code>)
