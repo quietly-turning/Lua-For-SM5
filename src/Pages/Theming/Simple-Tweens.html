@@ -153,27 +153,27 @@ end
 <span class="CodeExample-Title">Rotate the entire Screen on the z-axis:</span>
 <pre><code class="lua">
 Def.Actor{
-OnCommand=function(self)
-   -- get the current Screen object using SCREENMAN
-   local screen = SCREENMAN:GetTopScreen()
+   OnCommand=function(self)
+      -- get the current Screen object using SCREENMAN
+      local screen = SCREENMAN:GetTopScreen()
 
-   -- over a duration of 2 seconds, have
-   -- the entire screen rotate 360 degrees
-   -- clockwise on the z-axis
-   screen:accelerate(2):rotationz(360)
+      -- over a duration of 2 seconds, have
+      -- the entire screen rotate 360 degrees
+      -- clockwise on the z-axis
+      screen:accelerate(2):rotationz(360)
 
-   -- wait one second
-   screen:sleep(1)
+      -- wait one second
+      screen:sleep(1)
 
-   -- This should spin the screen around again, right?
-   -- Not quite. The screen's z-rotation is already set
-   -- to 360, so this will have no visible effect.
-   screen:accelerate(2):rotationz(360)
+      -- This should spin the screen around again, right?
+      -- Not quite. The screen's z-rotation is already set
+      -- to 360, so this will have no visible effect.
+      screen:accelerate(2):rotationz(360)
 
-   -- This, however, will because it adds more rotation
-   -- to the current state, rather than the initial state.
-   screen:accelerate(2):addrotationz(360)
-end
+      -- This, however, will because it adds more rotation
+      -- to the current state, rather than the initial state.
+      screen:accelerate(2):addrotationz(360)
+   end
 }
 </code></pre>
 <p>
@@ -184,26 +184,26 @@ end
 </p><span class="CodeExample-Title">Move a quad across the screen while fading it out:</span>
 <pre><code class="lua">
 Def.Quad{
-OnCommand=function(self)
-   -- draw a Quad at the top-left of the screen, which is the
-   -- default draw position if no x or y coordinates are specified,
-   -- and make it 100x100 pixels
-   self:zoomto(100,100)
+   OnCommand=function(self)
+      -- draw a Quad at the top-left of the screen, which is the
+      -- default draw position if no x or y coordinates are specified,
+      -- and make it 100x100 pixels
+      self:zoomto(100,100)
 
-   -- over a duration of 2 seconds, have the
-   -- quad move to the bottom-right of the screen,
-   -- and fade out by tweening the alpha channel to 0
-   -- This comprises one full tween.
-   self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
+      -- over a duration of 2 seconds, have the
+      -- quad move to the bottom-right of the screen,
+      -- and fade out by tweening the alpha channel to 0
+      -- This comprises one full tween.
+      self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
 
-   -- Here is a second, unique tween that tweens three methods
-   -- to change the color, xy-position, and y-rotation of the Quad.
-   -- Note that line breaks are fine.
-   self:accelerate(3)
-         :diffuse(1,0,0,1)
-         :xy( _screen.cx, _screen.cy )
-         :addrotationy(1080)
-end
+      -- Here is a second, unique tween that tweens three methods
+      -- to change the color, xy-position, and y-rotation of the Quad.
+      -- Note that line breaks are fine.
+      self:accelerate(3)
+          :diffuse(1,0,0,1)
+          :xy( _screen.cx, _screen.cy )
+          :addrotationy(1080)
+   end
 }
 </code></pre>
 
