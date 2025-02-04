@@ -117,7 +117,7 @@ class App extends Component {
 						</div>
 
 						<div id="content-container" className="row">
-							<div id="content" className="col-xl-7 col-lg-8 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
+							<div id="content" className="col-lg-8 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
 								<Routes>
 									<Route path="/"             element={<Page   hideMobileNav={this.hideMobileNav} />} />
 									<Route path="/Resources"    element={<Page   hideMobileNav={this.hideMobileNav} />} />

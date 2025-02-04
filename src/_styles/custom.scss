@@ -91,6 +91,7 @@ kbd {
 #content{
 	padding-top: 2em;
 	padding-bottom: 2em;
+	max-width: 768px;
 
 	p{
 		margin-top: 1.5em;
@@ -349,7 +350,7 @@ kbd {
 
 @media only screen and (min-width : 1376px) {
 	#content-container {
-		margin-left: 22%;
+		margin-left: 320px;
 		max-width: 78%;
 	}
 }
