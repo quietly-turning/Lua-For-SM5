@@ -99,7 +99,7 @@ class App extends Component {
 			<main>
 				<Header />
 
-				<div className="pt-5">
+				<div className="mt-5">
 					<div className="row no-gutters">
 
 						<div tabIndex="-1" className="sidebar position-fixed h-100 col-md-3 d-md-block d-none">

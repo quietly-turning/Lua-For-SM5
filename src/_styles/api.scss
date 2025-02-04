@@ -1,4 +1,10 @@
 div.LuaAPI{
+	h2[id]:target{
+		// undo scroll-to-id offset specified in custom.scss
+		// LuaAPI scroll-to-id is more complex (variable offset due to multiple sticky headers)
+		// and handled separately for now
+		padding-top: unset;
+	}
 
 	// for hightlightjs code examples
 	pre{

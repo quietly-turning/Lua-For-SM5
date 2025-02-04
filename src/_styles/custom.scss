@@ -1,3 +1,7 @@
+:root{
+	--topbar-height: 48px;
+}
+
 .no-gutters{
 	margin-left: 0rem;
 	margin-right:0rem;
@@ -17,6 +21,14 @@ h1{
 h2{
 	font-size: 1.7rem;
 	font-weight:normal;
+}
+
+h2[id]:target{
+	// offset automatic scroll amount by height of scrollbar so as to not
+	// cover the h2 text under topbar after scroll
+	// see: https://stackoverflow.com/a/13555927
+		padding-top: calc(var(--topbar-height) + 8px);
+		margin-top: calc((var(--topbar-height) + 8px) * -1);
 }
 
 a{
@@ -43,6 +55,7 @@ kbd {
 	color: rgba(255, 255, 255, 0.75);  // specify so SVG icons can use `fill: currentColor`
 	padding: 2px 0px;
 	background-color: #282828;
+	height: var(--topbar-height);
 
 	a.nav-link{
 		font-weight:lighter;
@@ -405,7 +418,7 @@ pre {
 // toggled into view via mobileNavToggle button
 #mobileNav{
 	position:fixed;
-	top: 48px; // offset to accommodate #topbar
+	top: var(--topbar-height); // offset to accommodate #topbar
 	left: 0;
 	background-color: #eeeeee;
 }
