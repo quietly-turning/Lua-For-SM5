@@ -122,6 +122,7 @@ kbd {
 	padding: 0em;
 	overflow-x: auto;
 	overflow-y: auto;
+	height: calc(100% - var(--topbar-height));
 
 	a{
 		color: #000000;
