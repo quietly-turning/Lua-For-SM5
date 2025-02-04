@@ -154,6 +154,14 @@ local function InputHandler( event )
 end
 
 return Def.ActorFrame{
+   -- AddInputCallback cannot be in an InitCommand. InitCommands happen
+   -- before the screen is the top screen, so calling GetTopScreen during an
+   -- InitCommand would fetch the screen being transitioned out of that
+   -- is about to be destroyed.
+   OnCommand=function(self)
+      SCREENMAN:GetTopScreen():AddInputCallback( InputHandler )
+   end,
+
    -- We add a sleeper actor so this can be used in a BGCHANGE lua
    -- file and the file won't be unloaded.	This isn't necessary when
    -- making a screen in a theme.
@@ -163,41 +171,33 @@ return Def.ActorFrame{
       end
    },
 
-
-   -- AddInputCallback cannot be in an InitCommand. InitCommands happen
-   -- before the screen is the top screen, so calling GetTopScreen during an
-   -- InitCommand would fetch the screen being transitioned out of that
-   -- is about to be destroyed.
-   OnCommand=function(self)
-      SCREENMAN:GetTopScreen():AddInputCallback( InputHandler )
-   end,
-
    Def.BitmapText{
-   Font="Common Normal",
-   InitCommand=function(self)
+      Font="Common Normal",
+      InitCommand=function(self)
+         -- Since button_text is set inside an InitCommand, it occurs before the
+         -- OnCommand that adds the input callback, so the input callback
+         -- doesn't need to worry about whether button_text is initialized.
+         button_text = self
 
-   -- Since button_text is set inside an InitCommand, it occurs before the
-   -- OnCommand that adds the input callback, so the input callback
-   -- doesn't need to worry about whether button_text is initialized.
-   button_text = self
+         -- Lua is whitespace insensitive, so sticking a line break before a
+         -- colon in the middle of a chain of functions is valid.
+         self:xy(_screen.cx, _screen.cy-12)
+            -- Colors are just tables of four numbers. Using html
+            -- strings and the color function would also work.
+            :DiffuseAndStroke({.75, .75, 0, 1}, {0, 0, 0, 1})
+         end
+      },
 
-   -- Lua is whitespace insensitive, so sticking a line break before a
-   -- colon in the middle of a chain of functions is valid.
-   self:xy(_screen.cx, _screen.cy-12)
-   	-- Colors are just tables of four numbers. Using html
-   	-- strings and the color function would also work.
-   	:DiffuseAndStroke({.75, .75, 0, 1}, {0, 0, 0, 1})
-   end
-   },
-
-Def.BitmapText{
-   Font="Common Normal",
-   InitCommand= function(self)
-      game_button_text = self
-      self:xy(_screen.cx, _screen.cy+12)
-      	:DiffuseAndStroke({.75, 0, .75, 1}, {0, 0, 0, 1})
-      end
-   },
+      Def.BitmapText{
+         Font="Common Normal",
+         InitCommand=function(self)
+            game_button_text = self
+            self:xy(_screen.cx, _screen.cy+12)
+               :DiffuseAndStroke({.75, 0, .75, 1}, {0, 0, 0, 1})
+            end
+         },
+      }
+   }
 }
 </code></pre>
 
