@@ -120,8 +120,16 @@ ShowRandom=true
 </p>
 
 <ol>
-   <li>reload metrics.ini with <kbd>shift</kbd> <kbd>F2</kbd> so the engine loads your changes</li>
-   <li><a href="#reload-current-screen">reload the current screen</a> with <kbd>F3</kbd> <kbd>2</kbd> so you see your changes</li>
+   <li>
+      reload metrics.ini with <kbd>shift</kbd> <kbd>F2</kbd>.<br/>
+      <ul>
+         <li>the engine reads your updated metrics.ini file from disk, parses it, and loads it into working memory</li>
+      </ul>
+   </li>
+   <li>
+      <a href="#reload-current-screen">reload the current screen</a> with
+      <kbd>F3</kbd> <kbd>2</kbd> so you <em>see</em> your changes reflected in-game
+   </li>
 </ol>
 
 
@@ -170,12 +178,20 @@ ShowRandom=true
 </p>
 
 <p>
-   "Cached textures" typically correspond with any visual files (png, avi, mp4, etc.) loaded from the <em>Graphics</em> folder.
+   "Cached textures" typically correspond with any visual files (png, avi, mp4, etc.) loaded from the <em>Graphics</em> folder
+   as well as any font bitmap files loaded from the <em>Fonts</em> folder.
+</p>
+
+<p>
+   If you noticed a stray pixel in the lowercase <code>e</code> in your theme's primary font,
+   erase it from that font's png spritesheet and save the file, and now want to see how that change
+   looks in StepMania without restarting, you can invoke this keyboard command to reload files in the
+   Graphics and Fonts folders from disk.
 </p>
 
 <p>
    After reloading your theme's cached textures, you'll need to <a href="#reload-current-screen">reload the current screen</a>
-   to see any updated textures appear in your theme.
+   to see any updated textures appear in-game.
 </p>
 
 <hr />
