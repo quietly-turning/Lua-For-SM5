@@ -308,14 +308,6 @@ kbd {
 		max-width: 75%;
 	}
 
-	// #fullsize-navbarNav{
-	// 	display: flex !important;
-	// }
-
-	// #navbarNav{
-	// 	display: none !important;
-	// }
-
 	.sidebar{
 		min-width:230px;
 		max-width:300px;
@@ -358,10 +350,22 @@ kbd {
 	}
 }
 
-
-@media only screen and (max-width : 576px) {
+// rules that only apply when page width is 575px or narrower
+@media only screen and (max-width : 575px) {
 	.fullwidth-only{
 		display: none;
+	}
+
+	// #navbarNav contains links to [Guides, Lua API, Other Resources]
+	//   these links are shown inline in the topbar when page width is > 575px
+	//   otherwise, they're a vertical list in a small "popover panel" that's toggled
+	//      into view via button.navbar-toggler, position in #topbar
+	#navbarNav{
+		background-color: #eeeeee;
+		a {
+			color: rgb(33, 37, 41);
+			font-weight: 400;
+		}
 	}
 
 	ul.navbar-nav li.nav-item{
@@ -411,9 +415,11 @@ pre {
 }
 
 // -------------------------------------------------------
+// #mobileNav is a fullscreen navigation menu for mobile
+// it's toggled into view via button.mobileNavToggle — the "hamburger" positioned at bottom-right
+//    contains links to individual guide chapters when in Guides
+//    contains links to sections of Lua API doc when in that
 
-// #mobileNav is full screen navigation menu for mobile
-// toggled into view via mobileNavToggle button
 #mobileNav{
 	position:fixed;
 	top: var(--topbar-height); // offset to accommodate #topbar
