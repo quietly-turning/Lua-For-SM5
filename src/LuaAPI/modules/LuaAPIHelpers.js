@@ -121,14 +121,12 @@ function formatTextWithLinks(element, lua_api){
     // else ignore this <Link>.
   }
 
-  $(element).find("Link").each(function(i, obj){
+  element.find("Link").each(function(i, obj){
     $(this).replaceWith(anchors[i])
   })
 
-  $(element).find("pre code").each(function(i, code){
-    // trim leading newline if one is found
-    const txt = code.textContent.charAt(0)==="\n" ? code.textContent.substr(1) : code.textContent
-    $(code).replaceWith("<code class='lua'>" + txt + "</code>")
+  element.find("pre code").each(function(i, code){
+    $(code).replaceWith("<code class='lua'>" + code.textContent.trim() + "</code>")
   })
 
   return (element.html() || "").trim()
