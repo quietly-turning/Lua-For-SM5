@@ -1,8 +1,8 @@
 const recursive = require("recursive-readdir")
-const fs = require("fs")
+const fs        = require("fs")
 
 const regex = /\.html$/
-const path = "src/Pages"
+const path  = "src/Pages"
 
 recursive(path, function(err, files){
 
@@ -24,6 +24,6 @@ recursive(path, function(err, files){
 
 	// stringify obj to JSON and write to disk
 	fs.writeFile( 'src/page-content.js', "export default " + JSON.stringify(obj), function(error){
-	    // error handling...
+			// error handling...
 	})
 })
