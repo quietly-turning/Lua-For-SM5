@@ -558,3 +558,15 @@ html[data-bs-theme='dark']{
 		}
 	}
 }
+
+@media only screen and (max-width : 575px) {
+	html[data-bs-theme='dark']{
+		// vertical list of links [Guides, Lua API, Other Resources] when page is very narrow in dark theme
+		#navbarNav{
+			background-color: rgb(24, 28, 32);
+			a{
+				color: rgb(222, 226, 230);
+			}
+		}
+	}
+}
