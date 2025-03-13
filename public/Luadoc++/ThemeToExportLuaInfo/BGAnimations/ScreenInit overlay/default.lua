@@ -62,7 +62,7 @@ end
 
 local theme = THEME:GetCurrentThemeDirectory()
 local file  = RageFileUtil.CreateRageFile()
-local path  = theme .. ProductVersion() .. ".json"
+local path  = theme .. "v" .. ProductVersion() .. ".json"
 
 if file:Open(path, 2) then
    file:Write( function_definitions() )
