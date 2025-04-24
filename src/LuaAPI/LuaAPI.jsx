@@ -109,6 +109,7 @@ class LuaAPI extends Component {
 
 		// ------------------------
 
+		// XXX: this when-then-then-then logic is such a mess
 		$.when(
 
 			// We have three xml files to retrieve data from:
@@ -425,16 +426,17 @@ class LuaAPI extends Component {
 			})
 
 		}).then(function(){
-			// highlightjs
-			document.querySelectorAll("pre code").forEach(block => {
-				hljs.highlightElement(block);
-			})
-
 			// this second .then() handler is VERY likely to called after React
 			// has already mounted the LuaAPI component
 			// so once we are here, trigger a window scroll to ensure the user
 			// is the correct section of the document
 			lua_api.scroll_window_after_hashchange()
+
+		}).then(()=>{
+			// highlightjs
+			document.querySelectorAll("pre code").forEach(block => {
+				hljs.highlightElement(block);
+			})
 		})
 	}
 
