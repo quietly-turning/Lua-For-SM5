@@ -15,7 +15,7 @@ recursive(path, function(err, files){
 			let k = file.replace(regex,"").replace(path,"")
 			if (process.platform === "win32") {
 				k = k.replace("src\\Pages", "");
-				k = k.replace("\\", "/");
+				k = k.replaceAll("\\", "/");
 			}
 
 			// special-case to map "Home" to empty string so that it matches the url of "/" instead of "/Home"
