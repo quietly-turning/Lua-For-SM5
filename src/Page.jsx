@@ -1,7 +1,5 @@
 import React, { useEffect }  from "react"
 import { useLocation, Link } from "react-router"
-// import { Link, useLocation } from "react-router-dom"
-// import { Link } from "react-router-dom"
 import hljs  from "highlight.js"
 
 //  html-react-parse for parsing strings containing HTML markup into react objects
