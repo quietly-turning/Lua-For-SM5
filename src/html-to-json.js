@@ -13,6 +13,10 @@ recursive(path, function(err, files){
 		if (file.match(regex)){
 			// transform a string like "src/Pages/Resources.html" to "Resources" to use as an object key
 			let k = file.replace(regex,"").replace(path,"")
+			if (process.platform === "win32") {
+				k = k.replace("src\\Pages", "");
+				k = k.replace("\\", "/");
+			}
 
 			// special-case to map "Home" to empty string so that it matches the url of "/" instead of "/Home"
 			if (k==="/Home"){ k="/" }

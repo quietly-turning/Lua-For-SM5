@@ -1,5 +1,7 @@
 import React, { useEffect }  from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation, Link } from "react-router"
+// import { Link, useLocation } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import hljs  from "highlight.js"
 
 //  html-react-parse for parsing strings containing HTML markup into react objects
@@ -51,6 +53,13 @@ function Page(props){
 		if (props.setToC) { props.setToC( tocData ) }
 
 	}, [location.pathname]) // only re-render if url's path changes
+
+	// if (location.pathname = '/') {
+	// 	console.log(location.key);
+	// 	console.log("ahhh!");
+	// 	// location.pathname = '/Lua-For-SM5';
+	// 	console.log(location);
+	// }
 
 	return <div>{ parse(content[location.pathname], {replace: transform}) }</div>;
 }
