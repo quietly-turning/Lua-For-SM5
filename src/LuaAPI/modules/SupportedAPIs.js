@@ -29,6 +29,10 @@ const supportedAPIs = [
     },
     versions: [
       {
+        name: "v1.1.0",
+        githash: "159391b8a244cffdde9366b97e6a2d03f9cfb6b8",
+      },
+      {
         name: "v1.0.2",
         githash: "427484d1007c92c78753e86a39ed6399fed92f10",
       },
