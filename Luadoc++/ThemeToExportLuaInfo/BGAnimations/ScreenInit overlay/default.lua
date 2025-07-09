@@ -1,7 +1,10 @@
 -- ------------------------------------------
 -- generate an auxiliary json file that can enhance the Lua API docs
+--
+-- for an example of the json file this ITGmania theme generates
+-- see: https://github.com/quietly-turning/Lua-For-SM5/blob/src/public/Luadoc%2B%2B/ITGmania/v1.0.2.json
 
--- StepMania objects to inspect for theme-side function defs
+-- ITGmania objects to inspect for theme-side function defs
 -- hardcoded keys for now (how to traverse Def userdata?)
 local sm_objs = {
    ["GlobalFunctions"]   = _G,
@@ -20,43 +23,35 @@ local sm_objs = {
 }
 
 -- ------------------------------------------
--- ugly
--- TODO: find a Lua library for JSON output
 
 local function_definitions = function()
 
-   local first_section_done = false
-   local json = "{"
+   local luadoc = {}
 
    for section, obj in pairs(sm_objs) do
-      if first_section_done then json = json.."," end
-      first_section_done = true
-
-      json = json .. ("\n\t\"%s\": {"):format(section)
-
-      local first_func_done = false
+      local functionDefURLs = {}
 
       for k,v in pairs(obj) do
          if type(v)=="function" then
             local info = debug.getinfo(v)
 
-            -- skip functions definined in-engine; line numbers aren't available via debug.getinfo
+            -- skip functions defined in-engine; line numbers aren't available via debug.getinfo
             if info.short_src ~= "[C]" then
-               if first_func_done then json = json.."," end
-               first_func_done = true
-
+               -- build a URL-safe string like "/Themes/_fallback/Scripts/02%20Actor.lua#L202-L206"
+               -- that can show users where Actor's scale_or_crop_background() is defined in the _fallback theme
                local url = URLEncode( ("%s#L%s-L%s"):format(info.short_src, info.linedefined, info.lastlinedefined) )
-               json = json .. ("\n\t\t\"%s\": \"%s\""):format( k, url )
+               -- add each url to a table for this singleton
+               functionDefURLs[k] = url
             end
          end
       end
-      json = json .. "\n\t}"
+
+      -- add each singleton's collection of urls linking to function definitions to the larger table of singletons
+      luadoc[section] = functionDefURLs
    end
 
-   json = json .. "\n}"
-
-   -- return json data as string
-   return json
+   -- return a Lua table
+   return luadoc
 end
 -- ------------------------------------------
 
@@ -65,11 +60,13 @@ local file  = RageFileUtil.CreateRageFile()
 local path  = theme .. "v" .. ProductVersion() .. ".json"
 
 if file:Open(path, 2) then
-   file:Write( function_definitions() )
+   -- serialize the lua object into a json string we can write to disk
+   local json = JsonEncode( function_definitions() )
+   file:Write( json )
 
 else
    local fError = file:GetError()
-   SCREENMAN:SystemMessage("uh oh.")
+   SCREENMAN:SystemMessage("Error writing Luadoc info to json file.  Check log.txt for more details.")
    Trace( "[FileUtils] Error writing to ".. path ..": ".. fError )
    file:ClearError()
 end
