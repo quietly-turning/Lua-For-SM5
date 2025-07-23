@@ -1,29 +1,39 @@
 const recursive = require("recursive-readdir")
 const fs        = require("fs")
+const path      = require("path")
 
-const regex = /\.html$/
-const path  = "src/Pages"
+const regex      = /\.html$/
+const pagesPath  = "src/Pages"
 
-recursive(path, function(err, files){
+recursive(pagesPath, (err, files) => {
 
-	const obj = {}
+    const obj = {}
 
-	files.forEach(file => {
-		// only read files with ".html" extensions
-		if (file.match(regex)){
-			// transform a string like "src/Pages/Resources.html" to "Resources" to use as an object key
-			let k = file.replace(regex,"").replace(path,"")
+    files.forEach(filepath => {
+        // only read files with ".html" extensions
+        if (filepath.match(regex)){
+            // normalize the filepath and ensure it uses forward slash as its
+            // separator (e.g. on a windows dev machine, we still want to
+            // generate urls with forward slashes) 
+            const normalizedFilePath = path.resolve( path.normalize(filepath) ).split(path.sep).join("/")
 
-			// special-case to map "Home" to empty string so that it matches the url of "/" instead of "/Home"
-			if (k==="/Home"){ k="/" }
+            // transform a string like "src/Pages/Resources.html" to "Resources" to use as an object key
+            let k = normalizedFilePath.replace(regex, "").replace(pagesPath, "")
 
-			// read the content of the html file and store it at obj[k]
-			obj[k] = fs.readFileSync(file, "utf8")
-		}
-	})
+            // special-case to map "Home" to empty string so that it matches the url of "/" instead of "/Home"
+            if (k==="/Home"){ k="/" }
 
-	// stringify obj to JSON and write to disk
-	fs.writeFile( 'src/page-content.js', "export default " + JSON.stringify(obj), function(error){
-			// error handling...
-	})
+            // read the content of the html file and store it at obj[k]
+            obj[k] = fs.readFileSync(normalizedFilePath, "utf8")
+        }
+    })
+
+    // stringify obj to JSON and write to disk
+    fs.writeFile( 
+        'src/page-content.js', 
+        "export default " + JSON.stringify(obj), 
+        error => {
+            // error handling...
+        }
+    )
 })
