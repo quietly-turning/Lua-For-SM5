@@ -1,5 +1,5 @@
 import { Component } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 import * as bootstrap from "bootstrap"
 import { supportedAPIs, supportedAPIsMap, default_engineString, default_versionString, default_url, getAPIdocURL } from "../LuaAPI/modules/SupportedAPIs.js"
 
