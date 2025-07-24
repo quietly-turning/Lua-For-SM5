@@ -14,8 +14,8 @@ recursive(pagesPath, (err, files) => {
         if (filepath.match(regex)){
             // normalize the filepath and ensure it uses forward slash as its
             // separator (e.g. on a windows dev machine, we still want to
-            // generate urls with forward slashes) 
-            const normalizedFilePath = path.resolve( path.normalize(filepath) ).split(path.sep).join("/")
+            // generate urls with forward slashes)
+            const normalizedFilePath = path.normalize(filepath).split(path.sep).join("/")
 
             // transform a string like "src/Pages/Resources.html" to "Resources" to use as an object key
             let k = normalizedFilePath.replace(regex, "").replace(pagesPath, "")
@@ -29,9 +29,9 @@ recursive(pagesPath, (err, files) => {
     })
 
     // stringify obj to JSON and write to disk
-    fs.writeFile( 
-        'src/page-content.js', 
-        "export default " + JSON.stringify(obj), 
+    fs.writeFile(
+        'src/page-content.js',
+        "export default " + JSON.stringify(obj),
         error => {
             // error handling...
         }
