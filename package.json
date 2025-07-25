@@ -18,9 +18,9 @@
     "react-router": "^7.5.2"
   },
   "scripts": {
-    "start": "npm run watch-local-changes | react-scripts start",
-    "build": "npm run convert-pages && sass src/_styles && react-scripts build",
-    "deploy": "gh-pages -d build",
+    "start": "npm run watch-local-changes | vite",
+    "build": "npm run convert-pages && sass src/_styles && vite build",
+    "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
     "convert-pages": "node src/html-to-json.js",
     "watch-local-changes": "npm run convert-pages && chokidar \"src/Pages/**/*.html\" -c \"npm run convert-pages\" & sass --watch src/_styles/"
@@ -28,9 +28,10 @@
   "homepage": "https://quietly-turning.github.io/Lua-For-SM5/",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@vitejs/plugin-react": "^4.7.0",
     "chokidar-cli": "^3.0.0",
-    "react-scripts": "^5.0.1",
     "recursive-readdir": "^2.2.3",
-    "sass": "^1.87.0"
+    "sass": "^1.87.0",
+    "vite": "^7.0.6"
   }
 }

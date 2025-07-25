@@ -1,10 +1,10 @@
 // ------- components for React
-import React, { Component } from "react"
-import { Route, Routes }    from "react-router"
+import { Component }     from "react"
+import { Route, Routes } from "react-router"
 
 // withRouter allows us access to app url history
 // and, more importantly here, hook events into url changes
-import { withRouter } from "./withRouter.js"
+import { withRouter } from "./withRouter.jsx"
 
 // ------- primary stylesheet
 import "./_styles/custom.css"
@@ -15,7 +15,6 @@ import Sidebar from "./_layout/Sidebar"
 import TableOfContents from "./_layout/TableOfContents"
 
 // ------- components for pages
-
 import Page   from "./Page"
 import LuaAPI from "./LuaAPI/LuaAPI"
 
@@ -117,7 +116,7 @@ class App extends Component {
 						</div>
 
 						<div id="content-container" className="row">
-							<div id="content" className="col-lg-8 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
+							<div id="content" className="col-lg-9 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4">
 								<Routes>
 									<Route path="/"             element={<Page   hideMobileNav={this.hideMobileNav} />} />
 									<Route path="/Resources"    element={<Page   hideMobileNav={this.hideMobileNav} />} />
