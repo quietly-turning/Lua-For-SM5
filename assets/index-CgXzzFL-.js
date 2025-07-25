@@ -135,130 +135,940 @@ https://github.com/highlightjs/highlight.js/issues/2277`),fn=Ie,Wt=at),Ct===void
 			though not easy to follow along with.
 		</li>
 	</ul>
-</div>`,"/Best-Practices/Command-Chaining":`<h1>Command-Chaining</h1>
+</div>`,"/Actors/Actor":`<h1>Actor</h1>
 
-<p>In StepMania 5, commands applied to actors can be chained, resulting in a more clean and terse syntax than was possible before.</p>
+<p>
+   The <strong>Actor</strong> class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually). Using an Actor object directly is not generally helpful; it can't <em>do</em> very much. The <code>LoadActor()</code> helper function <a data-component="Link" href="/Actors/LoadActor">discussed later</a> is far more flexible and useful!
+</p>
 
-<p>The following two syntaxes produce the same results:</p>
+<p>
+   Still, there are times when <strong>Actor</strong> objects can be useful. For example, the Simply Love SM5 port uses them when we need a hook into some message broadcast by the engine but don't need an entire ActorFrame.
+</p>
 
-<span class="CodeExample-Title">Long Form</span>
+<p>
+   In theming example below, we are using an <code>Actor</code> to listen for the <code>StartTransitioningCommand</code> to be broadcast by the engine when a screen is transitioning out (and preparing to initialize the next screen). When that occurs, we make a call to save the theme's preferences, assuming the theme is already using the <a href="https://github.com/stepmania/stepmania/blob/5_1-new/Themes/_fallback/Scripts/02%20ThemePrefs.lua">ThemePrefs system</a>.
+</p>
+
+<span class="CodeExample-Title">Example using an Actor directly:</span>
 <pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      self:zoomto(100,200)
-      self:xy(_screen.cx, 100)
-      self:diffuse(Color.Green)
-      self:linear(1)
-      self:y(_screen.h-100)
-   end
-}
-</code></pre>
-
-<span class="CodeExample-Title">Condensed Via Command Chaining</span>
-<pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
-          :linear(1):y(_screen.h-100)
-   end
-}
-</code></pre>
-
-<p>While commands <em>can</em> be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.</p>`,"/Best-Practices/Debugging":`<h1>Debugging</h1>
-
-<p>Using <a data-component="Link" href="/Singletons/SCREENMAN">SCREENMAN</a>&apos;s <code>SystemMessage()</code> method may perhaps be the most tried-and-true means of quickly displaying debugging output to the Screen.  <code>SystemMessage()</code> accepts a string as an argument and displays it at the top of the screen for a few seconds.</p>
-
-<p>Let&apos;s jump into a simple example from ScreenGameplay where we listen for and print out JudgmentMessages.  A <em>Judgment</em> is how each step is evaluated as it passes in Gameplay.  Each Judgment has a corresponding JudgmentMessage broadcast by the engine that contains information about that Judgment.</p>
-
-<span class="CodeExample-Title">Using SystemMessage() to print debug output</span>
-<pre><code class="lua">
--- Since the engine only broadcasts JudgmentMessages to ScreenGameplay,
--- this example only makes sense and does anything in ScreenGameplay.
-
 return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- Note that JudgementMessages will be broadcast for any human players,
-      -- but to keep this example simple, we'll limit it to PLAYER_1.
-      if params.Player == PLAYER_1 then
+   StartTransitioningCommand=function(self)
+      ThemePrefs.Save()
+   end
+}
+</code></pre>
 
-         -- This SystemMessage will display each judgment in string
-         -- form at the top of the screen as it occurs.
-         -- So, if a note passes and the player misses it,
-         -- "TapNoteScore_Miss"  would be displayed at the
-         -- top of the screen.
-         --
-         -- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
-         -- would display "TapNoteScore_W1".
-         -- (Note that the "W" is for window, as in "timing window.")
-         --
-         -- Hold notes have their own, separate judgment system.
-         -- So, when a hold note is judged, a JudgmentMessage will be
-         -- broadcast, but the TapNoteScore parameter will be nil.
-         -- Account for that here with a logical or statement that tries
-         -- params.HoldNoteScore if params.TapNoteScore is nil.
-         SCREENMAN:SystemMessage( params.TapNoteScore or params.HoldNoteScore )
+<p>
+   For another example, see: <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/00fdf7112b0050d229679c39d777dfca5f0bb11a/BGAnimations/ScreenGameplay%20overlay/ReceptorArrowsPosition.lua#L25-L40">./Simply Love/BGAnimations/ScreenGameplay overlay/ReceptorArrowsPosition.lua</a>
+</p>
+`,"/Actors/ActorFrameTexture":`<h1>ActorFrameTexture</h1>
+
+<p><em>ActorFrameTexture</em> actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a <code>visible(false)</code> command, and StepMania will have that many fewer actors to process every draw cycle.</p>
+
+<p>This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.</p>
+
+<p>For now, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua">Mad Matt&apos;s writeup</a>.</p>`,"/Actors/ActorMultiVertex":`<h1>ActorMultiVertex</h1>
+
+<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
+
+<p>An <em>ActorMultiVertex</em> actor has seven possible <a data-component="Link" href="/LuaAPI#Enums-DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
+
+<p>For example, calling <code>self:SetDrawState({Mode="DrawMode_Quads"})</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/quietl-turning/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
+
+<p>Another <em>ActorMultiVertex</em> DrawMode is <code>DrawMode_LineStrip</code>, in which your table of vertex data will be rendered as a single, continuous line.  An example of <code>DrawMode_LineStrip</code> in action can be seen in <a href="https://www.youtube.com/watch?v=hKd4xkULxFk">this scripted simfile</a> from the U.P.S. 2 pack.</p>`,"/Actors/BitmapText":`<h1>BitmapText</h1>
+
+<h2 id="features-and-attributes">BitmapText Features and Attributes</h2>
+<p><em>BitmapText</em> Actors are used to display text on the screen.</p>
+
+<p>As Lua tables, they have two unique elements, <code>Font</code> and <code>Text</code>.  <code>Font</code> should be set to any font in the current or <em>_fallback</em> theme&apos;s <em>./Font</em> directory. <code>Text</code> should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the <code>settext()</code> method.</p>
+
+<p>Here is a very simple example that would display the text "Hello SM5!"</p>
+<span class="CodeExample-Title">Simple BitmapText example</span>
+<pre><code class="lua">
+Def.BitmapText{
+   Font="Common normal",
+   Text="Hello SM5!",
+   InitCommand=function(self) self:Center() end
+}
+</code></pre>
+
+<p>StepMania 5&apos;s <em>_fallback</em> theme defines a helper function, <code>LoadFont()</code>, that can be used to simplify the above code somewhat.</p>
+
+<span class="CodeExample-Title">BitmapText example using LoadFont()</span>
+<pre><code class="lua">
+LoadFont("Common normal")..{
+   Text="Hello SM5!",
+   InitCommand=function(self) self:Center() end
+}
+</code></pre>
+
+<hr />
+
+<h2 id="custom-fonts-in-scripted-simfile">Loading Custom Fonts within a Scripted Simfile</h2>
+
+<p>Note that the <code>LoadFont()</code> helper function can only be used to load BitmapText fonts contained within the current theme&apos;s <code>./Fonts/</code> directory.
+ If you are working within the context of a <a data-component="Link" href="/Introduction/Mod-Chart-Setup">scripted simfile</a> and are trying to load a custom BitmapText font that is located within the simfile directory itself, you can do so like this:</p>
+
+<span class="CodeExample-Title">loading a custom BitmapText from within a simfile</span>
+<pre><code class="lua">
+Def.BitmapText{
+   File=GAMESTATE:GetCurrentSong():GetSongDir().."Fonts/helvetica neue/_helvetica neue 20px.ini",
+   Text="Hello, World!",
+   InitCommand=function(self) self:diffuse(1,1,1,1):Center():shadowlength(0.75) end
+}
+</code></pre>
+
+<p>The program used to turn ttf fonts into spritesheets that StepMania can use comes bundled with release versions of SM5 for Windows in the <code>./Program/</code> folder, and is titled <strong>Texture Font Generator.exe</strong>.
+	It is only available for Windows.</p>
+
+<p>When loading custom fonts within scripted simfiles like this, it may be necessary to modify the ini file that <em>Texture Font Generator.exe</em> outputs for character widths to be respected.</p>
+
+
+
+<span class="CodeExample-Title">the ini file Texture Font Generator will give you</span>
+<pre><code class="ini">
+[common]
+Baseline=20
+# etc.
+
+[main]
+Line  0= !"$%&'()*+,-.
+Line  1=/0123456789:;<
+Line  2=>?@ABCDEFGHIJKL
+Line  3=MNOPQRSTUVWXYZ
+Line  4=\\\\]^_abcdefghij
+# etc.
+
+0=6
+1=5
+2=7
+3=11
+4=11
+5=18
+# etc.
+</code></pre>
+
+
+<p>If you find that character widths seem incorrect, you may be able to fix this issue by removing the <code>[main]</code> section from the font's ini file so that everything is defined under <code>[common]</code> like this:</p>
+
+<span class="CodeExample-Title">what you may need to change the ini file to</span>
+<pre><code class="ini">
+[common]
+Baseline=20
+# etc.
+
+Line  0= !"$%&'()*+,-.
+Line  1=/0123456789:;<
+Line  2=>?@ABCDEFGHIJKL
+Line  3=MNOPQRSTUVWXYZ
+Line  4=\\\\]^_abcdefghij
+# etc.
+
+0=6
+1=5
+2=7
+3=11
+4=11
+5=18
+# etc.
+</code></pre>
+
+
+
+
+<hr />
+
+<h2 id="dynamically-changing-text">Dynamically Changing Text Using <code>settext()</code></h2>
+
+<p>Here is a more complex example that display a randomly selected string out of a Lua table of possibilities.</p>
+
+<span class="CodeExample-Title">Display one randomly selected string from a table:</span>
+<pre><code class="lua">
+-- This "phrases" table contains a list of strings.  We're going to randomly
+-- select one and display it in the BitmapText actor below. In SM5, it is
+-- possible (and encouraged!) to create local variables that have scope over
+-- the current file, like this.
+local phrases = {
+   "There's the boys.",
+   "Just move faster.",
+   "Worst in the world.",
+   "#bottomstruggles"
+}
+
+return Def.ActorFrame{
+   InitCommand=function(self)
+      -- Remember that queuecommand() waits until the next tick of the engine's
+      -- game loop to execute whatever command we are queueing.
+      self:queuecommand("ChooseAPhrase")
+   end,
+
+   ChooseAPhraseCommand=function(self)
+      -- When passed an integer, math.random() returns a random
+      -- integer that is no greater than the number you pass it,
+      -- but at least 1.  So, in this case, since #phrases = 4
+      -- i will be assigned to 1, 2, 3 or 4.
+      local i = math.random( #phrases )
+
+      -- In contrast, playcommand() will attempt to execute immediately.
+      -- playcommand() also allows us to pass a table of arguments to
+      -- the next command we want to run.  In this way, we can pass
+      -- variables that are otherwise local to this function of this
+      -- ActorFrame to the desired function of the desired BitmapText.
+      self:GetChild("CatchPhrase"):playcommand("Update", {PhraseIndex=i})
+   end,
+
+   LoadFont("Common normal")..{
+      Name="CatchPhrase",
+      InitCommand=cmd(diffuse, color("#FEDCBA"); Center),
+      UpdateCommand=function(self, params)
+         -- The "params" argument comes in as a table with a single element,
+         -- "PhraseIndex"; use that index to get one of the string phrases from
+         -- the phrases variable and set this BitmapText to display that phrase.
+         self:settext( phrases[ params.PhraseIndex ] )
+      end
+   }
+}
+</code></pre>
+
+<p>
+   The example above is admittedly rather artificial for the sake of demonstrating
+   how to pass variables when issuing a <code>playcommand()</code> call. The random
+   index <code>i</code> could have just as easily been generated at the top of the
+   file next to <code>local phrases</code> and not needed to be passed between the
+   Actors&apos; functions.
+</p>
+
+<p>
+   Still, it&apos;s good to know that this can be done.  Keeping variables local
+   (to a file, to a function, etc.) is good practice to mitigate polluting the
+   global Lua namespace with an abundance of single-use variables.  In this regard,
+   it can be helpful to know as many ways to pass those local variables (between
+   files, between functions, etc.) as possible.
+</p>`,"/Actors/LoadActor":`<h1>LoadActor()</h1>
+
+<p><em>LoadActor()</em> is a helper function with some extremely useful properties that make it a staple of any SM5 Lua scripting endeavor.</p>
+
+<h2 id="1st-arg">First Argument - A file path to Load</h2>
+
+<p>The function itself requires at least one argument, a string value of the file to load.  Let&apos;s consider a simple example, the code from <a data-component="Link" href="/Actors/Sprite">the page on Def.Sprite</a>, now rewritten to use <code>LoadActor()</code>:</p>
+
+<span class="CodeExample-Title">A very simple LoadActor example:</span>
+<pre><code class="lua">
+-- pass the function a path to an image file
+-- and append a table with the relevant commands
+LoadActor( "WhatAreBirds.png" )..{
+   InitCommand=function(self)
+      self:zoom(0.5):Center()
+   end
+}
+</code></pre>
+
+<p>As <a href="https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159">its definition</a> in the _fallback theme demonstrates, <em>LoadActor()</em> can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use <code>Def.Sprite{}</code>, <code>Def.Sound{}</code>, <code>Def.Model{}</code> or <code>Def.Actor</code>.</p>
+
+<h2 id="2nd-arg">Second Argument - A table to pass into the loaded file</h2>
+
+<p>The optional second argument of LoadActor() is where it really shines, however.  Let&apos;s look at this slightly more complex example which uses two Lua files.</p>
+
+<p><strong>Primary.lua</strong> will load <strong>Box.lua</strong> once for each available human player and pass in unique properties to each.  If only PLAYER_1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER_2 is available, only the blue quadrilateral on the right will be drawn.</p>
+
+<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/loadactor.png" /></p>
+
+<p>This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.</p>
+
+<span class="CodeExample-Title">Primary.lua</span>
+<pre><code class="lua">
+local af = Def.ActorFrame{
+   InitCommand=function(self) self:Center():sleep(9999) end
+}
+
+local box_values = {}
+
+box_values.P1 = {
+   color = Color.Red,
+   x = _screen.cx-200,
+   y = _screen.cy,
+   h = 100,
+   w = 50
+}
+
+box_values.P2 = {
+   color = Color.Blue,
+   x = _screen.cx+200,
+   y = _screen.cy,
+   h = 50,
+   w = 175
+}
+
+
+-- Loop through any available human players
+-- (as opposed to "joined" players, which can be misleading)
+-- and load a Box.lua to the ActorFrame for each.
+for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
+
+   -- Tranform a player enum string value into the part after
+   -- the underscore with the ToEnumShortString() helper function.
+
+   -- In this case "PlayerNumber_P1" becomes "P1"
+   -- and "PlayerNumber_P2" becomes "P2"
+   local pn = ToEnumShortString(player)
+
+   -- The contents of Box.lua return a Quad.  Keep reading!
+   -- Pass the specific box values we want into the file.
+   af[#af+1] = LoadActor( "./Box.lua", box_values[ pn ] )
+end
+
+return af
+</code></pre>
+
+<span class="CodeExample-Title">Box.lua</span>
+<pre><code class="lua">
+-- The box_values for this player from the primary lua file
+-- are brought into this file via the "..." syntax.
+local this_box = ...
+
+return Def.Quad{
+   InitCommand=function(self)
+      self:xy( this_box.x, this_box.y )
+      self:diffuse( this_box.color )
+      self:setsize( this_box.w, this_box.h  )
+   end
+}
+</code></pre>`,"/Actors/Model":`<h1>Model</h1>
+
+<p class="alert alert-info"><em>This article was graciously contributed by <a href="https://github.com/JoseVarelaP">JoseVarelaP</a>!</em></p>
+
+<p>
+	<em>Model</em> is an actor class used to load 3D models into StepMania 5.  At this time, StepMania 5 only supports one format: <strong><em>MilkShape 3D ASCII</em></strong>.  This means that modeling must be done using the MilkShape 3D software which is only for Windows OS.
+</p>
+
+<p>Let&apos;s start by looking at a very simple example:</p>
+
+<span class="CodeExample-Title">Simple Def.Model Example</span>
+<pre><code class="lua">
+Def.Model {
+   Meshes="MyModel.txt",
+   Materials="MyModel.txt",
+   Bones="MyModel.txt",
+   OnCommand=function(self)
+      self:Center()
+   end,
+}
+</code></pre>
+
+<p>
+	This example will load a plaintext file named <code>MyModel.txt</code> that was exported from MilkShape 3D in the <em>MilkShape 3D ASCII</em> format.  That single file will contain all the data needed to for a <code>Def.Model</code>, including the <code>Meshes</code>, <code>Materials</code>, and <code>Bones</code>.
+</p>
+
+
+<h2 id="meshes-materials-bones">Meshes, Materials, and Bones</h2>
+
+<p><strong>Meshes</strong> are the composition and structure of the <code>Model</code>.  This data represents the vertices that make the <code>Model</code> take shape.</p>
+
+<p><strong>Materials</strong> are the textures that the model will use. These can be any of the image formats listed in the <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> page. They can also be <em>.ini</em> files that define animated textures on a <a data-component="Link" href="/Actors/Sprite">Def.Sprite</a>.</p>
+
+<p><strong>Bones</strong> make the model come to life. They can be defined within the primary model file, or, in the case of dancing characters, be controlled via a separate file that only contains the bones.</p>
+
+<p>In the above example, all three attributes used the same filepath; all the necessary data was contained within a single file.  It is possible to configure the MilkShape 3D software to output distinct files for meshes, materials, and bones, and set each <code>Def.Model</code> attribute accordingly, but that is outside the scope of this lesson.</p>
+
+<p class="alert alert-warning">All three attributes <strong>must</strong> be provided within <code>Def.Model</code> as paths to resources that can be loaded or StepMania will crash.</p>
+
+<p>If you wish to load the <code>Model</code> without having to add bones, use <a data-component="Link" href="/Actors/LoadActor">LoadActor()</a> instead.</p>
+
+<span class="CodeExample-Title">Using LoadActor() to Make Life Easier</span>
+<pre><code class="lua">LoadActor("MyModel.txt")..{
+   OnCommand=function(self) self:Center() end
+}
+</code></pre>
+
+
+
+
+<h2 id="dancing-character-models">Dancing Character Models</h2>
+<p>While dancing characters typically appear in ScreenGameplay, it is possible to load them into any screen using <code>Def.Model</code>.  The following example can be used to load a randomly selected dancing character into the scene.</p>
+
+
+<span class="CodeExample-Title">Random Dancing Character</span>
+<pre><code class="lua">
+-- This will load a random character from SM5's ./Characters folder
+
+-- acquire a handle on a single, randomly selected
+-- dancing character using CHARMAN
+local CharacterToLoad = CHARMAN:GetRandomCharacter()
+
+Def.Model {
+   Meshes=CharacterToLoad:GetModelPath(),
+   Materials=CharacterToLoad:GetModelPath(),
+   Bones=CharacterToLoad:GetModelPath(),
+   OnCommand=function(self)
+      self:Center()
+   end,
+}
+</code></pre>
+
+<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-Faraway.png" /></p>
+
+<p>Wait a second - why is the model so far away?</p>
+
+
+<p>This is caused by how most 3D modelers have made their models to function with the corresponding <em>DDR-PC bones</em>, which are the most commonly used bones for dancing characters in StepMania.  As a result, dancing characters typically appear tiny when used outside of gameplay.</p>
+
+<p>Another thing to note is how the model is presented by default – it&apos;s facing away from us, the viewer.  This behavior can be changed by rotating on the <code>y</code> axis and explicitly setting a <code>z</code> value.</p>
+
+
+<span class="CodeExample-Title">Random Dancing Character, Better</span>
+<pre><code class="lua">-- acquire a handle on a single, randomly selected
+-- dancing character using CHARMAN
+local CharacterToLoad = CHARMAN:GetRandomCharacter()
+
+Def.Model {
+   Meshes=CharacterToLoad:GetModelPath(),
+   Materials=CharacterToLoad:GetModelPath(),
+   Bones=CharacterToLoad:GetModelPath(),
+   OnCommand=function(self)
+      -- Set the model's y rotation to accommodate our vantage point
+      -- and apply a z that will get the model closer to the camera.
+      self:Center():rotationy(180):z(300)
+   end,
+}
+</code></pre>
+
+<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-MeshIntro.png" /></p>
+
+
+<p>Okay, that&apos;s closer, but it still doens&apos;t look like the dancing character from gameplay!</p>
+
+<p>There&apos;s one additional "gotcha" regarding model animations in StepMania&apos;s dancing characters.  They are not handled by or defined within the model, but rather the <em>bones</em>.  To add animations to the model, pass the <code>Bones</code> attribute of the <code>Def.Model</code> a dedicated bones file.</p>
+
+
+<span class="CodeExample-Title">Random Dancing Character, Fixed</span>
+<pre><code class="lua">-- acquire a handle on a single, randomly selected
+-- dancing character using CHARMAN
+local CharacterToLoad = CHARMAN:GetRandomCharacter()
+
+Def.Model {
+   Meshes=CharacterToLoad:GetModelPath(),
+   Materials=CharacterToLoad:GetModelPath(),
+
+   -- For this example, we'll provide a path to a dedicated bones file
+   -- by using SM5's Character GetRestAnimationPath() method
+   -- for this example, we'll use the Rest Animation
+   Bones=CharacterToLoad:GetRestAnimationPath(),
+
+   OnCommand=function(self)
+      -- Set the model's y rotation to accommodate our vantage point
+      -- and apply a z that will get the model closer to the camera.
+      self:Center():rotationy(180):z(300)
+
+      -- since we're using the rest animation, we'll want to also set
+      -- the y() position to be lower on on the screen
+      self:addy(10)
+   end
+}
+</code></pre>
+
+
+<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-WithBones.png" /></p>
+
+
+<p>As a final note, some models may have inverted vertexes, which can cause some polygons to collide with one another and draw in the wrong order. To fix this, set the model&apos;s <code>Cull Mode</code> to <code>none</code>.</p>
+
+
+<span class="CodeExample-Title">Random Dancing Character, CullMode None</span>
+<pre><code class="lua">-- acquire a handle on a single, randomly selected
+-- dancing character using CHARMAN
+local CharacterToLoad = CHARMAN:GetRandomCharacter()
+
+Def.Model {
+   Meshes=CharacterToLoad:GetModelPath(),
+   Materials=CharacterToLoad:GetModelPath(),
+
+   Bones=CharacterToLoad:GetRestAnimationPath(),
+
+   OnCommand=function(self)
+      -- Set the model's y rotation to accommodate our vantage point
+      -- and apply a z that will get the model closer to the camera.
+      self:Center():rotationy(180):z(300)
+
+      -- since we're using the rest animation, we'll want to also set
+      -- the y() position to be lower on on the screen
+      self:addy(10)
+
+      -- finally, set the Cull Mode to none
+      self:cullmode("CullMode_None")
+   end
+}
+</code></pre>`,"/Actors/Quad":`<h1>Quad</h1>
+
+<h2 id="simple-example">Quad Features</h2>
+<p><em>Quad</em> actors are programmatically drawn <em>quad</em>rilaterals that can have properties like size, position, and color.  If you don&apos;t specify, Quad actors are white and have a height and width of 0 by default.</p>
+
+<span class="CodeExample-Title">A very simple Quad example:</span>
+<pre><code class="lua">
+-- a white quad with height and width of 100px
+Def.Quad{
+   Name="WhiteQuad",
+   InitCommand=function(self)
+      self:zoomto(100,100)
+   end
+}
+</code></pre>
+
+<p>A common question that people new to StepMania scripting have is:</p>
+
+<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
+
+<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor objects</a>.</p>
+
+<h2 id="more-advanced-example"">A More Advanced Example</h2>
+
+<p>Since Quads are fairly simple, let&apos;s use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth in the Command Chaining section.</p>
+
+<span class="CodeExample-Title">Three Quads with animation:</span>
+<pre><code class="lua">
+-- let's assume this file is being called via FGCHANGES from a simfile.
+-- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
+-- are cleared from memory as the engine assumes they are "done."
+-- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
+
+return Def.ActorFrame{
+   -- the OnCommand here applies to the primary ActorFrame
+   OnCommand=function(self)
+      self:sleep(9999)
+   end,
+
+   -- a red quad that accelerates from offscreen-left to offscreen-right
+   -- this makes use of the _screen and Color aliases
+   Def.Quad{
+      Name="RedQuad",
+      InitCommand=function(self)
+         self:zoomto(100,100):diffuse(Color.Red)
+      end,
+      OnCommand=function(self)
+         self:xy( -100, _screen.cy )
+             :accelerate( 2 ):x( _screen.w + 100 )
+      end
+   },
+
+   -- a blue quad that decelerates from offscreen-top to offscreen-bottom
+   -- this makes use of the xy() command, which is new to SM5
+   -- as well as command-chaining (read more on the next page!)
+   Def.Quad{
+      Name="BlueQuad",
+      InitCommand=function(self)
+         self:zoomto( 100, 100 ):diffuse( Color.Blue )
+      end,
+      OnCommand=function(self)
+         self:xy( _screen.cx, -100)
+             :decelerate( 2 ):y( _screen.h + 100 )
+             :queuecommand( "TriggerSpin" )
+      end,
+      TriggerSpinCommand=function(self)
+         local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
+         greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
+      end
+   },
+
+   -- a green quad that waits for the two quads above to finish tweening,
+   -- then grows out of the center of the screen while spinning
+
+   -- NOTE: We can't apply tween-based commands and actor effects like spin()
+   -- simultaneously.
+   -- zoomto() will override spin() for the duration of its linear tween.
+   -- The way to achive the effect of spinning toward the viewer is to
+   -- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
+   Def.ActorFrame{
+      Name="GreenQuadAF",
+      InitCommand=function(self)
+         self:Center()
+             :spin():effectmagnitude(0,0,180)
+      end,
+
+      Def.Quad{
+         Name="GreenQuad",
+         InitCommand=function(self)
+            self:zoomto(0,0):diffuse(Color.Green)
+         end,
+         GrowCommand=function(self)
+            self:linear(5):zoomto(_screen.w, _screen.h)
+         end,
+      }
+   }
+}
+</code></pre>
+
+<h2 id="fallback-theme-has-helpful-aliases">The <em>_fallback</em> theme has some helpful aliases.</h2>
+
+<p>This example also uses a few helper tables defined in SM5&apos;s <em>_fallback</em> theme such as the <code>Color</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua">02 Colors.lua</a>  and the <code>_screen</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua">01 alias.lua</a>.</p>`,"/Actors/Sound":`<h1>Sound</h1>
+
+<p>A <em>Sound</em> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
+
+<p class="alert alert-warning">
+If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <a data-component="Link" href="/Singletons/SOUND">SOUND</a>.
+</p>
+
+<span class="CodeExample-Title">Minimal Example:</span>
+<pre><code class="lua">
+Def.Sound{
+   -- Note that you must tell the sound actor to play()
+   File="filepath.ogg",
+
+   OnCommand=function(self)
+      self:play()
+   end
+}
+</code></pre>
+
+<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
+
+<ul>
+<li>
+	<p>
+		<strong>SupportPan</strong> Set this to <code>true</code> if you intend to have the sound played solely through the left (for <code>PLAYER_1</code>) or the right (for <code>PLAYER_2</code>) audio channel.  This is accomplished with the <code>playforplayer()</code> method.
+	</p>
+</li>
+
+<li>
+	<p>
+		<strong>SupportRateChanging</strong> Set this to <code>true</code> if you intend to manipulate the pitch and/or speed of the underlying RageSound.
+	</p>
+</li>
+<li>
+	<p>
+		<strong>IsAction</strong> Set this to <code>true</code> if you are want this Sound actor to be muted as a <em>theme action</em> via <kbd>F3</kbd>+<kbd>A</kbd>.  This can be useful to keep themers sane while they are repeatedly debugging a single screen over and over again.
+	</p>
+</li>
+</ul>
+
+<span class="CodeExample-Title">SupportPan Example:</span>
+<pre><code class="lua">
+-- this Sound actor will play the current theme's
+-- "common start" sound first for PLAYER_1, then
+-- wait two seconds, and then play it for PLAYER_2
+
+Def.Sound{
+   File=THEME:GetPathS("common", "start"),
+   Name="SFX_With_Pan",
+
+   SupportPan=true,
+   SupportRateChanging=true,
+   IsAction=false,
+
+   OnCommand=function(self)
+      -- play the sound out of the left channel
+      self:playforplayer(PLAYER_1)
+      self:queuecommand("PlayAgain")
+   end,
+   PlayAgainCommand=function(self)
+      self:sleep(2)
+
+      -- play the sound out of the right channel
+      self:playforplayer(PLAYER_2)
+   end
+}
+</code></pre>
+
+
+<span class="CodeExample-Title">SupportRateChanging Example:</span>
+<pre><code class="lua">
+-- variables local to this file
+local ragesound_file
+local current_pitch = 1
+
+-- this Sound actor will play the same audio file
+-- three times sequentially, each time with a higher pitch
+Def.Sound{
+   File=THEME:GetPathS("common", "start"),
+   Name="SFX_With_Pitch",
+   SupportRateChanging=true,
+
+   OnCommand=function(self)
+      self:queuecommand("Play")
+   end,
+   PlayCommand=function(self)
+
+      -- get the underlying sound file data
+      ragesound_file = self:get()
+
+      -- RageSound:pitch() take a float where
+      -- 1.0 is "normal", 2.0 is twice as high as normal, etc.
+      ragesound_file:pitch( current_pitch )
+
+      -- play the sound file using both stereo channels
+      self:play()
+
+      -- increment current_pitch
+      current_pitch = current_pitch + 1
+
+      -- prevent infinite looping
+      if current_pitch < 4 then
+         -- sleep for two seconds and do it again
+         self:sleep(2):queuecommand("Play")
       end
    end
 }
+</code></pre>`,"/Actors/Sprite":`<h1>Sprite</h1>
+
+<h2 id="features-and-attributes">Sprite Features and Attributes</h2>
+<p>
+   <em>Sprite</em> actors can be used to load, display, and manipulate image and video data in StepMania 5. If you want to load a png graphic and move it around, or animate a character from a sprite sheet, or play a video file, then the <em>Sprite</em> actor is what you're looking for.
+</p>
+
+<p>
+   See the page on <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> for a complete list of which filetypes are supported.
+</p>
+
+<p>
+   As Lua tables, Sprite actors have one unique attribute that is worth knowing about, <code>Texture</code>. Let's start with a very simple example of Sprite usage.
+</p>
+
+
+<span class="CodeExample-Title">A very simple Sprite example:</span>
+<pre><code class="lua">
+Def.Sprite{
+   Texture="WhatAreBirds.png",
+   InitCommand=function(self)
+      self:zoom(0.5):Center()
+   end
+}
 </code></pre>
 
-<h2 id="using-systemmessage">Using SystemMessage() to display Table output</h2>
+<p>
+   This example will load a file titled <em>WhatAreBirds.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).
+</p>
 
-<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
+<p>
+   A common question that people new to StepMania scripting have is:
+</p>
 
-<p>The function defined in <strong>SL-Utilities.lua</strong> that is relevant here is <code>SM()</code>  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme&apos;s Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.</p>
+<p>
+   <strong>Where are those commands like</strong> <code>zoom()</code> <strong>and</strong> <code>Center()</code> <strong>coming from?</strong>
+</p>
 
-<span class="CodeExample-Title">Using SM() to display a small Lua table</span>
+<p>
+   Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania's Lua API for a complete list of methods available first to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor</a> and then to <a data-component="Link" href="/LuaAPI#Actors-Sprite">Sprite</a> specifically.
+</p>
+
+
+<h2 id="animated-spritesheets">Animated Spritesheets</h2>
+<p>
+   What about sprite sheets for animated sprites? StepMania's engine is hardcoded to look for patterns in the filename with Sprite actors. If you are loading a sprite sheet that you intend to animate through, you'll want to ensure that the filename of the png you are loading ends with the pattern: <em>(columns)</em>x<em>(rows)</em>
+</p>
+
+<p>
+   For example, this sprite of Dr. Wily has 6 columns across 1 row.
+</p>
+
+<p>
+   <img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily%206x1.png">
+</p>
+
+<p>
+   For StepMania to recognize it properly as a sprite sheet, you would want to append <strong>6x1</strong> to the end of the filename, resulting in something like <strong>Wily 6x1.png</strong>.
+</p>
+
+<p>
+   When working with sprite sheets, <em>Sprite</em> actors can have infinitely many more attributes for each <code>Frame</code> and each Frame's <code>Delay</code> values, but there are better ways of doing handling those. Let's look at an old example from <a href="https://www.youtube.com/watch?v=KhwxI60WeWU">The Ballad of Ian</a> from the D.O.W.N.S. 3 ITG tournament in January 2013.
+</p>
+
+<span class="CodeExample-Title">Old example from The Ballad of Ian. There's a better way!</span>
 <pre><code class="lua">
-return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- Again, limit to  PLAYER_1 for a more simple example.
-      if params.Player == PLAYER_1 then
-         -- SystemMessage a stringified table of note columns
-         -- as each judgment occurs
-         SM( params.Notes )
+Def.Sprite{
+   Texture="spin 13x1.png",
+   Frame0000=0,
+   Delay0000=0.0516,
+   Frame0001=1,
+   Delay0001=0.0516,
+   Frame0002=2,
+   Delay0002=0.0516,
+   Frame0003=3,
+   Delay0003=0.0516,
+   Frame0004=4,
+   Delay0004=0.0516,
+   Frame0005=5,
+   Delay0005=0.0516,
+   Frame0006=6,
+   Delay0006=0.0516,
+   Frame0007=7,
+   Delay0007=0.0516,
+   Frame0008=8,
+   Delay0008=0.0516,
+   Frame0009=9,
+   Delay0009=0.0516,
+   Frame0010=10,
+   Delay0010=0.0516,
+   Frame0011=11,
+   Delay0011=0.0516,
+   Frame0012=12,
+   Delay0012=0.0516,
+   InitCommand=cmd( diffusealpha,0.5; zoom,0.6; vertalign,bottom; Center),
+   OnCommand=cmd( sleep,8; linear,1; diffusealpha,0 ),
+}
+</code></pre>
+
+<p>
+   While it is possible to specify frames and frame durations (delays) like this, you'll probably get the idea that this style is repetitive and prone to typos. Here's a much more condensed version that accomplishes the same thing.
+</p>
+
+
+<span class="CodeExample-Title">A better way to manage sprite sheets:</span>
+<pre><code class="lua">
+Def.Sprite {
+   Texture="spin 13x1.png",
+   InitCommand=function(self)
+      self:diffusealpha(0.5):zoom(0.6):vertalign(bottom):Center()
+      self:SetAllStateDelays(0.0516)
+   end,
+   OnCommand=function(self)
+      self:sleep(8):linear(1):diffusealpha(0)
+   end
+}
+</code></pre>
+
+<p>
+   Since the the time between each frame of animation is set globally using the <code>SetAllStateDelays()</code> method, the code is overall less prone to mistakes via typos.
+</p>
+
+<p>
+   It is worth noting that in the above, animated examples, StepMania's engine will start with the first frame and progress to the last one in order. There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:
+</p>
+
+<p>
+   <img alt="a 4 by 4 spritesheet of SteveReen" src="/Lua-For-SM5/img/Reen%204x4.png">
+</p>
+
+<p>
+   If we want the <em>Sprite</em> actor to appear to be facing downward, then we'd only want StepMania to be animating through the first row of the sprite sheet. Here's a way to handle that.
+</p>
+
+
+<span class="CodeExample-Title">A complex Sprite example:</span>
+<pre><code class="lua">
+-- duration between frames, in seconds
+local duration_between_frames = 0.15
+
+-- We want SM5 to think of this as a single Sprite actor that sometimes
+-- displays frames 0-3, and other times displays frames 8-11, so we're
+-- going to need to manually specify each frame index like this.
+
+-- The sequence of frames here corresponds with the physical layout of
+-- the "guy 4x4.png" sprite sheet image shown above.
+
+-- Yes, this "frames" table could be programmatically generated with
+-- a nested loop but I'm explicitly writing it out here so it's
+-- easier to see what it contains for this example.
+
+local frames = {
+   Down = {
+      { Frame=0,  Delay=duration_between_frames},
+      { Frame=1,  Delay=duration_between_frames},
+      { Frame=2,  Delay=duration_between_frames},
+      { Frame=3,  Delay=duration_between_frames}
+   },
+   Left = {
+      { Frame=4,  Delay=duration_between_frames},
+      { Frame=5,  Delay=duration_between_frames},
+      { Frame=6,  Delay=duration_between_frames},
+      { Frame=7,  Delay=duration_between_frames}
+   },
+   Right = {
+      { Frame=8,  Delay=duration_between_frames},
+      { Frame=9,  Delay=duration_between_frames},
+      { Frame=10, Delay=duration_between_frames},
+      { Frame=11, Delay=duration_between_frames}
+   },
+   Up = {
+      { Frame=12, Delay=duration_between_frames},
+      { Frame=13, Delay=duration_between_frames},
+      { Frame=14, Delay=duration_between_frames},
+      { Frame=15, Delay=duration_between_frames}
+   }
+}
+
+
+local af = Def.ActorFrame{
+   OnCommand=function(self) self:sleep(999):Center() end
+}
+
+af[#af+1] = Def.Sprite{
+   Texture="Reen 4x4.png",
+
+   InitCommand=function(self)
+      -- when not actively tweening across the screen, the Sprite should
+      -- not animate, so as to appear to be "standing" in place
+      self:animate(false)
+
+      -- align to left and v-middle
+      self:halign(0):valign(0.5)
+      self:Center()
+
+      -- initialize the sprite state so that the sprite
+      -- starts by facing downward
+      self:SetStateProperties( frames.Down )
+   end,
+
+   -- In SM5, the StepMessage is broadcast whenever either player
+   -- steps on a game button during gameplay.
+   -- This doesn't handle buttons like START or SELECT.
+   StepMessageCommand=function(self, params)
+
+      -- As an arbitrary decision for the sake of this example
+      -- let's only pay attention to steps from PLAYER_1
+      if params.PlayerNumber == PLAYER_1 then
+
+         -- turn animation back on for a brief moment
+         self:animate(true)
+
+         -- people can hit buttons faster than every 0.25 seconds, so it's
+         -- possible to queue so many tweens that SM5 complains about a tween
+         -- overflow. Mitigate this by canceling the previous linear tween, if
+         -- one is still running, via the stoptweening() command.  Then
+         -- apply a new linear tween to move the sprite one directional unit.
+         self:stoptweening():linear(0.25)
+
+         -- the "Column" param will match up with a Gameplay arrow column
+         -- dance has 4 columns, pump has 5, etc.
+         -- Column is 0-indexed because it's coming from C++.
+
+         -- LEFT
+         if params.Column == 0 then
+            self:SetStateProperties( frames.Left )
+            self:x(self:GetX() + (-1 * self:GetWidth()))
+
+         -- DOWN
+         elseif params.Column == 1 then
+            self:SetStateProperties( frames.Down )
+            self:y(self:GetY() + self:GetWidth())
+
+         -- UP
+         elseif params.Column == 2 then
+            self:SetStateProperties( frames.Up )
+            self:y(self:GetY() + (-1 * self:GetWidth()))
+
+         -- RIGHT
+         elseif params.Column == 3 then
+            self:SetStateProperties( frames.Right )
+            self:x(self:GetX() + self:GetWidth() )
+
+         end
+
+         -- The Sprite has tweened, so queue a command to stop the
+         -- animation. We can't call animate(false) in here because
+         -- it will terminate the call to animate(true) early and the
+         -- sprite will never animate.
+         self:queuecommand("StopAnimating")
       end
+   end,
+
+   StopAnimatingCommand=function(self)
+      -- stop animating and set the sprite's frame to 0,
+      -- regardless of direction the sprite is "facing".
+      self:animate(false):setstate(0)
    end
 }
+
+return af
 </code></pre>
-
-<p>The screenshot below shows that columns 4 and 1 (a left-right jump) were just missed.</p>
-
-<p>
-   <img class="img-fluid"
-      src="/Lua-For-SM5/img/using-SM-to-debug-table.png"
-      alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"
-   />
-</p>
-
-<h2 id="using-trace">Knowing when to use Trace()</h2>
-<p>
-   <code>SystemMessage()</code> is not the only debugging tool available in StepMania.
-   <code>SystemMessage()</code> has limited usefulness since large Lua tables can
-   easily contain more data than StepMania&apos;s window can reasonably display.  In
-   such situations, a proper Lua <code>Trace()</code> is preferred.  Output from
-   <code>Trace()</code> is written to <em>Logs/Log.txt</em>
-</p>
-
-<h2 id="helper-functions-from-fallback">Helper Functions from <em>_fallback</em></h2>
-<p>
-   StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code>
-   function to assist with recursively printing deeply nested Lua tables to the Log.txt
-   file.  Here is the example from above, reworked to to use <code>rec_print_table()</code>
-   to write the entire params table to file.
-</p>
-
-<span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
-<pre><code class="lua">
-return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- recursive print the entire table of JudgmentMessage parameters
-      -- to Logs/Log.txt.  This would be more information than could fit
-      -- onscreen at a single moment.
-      rec_print_table( params )
-   end
-}
-</code></pre>`,"/Singletons/SCREENMAN":`<h1>SCREENMAN Singleton</h1>
+`,"/Singletons/SCREENMAN":`<h1>SCREENMAN Singleton</h1>
 
 <p>
    The SCREENMAN (short for <em>Screen Manager</em>) singleton is primarily used
@@ -870,940 +1680,7 @@ return Def.ActorFrame{
 
 <h4>3D Models:</h4>
 
-<p>3D Models still rely on MilkShape 3D ASCII text as they have since StepMania 3.9.  Documentation is scarce at best.  Sorry.</p>`,"/Actors/ActorMultiVertex":`<h1>ActorMultiVertex</h1>
-
-<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
-
-<p>An <em>ActorMultiVertex</em> actor has seven possible <a data-component="Link" href="/LuaAPI#Enums-DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
-
-<p>For example, calling <code>self:SetDrawState({Mode="DrawMode_Quads"})</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/quietl-turning/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
-
-<p>Another <em>ActorMultiVertex</em> DrawMode is <code>DrawMode_LineStrip</code>, in which your table of vertex data will be rendered as a single, continuous line.  An example of <code>DrawMode_LineStrip</code> in action can be seen in <a href="https://www.youtube.com/watch?v=hKd4xkULxFk">this scripted simfile</a> from the U.P.S. 2 pack.</p>`,"/Actors/Actor":`<h1>Actor</h1>
-
-<p>
-   The <strong>Actor</strong> class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually). Using an Actor object directly is not generally helpful; it can't <em>do</em> very much. The <code>LoadActor()</code> helper function <a data-component="Link" href="/Actors/LoadActor">discussed later</a> is far more flexible and useful!
-</p>
-
-<p>
-   Still, there are times when <strong>Actor</strong> objects can be useful. For example, the Simply Love SM5 port uses them when we need a hook into some message broadcast by the engine but don't need an entire ActorFrame.
-</p>
-
-<p>
-   In theming example below, we are using an <code>Actor</code> to listen for the <code>StartTransitioningCommand</code> to be broadcast by the engine when a screen is transitioning out (and preparing to initialize the next screen). When that occurs, we make a call to save the theme's preferences, assuming the theme is already using the <a href="https://github.com/stepmania/stepmania/blob/5_1-new/Themes/_fallback/Scripts/02%20ThemePrefs.lua">ThemePrefs system</a>.
-</p>
-
-<span class="CodeExample-Title">Example using an Actor directly:</span>
-<pre><code class="lua">
-return Def.Actor{
-   StartTransitioningCommand=function(self)
-      ThemePrefs.Save()
-   end
-}
-</code></pre>
-
-<p>
-   For another example, see: <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/00fdf7112b0050d229679c39d777dfca5f0bb11a/BGAnimations/ScreenGameplay%20overlay/ReceptorArrowsPosition.lua#L25-L40">./Simply Love/BGAnimations/ScreenGameplay overlay/ReceptorArrowsPosition.lua</a>
-</p>
-`,"/Actors/ActorFrameTexture":`<h1>ActorFrameTexture</h1>
-
-<p><em>ActorFrameTexture</em> actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a <code>visible(false)</code> command, and StepMania will have that many fewer actors to process every draw cycle.</p>
-
-<p>This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.</p>
-
-<p>For now, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua">Mad Matt&apos;s writeup</a>.</p>`,"/Actors/BitmapText":`<h1>BitmapText</h1>
-
-<h2 id="features-and-attributes">BitmapText Features and Attributes</h2>
-<p><em>BitmapText</em> Actors are used to display text on the screen.</p>
-
-<p>As Lua tables, they have two unique elements, <code>Font</code> and <code>Text</code>.  <code>Font</code> should be set to any font in the current or <em>_fallback</em> theme&apos;s <em>./Font</em> directory. <code>Text</code> should be set to a string value, but it can be left empty or not declared at all if you intend to programmatically set the text later with the <code>settext()</code> method.</p>
-
-<p>Here is a very simple example that would display the text "Hello SM5!"</p>
-<span class="CodeExample-Title">Simple BitmapText example</span>
-<pre><code class="lua">
-Def.BitmapText{
-   Font="Common normal",
-   Text="Hello SM5!",
-   InitCommand=function(self) self:Center() end
-}
-</code></pre>
-
-<p>StepMania 5&apos;s <em>_fallback</em> theme defines a helper function, <code>LoadFont()</code>, that can be used to simplify the above code somewhat.</p>
-
-<span class="CodeExample-Title">BitmapText example using LoadFont()</span>
-<pre><code class="lua">
-LoadFont("Common normal")..{
-   Text="Hello SM5!",
-   InitCommand=function(self) self:Center() end
-}
-</code></pre>
-
-<hr />
-
-<h2 id="custom-fonts-in-scripted-simfile">Loading Custom Fonts within a Scripted Simfile</h2>
-
-<p>Note that the <code>LoadFont()</code> helper function can only be used to load BitmapText fonts contained within the current theme&apos;s <code>./Fonts/</code> directory.
- If you are working within the context of a <a data-component="Link" href="/Introduction/Mod-Chart-Setup">scripted simfile</a> and are trying to load a custom BitmapText font that is located within the simfile directory itself, you can do so like this:</p>
-
-<span class="CodeExample-Title">loading a custom BitmapText from within a simfile</span>
-<pre><code class="lua">
-Def.BitmapText{
-   File=GAMESTATE:GetCurrentSong():GetSongDir().."Fonts/helvetica neue/_helvetica neue 20px.ini",
-   Text="Hello, World!",
-   InitCommand=function(self) self:diffuse(1,1,1,1):Center():shadowlength(0.75) end
-}
-</code></pre>
-
-<p>The program used to turn ttf fonts into spritesheets that StepMania can use comes bundled with release versions of SM5 for Windows in the <code>./Program/</code> folder, and is titled <strong>Texture Font Generator.exe</strong>.
-	It is only available for Windows.</p>
-
-<p>When loading custom fonts within scripted simfiles like this, it may be necessary to modify the ini file that <em>Texture Font Generator.exe</em> outputs for character widths to be respected.</p>
-
-
-
-<span class="CodeExample-Title">the ini file Texture Font Generator will give you</span>
-<pre><code class="ini">
-[common]
-Baseline=20
-# etc.
-
-[main]
-Line  0= !"$%&'()*+,-.
-Line  1=/0123456789:;<
-Line  2=>?@ABCDEFGHIJKL
-Line  3=MNOPQRSTUVWXYZ
-Line  4=\\\\]^_abcdefghij
-# etc.
-
-0=6
-1=5
-2=7
-3=11
-4=11
-5=18
-# etc.
-</code></pre>
-
-
-<p>If you find that character widths seem incorrect, you may be able to fix this issue by removing the <code>[main]</code> section from the font's ini file so that everything is defined under <code>[common]</code> like this:</p>
-
-<span class="CodeExample-Title">what you may need to change the ini file to</span>
-<pre><code class="ini">
-[common]
-Baseline=20
-# etc.
-
-Line  0= !"$%&'()*+,-.
-Line  1=/0123456789:;<
-Line  2=>?@ABCDEFGHIJKL
-Line  3=MNOPQRSTUVWXYZ
-Line  4=\\\\]^_abcdefghij
-# etc.
-
-0=6
-1=5
-2=7
-3=11
-4=11
-5=18
-# etc.
-</code></pre>
-
-
-
-
-<hr />
-
-<h2 id="dynamically-changing-text">Dynamically Changing Text Using <code>settext()</code></h2>
-
-<p>Here is a more complex example that display a randomly selected string out of a Lua table of possibilities.</p>
-
-<span class="CodeExample-Title">Display one randomly selected string from a table:</span>
-<pre><code class="lua">
--- This "phrases" table contains a list of strings.  We're going to randomly
--- select one and display it in the BitmapText actor below. In SM5, it is
--- possible (and encouraged!) to create local variables that have scope over
--- the current file, like this.
-local phrases = {
-   "There's the boys.",
-   "Just move faster.",
-   "Worst in the world.",
-   "#bottomstruggles"
-}
-
-return Def.ActorFrame{
-   InitCommand=function(self)
-      -- Remember that queuecommand() waits until the next tick of the engine's
-      -- game loop to execute whatever command we are queueing.
-      self:queuecommand("ChooseAPhrase")
-   end,
-
-   ChooseAPhraseCommand=function(self)
-      -- When passed an integer, math.random() returns a random
-      -- integer that is no greater than the number you pass it,
-      -- but at least 1.  So, in this case, since #phrases = 4
-      -- i will be assigned to 1, 2, 3 or 4.
-      local i = math.random( #phrases )
-
-      -- In contrast, playcommand() will attempt to execute immediately.
-      -- playcommand() also allows us to pass a table of arguments to
-      -- the next command we want to run.  In this way, we can pass
-      -- variables that are otherwise local to this function of this
-      -- ActorFrame to the desired function of the desired BitmapText.
-      self:GetChild("CatchPhrase"):playcommand("Update", {PhraseIndex=i})
-   end,
-
-   LoadFont("Common normal")..{
-      Name="CatchPhrase",
-      InitCommand=cmd(diffuse, color("#FEDCBA"); Center),
-      UpdateCommand=function(self, params)
-         -- The "params" argument comes in as a table with a single element,
-         -- "PhraseIndex"; use that index to get one of the string phrases from
-         -- the phrases variable and set this BitmapText to display that phrase.
-         self:settext( phrases[ params.PhraseIndex ] )
-      end
-   }
-}
-</code></pre>
-
-<p>
-   The example above is admittedly rather artificial for the sake of demonstrating
-   how to pass variables when issuing a <code>playcommand()</code> call. The random
-   index <code>i</code> could have just as easily been generated at the top of the
-   file next to <code>local phrases</code> and not needed to be passed between the
-   Actors&apos; functions.
-</p>
-
-<p>
-   Still, it&apos;s good to know that this can be done.  Keeping variables local
-   (to a file, to a function, etc.) is good practice to mitigate polluting the
-   global Lua namespace with an abundance of single-use variables.  In this regard,
-   it can be helpful to know as many ways to pass those local variables (between
-   files, between functions, etc.) as possible.
-</p>`,"/Actors/LoadActor":`<h1>LoadActor()</h1>
-
-<p><em>LoadActor()</em> is a helper function with some extremely useful properties that make it a staple of any SM5 Lua scripting endeavor.</p>
-
-<h2 id="1st-arg">First Argument - A file path to Load</h2>
-
-<p>The function itself requires at least one argument, a string value of the file to load.  Let&apos;s consider a simple example, the code from <a data-component="Link" href="/Actors/Sprite">the page on Def.Sprite</a>, now rewritten to use <code>LoadActor()</code>:</p>
-
-<span class="CodeExample-Title">A very simple LoadActor example:</span>
-<pre><code class="lua">
--- pass the function a path to an image file
--- and append a table with the relevant commands
-LoadActor( "WhatAreBirds.png" )..{
-   InitCommand=function(self)
-      self:zoom(0.5):Center()
-   end
-}
-</code></pre>
-
-<p>As <a href="https://github.com/stepmania/stepmania/blob/a888506b3270d6c66d12cb2165fb8d4b1a7d978f/Themes/_fallback/Scripts/02%20ActorDef.lua#L95-L159">its definition</a> in the _fallback theme demonstrates, <em>LoadActor()</em> can load Lua files, image/video files, sound files, models, and directories.  In this manner, it can effectively take the place of knowing when to use <code>Def.Sprite{}</code>, <code>Def.Sound{}</code>, <code>Def.Model{}</code> or <code>Def.Actor</code>.</p>
-
-<h2 id="2nd-arg">Second Argument - A table to pass into the loaded file</h2>
-
-<p>The optional second argument of LoadActor() is where it really shines, however.  Let&apos;s look at this slightly more complex example which uses two Lua files.</p>
-
-<p><strong>Primary.lua</strong> will load <strong>Box.lua</strong> once for each available human player and pass in unique properties to each.  If only PLAYER_1 is available, only the red quadrilateral on the left will be drawn.  If only PLAYER_2 is available, only the blue quadrilateral on the right will be drawn.</p>
-
-<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/loadactor.png" /></p>
-
-<p>This sort of setup allows us to keep generic code definitions in files like Box.lua, and load them as needed from the primary file with specific values passed in.</p>
-
-<span class="CodeExample-Title">Primary.lua</span>
-<pre><code class="lua">
-local af = Def.ActorFrame{
-   InitCommand=function(self) self:Center():sleep(9999) end
-}
-
-local box_values = {}
-
-box_values.P1 = {
-   color = Color.Red,
-   x = _screen.cx-200,
-   y = _screen.cy,
-   h = 100,
-   w = 50
-}
-
-box_values.P2 = {
-   color = Color.Blue,
-   x = _screen.cx+200,
-   y = _screen.cy,
-   h = 50,
-   w = 175
-}
-
-
--- Loop through any available human players
--- (as opposed to "joined" players, which can be misleading)
--- and load a Box.lua to the ActorFrame for each.
-for player in ivalues( GAMESTATE:GetHumanPlayers() ) do
-
-   -- Tranform a player enum string value into the part after
-   -- the underscore with the ToEnumShortString() helper function.
-
-   -- In this case "PlayerNumber_P1" becomes "P1"
-   -- and "PlayerNumber_P2" becomes "P2"
-   local pn = ToEnumShortString(player)
-
-   -- The contents of Box.lua return a Quad.  Keep reading!
-   -- Pass the specific box values we want into the file.
-   af[#af+1] = LoadActor( "./Box.lua", box_values[ pn ] )
-end
-
-return af
-</code></pre>
-
-<span class="CodeExample-Title">Box.lua</span>
-<pre><code class="lua">
--- The box_values for this player from the primary lua file
--- are brought into this file via the "..." syntax.
-local this_box = ...
-
-return Def.Quad{
-   InitCommand=function(self)
-      self:xy( this_box.x, this_box.y )
-      self:diffuse( this_box.color )
-      self:setsize( this_box.w, this_box.h  )
-   end
-}
-</code></pre>`,"/Actors/Quad":`<h1>Quad</h1>
-
-<h2 id="simple-example">Quad Features</h2>
-<p><em>Quad</em> actors are programmatically drawn <em>quad</em>rilaterals that can have properties like size, position, and color.  If you don&apos;t specify, Quad actors are white and have a height and width of 0 by default.</p>
-
-<span class="CodeExample-Title">A very simple Quad example:</span>
-<pre><code class="lua">
--- a white quad with height and width of 100px
-Def.Quad{
-   Name="WhiteQuad",
-   InitCommand=function(self)
-      self:zoomto(100,100)
-   end
-}
-</code></pre>
-
-<p>A common question that people new to StepMania scripting have is:</p>
-
-<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
-
-<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor objects</a>.</p>
-
-<h2 id="more-advanced-example"">A More Advanced Example</h2>
-
-<p>Since Quads are fairly simple, let&apos;s use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth in the Command Chaining section.</p>
-
-<span class="CodeExample-Title">Three Quads with animation:</span>
-<pre><code class="lua">
--- let's assume this file is being called via FGCHANGES from a simfile.
--- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
--- are cleared from memory as the engine assumes they are "done."
--- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
-
-return Def.ActorFrame{
-   -- the OnCommand here applies to the primary ActorFrame
-   OnCommand=function(self)
-      self:sleep(9999)
-   end,
-
-   -- a red quad that accelerates from offscreen-left to offscreen-right
-   -- this makes use of the _screen and Color aliases
-   Def.Quad{
-      Name="RedQuad",
-      InitCommand=function(self)
-         self:zoomto(100,100):diffuse(Color.Red)
-      end,
-      OnCommand=function(self)
-         self:xy( -100, _screen.cy )
-             :accelerate( 2 ):x( _screen.w + 100 )
-      end
-   },
-
-   -- a blue quad that decelerates from offscreen-top to offscreen-bottom
-   -- this makes use of the xy() command, which is new to SM5
-   -- as well as command-chaining (read more on the next page!)
-   Def.Quad{
-      Name="BlueQuad",
-      InitCommand=function(self)
-         self:zoomto( 100, 100 ):diffuse( Color.Blue )
-      end,
-      OnCommand=function(self)
-         self:xy( _screen.cx, -100)
-             :decelerate( 2 ):y( _screen.h + 100 )
-             :queuecommand( "TriggerSpin" )
-      end,
-      TriggerSpinCommand=function(self)
-         local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
-         greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
-      end
-   },
-
-   -- a green quad that waits for the two quads above to finish tweening,
-   -- then grows out of the center of the screen while spinning
-
-   -- NOTE: We can't apply tween-based commands and actor effects like spin()
-   -- simultaneously.
-   -- zoomto() will override spin() for the duration of its linear tween.
-   -- The way to achive the effect of spinning toward the viewer is to
-   -- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
-   Def.ActorFrame{
-      Name="GreenQuadAF",
-      InitCommand=function(self)
-         self:Center()
-             :spin():effectmagnitude(0,0,180)
-      end,
-
-      Def.Quad{
-         Name="GreenQuad",
-         InitCommand=function(self)
-            self:zoomto(0,0):diffuse(Color.Green)
-         end,
-         GrowCommand=function(self)
-            self:linear(5):zoomto(_screen.w, _screen.h)
-         end,
-      }
-   }
-}
-</code></pre>
-
-<h2 id="fallback-theme-has-helpful-aliases">The <em>_fallback</em> theme has some helpful aliases.</h2>
-
-<p>This example also uses a few helper tables defined in SM5&apos;s <em>_fallback</em> theme such as the <code>Color</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua">02 Colors.lua</a>  and the <code>_screen</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua">01 alias.lua</a>.</p>`,"/Actors/Sound":`<h1>Sound</h1>
-
-<p>A <em>Sound</em> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
-
-<p class="alert alert-warning">
-If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <a data-component="Link" href="/Singletons/SOUND">SOUND</a>.
-</p>
-
-<span class="CodeExample-Title">Minimal Example:</span>
-<pre><code class="lua">
-Def.Sound{
-   -- Note that you must tell the sound actor to play()
-   File="filepath.ogg",
-
-   OnCommand=function(self)
-      self:play()
-   end
-}
-</code></pre>
-
-<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
-
-<ul>
-<li>
-	<p>
-		<strong>SupportPan</strong> Set this to <code>true</code> if you intend to have the sound played solely through the left (for <code>PLAYER_1</code>) or the right (for <code>PLAYER_2</code>) audio channel.  This is accomplished with the <code>playforplayer()</code> method.
-	</p>
-</li>
-
-<li>
-	<p>
-		<strong>SupportRateChanging</strong> Set this to <code>true</code> if you intend to manipulate the pitch and/or speed of the underlying RageSound.
-	</p>
-</li>
-<li>
-	<p>
-		<strong>IsAction</strong> Set this to <code>true</code> if you are want this Sound actor to be muted as a <em>theme action</em> via <kbd>F3</kbd>+<kbd>A</kbd>.  This can be useful to keep themers sane while they are repeatedly debugging a single screen over and over again.
-	</p>
-</li>
-</ul>
-
-<span class="CodeExample-Title">SupportPan Example:</span>
-<pre><code class="lua">
--- this Sound actor will play the current theme's
--- "common start" sound first for PLAYER_1, then
--- wait two seconds, and then play it for PLAYER_2
-
-Def.Sound{
-   File=THEME:GetPathS("common", "start"),
-   Name="SFX_With_Pan",
-
-   SupportPan=true,
-   SupportRateChanging=true,
-   IsAction=false,
-
-   OnCommand=function(self)
-      -- play the sound out of the left channel
-      self:playforplayer(PLAYER_1)
-      self:queuecommand("PlayAgain")
-   end,
-   PlayAgainCommand=function(self)
-      self:sleep(2)
-
-      -- play the sound out of the right channel
-      self:playforplayer(PLAYER_2)
-   end
-}
-</code></pre>
-
-
-<span class="CodeExample-Title">SupportRateChanging Example:</span>
-<pre><code class="lua">
--- variables local to this file
-local ragesound_file
-local current_pitch = 1
-
--- this Sound actor will play the same audio file
--- three times sequentially, each time with a higher pitch
-Def.Sound{
-   File=THEME:GetPathS("common", "start"),
-   Name="SFX_With_Pitch",
-   SupportRateChanging=true,
-
-   OnCommand=function(self)
-      self:queuecommand("Play")
-   end,
-   PlayCommand=function(self)
-
-      -- get the underlying sound file data
-      ragesound_file = self:get()
-
-      -- RageSound:pitch() take a float where
-      -- 1.0 is "normal", 2.0 is twice as high as normal, etc.
-      ragesound_file:pitch( current_pitch )
-
-      -- play the sound file using both stereo channels
-      self:play()
-
-      -- increment current_pitch
-      current_pitch = current_pitch + 1
-
-      -- prevent infinite looping
-      if current_pitch < 4 then
-         -- sleep for two seconds and do it again
-         self:sleep(2):queuecommand("Play")
-      end
-   end
-}
-</code></pre>`,"/Actors/Model":`<h1>Model</h1>
-
-<p class="alert alert-info"><em>This article was graciously contributed by <a href="https://github.com/JoseVarelaP">JoseVarelaP</a>!</em></p>
-
-<p>
-	<em>Model</em> is an actor class used to load 3D models into StepMania 5.  At this time, StepMania 5 only supports one format: <strong><em>MilkShape 3D ASCII</em></strong>.  This means that modeling must be done using the MilkShape 3D software which is only for Windows OS.
-</p>
-
-<p>Let&apos;s start by looking at a very simple example:</p>
-
-<span class="CodeExample-Title">Simple Def.Model Example</span>
-<pre><code class="lua">
-Def.Model {
-   Meshes="MyModel.txt",
-   Materials="MyModel.txt",
-   Bones="MyModel.txt",
-   OnCommand=function(self)
-      self:Center()
-   end,
-}
-</code></pre>
-
-<p>
-	This example will load a plaintext file named <code>MyModel.txt</code> that was exported from MilkShape 3D in the <em>MilkShape 3D ASCII</em> format.  That single file will contain all the data needed to for a <code>Def.Model</code>, including the <code>Meshes</code>, <code>Materials</code>, and <code>Bones</code>.
-</p>
-
-
-<h2 id="meshes-materials-bones">Meshes, Materials, and Bones</h2>
-
-<p><strong>Meshes</strong> are the composition and structure of the <code>Model</code>.  This data represents the vertices that make the <code>Model</code> take shape.</p>
-
-<p><strong>Materials</strong> are the textures that the model will use. These can be any of the image formats listed in the <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> page. They can also be <em>.ini</em> files that define animated textures on a <a data-component="Link" href="/Actors/Sprite">Def.Sprite</a>.</p>
-
-<p><strong>Bones</strong> make the model come to life. They can be defined within the primary model file, or, in the case of dancing characters, be controlled via a separate file that only contains the bones.</p>
-
-<p>In the above example, all three attributes used the same filepath; all the necessary data was contained within a single file.  It is possible to configure the MilkShape 3D software to output distinct files for meshes, materials, and bones, and set each <code>Def.Model</code> attribute accordingly, but that is outside the scope of this lesson.</p>
-
-<p class="alert alert-warning">All three attributes <strong>must</strong> be provided within <code>Def.Model</code> as paths to resources that can be loaded or StepMania will crash.</p>
-
-<p>If you wish to load the <code>Model</code> without having to add bones, use <a data-component="Link" href="/Actors/LoadActor">LoadActor()</a> instead.</p>
-
-<span class="CodeExample-Title">Using LoadActor() to Make Life Easier</span>
-<pre><code class="lua">LoadActor("MyModel.txt")..{
-   OnCommand=function(self) self:Center() end
-}
-</code></pre>
-
-
-
-
-<h2 id="dancing-character-models">Dancing Character Models</h2>
-<p>While dancing characters typically appear in ScreenGameplay, it is possible to load them into any screen using <code>Def.Model</code>.  The following example can be used to load a randomly selected dancing character into the scene.</p>
-
-
-<span class="CodeExample-Title">Random Dancing Character</span>
-<pre><code class="lua">
--- This will load a random character from SM5's ./Characters folder
-
--- acquire a handle on a single, randomly selected
--- dancing character using CHARMAN
-local CharacterToLoad = CHARMAN:GetRandomCharacter()
-
-Def.Model {
-   Meshes=CharacterToLoad:GetModelPath(),
-   Materials=CharacterToLoad:GetModelPath(),
-   Bones=CharacterToLoad:GetModelPath(),
-   OnCommand=function(self)
-      self:Center()
-   end,
-}
-</code></pre>
-
-<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-Faraway.png" /></p>
-
-<p>Wait a second - why is the model so far away?</p>
-
-
-<p>This is caused by how most 3D modelers have made their models to function with the corresponding <em>DDR-PC bones</em>, which are the most commonly used bones for dancing characters in StepMania.  As a result, dancing characters typically appear tiny when used outside of gameplay.</p>
-
-<p>Another thing to note is how the model is presented by default – it&apos;s facing away from us, the viewer.  This behavior can be changed by rotating on the <code>y</code> axis and explicitly setting a <code>z</code> value.</p>
-
-
-<span class="CodeExample-Title">Random Dancing Character, Better</span>
-<pre><code class="lua">-- acquire a handle on a single, randomly selected
--- dancing character using CHARMAN
-local CharacterToLoad = CHARMAN:GetRandomCharacter()
-
-Def.Model {
-   Meshes=CharacterToLoad:GetModelPath(),
-   Materials=CharacterToLoad:GetModelPath(),
-   Bones=CharacterToLoad:GetModelPath(),
-   OnCommand=function(self)
-      -- Set the model's y rotation to accommodate our vantage point
-      -- and apply a z that will get the model closer to the camera.
-      self:Center():rotationy(180):z(300)
-   end,
-}
-</code></pre>
-
-<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-MeshIntro.png" /></p>
-
-
-<p>Okay, that&apos;s closer, but it still doens&apos;t look like the dancing character from gameplay!</p>
-
-<p>There&apos;s one additional "gotcha" regarding model animations in StepMania&apos;s dancing characters.  They are not handled by or defined within the model, but rather the <em>bones</em>.  To add animations to the model, pass the <code>Bones</code> attribute of the <code>Def.Model</code> a dedicated bones file.</p>
-
-
-<span class="CodeExample-Title">Random Dancing Character, Fixed</span>
-<pre><code class="lua">-- acquire a handle on a single, randomly selected
--- dancing character using CHARMAN
-local CharacterToLoad = CHARMAN:GetRandomCharacter()
-
-Def.Model {
-   Meshes=CharacterToLoad:GetModelPath(),
-   Materials=CharacterToLoad:GetModelPath(),
-
-   -- For this example, we'll provide a path to a dedicated bones file
-   -- by using SM5's Character GetRestAnimationPath() method
-   -- for this example, we'll use the Rest Animation
-   Bones=CharacterToLoad:GetRestAnimationPath(),
-
-   OnCommand=function(self)
-      -- Set the model's y rotation to accommodate our vantage point
-      -- and apply a z that will get the model closer to the camera.
-      self:Center():rotationy(180):z(300)
-
-      -- since we're using the rest animation, we'll want to also set
-      -- the y() position to be lower on on the screen
-      self:addy(10)
-   end
-}
-</code></pre>
-
-
-<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/Model-WithBones.png" /></p>
-
-
-<p>As a final note, some models may have inverted vertexes, which can cause some polygons to collide with one another and draw in the wrong order. To fix this, set the model&apos;s <code>Cull Mode</code> to <code>none</code>.</p>
-
-
-<span class="CodeExample-Title">Random Dancing Character, CullMode None</span>
-<pre><code class="lua">-- acquire a handle on a single, randomly selected
--- dancing character using CHARMAN
-local CharacterToLoad = CHARMAN:GetRandomCharacter()
-
-Def.Model {
-   Meshes=CharacterToLoad:GetModelPath(),
-   Materials=CharacterToLoad:GetModelPath(),
-
-   Bones=CharacterToLoad:GetRestAnimationPath(),
-
-   OnCommand=function(self)
-      -- Set the model's y rotation to accommodate our vantage point
-      -- and apply a z that will get the model closer to the camera.
-      self:Center():rotationy(180):z(300)
-
-      -- since we're using the rest animation, we'll want to also set
-      -- the y() position to be lower on on the screen
-      self:addy(10)
-
-      -- finally, set the Cull Mode to none
-      self:cullmode("CullMode_None")
-   end
-}
-</code></pre>`,"/Actors/Sprite":`<h1>Sprite</h1>
-
-<h2 id="features-and-attributes">Sprite Features and Attributes</h2>
-<p>
-   <em>Sprite</em> actors can be used to load, display, and manipulate image and video data in StepMania 5. If you want to load a png graphic and move it around, or animate a character from a sprite sheet, or play a video file, then the <em>Sprite</em> actor is what you're looking for.
-</p>
-
-<p>
-   See the page on <a data-component="Link" href="/Introduction/Supported-File-Extensions">Supported File Extensions</a> for a complete list of which filetypes are supported.
-</p>
-
-<p>
-   As Lua tables, Sprite actors have one unique attribute that is worth knowing about, <code>Texture</code>. Let's start with a very simple example of Sprite usage.
-</p>
-
-
-<span class="CodeExample-Title">A very simple Sprite example:</span>
-<pre><code class="lua">
-Def.Sprite{
-   Texture="WhatAreBirds.png",
-   InitCommand=function(self)
-      self:zoom(0.5):Center()
-   end
-}
-</code></pre>
-
-<p>
-   This example will load a file titled <em>WhatAreBirds.png</em> in the same directory as the current Lua file, <code>Center()</code> it within its parent ActorFrame, and apply a 50% zoom (make it half as large).
-</p>
-
-<p>
-   A common question that people new to StepMania scripting have is:
-</p>
-
-<p>
-   <strong>Where are those commands like</strong> <code>zoom()</code> <strong>and</strong> <code>Center()</code> <strong>coming from?</strong>
-</p>
-
-<p>
-   Keeping in mind that a <em>Sprite</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania's Lua API for a complete list of methods available first to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor</a> and then to <a data-component="Link" href="/LuaAPI#Actors-Sprite">Sprite</a> specifically.
-</p>
-
-
-<h2 id="animated-spritesheets">Animated Spritesheets</h2>
-<p>
-   What about sprite sheets for animated sprites? StepMania's engine is hardcoded to look for patterns in the filename with Sprite actors. If you are loading a sprite sheet that you intend to animate through, you'll want to ensure that the filename of the png you are loading ends with the pattern: <em>(columns)</em>x<em>(rows)</em>
-</p>
-
-<p>
-   For example, this sprite of Dr. Wily has 6 columns across 1 row.
-</p>
-
-<p>
-   <img alt="a 6 by 1 spritesheet of Dr. Wily" src="/Lua-For-SM5/img/wily%206x1.png">
-</p>
-
-<p>
-   For StepMania to recognize it properly as a sprite sheet, you would want to append <strong>6x1</strong> to the end of the filename, resulting in something like <strong>Wily 6x1.png</strong>.
-</p>
-
-<p>
-   When working with sprite sheets, <em>Sprite</em> actors can have infinitely many more attributes for each <code>Frame</code> and each Frame's <code>Delay</code> values, but there are better ways of doing handling those. Let's look at an old example from <a href="https://www.youtube.com/watch?v=KhwxI60WeWU">The Ballad of Ian</a> from the D.O.W.N.S. 3 ITG tournament in January 2013.
-</p>
-
-<span class="CodeExample-Title">Old example from The Ballad of Ian. There's a better way!</span>
-<pre><code class="lua">
-Def.Sprite{
-   Texture="spin 13x1.png",
-   Frame0000=0,
-   Delay0000=0.0516,
-   Frame0001=1,
-   Delay0001=0.0516,
-   Frame0002=2,
-   Delay0002=0.0516,
-   Frame0003=3,
-   Delay0003=0.0516,
-   Frame0004=4,
-   Delay0004=0.0516,
-   Frame0005=5,
-   Delay0005=0.0516,
-   Frame0006=6,
-   Delay0006=0.0516,
-   Frame0007=7,
-   Delay0007=0.0516,
-   Frame0008=8,
-   Delay0008=0.0516,
-   Frame0009=9,
-   Delay0009=0.0516,
-   Frame0010=10,
-   Delay0010=0.0516,
-   Frame0011=11,
-   Delay0011=0.0516,
-   Frame0012=12,
-   Delay0012=0.0516,
-   InitCommand=cmd( diffusealpha,0.5; zoom,0.6; vertalign,bottom; Center),
-   OnCommand=cmd( sleep,8; linear,1; diffusealpha,0 ),
-}
-</code></pre>
-
-<p>
-   While it is possible to specify frames and frame durations (delays) like this, you'll probably get the idea that this style is repetitive and prone to typos. Here's a much more condensed version that accomplishes the same thing.
-</p>
-
-
-<span class="CodeExample-Title">A better way to manage sprite sheets:</span>
-<pre><code class="lua">
-Def.Sprite {
-   Texture="spin 13x1.png",
-   InitCommand=function(self)
-      self:diffusealpha(0.5):zoom(0.6):vertalign(bottom):Center()
-      self:SetAllStateDelays(0.0516)
-   end,
-   OnCommand=function(self)
-      self:sleep(8):linear(1):diffusealpha(0)
-   end
-}
-</code></pre>
-
-<p>
-   Since the the time between each frame of animation is set globally using the <code>SetAllStateDelays()</code> method, the code is overall less prone to mistakes via typos.
-</p>
-
-<p>
-   It is worth noting that in the above, animated examples, StepMania's engine will start with the first frame and progress to the last one in order. There are times when we may want to only animate through a portion of a sprite sheet at any given moment, like with this character sprite sheet from a typical 16bit JRPG:
-</p>
-
-<p>
-   <img alt="a 4 by 4 spritesheet of SteveReen" src="/Lua-For-SM5/img/Reen%204x4.png">
-</p>
-
-<p>
-   If we want the <em>Sprite</em> actor to appear to be facing downward, then we'd only want StepMania to be animating through the first row of the sprite sheet. Here's a way to handle that.
-</p>
-
-
-<span class="CodeExample-Title">A complex Sprite example:</span>
-<pre><code class="lua">
--- duration between frames, in seconds
-local duration_between_frames = 0.15
-
--- We want SM5 to think of this as a single Sprite actor that sometimes
--- displays frames 0-3, and other times displays frames 8-11, so we're
--- going to need to manually specify each frame index like this.
-
--- The sequence of frames here corresponds with the physical layout of
--- the "guy 4x4.png" sprite sheet image shown above.
-
--- Yes, this "frames" table could be programmatically generated with
--- a nested loop but I'm explicitly writing it out here so it's
--- easier to see what it contains for this example.
-
-local frames = {
-   Down = {
-      { Frame=0,  Delay=duration_between_frames},
-      { Frame=1,  Delay=duration_between_frames},
-      { Frame=2,  Delay=duration_between_frames},
-      { Frame=3,  Delay=duration_between_frames}
-   },
-   Left = {
-      { Frame=4,  Delay=duration_between_frames},
-      { Frame=5,  Delay=duration_between_frames},
-      { Frame=6,  Delay=duration_between_frames},
-      { Frame=7,  Delay=duration_between_frames}
-   },
-   Right = {
-      { Frame=8,  Delay=duration_between_frames},
-      { Frame=9,  Delay=duration_between_frames},
-      { Frame=10, Delay=duration_between_frames},
-      { Frame=11, Delay=duration_between_frames}
-   },
-   Up = {
-      { Frame=12, Delay=duration_between_frames},
-      { Frame=13, Delay=duration_between_frames},
-      { Frame=14, Delay=duration_between_frames},
-      { Frame=15, Delay=duration_between_frames}
-   }
-}
-
-
-local af = Def.ActorFrame{
-   OnCommand=function(self) self:sleep(999):Center() end
-}
-
-af[#af+1] = Def.Sprite{
-   Texture="Reen 4x4.png",
-
-   InitCommand=function(self)
-      -- when not actively tweening across the screen, the Sprite should
-      -- not animate, so as to appear to be "standing" in place
-      self:animate(false)
-
-      -- align to left and v-middle
-      self:halign(0):valign(0.5)
-      self:Center()
-
-      -- initialize the sprite state so that the sprite
-      -- starts by facing downward
-      self:SetStateProperties( frames.Down )
-   end,
-
-   -- In SM5, the StepMessage is broadcast whenever either player
-   -- steps on a game button during gameplay.
-   -- This doesn't handle buttons like START or SELECT.
-   StepMessageCommand=function(self, params)
-
-      -- As an arbitrary decision for the sake of this example
-      -- let's only pay attention to steps from PLAYER_1
-      if params.PlayerNumber == PLAYER_1 then
-
-         -- turn animation back on for a brief moment
-         self:animate(true)
-
-         -- people can hit buttons faster than every 0.25 seconds, so it's
-         -- possible to queue so many tweens that SM5 complains about a tween
-         -- overflow. Mitigate this by canceling the previous linear tween, if
-         -- one is still running, via the stoptweening() command.  Then
-         -- apply a new linear tween to move the sprite one directional unit.
-         self:stoptweening():linear(0.25)
-
-         -- the "Column" param will match up with a Gameplay arrow column
-         -- dance has 4 columns, pump has 5, etc.
-         -- Column is 0-indexed because it's coming from C++.
-
-         -- LEFT
-         if params.Column == 0 then
-            self:SetStateProperties( frames.Left )
-            self:x(self:GetX() + (-1 * self:GetWidth()))
-
-         -- DOWN
-         elseif params.Column == 1 then
-            self:SetStateProperties( frames.Down )
-            self:y(self:GetY() + self:GetWidth())
-
-         -- UP
-         elseif params.Column == 2 then
-            self:SetStateProperties( frames.Up )
-            self:y(self:GetY() + (-1 * self:GetWidth()))
-
-         -- RIGHT
-         elseif params.Column == 3 then
-            self:SetStateProperties( frames.Right )
-            self:x(self:GetX() + self:GetWidth() )
-
-         end
-
-         -- The Sprite has tweened, so queue a command to stop the
-         -- animation. We can't call animate(false) in here because
-         -- it will terminate the call to animate(true) early and the
-         -- sprite will never animate.
-         self:queuecommand("StopAnimating")
-      end
-   end,
-
-   StopAnimatingCommand=function(self)
-      -- stop animating and set the sprite's frame to 0,
-      -- regardless of direction the sprite is "facing".
-      self:animate(false):setstate(0)
-   end
-}
-
-return af
-</code></pre>
-`,"/Theming/Arbitrary-Input":`<div>
+<p>3D Models still rely on MilkShape 3D ASCII text as they have since StepMania 3.9.  Documentation is scarce at best.  Sorry.</p>`,"/Theming/Arbitrary-Input":`<div>
 
 <h1>Handling Arbitrary Input</h1>
 
@@ -2007,230 +1884,6 @@ return Def.ActorFrame{
 </code></pre>
 
 </div>
-`,"/Theming/Hacking-on-an-Existing-Theme":`<h1>Hacking On An Existing Theme</h1>
-
-<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Simple-Tweens":`<h1>Simple Tweens</h1>
-
-<h2 id="animate-things-from-one-state-another">
-   Animate from one state to another
-</h2>
-<p>
-   A <em>tween</em> is a process in computer animation in which an object
-   is manipulated (translated, transformed, altered, etc.) from a starting
-   state to an ending state. In the context of StepMania scripting, tweens
-   are used to visually animate Actors.
-</p>
-<p>
-   Using StepMania's Lua API, you can use tweens for many tasks, including
-   (but not limited to):
-</p>
-<ul>
-   <li>
-      make a <a data-component="Link" href="/Actors/Sprite">Sprite Actor</a>
-      grow to be twice as large by tweening <code>zoom(2)</code>
-   </li>
-   <li>
-      make the entire Screen Actor appear to “fade out” by tweening
-      <code>diffuse(0,0,0,0)</code>
-   </li>
-   <li>
-      gradually make a <a data-component="Link" href="/Actors/BitmapText">BitmapText Actor</a>
-      by tweening <code>diffusealpha(0)</code>
-   </li>
-   <li>
-      move a <a data-component="Link" href="/Actors/Quad">Quad Actor</a>
-      diagonally 100 pixels down and 100 pixels right by tweening
-      <code>xy(100,100)</code>
-   </li>
-   <li>
-      etc.
-   </li>
-</ul>
-<p>
-   This tutorial lists the types of simple tweens available through the
-   <a data-component="Link" href="/LuaAPI">Lua API</a>, discusses how to use
-   tweens, and concludes with a full example.
-</p>
-<p>
-   To learn more about Actors and Lua scripting in StepMania, check out the
-   <a data-component="Link" href="/Introduction/Foreword">What Are Actors?</a>
-   tutorial. To learn more about what Actor methods are available for tweening,
-   refer to the <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor
-   subsection</a> of the Lua API.
-</p>
-
-<hr />
-<h2 id="tweens-defined-by-the-engine">
-   Tweens Defined by the Engine
-</h2>
-<p>
-   The StepMania engine defines four simple tweens directly:
-   <em>linear</em>, <em>accelerate</em>, <em>decelerate</em>, and <em>spring</em>.
-</p>
-<ul>
-   <li>
-      <code>linear()</code> - Execute following commands steadily, at a constant rate.
-   </li>
-   <li>
-      <code>accelerate()</code> - Starts slow and progressively speeds up.
-   </li>
-   <li>
-      <code>decelerate()</code> - Starts fast and progressively slows down.
-   </li>
-   <li>
-      <code>spring()</code> - Rapidly shoots beyond the desired end state, then
-      springs back into place.
-   </li>
-</ul>
-<p>
-   For completion's sake, it is worth noting here that <code>sleep()</code>
-   is also a tween, even though most Lua scripters working with StepMania
-   don't think of it as such. <code>sleep()</code> will wait for the
-   specified duration, then execute all following commands at once.
-</p>
-
-<hr />
-<h2 id="tweens-defined-by-fallback-theme">
-   Tweens Defined by the <em>_fallback</em> theme
-</h2>
-<p>
-   The engine also defines a fifth tween type, <em>bezier</em>, which allows
-   scripters to custom define more complex tweens. Indeed, the <em>_fallback</em>
-   theme uses the <code>bezier()</code> tween type to predefine a few extra
-   tweens for us that are simple to use.
-</p>
-<ul>
-   <li>
-      <code>smooth()</code> - Slow to start, fast in the middle, slow to finish.
-   </li>
-   <li>
-      <code>bouncebegin()</code> - Briefly inverts the tween at first, giving
-      the appearance of bouncing to start.
-   </li>
-   <li>
-      <code>bounceend()</code> - Briefly inverts the tween at the end, giving
-      the appearance of bouncing to end.
-   </li>
-   <li>
-      <code>drop()</code> - Slows as it approaches its end state, then briefly
-      accelerates the final few frames.
-   </li>
-</ul>
-<p>
-   If you are interested in learning more about <code>bezier()</code> tweens,
-   you can inspect
-   <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong>
-   in the _fallback theme's Scripts directory to see how <em>smooth</em>,
-   <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.
-</p>
-
-<hr />
-<h2 id="how-to-use-tweens">
-   How to Use Tweens
-</h2>
-<p>
-   Knowing <em>what</em> we can use is great, but it's only half the picture.
-   If you apply a tween to an Actor without any further commands, it won't
-   <em>do</em> anything. Tweens need additional commands to execute over the
-   course of their duration in order to animate in any meaningful way.
-</p>
-<p>
-   Each of the tweens listed above takes a single argument: a <em>number</em>
-   representing a duration in seconds for long the StepMania engine should
-   tween the methods that immediately follow for.
-</p>
-<p>
-   Let's illustrate what we mean by this with some examples.
-</p><span class="CodeExample-Title">Tween a quad to become twice as large:</span>
-<pre><code class="lua">
-Def.Quad{
-OnCommand=function(self)
-   -- draw a Quad in center of the screen, make it 100x100 pixels,
-   -- and make it red
-   self:Center():zoomto(100,100):diffuse(1,0,0,1)
-
-   -- over a duration of 3 seconds, have the
-   -- quad zoom to be twice its initial size
-   self:linear(3):zoom(2)
-end
-}
-</code></pre>
-<p>
-   The next example is somewhat more fun in that it appears to spin the entire
-   screen around, but it also illustrates a “gotcha” with tweening that you
-   should be aware of.
-</p>
-
-<span class="CodeExample-Title">Rotate the entire Screen on the z-axis:</span>
-<pre><code class="lua">
-Def.Actor{
-   OnCommand=function(self)
-      -- get the current Screen object using SCREENMAN
-      local screen = SCREENMAN:GetTopScreen()
-
-      -- over a duration of 2 seconds, have
-      -- the entire screen rotate 360 degrees
-      -- clockwise on the z-axis
-      screen:accelerate(2):rotationz(360)
-
-      -- wait one second
-      screen:sleep(1)
-
-      -- This should spin the screen around again, right?
-      -- Not quite. The screen's z-rotation is already set
-      -- to 360, so this will have no visible effect.
-      screen:accelerate(2):rotationz(360)
-
-      -- This, however, will because it adds more rotation
-      -- to the current state, rather than the initial state.
-      screen:accelerate(2):addrotationz(360)
-   end
-}
-</code></pre>
-<p>
-   Can you tween more than one property of an actor at once? Absolutely.
-</p>
-<p>
-   The next example demonstrates that it is possible to tween multiple methods with a single tween. After calling a tween method, all methods following it will be tweened until the next tween method is encountered.
-</p><span class="CodeExample-Title">Move a quad across the screen while fading it out:</span>
-<pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      -- draw a Quad at the top-left of the screen, which is the
-      -- default draw position if no x or y coordinates are specified,
-      -- and make it 100x100 pixels
-      self:zoomto(100,100)
-
-      -- over a duration of 2 seconds, have the
-      -- quad move to the bottom-right of the screen,
-      -- and fade out by tweening the alpha channel to 0
-      -- This comprises one full tween.
-      self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
-
-      -- Here is a second, unique tween that tweens three methods
-      -- to change the color, xy-position, and y-rotation of the Quad.
-      -- Note that line breaks are fine.
-      self:accelerate(3)
-          :diffuse(1,0,0,1)
-          :xy( _screen.cx, _screen.cy )
-          :addrotationy(1080)
-   end
-}
-</code></pre>
-
-<hr />
-<h2 id="example-code">
-   Tweens in Motion
-</h2>
-<p>
-   Reading about tweens is good, but a visual is worth a thousand words.
-   Here is a scripted simfile you can run in StepMania 5 that briefly
-   demonstrates each of these tweens, one after another.
-</p>
-<p>
-   You can download that here! <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a>
-</p>
-
 `,"/Theming/Keyboard-Commands":`<h1>Keyboard Commands</h1>
 
 <p>
@@ -2461,4 +2114,351 @@ ShowRandom=true
    As a themer, being able to zoom out and see more than the player normally would can
    help you ensure <em>the thing you're animating is where it needs to be.</em>
 </p>
-`};function AE(i){let t=Zo();const r=function(s){if(s.type==="tag"&&s.name==="a"&&s.attribs&&s.attribs["data-component"]==="Link")return H.jsx(zE,{to:s.attribs.href,children:s.children[0].data})};return he.useEffect(()=>{i.hideMobileNav(),window.scrollTo({top:0,left:0,behavior:"instant"}),document.querySelectorAll("pre code").forEach(p=>{qN.highlightElement(p)});const s=St.parseHTML(vR[t.pathname]),u=Array.from(St("h2").find(s).prevObject).map(p=>{const S=St(p);return{text:S.text(),id:S.attr("id")}});i.setToC&&i.setToC(u)},[t.pathname]),H.jsx("div",{children:U1(vR[t.pathname],{replace:r})})}function yR(i,t){var r=Object.keys(i);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(i);t&&(s=s.filter(function(u){return Object.getOwnPropertyDescriptor(i,u).enumerable})),r.push.apply(r,s)}return r}function B1(i){for(var t=1;t<arguments.length;t++){var r=arguments[t]!=null?arguments[t]:{};t%2?yR(Object(r),!0).forEach(function(s){F1(i,s,r[s])}):Object.getOwnPropertyDescriptors?Object.defineProperties(i,Object.getOwnPropertyDescriptors(r)):yR(Object(r)).forEach(function(s){Object.defineProperty(i,s,Object.getOwnPropertyDescriptor(r,s))})}return i}function F1(i,t,r){return t in i?Object.defineProperty(i,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):i[t]=r,i}function BE(){return BE=Object.assign?Object.assign.bind():function(i){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var s in r)Object.prototype.hasOwnProperty.call(r,s)&&(i[s]=r[s])}return i},BE.apply(this,arguments)}function G1(i,t){if(i==null)return{};var r={},s=Object.keys(i),u,p;for(p=0;p<s.length;p++)u=s[p],!(t.indexOf(u)>=0)&&(r[u]=i[u]);return r}function Y1(i,t){if(i==null)return{};var r=G1(i,t),s,u;if(Object.getOwnPropertySymbols){var p=Object.getOwnPropertySymbols(i);for(u=0;u<p.length;u++)s=p[u],!(t.indexOf(s)>=0)&&Object.prototype.propertyIsEnumerable.call(i,s)&&(r[s]=i[s])}return r}var q1=["aria-label","aria-labelledby","tabIndex","className","fill","size","verticalAlign","id","title","style"],H1={small:16,medium:32,large:64};function KN(i,t,r){var s=r(),u=Object.keys(s),p=mo.forwardRef(function(S,b){var h=S["aria-label"],E=S["aria-labelledby"],v=S.tabIndex,A=S.className,O=A===void 0?"":A,k=S.fill,D=k===void 0?"currentColor":k,w=S.size,F=w===void 0?16:w,L=S.verticalAlign,z=L===void 0?"text-bottom":L,Q=S.id,ne=S.title,P=S.style,Y=Y1(S,q1),f=H1[F]||F,oe=V1(u,f),ie=s[oe].width,Ae=f*(ie/oe),Ne=s[oe].path,We=h||E,Ce=We?"img":void 0;return mo.createElement("svg",BE({ref:b},Y,{"aria-hidden":We?void 0:"true",tabIndex:v,focusable:v>=0?"true":"false","aria-label":h,"aria-labelledby":E,className:"".concat(t," ").concat(O).trim(),role:Ce,viewBox:"0 0 ".concat(ie," ").concat(oe),width:Ae,height:f,fill:D,id:Q,display:"inline-block",overflow:"visible",style:B1({verticalAlign:z},P)}),ne?mo.createElement("title",null,ne):null,Ne)});return p.displayName=i,p}function V1(i,t){return i.map(function(r){return parseInt(r,10)}).reduce(function(r,s){return s<=t?s:r},i[0])}var QN=KN("LinkIcon","octicon octicon-link",function(){return{16:{width:16,path:mo.createElement("path",{d:"m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"})},24:{width:24,path:mo.createElement(mo.Fragment,null,mo.createElement("path",{d:"M14.78 3.653a3.936 3.936 0 1 1 5.567 5.567l-3.627 3.627a3.936 3.936 0 0 1-5.88-.353.75.75 0 0 0-1.18.928 5.436 5.436 0 0 0 8.12.486l3.628-3.628a5.436 5.436 0 1 0-7.688-7.688l-3 3a.75.75 0 0 0 1.06 1.061l3-3Z"}),mo.createElement("path",{d:"M7.28 11.153a3.936 3.936 0 0 1 5.88.353.75.75 0 0 0 1.18-.928 5.436 5.436 0 0 0-8.12-.486L2.592 13.72a5.436 5.436 0 1 0 7.688 7.688l3-3a.75.75 0 1 0-1.06-1.06l-3 3a3.936 3.936 0 0 1-5.567-5.568l3.627-3.627Z"}))}}}),z1=KN("LogoGithubIcon","octicon octicon-logo-github",function(){return{16:{width:45,path:mo.createElement("path",{d:"M8.81 7.35v5.74c0 .04-.01.11-.06.13 0 0-1.25.89-3.31.89-2.49 0-5.44-.78-5.44-5.92S2.58 1.99 5.1 2c2.18 0 3.06.49 3.2.58.04.05.06.09.06.14L7.94 4.5c0 .09-.09.2-.2.17-.36-.11-.9-.33-2.17-.33-1.47 0-3.05.42-3.05 3.73s1.5 3.7 2.58 3.7c.92 0 1.25-.11 1.25-.11v-2.3H4.88c-.11 0-.19-.08-.19-.17V7.35c0-.09.08-.17.19-.17h3.74c.11 0 .19.08.19.17Zm35.85 2.33c0 3.43-1.11 4.41-3.05 4.41-1.64 0-2.52-.83-2.52-.83s-.04.46-.09.52c-.03.06-.08.08-.14.08h-1.48c-.1 0-.19-.08-.19-.17l.02-11.11c0-.09.08-.17.17-.17h2.13c.09 0 .17.08.17.17v3.77s.82-.53 2.02-.53l-.01-.02c1.2 0 2.97.45 2.97 3.88ZM27.68 2.43c.09 0 .17.08.17.17v11.11c0 .09-.08.17-.17.17h-2.13c-.09 0-.17-.08-.17-.17l.02-4.75h-3.31v4.75c0 .09-.08.17-.17.17h-2.13c-.08 0-.17-.08-.17-.17V2.6c0-.09.08-.17.17-.17h2.13c.09 0 .17.08.17.17v4.09h3.31V2.6c0-.09.08-.17.17-.17Zm8.26 3.64c.11 0 .19.08.19.17l-.02 7.47c0 .09-.06.17-.17.17H34.6c-.07 0-.14-.04-.16-.09-.03-.06-.08-.45-.08-.45s-1.13.77-2.52.77c-1.69 0-2.92-.55-2.92-2.75V6.25c0-.09.08-.17.17-.17h2.14c.09 0 .17.08.17.17V11c0 .75.22 1.09.97 1.09s1.3-.39 1.3-.39V6.26c0-.11.06-.19.17-.19Zm-17.406 5.971h.005a.177.177 0 0 1 .141.179v1.5c0 .07-.03.14-.09.16-.1.05-.74.22-1.27.22-1.16 0-2.86-.25-2.86-2.69V8.13h-1.11c-.09 0-.17-.08-.17-.19V6.58c0-.08.05-.15.13-.17.07-.01 1.16-.28 1.16-.28V3.96c0-.08.05-.13.14-.13h2.16c.09 0 .14.05.14.13v2.11h1.59c.08 0 .16.08.16.17v1.7c0 .11-.07.19-.16.19h-1.59v3.131c0 .47.27.83 1.05.83.247 0 .481-.049.574-.05ZM12.24 6.06c.09 0 .17.08.17.17v7.37c0 .18-.05.27-.25.27h-1.92c-.17 0-.3-.07-.3-.27V6.26c0-.11.08-.2.17-.2Zm29.99 3.78c0-1.81-.73-2.05-1.5-1.97-.6.04-1.08.34-1.08.34v3.52s.49.34 1.22.36c1.03.03 1.36-.34 1.36-2.25ZM11.19 2.68c.75 0 1.36.61 1.36 1.38 0 .77-.61 1.38-1.36 1.38-.77 0-1.38-.61-1.38-1.38 0-.77.61-1.38 1.38-1.38Zm7.34 9.35v.001l.01.01h-.001l-.005-.001v.001c-.009-.001-.015-.011-.024-.011Z"})},24:{width:68,path:mo.createElement("path",{d:"M27.8 17.908h-.03c.013 0 .022.014.035.017l.01-.002-.016-.015Zm.005.017c-.14.001-.49.073-.861.073-1.17 0-1.575-.536-1.575-1.234v-4.652h2.385c.135 0 .24-.12.24-.283V9.302c0-.133-.12-.252-.24-.252H25.37V5.913c0-.119-.075-.193-.21-.193h-3.24c-.136 0-.21.074-.21.193V9.14s-1.636.401-1.741.416a.255.255 0 0 0-.195.253v2.021c0 .164.12.282.255.282h1.665v4.876c0 3.627 2.55 3.998 4.29 3.998.796 0 1.756-.252 1.906-.327.09-.03.135-.134.135-.238v-2.23a.264.264 0 0 0-.219-.265Zm35.549-3.272c0-2.69-1.095-3.047-2.25-2.928-.9.06-1.62.505-1.62.505v5.232s.735.506 1.83.536c1.545.044 2.04-.506 2.04-3.345ZM67 14.415c0 5.099-1.665 6.555-4.576 6.555-2.46 0-3.78-1.233-3.78-1.233s-.06.683-.135.773c-.045.089-.12.118-.21.118h-2.22c-.15 0-.286-.119-.286-.252l.03-16.514a.26.26 0 0 1 .255-.252h3.196a.26.26 0 0 1 .255.252v5.604s1.23-.788 3.03-.788l-.015-.03c1.8 0 4.456.67 4.456 5.767ZM53.918 9.05h-3.15c-.165 0-.255.119-.255.282v8.086s-.826.58-1.95.58c-1.126 0-1.456-.506-1.456-1.62v-7.06a.262.262 0 0 0-.255-.254h-3.21a.262.262 0 0 0-.256.253v7.596c0 3.27 1.846 4.087 4.381 4.087 2.085 0 3.78-1.145 3.78-1.145s.076.58.12.67c.03.074.136.133.24.133h2.011a.243.243 0 0 0 .255-.253l.03-11.103c0-.133-.12-.252-.285-.252Zm-35.556-.015h-3.195c-.135 0-.255.134-.255.297v10.91c0 .297.195.401.45.401h2.88c.3 0 .375-.134.375-.401V9.287a.262.262 0 0 0-.255-.252ZM16.787 4.01c-1.155 0-2.07.907-2.07 2.051 0 1.145.915 2.051 2.07 2.051a2.04 2.04 0 0 0 2.04-2.05 2.04 2.04 0 0 0-2.04-2.052Zm24.74-.372H38.36a.262.262 0 0 0-.255.253v6.08H33.14v-6.08a.262.262 0 0 0-.255-.253h-3.196a.262.262 0 0 0-.255.253v16.514c0 .133.135.252.255.252h3.196a.262.262 0 0 0 .255-.253v-7.06h4.966l-.03 7.06c0 .134.12.253.255.253h3.195a.262.262 0 0 0 .255-.253V3.892a.262.262 0 0 0-.255-.253Zm-28.31 7.313v8.532c0 .06-.015.163-.09.193 0 0-1.875 1.323-4.966 1.323C4.426 21 0 19.84 0 12.2S3.87 2.986 7.651 3c3.27 0 4.59.728 4.8.862.06.075.09.134.09.208l-.63 2.646c0 .134-.134.297-.3.253-.54-.164-1.35-.49-3.255-.49-2.205 0-4.575.623-4.575 5.543s2.25 5.5 3.87 5.5c1.38 0 1.875-.164 1.875-.164V13.94H7.321c-.165 0-.285-.12-.285-.253v-2.735c0-.134.12-.252.285-.252h5.61c.166 0 .286.118.286.252Z"})}}});class pc extends he.Component{constructor(t){super(t);const r=this.props.grouping||"",s=this.props.level>2?"-":"",u=this.props.name||"";this.id=r+s+u,this.updateHash=this.updateHash.bind(this)}updateHash(){window.location.hash=`#${this.id}`}generateBase(t){if(t!==void 0)return` : <a title="${this.props.name} inherits from ${t.name}" href="#${t.grouping}-${t.name}"> ${t.name} </a>`}render(){const t=`h${this.props.level}`;let r="API-Category-Header";return t==="h3"&&(r=r+" sticky"),H.jsxs(t,{id:this.props.name,className:r,children:[H.jsx("span",{className:"octicon-link",onClick:()=>this.updateHash(),children:H.jsx(QN,{size:"medium"})}),this.props.name,this.props.smclass.base&&H.jsx("span",{className:"base",dangerouslySetInnerHTML:{__html:this.generateBase(this.props.smclass.base)}}),H.jsx("hr",{})]})}}class mc extends he.Component{render(){return H.jsx("div",{className:"description",dangerouslySetInnerHTML:{__html:this.props.desc}})}}class XN extends he.Component{constructor(t){super(t);const r=this.props.sm_class!==void 0?"-"+this.props.sm_class:"",s="-"+this.props.method.name;if(this.id=this.props.grouping+r+s,this.updateHash=this.updateHash.bind(this),this.props.method.url!==void 0){let u=0;for(const A of yi){if(A.name==this.props.selectedAPI.engineName)break;u=u+1}let p=0;for(const A of yi[u].versions){if(A.name==this.props.selectedAPI.versionName)break;p=p+1}const S=yi[u].github.user,b=yi[u].github.project,h=yi[u].versions[p].githash,v=`https://github.com/${S}/${b}/tree/`+h+this.props.method.url;this.github_anchor=H.jsx("a",{className:"logo-github",href:v,target:"_blank",rel:"noopener noreferrer",children:H.jsx(z1,{})})}else this.github_anchor=""}updateHash(){window.location.hash="#"+this.id}render(){return H.jsxs("div",{id:this.id,className:"method",children:[H.jsxs("div",{className:"method-signature",children:[H.jsx("span",{className:"octicon-link",onClick:this.updateHash,children:H.jsx(QN,{})}),H.jsxs("span",{children:[this.props.method.name,"(",H.jsx("code",{children:this.props.method.arguments}),")"]}),this.github_anchor]}),H.jsxs("span",{className:"method-return",children:[H.jsx("em",{children:"return: "})," ",H.jsx("span",{dangerouslySetInnerHTML:{__html:this.props.method.return}}),"  "]}),H.jsx("span",{className:"description description",dangerouslySetInnerHTML:{__html:this.props.method.desc}})]})}}class $1 extends he.Component{constructor(t){super(t);const r=this.props.smclass.name,s=this.props.grouping;this.methods=this.props.smclass.methods.map(function(u,p){return H.jsx(XN,{grouping:s,sm_class:r,method:u,...t},r+"-"+u.name+p)})}render(){return H.jsxs("div",{id:this.props.grouping+"-"+this.props.smclass.name,className:"section-child",children:[H.jsx(pc,{grouping:this.props.grouping,name:this.props.smclass.name,smclass:this.props.smclass,level:3}),this.props.smclass.desc!=""&&H.jsx(mc,{desc:this.props.smclass.desc}),this.methods]})}}class Cu extends he.Component{constructor(t){super(t),this.smclasses=this.props.data.map(function(r,s){return H.jsx($1,{grouping:r.grouping,smclass:r,...t},r.name)})}render(){return this.smclasses.length<1?H.jsx("section",{}):H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.smclasses})]})}}class W1 extends he.Component{constructor(t){super(t),this.updateHash=this.updateHash.bind(this),this.values=this.props.values.map(function(r,s){return H.jsxs("tr",{children:[H.jsx("td",{children:r.name}),H.jsx("td",{children:r.value})]},"enum-"+r.name+"-"+s)})}updateHash(){window.location.hash="#Enums-"+this.props.name}render(){return H.jsxs("div",{id:"Enums-"+this.props.name,className:"section-child",children:[H.jsx(pc,{name:this.props.name,grouping:"Enums",smclass:{},level:3}),H.jsx(mc,{desc:this.props.desc}),H.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[H.jsx("thead",{className:"table-primary",children:H.jsxs("tr",{children:[H.jsx("th",{children:H.jsx("strong",{children:this.props.name})}),H.jsx("th",{style:{width:"15%"},children:"Value"})]})}),H.jsx("tbody",{children:this.values})]})]})}}class K1 extends he.Component{constructor(t){super(t),this.enums=this.props.data.map(function(r,s){return H.jsx(W1,{name:r.name,desc:r.desc,values:r.values},r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.enums})]})}}class Q1 extends he.Component{constructor(t){super(t),this.funcs=this.props.data.map(function(r,s){return H.jsx(XN,{grouping:r.grouping,method:r,url:!0,...t},r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,className:"sticky",smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.funcs})]})}}class X1 extends he.Component{constructor(t){super(t),this.constants=this.props.data.map(function(r,s){return H.jsxs("tr",{children:[H.jsx("td",{children:r.name}),H.jsx("td",{children:r.value})]},"constant-"+r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[H.jsx("thead",{className:"table-primary",children:H.jsxs("tr",{children:[H.jsx("th",{children:"Lua Variable"}),H.jsx("th",{children:"Value"})]})}),H.jsx("tbody",{children:this.constants})]})]})}}function pi(i,t){if(i===void 0)return"";const r=[];for(const s of i.find("Link")){const u={f:St(s).attr("function"),c:St(s).attr("class"),t:St(s).text()};if(u.c===void 0&&u.f!==void 0){const p=i.parent().attr("name"),S=u.t!==""?u.t:u.f;if(p){for(const b in t.sections)if(t[t.sections[b]][p]){r.push(`<a href="#${t.sections[b]}-${p}-${u.f}">${S}</a>`);break}}else r.push(`<a href="#GlobalFunctions-${u.f}">${S}</a>`)}else if(u.c!==void 0&&u.f===void 0){const p=u.t!==""?u.t:u.c;let S=`<a href='#${u.c}'>${p}</a>`;for(const b in t.sections)if(t[t.sections[b]][u.c]){S=`<a href='#${t.sections[b]}-${u.c}'>${p}</a>`;break}r.push(S)}else if((u.c==="GLOBAL"||u.c==="ENUM")&&u.f!==void 0){const p=u.t!==""?u.t:u.f;u.c==="GLOBAL"?r.push(`<a href='#GlobalFunctions-${u.f}'>${p}</a>`):u.c==="ENUM"&&r.push(`<a href='#Enums-${u.f}'>${p}</a>`)}else if(u.c!==void 0&&u.f!==void 0){let p;for(const S in t.sections)if(t[t.sections[S]][u.c]){let b;t.sections[S]==="Singletons"?b=u.t!==""?u.t:`${t.Singletons[u.c]}:${u.f}()`:b=u.t!==""?u.t:`${u.c}.${u.f}()`,p=`<a href='#${t.sections[S]}-${u.c}-${u.f}'>${b}</a>`;break}p===void 0&&(p="<code>"+(u.t!==""?u.t:u.c+"."+u.f+"()")+"</code>"),r.push(p)}}return i.find("Link").each(function(s,u){St(this).replaceWith(r[s])}),i.find("pre code").each(function(s,u){St(u).replaceWith("<code class='lua'>"+u.textContent.trim()+"</code>")}),(i.html()||"").trim()}function j1(i){if(i===void 0)return"";if(i==="void")return i;const t=i.match(/{(.+)}/);t&&(i=t[1]);let r;const s=["Classes","Actors","Screens","Enums"];for(const u in s)if(this[s[u]][i]){r=`<a href='#${s[u]}-${i}'>${i}</a>`;break}return r===void 0&&(r=i),(t?"{ ":"")+r+(t?" }":"")}class Z1 extends he.Component{constructor(t){super();const r=new URLSearchParams(window.location.search),s=r.get("engine"),u=r.get("version");if(qi[s]&&qi[s][u]){const p=Xl(s,u);this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:p,engineName:s,versionName:u}}}else this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:UE,engineName:yi[0].name,versionName:yi[0].versions[0].name}};this.docs={github:{}},this.sections=["Actors","Screens","Classes","Singletons","Namespaces","Enums"];for(const p in this.sections)this[this.sections[p]]={};this.fetchAndParseXML=this.fetchAndParseXML.bind(this),this.bubbleDataUp=this.bubbleDataUp.bind(this),this.getReturnValue=j1.bind(this),this.scroll_window_after_hashchange()}componentDidUpdate(){if(this.scroll_window_after_hashchange(),this.props.selectedAPIurl!==void 0&&this.state.selectedAPI.url!==this.props.selectedAPIurl){const t=this;this.setState({selectedAPI:{url:this.props.selectedAPIurl,engineName:this.props.selectedAPIengine,versionName:this.props.selectedAPIversion}},()=>{t.fetchAndParseXML()})}}componentDidMount(){this.fetchAndParseXML()}fetchAndParseXML(){const t=this;for(const s in this.sections)this[this.sections[s]]={};t.setState({isLoaded:!1,G:null});const r=this.state.selectedAPI.url;St.when(St.get(r+"LuaDocumentation.xml",s=>{t.docs.luadoc=St(St.parseXML(s)).children()}),St.get(r+"Lua.xml",s=>{t.docs.luadotxml=St(St.parseXML(s)).children()}),St.get(`./Luadoc++/${this.state.selectedAPI.engineName}/${this.state.selectedAPI.versionName}.json`).done(s=>{typeof s=="object"?t.docs.github.funcdefs=s:t.docs.github.funcdefs={}}).fail(()=>{t.docs.github.funcdefs={}})).then(function(){const s={classes:t.docs.luadoc.children("Classes"),actors:t.docs.luadoc.children("Actors"),screens:t.docs.luadoc.children("Screens"),namespaces:t.docs.luadoc.children("Namespaces"),enums:t.docs.luadoc.children("Enums"),singletons:t.docs.luadoc.children("Singletons"),global_functions:t.docs.luadoc.children("GlobalFunctions"),constants:t.docs.luadoc.children("Constants")},u=Array.from(t.docs.luadotxml.children("Classes").children("Class")),p=Array.from(t.docs.luadotxml.children("Namespaces").children("Namespace")),S=Array.from(t.docs.luadotxml.children("Enums").children("Enum")),b=Array.from(t.docs.luadotxml.children("Singletons").children("Singleton")),h=Array.from(t.docs.luadotxml.children("GlobalFunctions").children("Function")),E=Array.from(t.docs.luadotxml.children("Constants").children("Constant")),v=function(O){return function(k,D){return St(k).attr(O).toUpperCase()<St(D).attr(O).toUpperCase()?-1:St(k).attr(O).toUpperCase()>St(D).attr(O).toUpperCase()?1:0}};u.sort(v("name")),p.sort(v("name")),S.sort(v("name")),b.sort(v("class")),b.forEach(O=>t.Singletons[O.attributes.class.textContent]=O.attributes.name.textContent),p.forEach(O=>t.Namespaces[O.attributes[0].nodeValue]=!0),S.forEach(O=>t.Enums[O.attributes.name.textContent]=!0),u.forEach(O=>{const k=O.attributes.name.textContent;if(k in t.Singletons)return;const w=St(s.classes).find("Class[name="+k+"]").attr("grouping")||"SMClass",F={Actor:"Actors",Screen:"Screens",SMClass:"Classes"};t[F[w]][k]=!0}),t.bubbleDataUp();const A=[{data:[],desc:pi(s.actors.children("Description"),t)},{data:[],desc:pi(s.screens.children("Description"),t)},{data:[],desc:pi(s.classes.children("Description"),t)},{data:[],desc:pi(s.namespaces.children("Description"),t)},{data:[],desc:pi(s.enums.children("Description"),t)},{data:[],desc:pi(s.singletons.children("Description"),t)},{data:[],desc:pi(s.global_functions.children("Description"),t)},{data:[],desc:pi(s.constants.children("Description"),t)}];u.forEach(function(O){const k=St(O).attr("name");if(t.Singletons[k])return;const D=St(s.classes).find("Class[name="+k+"]");let w=Array.from(St(O).find("Function"));w.sort(function(Y,f){return Y.attributes.name.textContent.toUpperCase()<f.attributes.name.textContent.toUpperCase()?-1:Y.attributes.name.textContent.toUpperCase()>f.attributes.name.textContent.toUpperCase()?1:0});const F=w.map(function(Y,f){const oe=St(Y).attr("name"),ie=St(D).find("Function[name="+oe+"]");return{name:oe,return:t.getReturnValue(ie.attr("return")),arguments:ie.attr("arguments")||"",desc:pi(ie,t),url:t.docs.github.funcdefs[k]&&t.docs.github.funcdefs[k][oe]}}),L=D.attr("grouping")||"SMClass",z={Actor:0,Screen:1,SMClass:2},Q={Actor:"Actors",Screen:"Screens",SMClass:"Classes"},ne=St(O).attr("base");let P;if(ne!==void 0){const Y=St(s.classes).find("Class[name="+ne+"]");P=Q[Y.attr("grouping")||"SMClass"]}A[z[L]].data.push({name:k,base:O.attributes.base!==void 0?{name:ne,grouping:P}:void 0,desc:pi(D.find("Description"),t),methods:F,grouping:Q[L]})}),p.forEach(function(O){const k=St(O).attr("name"),D=St(s.namespaces).find("Namespace[name="+k+"]"),w=[];St(O).children("Function").each(function(F,L){const z=St(L).attr("name"),Q=St(s.namespaces).find("Function[name="+z+"]");w.push({name:St(L).attr("name"),return:t.getReturnValue(Q.attr("return")),arguments:Q.attr("arguments")||"",desc:pi(Q,t)})}),A[3].data.push({name:k,methods:w,desc:pi(D.find("Description"),t),grouping:"Namespaces"})}),S.forEach(function(O){const k=St(O).attr("name"),D=St(s.enums).find("Enum[name="+k+"]"),w=[];St(O).children("EnumValue").each(function(F,L){w.push({name:St(L).attr("name"),value:St(L).attr("value")})}),A[4].data.push({name:k,values:w,desc:pi(D.find("Description"),t)})}),b.forEach(function(O){const k=St(O).attr("class"),D=St(s.classes).find("Class[name="+k+"]"),w=Array.from(D.find("Function")).map(function(F,L){const z=St(F).attr("name"),Q=St(D).find("Function[name="+z+"]");return{name:z,return:t.getReturnValue(Q.attr("return")),arguments:Q.attr("arguments")||"",desc:pi(Q,t),url:t.docs.github.funcdefs[k]&&t.docs.github.funcdefs[k][z]}});A[5].data.push({name:k,methods:w,desc:pi(D.find("Description"),t),grouping:"Singletons"})}),h.forEach(function(O){const k=St(O).attr("name"),D=St(s.global_functions).find("Function[name="+k+"]");D.attr("theme")!=="default"&&A[6].data.push({name:k,return:t.getReturnValue(D.attr("return")),arguments:D.attr("arguments"),desc:pi(D,t),theme:D.attr("theme")||"",url:t.docs.github.funcdefs.GlobalFunctions&&t.docs.github.funcdefs.GlobalFunctions[k],grouping:"GlobalFunctions"})}),E.forEach(function(O){A[7].data.push({name:St(O).attr("name"),value:St(O).attr("value")||""})}),t.setState({isLoaded:!0,G:A},()=>{t.bubbleDataUp()})}).then(function(){t.scroll_window_after_hashchange()}).then(()=>{document.querySelectorAll("pre code").forEach(s=>{qN.highlightElement(s)})})}bubbleDataUp(){this.props.parentCallback({actors:Object.keys(this.Actors),screens:Object.keys(this.Screens),sm_classes:Object.keys(this.Classes),namespaces:Object.keys(this.Namespaces),enums:Object.keys(this.Enums),singletons:Object.keys(this.Singletons),isLoaded:this.state.isLoaded})}updateHash(t){window.location.hash="#"+t}scroll_window_after_hashchange(t){if(t=t??window.location.hash,t){const s=(t.match(/-/g)||[]).length;t=t.replace("#","");const u=document.getElementById(t);if(u){const p=u.offsetTop;if(p){const S=s>1?108:60,b=s>0&&t.substring(0,15)==="GlobalFunctions"?40:0,h=p-S-b;this.state.yOffset!==h&&(this.setState({yOffset:h}),window.scrollTo(0,h),this.props?.mobile_nav===!0&&this.props?.hideMobileNav())}}}const r=document.getElementById("navbarNav")?.classList;r?.contains("show")&&r?.remove("show")}headerUI(){let t;return this.state.selectedAPI.engineName&&this.state.selectedAPI.versionName&&(t=`${this.state.selectedAPI.engineName} ${this.state.selectedAPI.versionName}`),H.jsx("section",{children:H.jsxs("h1",{children:[t??"SM5"," Lua API"]})})}contentUI(){return this.state===void 0||this.state.isLoaded===!1?null:H.jsxs("section",{children:[H.jsx(Cu,{name:"Actors",desc:this.state.G[0].desc,data:this.state.G[0].data,...this.state}),H.jsx(Cu,{name:"Screens",desc:this.state.G[1].desc,data:this.state.G[1].data,...this.state}),H.jsx(Cu,{name:"Classes",desc:this.state.G[2].desc,data:this.state.G[2].data,...this.state}),H.jsx(Cu,{name:"Singletons",desc:this.state.G[5].desc,data:this.state.G[5].data,...this.state}),H.jsx(Cu,{name:"Namespaces",desc:this.state.G[3].desc,data:this.state.G[3].data,...this.state}),H.jsx(K1,{name:"Enums",desc:this.state.G[4].desc,data:this.state.G[4].data}),H.jsx(Q1,{name:"GlobalFunctions",desc:this.state.G[6].desc,data:this.state.G[6].data,...this.state}),H.jsx(X1,{name:"Constants",desc:this.state.G[7].desc,data:this.state.G[7].data})]})}render(){return H.jsxs("div",{className:"LuaAPI ps-md-4",children:[this.headerUI(),this.contentUI()]})}}var J1=YN();const uh=oc(J1);function eU(i){const t="\\[=*\\[",r="\\]=*\\]",s={begin:t,end:r,contains:["self"]},u=[i.COMMENT("--(?!"+t+")","$"),i.COMMENT("--"+t,r,{contains:[s],relevance:10})];return{name:"Lua",aliases:["pluto"],keywords:{$pattern:i.UNDERSCORE_IDENT_RE,literal:"true false nil",keyword:"and break do else elseif end for goto if in local not or repeat return then until while",built_in:"_G _ENV _VERSION __index __newindex __mode __call __metatable __tostring __len __gc __add __sub __mul __div __mod __pow __concat __unm __eq __lt __le assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring module next pairs pcall print rawequal rawget rawset require select setfenv setmetatable tonumber tostring type unpack xpcall arg self coroutine resume yield status wrap create running debug getupvalue debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv io lines write close flush open output type read stderr stdin input stdout popen tmpfile math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower table setn insert getn foreachi maxn foreach concat sort remove"},contains:u.concat([{className:"function",beginKeywords:"function",end:"\\)",contains:[i.inherit(i.TITLE_MODE,{begin:"([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*"}),{className:"params",begin:"\\(",endsWithParent:!0,contains:u}].concat(u)},i.C_NUMBER_MODE,i.APOS_STRING_MODE,i.QUOTE_STRING_MODE,{className:"string",begin:t,end:r,contains:[s],relevance:5}])}}function tU(i){const t=i.regex,r={className:"number",relevance:0,variants:[{begin:/([+-]+)?[\d]+_[\d_]+/},{begin:i.NUMBER_RE}]},s=i.COMMENT();s.variants=[{begin:/;/,end:/$/},{begin:/#/,end:/$/}];const u={className:"variable",variants:[{begin:/\$[\w\d"][\w\d_]*/},{begin:/\$\{(.*?)\}/}]},p={className:"literal",begin:/\bon|off|true|false|yes|no\b/},S={className:"string",contains:[i.BACKSLASH_ESCAPE],variants:[{begin:"'''",end:"'''",relevance:10},{begin:'"""',end:'"""',relevance:10},{begin:'"',end:'"'},{begin:"'",end:"'"}]},b={begin:/\[/,end:/\]/,contains:[s,p,u,S,r,"self"],relevance:0},h=/[A-Za-z0-9_-]+/,E=/"(\\"|[^"])*"/,v=/'[^']*'/,A=t.either(h,E,v),O=t.concat(A,"(\\s*\\.\\s*",A,")*",t.lookahead(/\s*=\s*[^#\s]/));return{name:"TOML, also INI",aliases:["toml"],case_insensitive:!0,illegal:/\S/,contains:[s,{className:"section",begin:/\[+/,end:/\]+/},{begin:O,className:"attr",starts:{end:/$/,contains:[s,b,p,u,S,r]}}]}}function nU(i){const t=i.regex,r=t.concat(/[\p{L}_]/u,t.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),s=/[\p{L}0-9._:-]+/u,u={className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},p={begin:/\s/,contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]},S=i.inherit(p,{begin:/\(/,end:/\)/}),b=i.inherit(i.APOS_STRING_MODE,{className:"string"}),h=i.inherit(i.QUOTE_STRING_MODE,{className:"string"}),E={endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",begin:s,relevance:0},{begin:/=\s*/,relevance:0,contains:[{className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[u]},{begin:/'/,end:/'/,contains:[u]},{begin:/[^\s"'=<>`]+/}]}]}]};return{name:"HTML, XML",aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,relevance:10,contains:[p,h,b,S,{begin:/\[/,end:/\]/,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,contains:[p,S,h,b]}]}]},i.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,relevance:10},u,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,relevance:10,contains:[h]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[E],starts:{end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[E],starts:{end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{className:"tag",begin:/<>|<\/>/},{className:"tag",begin:t.concat(/</,t.lookahead(t.concat(r,t.either(/\/>/,/>/,/\s/)))),end:/\/?>/,contains:[{className:"name",begin:r,relevance:0,starts:E}]},{className:"tag",begin:t.concat(/<\//,t.lookahead(t.concat(r,/>/))),contains:[{className:"name",begin:r,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}}uh.registerLanguage("javascript",eU);uh.registerLanguage("javascript",tU);uh.registerLanguage("javascript",nU);class aU extends he.Component{constructor(t){super(t),this.handleMobileNavToggle=this.handleMobileNavToggle.bind(this),this.hideMobileNav=this.hideMobileNav.bind(this),this.showMobileNav=this.showMobileNav.bind(this),this.getClasses=this.getClasses.bind(this),this.setSelectedAPI=this.setSelectedAPI.bind(this),this.setToC=this.setToC.bind(this),this.state={mobile_nav:!1,isAPILoaded:!1}}handleMobileNavToggle(){this.state.mobile_nav?this.hideMobileNav():this.showMobileNav()}showMobileNav(){this.setState({mobile_nav:!0}),(document.getElementById("mobileNav")?.classList).add("show")}hideMobileNav(){this.setState({mobile_nav:!1});const t=document.getElementById("mobileNav")?.classList,r=document.getElementById("navbarNav")?.classList;t.remove("show"),r.remove("show")}getClasses(t){this.setState({actors:t.actors,screens:t.screens,sm_classes:t.sm_classes,namespaces:t.namespaces,enums:t.enums,singletons:t.singletons,isAPILoaded:t.isLoaded})}setSelectedAPI(t){this.setState({selectedAPIurl:t.selectedAPIurl,selectedAPIengine:t.selectedAPIengine,selectedAPIversion:t.selectedAPIversion})}setToC(t){this.setState({toc:t})}render(){return H.jsxs("main",{children:[H.jsx(GI,{}),H.jsx("div",{className:"mt-5",children:H.jsxs("div",{className:"row no-gutters",children:[H.jsx("div",{tabIndex:"-1",className:"sidebar position-fixed col-md-3 d-md-block d-none",children:H.jsx(CT,{mobile:!1,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),H.jsxs("div",{id:"content-container",className:"row",children:[H.jsx("div",{id:"content",className:"col-lg-9 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4",children:H.jsxs(qE,{children:[H.jsx(fo,{path:"/",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav})}),H.jsx(fo,{path:"/Resources",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav})}),H.jsx(fo,{path:"/:group/:page",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav,setToC:this.setToC})}),H.jsx(fo,{path:"/LuaAPI",element:H.jsx(Z1,{hideMobileNav:this.hideMobileNav,...this.state,parentCallback:this.getClasses})})]})}),H.jsx($L,{toc:this.state.toc,mobile_nav:this.state.mobile_nav})]})]})}),H.jsx("div",{id:"mobileNav",className:"sidebar collapse no-transition w-100 h-100 d-md-none",children:H.jsx(CT,{mobile:!0,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),H.jsxs("button",{id:"mobileNavToggle",className:"btn btn-dark d-md-none",type:"button",onClick:this.handleMobileNavToggle,"data-bs-toggle":"collapse","aria-controls":"navbarNav","aria-expanded":"false","aria-label":"Toggle navigation",children:[H.jsx("div",{className:this.state.mobile_nav?"x bar1":"bar1"}),H.jsx("div",{className:this.state.mobile_nav?"x bar2":"bar2"}),H.jsx("div",{className:this.state.mobile_nav?"x bar3":"bar3"})]})]})}}const iU=FI(aU),rU=fO.createRoot(document.body);rU.render(H.jsx(DI,{basename:"/Lua-For-SM5/",children:H.jsx(iU,{})}));
+`,"/Theming/Hacking-on-an-Existing-Theme":`<h1>Hacking On An Existing Theme</h1>
+
+<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Simple-Tweens":`<h1>Simple Tweens</h1>
+
+<h2 id="animate-things-from-one-state-another">
+   Animate from one state to another
+</h2>
+<p>
+   A <em>tween</em> is a process in computer animation in which an object
+   is manipulated (translated, transformed, altered, etc.) from a starting
+   state to an ending state. In the context of StepMania scripting, tweens
+   are used to visually animate Actors.
+</p>
+<p>
+   Using StepMania's Lua API, you can use tweens for many tasks, including
+   (but not limited to):
+</p>
+<ul>
+   <li>
+      make a <a data-component="Link" href="/Actors/Sprite">Sprite Actor</a>
+      grow to be twice as large by tweening <code>zoom(2)</code>
+   </li>
+   <li>
+      make the entire Screen Actor appear to “fade out” by tweening
+      <code>diffuse(0,0,0,0)</code>
+   </li>
+   <li>
+      gradually make a <a data-component="Link" href="/Actors/BitmapText">BitmapText Actor</a>
+      by tweening <code>diffusealpha(0)</code>
+   </li>
+   <li>
+      move a <a data-component="Link" href="/Actors/Quad">Quad Actor</a>
+      diagonally 100 pixels down and 100 pixels right by tweening
+      <code>xy(100,100)</code>
+   </li>
+   <li>
+      etc.
+   </li>
+</ul>
+<p>
+   This tutorial lists the types of simple tweens available through the
+   <a data-component="Link" href="/LuaAPI">Lua API</a>, discusses how to use
+   tweens, and concludes with a full example.
+</p>
+<p>
+   To learn more about Actors and Lua scripting in StepMania, check out the
+   <a data-component="Link" href="/Introduction/Foreword">What Are Actors?</a>
+   tutorial. To learn more about what Actor methods are available for tweening,
+   refer to the <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor
+   subsection</a> of the Lua API.
+</p>
+
+<hr />
+<h2 id="tweens-defined-by-the-engine">
+   Tweens Defined by the Engine
+</h2>
+<p>
+   The StepMania engine defines four simple tweens directly:
+   <em>linear</em>, <em>accelerate</em>, <em>decelerate</em>, and <em>spring</em>.
+</p>
+<ul>
+   <li>
+      <code>linear()</code> - Execute following commands steadily, at a constant rate.
+   </li>
+   <li>
+      <code>accelerate()</code> - Starts slow and progressively speeds up.
+   </li>
+   <li>
+      <code>decelerate()</code> - Starts fast and progressively slows down.
+   </li>
+   <li>
+      <code>spring()</code> - Rapidly shoots beyond the desired end state, then
+      springs back into place.
+   </li>
+</ul>
+<p>
+   For completion's sake, it is worth noting here that <code>sleep()</code>
+   is also a tween, even though most Lua scripters working with StepMania
+   don't think of it as such. <code>sleep()</code> will wait for the
+   specified duration, then execute all following commands at once.
+</p>
+
+<hr />
+<h2 id="tweens-defined-by-fallback-theme">
+   Tweens Defined by the <em>_fallback</em> theme
+</h2>
+<p>
+   The engine also defines a fifth tween type, <em>bezier</em>, which allows
+   scripters to custom define more complex tweens. Indeed, the <em>_fallback</em>
+   theme uses the <code>bezier()</code> tween type to predefine a few extra
+   tweens for us that are simple to use.
+</p>
+<ul>
+   <li>
+      <code>smooth()</code> - Slow to start, fast in the middle, slow to finish.
+   </li>
+   <li>
+      <code>bouncebegin()</code> - Briefly inverts the tween at first, giving
+      the appearance of bouncing to start.
+   </li>
+   <li>
+      <code>bounceend()</code> - Briefly inverts the tween at the end, giving
+      the appearance of bouncing to end.
+   </li>
+   <li>
+      <code>drop()</code> - Slows as it approaches its end state, then briefly
+      accelerates the final few frames.
+   </li>
+</ul>
+<p>
+   If you are interested in learning more about <code>bezier()</code> tweens,
+   you can inspect
+   <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong>
+   in the _fallback theme's Scripts directory to see how <em>smooth</em>,
+   <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.
+</p>
+
+<hr />
+<h2 id="how-to-use-tweens">
+   How to Use Tweens
+</h2>
+<p>
+   Knowing <em>what</em> we can use is great, but it's only half the picture.
+   If you apply a tween to an Actor without any further commands, it won't
+   <em>do</em> anything. Tweens need additional commands to execute over the
+   course of their duration in order to animate in any meaningful way.
+</p>
+<p>
+   Each of the tweens listed above takes a single argument: a <em>number</em>
+   representing a duration in seconds for long the StepMania engine should
+   tween the methods that immediately follow for.
+</p>
+<p>
+   Let's illustrate what we mean by this with some examples.
+</p><span class="CodeExample-Title">Tween a quad to become twice as large:</span>
+<pre><code class="lua">
+Def.Quad{
+OnCommand=function(self)
+   -- draw a Quad in center of the screen, make it 100x100 pixels,
+   -- and make it red
+   self:Center():zoomto(100,100):diffuse(1,0,0,1)
+
+   -- over a duration of 3 seconds, have the
+   -- quad zoom to be twice its initial size
+   self:linear(3):zoom(2)
+end
+}
+</code></pre>
+<p>
+   The next example is somewhat more fun in that it appears to spin the entire
+   screen around, but it also illustrates a “gotcha” with tweening that you
+   should be aware of.
+</p>
+
+<span class="CodeExample-Title">Rotate the entire Screen on the z-axis:</span>
+<pre><code class="lua">
+Def.Actor{
+   OnCommand=function(self)
+      -- get the current Screen object using SCREENMAN
+      local screen = SCREENMAN:GetTopScreen()
+
+      -- over a duration of 2 seconds, have
+      -- the entire screen rotate 360 degrees
+      -- clockwise on the z-axis
+      screen:accelerate(2):rotationz(360)
+
+      -- wait one second
+      screen:sleep(1)
+
+      -- This should spin the screen around again, right?
+      -- Not quite. The screen's z-rotation is already set
+      -- to 360, so this will have no visible effect.
+      screen:accelerate(2):rotationz(360)
+
+      -- This, however, will because it adds more rotation
+      -- to the current state, rather than the initial state.
+      screen:accelerate(2):addrotationz(360)
+   end
+}
+</code></pre>
+<p>
+   Can you tween more than one property of an actor at once? Absolutely.
+</p>
+<p>
+   The next example demonstrates that it is possible to tween multiple methods with a single tween. After calling a tween method, all methods following it will be tweened until the next tween method is encountered.
+</p><span class="CodeExample-Title">Move a quad across the screen while fading it out:</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      -- draw a Quad at the top-left of the screen, which is the
+      -- default draw position if no x or y coordinates are specified,
+      -- and make it 100x100 pixels
+      self:zoomto(100,100)
+
+      -- over a duration of 2 seconds, have the
+      -- quad move to the bottom-right of the screen,
+      -- and fade out by tweening the alpha channel to 0
+      -- This comprises one full tween.
+      self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
+
+      -- Here is a second, unique tween that tweens three methods
+      -- to change the color, xy-position, and y-rotation of the Quad.
+      -- Note that line breaks are fine.
+      self:accelerate(3)
+          :diffuse(1,0,0,1)
+          :xy( _screen.cx, _screen.cy )
+          :addrotationy(1080)
+   end
+}
+</code></pre>
+
+<hr />
+<h2 id="example-code">
+   Tweens in Motion
+</h2>
+<p>
+   Reading about tweens is good, but a visual is worth a thousand words.
+   Here is a scripted simfile you can run in StepMania 5 that briefly
+   demonstrates each of these tweens, one after another.
+</p>
+<p>
+   You can download that here! <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a>
+</p>
+
+`,"/Best-Practices/Command-Chaining":`<h1>Command-Chaining</h1>
+
+<p>In StepMania 5, commands applied to actors can be chained, resulting in a more clean and terse syntax than was possible before.</p>
+
+<p>The following two syntaxes produce the same results:</p>
+
+<span class="CodeExample-Title">Long Form</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      self:zoomto(100,200)
+      self:xy(_screen.cx, 100)
+      self:diffuse(Color.Green)
+      self:linear(1)
+      self:y(_screen.h-100)
+   end
+}
+</code></pre>
+
+<span class="CodeExample-Title">Condensed Via Command Chaining</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
+          :linear(1):y(_screen.h-100)
+   end
+}
+</code></pre>
+
+<p>While commands <em>can</em> be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.</p>`,"/Best-Practices/Debugging":`<h1>Debugging</h1>
+
+<p>Using <a data-component="Link" href="/Singletons/SCREENMAN">SCREENMAN</a>&apos;s <code>SystemMessage()</code> method may perhaps be the most tried-and-true means of quickly displaying debugging output to the Screen.  <code>SystemMessage()</code> accepts a string as an argument and displays it at the top of the screen for a few seconds.</p>
+
+<p>Let&apos;s jump into a simple example from ScreenGameplay where we listen for and print out JudgmentMessages.  A <em>Judgment</em> is how each step is evaluated as it passes in Gameplay.  Each Judgment has a corresponding JudgmentMessage broadcast by the engine that contains information about that Judgment.</p>
+
+<span class="CodeExample-Title">Using SystemMessage() to print debug output</span>
+<pre><code class="lua">
+-- Since the engine only broadcasts JudgmentMessages to ScreenGameplay,
+-- this example only makes sense and does anything in ScreenGameplay.
+
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- Note that JudgementMessages will be broadcast for any human players,
+      -- but to keep this example simple, we'll limit it to PLAYER_1.
+      if params.Player == PLAYER_1 then
+
+         -- This SystemMessage will display each judgment in string
+         -- form at the top of the screen as it occurs.
+         -- So, if a note passes and the player misses it,
+         -- "TapNoteScore_Miss"  would be displayed at the
+         -- top of the screen.
+         --
+         -- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
+         -- would display "TapNoteScore_W1".
+         -- (Note that the "W" is for window, as in "timing window.")
+         --
+         -- Hold notes have their own, separate judgment system.
+         -- So, when a hold note is judged, a JudgmentMessage will be
+         -- broadcast, but the TapNoteScore parameter will be nil.
+         -- Account for that here with a logical or statement that tries
+         -- params.HoldNoteScore if params.TapNoteScore is nil.
+         SCREENMAN:SystemMessage( params.TapNoteScore or params.HoldNoteScore )
+      end
+   end
+}
+</code></pre>
+
+<h2 id="using-systemmessage">Using SystemMessage() to display Table output</h2>
+
+<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
+
+<p>The function defined in <strong>SL-Utilities.lua</strong> that is relevant here is <code>SM()</code>  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme&apos;s Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.</p>
+
+<span class="CodeExample-Title">Using SM() to display a small Lua table</span>
+<pre><code class="lua">
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- Again, limit to  PLAYER_1 for a more simple example.
+      if params.Player == PLAYER_1 then
+         -- SystemMessage a stringified table of note columns
+         -- as each judgment occurs
+         SM( params.Notes )
+      end
+   end
+}
+</code></pre>
+
+<p>The screenshot below shows that columns 4 and 1 (a left-right jump) were just missed.</p>
+
+<p>
+   <img class="img-fluid"
+      src="/Lua-For-SM5/img/using-SM-to-debug-table.png"
+      alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"
+   />
+</p>
+
+<h2 id="using-trace">Knowing when to use Trace()</h2>
+<p>
+   <code>SystemMessage()</code> is not the only debugging tool available in StepMania.
+   <code>SystemMessage()</code> has limited usefulness since large Lua tables can
+   easily contain more data than StepMania&apos;s window can reasonably display.  In
+   such situations, a proper Lua <code>Trace()</code> is preferred.  Output from
+   <code>Trace()</code> is written to <em>Logs/Log.txt</em>
+</p>
+
+<h2 id="helper-functions-from-fallback">Helper Functions from <em>_fallback</em></h2>
+<p>
+   StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code>
+   function to assist with recursively printing deeply nested Lua tables to the Log.txt
+   file.  Here is the example from above, reworked to to use <code>rec_print_table()</code>
+   to write the entire params table to file.
+</p>
+
+<span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
+<pre><code class="lua">
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- recursive print the entire table of JudgmentMessage parameters
+      -- to Logs/Log.txt.  This would be more information than could fit
+      -- onscreen at a single moment.
+      rec_print_table( params )
+   end
+}
+</code></pre>`};function AE(i){let t=Zo();const r=function(s){if(s.type==="tag"&&s.name==="a"&&s.attribs&&s.attribs["data-component"]==="Link")return H.jsx(zE,{to:s.attribs.href,children:s.children[0].data})};return he.useEffect(()=>{i.hideMobileNav(),window.scrollTo({top:0,left:0,behavior:"instant"}),document.querySelectorAll("pre code").forEach(p=>{qN.highlightElement(p)});const s=St.parseHTML(vR[t.pathname]),u=Array.from(St("h2").find(s).prevObject).map(p=>{const S=St(p);return{text:S.text(),id:S.attr("id")}});i.setToC&&i.setToC(u)},[t.pathname]),H.jsx("div",{children:U1(vR[t.pathname],{replace:r})})}function yR(i,t){var r=Object.keys(i);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(i);t&&(s=s.filter(function(u){return Object.getOwnPropertyDescriptor(i,u).enumerable})),r.push.apply(r,s)}return r}function B1(i){for(var t=1;t<arguments.length;t++){var r=arguments[t]!=null?arguments[t]:{};t%2?yR(Object(r),!0).forEach(function(s){F1(i,s,r[s])}):Object.getOwnPropertyDescriptors?Object.defineProperties(i,Object.getOwnPropertyDescriptors(r)):yR(Object(r)).forEach(function(s){Object.defineProperty(i,s,Object.getOwnPropertyDescriptor(r,s))})}return i}function F1(i,t,r){return t in i?Object.defineProperty(i,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):i[t]=r,i}function BE(){return BE=Object.assign?Object.assign.bind():function(i){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var s in r)Object.prototype.hasOwnProperty.call(r,s)&&(i[s]=r[s])}return i},BE.apply(this,arguments)}function G1(i,t){if(i==null)return{};var r={},s=Object.keys(i),u,p;for(p=0;p<s.length;p++)u=s[p],!(t.indexOf(u)>=0)&&(r[u]=i[u]);return r}function Y1(i,t){if(i==null)return{};var r=G1(i,t),s,u;if(Object.getOwnPropertySymbols){var p=Object.getOwnPropertySymbols(i);for(u=0;u<p.length;u++)s=p[u],!(t.indexOf(s)>=0)&&Object.prototype.propertyIsEnumerable.call(i,s)&&(r[s]=i[s])}return r}var q1=["aria-label","aria-labelledby","tabIndex","className","fill","size","verticalAlign","id","title","style"],H1={small:16,medium:32,large:64};function KN(i,t,r){var s=r(),u=Object.keys(s),p=mo.forwardRef(function(S,b){var h=S["aria-label"],E=S["aria-labelledby"],v=S.tabIndex,A=S.className,O=A===void 0?"":A,k=S.fill,D=k===void 0?"currentColor":k,w=S.size,F=w===void 0?16:w,L=S.verticalAlign,z=L===void 0?"text-bottom":L,Q=S.id,ne=S.title,P=S.style,Y=Y1(S,q1),f=H1[F]||F,oe=V1(u,f),ie=s[oe].width,Ae=f*(ie/oe),Ne=s[oe].path,We=h||E,Ce=We?"img":void 0;return mo.createElement("svg",BE({ref:b},Y,{"aria-hidden":We?void 0:"true",tabIndex:v,focusable:v>=0?"true":"false","aria-label":h,"aria-labelledby":E,className:"".concat(t," ").concat(O).trim(),role:Ce,viewBox:"0 0 ".concat(ie," ").concat(oe),width:Ae,height:f,fill:D,id:Q,display:"inline-block",overflow:"visible",style:B1({verticalAlign:z},P)}),ne?mo.createElement("title",null,ne):null,Ne)});return p.displayName=i,p}function V1(i,t){return i.map(function(r){return parseInt(r,10)}).reduce(function(r,s){return s<=t?s:r},i[0])}var QN=KN("LinkIcon","octicon octicon-link",function(){return{16:{width:16,path:mo.createElement("path",{d:"m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"})},24:{width:24,path:mo.createElement(mo.Fragment,null,mo.createElement("path",{d:"M14.78 3.653a3.936 3.936 0 1 1 5.567 5.567l-3.627 3.627a3.936 3.936 0 0 1-5.88-.353.75.75 0 0 0-1.18.928 5.436 5.436 0 0 0 8.12.486l3.628-3.628a5.436 5.436 0 1 0-7.688-7.688l-3 3a.75.75 0 0 0 1.06 1.061l3-3Z"}),mo.createElement("path",{d:"M7.28 11.153a3.936 3.936 0 0 1 5.88.353.75.75 0 0 0 1.18-.928 5.436 5.436 0 0 0-8.12-.486L2.592 13.72a5.436 5.436 0 1 0 7.688 7.688l3-3a.75.75 0 1 0-1.06-1.06l-3 3a3.936 3.936 0 0 1-5.567-5.568l3.627-3.627Z"}))}}}),z1=KN("LogoGithubIcon","octicon octicon-logo-github",function(){return{16:{width:45,path:mo.createElement("path",{d:"M8.81 7.35v5.74c0 .04-.01.11-.06.13 0 0-1.25.89-3.31.89-2.49 0-5.44-.78-5.44-5.92S2.58 1.99 5.1 2c2.18 0 3.06.49 3.2.58.04.05.06.09.06.14L7.94 4.5c0 .09-.09.2-.2.17-.36-.11-.9-.33-2.17-.33-1.47 0-3.05.42-3.05 3.73s1.5 3.7 2.58 3.7c.92 0 1.25-.11 1.25-.11v-2.3H4.88c-.11 0-.19-.08-.19-.17V7.35c0-.09.08-.17.19-.17h3.74c.11 0 .19.08.19.17Zm35.85 2.33c0 3.43-1.11 4.41-3.05 4.41-1.64 0-2.52-.83-2.52-.83s-.04.46-.09.52c-.03.06-.08.08-.14.08h-1.48c-.1 0-.19-.08-.19-.17l.02-11.11c0-.09.08-.17.17-.17h2.13c.09 0 .17.08.17.17v3.77s.82-.53 2.02-.53l-.01-.02c1.2 0 2.97.45 2.97 3.88ZM27.68 2.43c.09 0 .17.08.17.17v11.11c0 .09-.08.17-.17.17h-2.13c-.09 0-.17-.08-.17-.17l.02-4.75h-3.31v4.75c0 .09-.08.17-.17.17h-2.13c-.08 0-.17-.08-.17-.17V2.6c0-.09.08-.17.17-.17h2.13c.09 0 .17.08.17.17v4.09h3.31V2.6c0-.09.08-.17.17-.17Zm8.26 3.64c.11 0 .19.08.19.17l-.02 7.47c0 .09-.06.17-.17.17H34.6c-.07 0-.14-.04-.16-.09-.03-.06-.08-.45-.08-.45s-1.13.77-2.52.77c-1.69 0-2.92-.55-2.92-2.75V6.25c0-.09.08-.17.17-.17h2.14c.09 0 .17.08.17.17V11c0 .75.22 1.09.97 1.09s1.3-.39 1.3-.39V6.26c0-.11.06-.19.17-.19Zm-17.406 5.971h.005a.177.177 0 0 1 .141.179v1.5c0 .07-.03.14-.09.16-.1.05-.74.22-1.27.22-1.16 0-2.86-.25-2.86-2.69V8.13h-1.11c-.09 0-.17-.08-.17-.19V6.58c0-.08.05-.15.13-.17.07-.01 1.16-.28 1.16-.28V3.96c0-.08.05-.13.14-.13h2.16c.09 0 .14.05.14.13v2.11h1.59c.08 0 .16.08.16.17v1.7c0 .11-.07.19-.16.19h-1.59v3.131c0 .47.27.83 1.05.83.247 0 .481-.049.574-.05ZM12.24 6.06c.09 0 .17.08.17.17v7.37c0 .18-.05.27-.25.27h-1.92c-.17 0-.3-.07-.3-.27V6.26c0-.11.08-.2.17-.2Zm29.99 3.78c0-1.81-.73-2.05-1.5-1.97-.6.04-1.08.34-1.08.34v3.52s.49.34 1.22.36c1.03.03 1.36-.34 1.36-2.25ZM11.19 2.68c.75 0 1.36.61 1.36 1.38 0 .77-.61 1.38-1.36 1.38-.77 0-1.38-.61-1.38-1.38 0-.77.61-1.38 1.38-1.38Zm7.34 9.35v.001l.01.01h-.001l-.005-.001v.001c-.009-.001-.015-.011-.024-.011Z"})},24:{width:68,path:mo.createElement("path",{d:"M27.8 17.908h-.03c.013 0 .022.014.035.017l.01-.002-.016-.015Zm.005.017c-.14.001-.49.073-.861.073-1.17 0-1.575-.536-1.575-1.234v-4.652h2.385c.135 0 .24-.12.24-.283V9.302c0-.133-.12-.252-.24-.252H25.37V5.913c0-.119-.075-.193-.21-.193h-3.24c-.136 0-.21.074-.21.193V9.14s-1.636.401-1.741.416a.255.255 0 0 0-.195.253v2.021c0 .164.12.282.255.282h1.665v4.876c0 3.627 2.55 3.998 4.29 3.998.796 0 1.756-.252 1.906-.327.09-.03.135-.134.135-.238v-2.23a.264.264 0 0 0-.219-.265Zm35.549-3.272c0-2.69-1.095-3.047-2.25-2.928-.9.06-1.62.505-1.62.505v5.232s.735.506 1.83.536c1.545.044 2.04-.506 2.04-3.345ZM67 14.415c0 5.099-1.665 6.555-4.576 6.555-2.46 0-3.78-1.233-3.78-1.233s-.06.683-.135.773c-.045.089-.12.118-.21.118h-2.22c-.15 0-.286-.119-.286-.252l.03-16.514a.26.26 0 0 1 .255-.252h3.196a.26.26 0 0 1 .255.252v5.604s1.23-.788 3.03-.788l-.015-.03c1.8 0 4.456.67 4.456 5.767ZM53.918 9.05h-3.15c-.165 0-.255.119-.255.282v8.086s-.826.58-1.95.58c-1.126 0-1.456-.506-1.456-1.62v-7.06a.262.262 0 0 0-.255-.254h-3.21a.262.262 0 0 0-.256.253v7.596c0 3.27 1.846 4.087 4.381 4.087 2.085 0 3.78-1.145 3.78-1.145s.076.58.12.67c.03.074.136.133.24.133h2.011a.243.243 0 0 0 .255-.253l.03-11.103c0-.133-.12-.252-.285-.252Zm-35.556-.015h-3.195c-.135 0-.255.134-.255.297v10.91c0 .297.195.401.45.401h2.88c.3 0 .375-.134.375-.401V9.287a.262.262 0 0 0-.255-.252ZM16.787 4.01c-1.155 0-2.07.907-2.07 2.051 0 1.145.915 2.051 2.07 2.051a2.04 2.04 0 0 0 2.04-2.05 2.04 2.04 0 0 0-2.04-2.052Zm24.74-.372H38.36a.262.262 0 0 0-.255.253v6.08H33.14v-6.08a.262.262 0 0 0-.255-.253h-3.196a.262.262 0 0 0-.255.253v16.514c0 .133.135.252.255.252h3.196a.262.262 0 0 0 .255-.253v-7.06h4.966l-.03 7.06c0 .134.12.253.255.253h3.195a.262.262 0 0 0 .255-.253V3.892a.262.262 0 0 0-.255-.253Zm-28.31 7.313v8.532c0 .06-.015.163-.09.193 0 0-1.875 1.323-4.966 1.323C4.426 21 0 19.84 0 12.2S3.87 2.986 7.651 3c3.27 0 4.59.728 4.8.862.06.075.09.134.09.208l-.63 2.646c0 .134-.134.297-.3.253-.54-.164-1.35-.49-3.255-.49-2.205 0-4.575.623-4.575 5.543s2.25 5.5 3.87 5.5c1.38 0 1.875-.164 1.875-.164V13.94H7.321c-.165 0-.285-.12-.285-.253v-2.735c0-.134.12-.252.285-.252h5.61c.166 0 .286.118.286.252Z"})}}});class pc extends he.Component{constructor(t){super(t);const r=this.props.grouping||"",s=this.props.level>2?"-":"",u=this.props.name||"";this.id=r+s+u,this.updateHash=this.updateHash.bind(this)}updateHash(){window.location.hash=`#${this.id}`}generateBase(t){if(t!==void 0)return` : <a title="${this.props.name} inherits from ${t.name}" href="#${t.grouping}-${t.name}"> ${t.name} </a>`}render(){const t=`h${this.props.level}`;let r="API-Category-Header";return t==="h3"&&(r=r+" sticky"),H.jsxs(t,{id:this.props.name,className:r,children:[H.jsx("span",{className:"octicon-link",onClick:()=>this.updateHash(),children:H.jsx(QN,{size:"medium"})}),this.props.name,this.props.smclass.base&&H.jsx("span",{className:"base",dangerouslySetInnerHTML:{__html:this.generateBase(this.props.smclass.base)}}),H.jsx("hr",{})]})}}class mc extends he.Component{render(){return H.jsx("div",{className:"description",dangerouslySetInnerHTML:{__html:this.props.desc}})}}class XN extends he.Component{constructor(t){super(t);const r=this.props.sm_class!==void 0?"-"+this.props.sm_class:"",s="-"+this.props.method.name;if(this.id=this.props.grouping+r+s,this.updateHash=this.updateHash.bind(this),this.props.method.url!==void 0){let u=0;for(const A of yi){if(A.name==this.props.selectedAPI.engineName)break;u=u+1}let p=0;for(const A of yi[u].versions){if(A.name==this.props.selectedAPI.versionName)break;p=p+1}const S=yi[u].github.user,b=yi[u].github.project,h=yi[u].versions[p].githash,v=`https://github.com/${S}/${b}/tree/`+h+this.props.method.url;this.github_anchor=H.jsx("a",{className:"logo-github",href:v,target:"_blank",rel:"noopener noreferrer",children:H.jsx(z1,{})})}else this.github_anchor=""}updateHash(){window.location.hash="#"+this.id}render(){return H.jsxs("div",{id:this.id,className:"method",children:[H.jsxs("div",{className:"method-signature",children:[H.jsx("span",{className:"octicon-link",onClick:this.updateHash,children:H.jsx(QN,{})}),H.jsxs("span",{children:[this.props.method.name,"(",H.jsx("code",{children:this.props.method.arguments}),")"]}),this.github_anchor]}),H.jsxs("span",{className:"method-return",children:[H.jsx("em",{children:"return: "})," ",H.jsx("span",{dangerouslySetInnerHTML:{__html:this.props.method.return}}),"  "]}),H.jsx("span",{className:"description description",dangerouslySetInnerHTML:{__html:this.props.method.desc}})]})}}class $1 extends he.Component{constructor(t){super(t);const r=this.props.smclass.name,s=this.props.grouping;this.methods=this.props.smclass.methods.map(function(u,p){return H.jsx(XN,{grouping:s,sm_class:r,method:u,...t},r+"-"+u.name+p)})}render(){return H.jsxs("div",{id:this.props.grouping+"-"+this.props.smclass.name,className:"section-child",children:[H.jsx(pc,{grouping:this.props.grouping,name:this.props.smclass.name,smclass:this.props.smclass,level:3}),this.props.smclass.desc!=""&&H.jsx(mc,{desc:this.props.smclass.desc}),this.methods]})}}class Cu extends he.Component{constructor(t){super(t),this.smclasses=this.props.data.map(function(r,s){return H.jsx($1,{grouping:r.grouping,smclass:r,...t},r.name)})}render(){return this.smclasses.length<1?H.jsx("section",{}):H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.smclasses})]})}}class W1 extends he.Component{constructor(t){super(t),this.updateHash=this.updateHash.bind(this),this.values=this.props.values.map(function(r,s){return H.jsxs("tr",{children:[H.jsx("td",{children:r.name}),H.jsx("td",{children:r.value})]},"enum-"+r.name+"-"+s)})}updateHash(){window.location.hash="#Enums-"+this.props.name}render(){return H.jsxs("div",{id:"Enums-"+this.props.name,className:"section-child",children:[H.jsx(pc,{name:this.props.name,grouping:"Enums",smclass:{},level:3}),H.jsx(mc,{desc:this.props.desc}),H.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[H.jsx("thead",{className:"table-primary",children:H.jsxs("tr",{children:[H.jsx("th",{children:H.jsx("strong",{children:this.props.name})}),H.jsx("th",{style:{width:"15%"},children:"Value"})]})}),H.jsx("tbody",{children:this.values})]})]})}}class K1 extends he.Component{constructor(t){super(t),this.enums=this.props.data.map(function(r,s){return H.jsx(W1,{name:r.name,desc:r.desc,values:r.values},r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.enums})]})}}class Q1 extends he.Component{constructor(t){super(t),this.funcs=this.props.data.map(function(r,s){return H.jsx(XN,{grouping:r.grouping,method:r,url:!0,...t},r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,className:"sticky",smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsx("div",{children:this.funcs})]})}}class X1 extends he.Component{constructor(t){super(t),this.constants=this.props.data.map(function(r,s){return H.jsxs("tr",{children:[H.jsx("td",{children:r.name}),H.jsx("td",{children:r.value})]},"constant-"+r.name)})}render(){return H.jsxs("section",{children:[H.jsx(pc,{name:this.props.name,smclass:{},level:2}),H.jsx(mc,{desc:this.props.desc}),H.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[H.jsx("thead",{className:"table-primary",children:H.jsxs("tr",{children:[H.jsx("th",{children:"Lua Variable"}),H.jsx("th",{children:"Value"})]})}),H.jsx("tbody",{children:this.constants})]})]})}}function pi(i,t){if(i===void 0)return"";const r=[];for(const s of i.find("Link")){const u={f:St(s).attr("function"),c:St(s).attr("class"),t:St(s).text()};if(u.c===void 0&&u.f!==void 0){const p=i.parent().attr("name"),S=u.t!==""?u.t:u.f;if(p){for(const b in t.sections)if(t[t.sections[b]][p]){r.push(`<a href="#${t.sections[b]}-${p}-${u.f}">${S}</a>`);break}}else r.push(`<a href="#GlobalFunctions-${u.f}">${S}</a>`)}else if(u.c!==void 0&&u.f===void 0){const p=u.t!==""?u.t:u.c;let S=`<a href='#${u.c}'>${p}</a>`;for(const b in t.sections)if(t[t.sections[b]][u.c]){S=`<a href='#${t.sections[b]}-${u.c}'>${p}</a>`;break}r.push(S)}else if((u.c==="GLOBAL"||u.c==="ENUM")&&u.f!==void 0){const p=u.t!==""?u.t:u.f;u.c==="GLOBAL"?r.push(`<a href='#GlobalFunctions-${u.f}'>${p}</a>`):u.c==="ENUM"&&r.push(`<a href='#Enums-${u.f}'>${p}</a>`)}else if(u.c!==void 0&&u.f!==void 0){let p;for(const S in t.sections)if(t[t.sections[S]][u.c]){let b;t.sections[S]==="Singletons"?b=u.t!==""?u.t:`${t.Singletons[u.c]}:${u.f}()`:b=u.t!==""?u.t:`${u.c}.${u.f}()`,p=`<a href='#${t.sections[S]}-${u.c}-${u.f}'>${b}</a>`;break}p===void 0&&(p="<code>"+(u.t!==""?u.t:u.c+"."+u.f+"()")+"</code>"),r.push(p)}}return i.find("Link").each(function(s,u){St(this).replaceWith(r[s])}),i.find("pre code").each(function(s,u){St(u).replaceWith("<code class='lua'>"+u.textContent.trim()+"</code>")}),(i.html()||"").trim()}function j1(i){if(i===void 0)return"";if(i==="void")return i;const t=i.match(/{(.+)}/);t&&(i=t[1]);let r;const s=["Classes","Actors","Screens","Enums"];for(const u in s)if(this[s[u]][i]){r=`<a href='#${s[u]}-${i}'>${i}</a>`;break}return r===void 0&&(r=i),(t?"{ ":"")+r+(t?" }":"")}class Z1 extends he.Component{constructor(t){super();const r=new URLSearchParams(window.location.search),s=r.get("engine"),u=r.get("version");if(qi[s]&&qi[s][u]){const p=Xl(s,u);this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:p,engineName:s,versionName:u}}}else this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:UE,engineName:yi[0].name,versionName:yi[0].versions[0].name}};this.docs={github:{}},this.sections=["Actors","Screens","Classes","Singletons","Namespaces","Enums"];for(const p in this.sections)this[this.sections[p]]={};this.fetchAndParseXML=this.fetchAndParseXML.bind(this),this.bubbleDataUp=this.bubbleDataUp.bind(this),this.getReturnValue=j1.bind(this),this.scroll_window_after_hashchange()}componentDidUpdate(){if(this.scroll_window_after_hashchange(),this.props.selectedAPIurl!==void 0&&this.state.selectedAPI.url!==this.props.selectedAPIurl){const t=this;this.setState({selectedAPI:{url:this.props.selectedAPIurl,engineName:this.props.selectedAPIengine,versionName:this.props.selectedAPIversion}},()=>{t.fetchAndParseXML()})}}componentDidMount(){this.fetchAndParseXML()}fetchAndParseXML(){const t=this;for(const s in this.sections)this[this.sections[s]]={};t.setState({isLoaded:!1,G:null});const r=this.state.selectedAPI.url;St.when(St.get(r+"LuaDocumentation.xml",s=>{t.docs.luadoc=St(St.parseXML(s)).children()}),St.get(r+"Lua.xml",s=>{t.docs.luadotxml=St(St.parseXML(s)).children()}),St.get(`./Luadoc++/${this.state.selectedAPI.engineName}/${this.state.selectedAPI.versionName}.json`).done(s=>{typeof s=="object"?t.docs.github.funcdefs=s:t.docs.github.funcdefs={}}).fail(()=>{t.docs.github.funcdefs={}})).then(function(){const s={classes:t.docs.luadoc.children("Classes"),actors:t.docs.luadoc.children("Actors"),screens:t.docs.luadoc.children("Screens"),namespaces:t.docs.luadoc.children("Namespaces"),enums:t.docs.luadoc.children("Enums"),singletons:t.docs.luadoc.children("Singletons"),global_functions:t.docs.luadoc.children("GlobalFunctions"),constants:t.docs.luadoc.children("Constants")},u=Array.from(t.docs.luadotxml.children("Classes").children("Class")),p=Array.from(t.docs.luadotxml.children("Namespaces").children("Namespace")),S=Array.from(t.docs.luadotxml.children("Enums").children("Enum")),b=Array.from(t.docs.luadotxml.children("Singletons").children("Singleton")),h=Array.from(t.docs.luadotxml.children("GlobalFunctions").children("Function")),E=Array.from(t.docs.luadotxml.children("Constants").children("Constant")),v=function(O){return function(k,D){return St(k).attr(O).toUpperCase()<St(D).attr(O).toUpperCase()?-1:St(k).attr(O).toUpperCase()>St(D).attr(O).toUpperCase()?1:0}};u.sort(v("name")),p.sort(v("name")),S.sort(v("name")),b.sort(v("class")),b.forEach(O=>t.Singletons[O.attributes.class.textContent]=O.attributes.name.textContent),p.forEach(O=>t.Namespaces[O.attributes[0].nodeValue]=!0),S.forEach(O=>t.Enums[O.attributes.name.textContent]=!0),u.forEach(O=>{const k=O.attributes.name.textContent;if(k in t.Singletons)return;const w=St(s.classes).find("Class[name="+k+"]").attr("grouping")||"SMClass",F={Actor:"Actors",Screen:"Screens",SMClass:"Classes"};t[F[w]][k]=!0}),t.bubbleDataUp();const A=[{data:[],desc:pi(s.actors.children("Description"),t)},{data:[],desc:pi(s.screens.children("Description"),t)},{data:[],desc:pi(s.classes.children("Description"),t)},{data:[],desc:pi(s.namespaces.children("Description"),t)},{data:[],desc:pi(s.enums.children("Description"),t)},{data:[],desc:pi(s.singletons.children("Description"),t)},{data:[],desc:pi(s.global_functions.children("Description"),t)},{data:[],desc:pi(s.constants.children("Description"),t)}];u.forEach(function(O){const k=St(O).attr("name");if(t.Singletons[k])return;const D=St(s.classes).find("Class[name="+k+"]");let w=Array.from(St(O).find("Function"));w.sort(function(Y,f){return Y.attributes.name.textContent.toUpperCase()<f.attributes.name.textContent.toUpperCase()?-1:Y.attributes.name.textContent.toUpperCase()>f.attributes.name.textContent.toUpperCase()?1:0});const F=w.map(function(Y,f){const oe=St(Y).attr("name"),ie=St(D).find("Function[name="+oe+"]");return{name:oe,return:t.getReturnValue(ie.attr("return")),arguments:ie.attr("arguments")||"",desc:pi(ie,t),url:t.docs.github.funcdefs[k]&&t.docs.github.funcdefs[k][oe]}}),L=D.attr("grouping")||"SMClass",z={Actor:0,Screen:1,SMClass:2},Q={Actor:"Actors",Screen:"Screens",SMClass:"Classes"},ne=St(O).attr("base");let P;if(ne!==void 0){const Y=St(s.classes).find("Class[name="+ne+"]");P=Q[Y.attr("grouping")||"SMClass"]}A[z[L]].data.push({name:k,base:O.attributes.base!==void 0?{name:ne,grouping:P}:void 0,desc:pi(D.find("Description"),t),methods:F,grouping:Q[L]})}),p.forEach(function(O){const k=St(O).attr("name"),D=St(s.namespaces).find("Namespace[name="+k+"]"),w=[];St(O).children("Function").each(function(F,L){const z=St(L).attr("name"),Q=St(s.namespaces).find("Function[name="+z+"]");w.push({name:St(L).attr("name"),return:t.getReturnValue(Q.attr("return")),arguments:Q.attr("arguments")||"",desc:pi(Q,t)})}),A[3].data.push({name:k,methods:w,desc:pi(D.find("Description"),t),grouping:"Namespaces"})}),S.forEach(function(O){const k=St(O).attr("name"),D=St(s.enums).find("Enum[name="+k+"]"),w=[];St(O).children("EnumValue").each(function(F,L){w.push({name:St(L).attr("name"),value:St(L).attr("value")})}),A[4].data.push({name:k,values:w,desc:pi(D.find("Description"),t)})}),b.forEach(function(O){const k=St(O).attr("class"),D=St(s.classes).find("Class[name="+k+"]"),w=Array.from(D.find("Function")).map(function(F,L){const z=St(F).attr("name"),Q=St(D).find("Function[name="+z+"]");return{name:z,return:t.getReturnValue(Q.attr("return")),arguments:Q.attr("arguments")||"",desc:pi(Q,t),url:t.docs.github.funcdefs[k]&&t.docs.github.funcdefs[k][z]}});A[5].data.push({name:k,methods:w,desc:pi(D.find("Description"),t),grouping:"Singletons"})}),h.forEach(function(O){const k=St(O).attr("name"),D=St(s.global_functions).find("Function[name="+k+"]");D.attr("theme")!=="default"&&A[6].data.push({name:k,return:t.getReturnValue(D.attr("return")),arguments:D.attr("arguments"),desc:pi(D,t),theme:D.attr("theme")||"",url:t.docs.github.funcdefs.GlobalFunctions&&t.docs.github.funcdefs.GlobalFunctions[k],grouping:"GlobalFunctions"})}),E.forEach(function(O){A[7].data.push({name:St(O).attr("name"),value:St(O).attr("value")||""})}),t.setState({isLoaded:!0,G:A},()=>{t.bubbleDataUp()})}).then(function(){t.scroll_window_after_hashchange()}).then(()=>{document.querySelectorAll("pre code").forEach(s=>{qN.highlightElement(s)})})}bubbleDataUp(){this.props.parentCallback({actors:Object.keys(this.Actors),screens:Object.keys(this.Screens),sm_classes:Object.keys(this.Classes),namespaces:Object.keys(this.Namespaces),enums:Object.keys(this.Enums),singletons:Object.keys(this.Singletons),isLoaded:this.state.isLoaded})}updateHash(t){window.location.hash="#"+t}scroll_window_after_hashchange(t){if(t=t??window.location.hash,t){const s=(t.match(/-/g)||[]).length;t=t.replace("#","");const u=document.getElementById(t);if(u){const p=u.offsetTop;if(p){const S=s>1?108:60,b=s>0&&t.substring(0,15)==="GlobalFunctions"?40:0,h=p-S-b;this.state.yOffset!==h&&(this.setState({yOffset:h}),window.scrollTo(0,h),this.props?.mobile_nav===!0&&this.props?.hideMobileNav())}}}const r=document.getElementById("navbarNav")?.classList;r?.contains("show")&&r?.remove("show")}headerUI(){let t;return this.state.selectedAPI.engineName&&this.state.selectedAPI.versionName&&(t=`${this.state.selectedAPI.engineName} ${this.state.selectedAPI.versionName}`),H.jsx("section",{children:H.jsxs("h1",{children:[t??"SM5"," Lua API"]})})}contentUI(){return this.state===void 0||this.state.isLoaded===!1?null:H.jsxs("section",{children:[H.jsx(Cu,{name:"Actors",desc:this.state.G[0].desc,data:this.state.G[0].data,...this.state}),H.jsx(Cu,{name:"Screens",desc:this.state.G[1].desc,data:this.state.G[1].data,...this.state}),H.jsx(Cu,{name:"Classes",desc:this.state.G[2].desc,data:this.state.G[2].data,...this.state}),H.jsx(Cu,{name:"Singletons",desc:this.state.G[5].desc,data:this.state.G[5].data,...this.state}),H.jsx(Cu,{name:"Namespaces",desc:this.state.G[3].desc,data:this.state.G[3].data,...this.state}),H.jsx(K1,{name:"Enums",desc:this.state.G[4].desc,data:this.state.G[4].data}),H.jsx(Q1,{name:"GlobalFunctions",desc:this.state.G[6].desc,data:this.state.G[6].data,...this.state}),H.jsx(X1,{name:"Constants",desc:this.state.G[7].desc,data:this.state.G[7].data})]})}render(){return H.jsxs("div",{className:"LuaAPI ps-md-4",children:[this.headerUI(),this.contentUI()]})}}var J1=YN();const uh=oc(J1);function eU(i){const t="\\[=*\\[",r="\\]=*\\]",s={begin:t,end:r,contains:["self"]},u=[i.COMMENT("--(?!"+t+")","$"),i.COMMENT("--"+t,r,{contains:[s],relevance:10})];return{name:"Lua",aliases:["pluto"],keywords:{$pattern:i.UNDERSCORE_IDENT_RE,literal:"true false nil",keyword:"and break do else elseif end for goto if in local not or repeat return then until while",built_in:"_G _ENV _VERSION __index __newindex __mode __call __metatable __tostring __len __gc __add __sub __mul __div __mod __pow __concat __unm __eq __lt __le assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring module next pairs pcall print rawequal rawget rawset require select setfenv setmetatable tonumber tostring type unpack xpcall arg self coroutine resume yield status wrap create running debug getupvalue debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv io lines write close flush open output type read stderr stdin input stdout popen tmpfile math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower table setn insert getn foreachi maxn foreach concat sort remove"},contains:u.concat([{className:"function",beginKeywords:"function",end:"\\)",contains:[i.inherit(i.TITLE_MODE,{begin:"([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*"}),{className:"params",begin:"\\(",endsWithParent:!0,contains:u}].concat(u)},i.C_NUMBER_MODE,i.APOS_STRING_MODE,i.QUOTE_STRING_MODE,{className:"string",begin:t,end:r,contains:[s],relevance:5}])}}function tU(i){const t=i.regex,r={className:"number",relevance:0,variants:[{begin:/([+-]+)?[\d]+_[\d_]+/},{begin:i.NUMBER_RE}]},s=i.COMMENT();s.variants=[{begin:/;/,end:/$/},{begin:/#/,end:/$/}];const u={className:"variable",variants:[{begin:/\$[\w\d"][\w\d_]*/},{begin:/\$\{(.*?)\}/}]},p={className:"literal",begin:/\bon|off|true|false|yes|no\b/},S={className:"string",contains:[i.BACKSLASH_ESCAPE],variants:[{begin:"'''",end:"'''",relevance:10},{begin:'"""',end:'"""',relevance:10},{begin:'"',end:'"'},{begin:"'",end:"'"}]},b={begin:/\[/,end:/\]/,contains:[s,p,u,S,r,"self"],relevance:0},h=/[A-Za-z0-9_-]+/,E=/"(\\"|[^"])*"/,v=/'[^']*'/,A=t.either(h,E,v),O=t.concat(A,"(\\s*\\.\\s*",A,")*",t.lookahead(/\s*=\s*[^#\s]/));return{name:"TOML, also INI",aliases:["toml"],case_insensitive:!0,illegal:/\S/,contains:[s,{className:"section",begin:/\[+/,end:/\]+/},{begin:O,className:"attr",starts:{end:/$/,contains:[s,b,p,u,S,r]}}]}}function nU(i){const t=i.regex,r=t.concat(/[\p{L}_]/u,t.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),s=/[\p{L}0-9._:-]+/u,u={className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},p={begin:/\s/,contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]},S=i.inherit(p,{begin:/\(/,end:/\)/}),b=i.inherit(i.APOS_STRING_MODE,{className:"string"}),h=i.inherit(i.QUOTE_STRING_MODE,{className:"string"}),E={endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",begin:s,relevance:0},{begin:/=\s*/,relevance:0,contains:[{className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[u]},{begin:/'/,end:/'/,contains:[u]},{begin:/[^\s"'=<>`]+/}]}]}]};return{name:"HTML, XML",aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,relevance:10,contains:[p,h,b,S,{begin:/\[/,end:/\]/,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,contains:[p,S,h,b]}]}]},i.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,relevance:10},u,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,relevance:10,contains:[h]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[E],starts:{end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[E],starts:{end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{className:"tag",begin:/<>|<\/>/},{className:"tag",begin:t.concat(/</,t.lookahead(t.concat(r,t.either(/\/>/,/>/,/\s/)))),end:/\/?>/,contains:[{className:"name",begin:r,relevance:0,starts:E}]},{className:"tag",begin:t.concat(/<\//,t.lookahead(t.concat(r,/>/))),contains:[{className:"name",begin:r,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}}uh.registerLanguage("javascript",eU);uh.registerLanguage("javascript",tU);uh.registerLanguage("javascript",nU);class aU extends he.Component{constructor(t){super(t),this.handleMobileNavToggle=this.handleMobileNavToggle.bind(this),this.hideMobileNav=this.hideMobileNav.bind(this),this.showMobileNav=this.showMobileNav.bind(this),this.getClasses=this.getClasses.bind(this),this.setSelectedAPI=this.setSelectedAPI.bind(this),this.setToC=this.setToC.bind(this),this.state={mobile_nav:!1,isAPILoaded:!1}}handleMobileNavToggle(){this.state.mobile_nav?this.hideMobileNav():this.showMobileNav()}showMobileNav(){this.setState({mobile_nav:!0}),(document.getElementById("mobileNav")?.classList).add("show")}hideMobileNav(){this.setState({mobile_nav:!1});const t=document.getElementById("mobileNav")?.classList,r=document.getElementById("navbarNav")?.classList;t.remove("show"),r.remove("show")}getClasses(t){this.setState({actors:t.actors,screens:t.screens,sm_classes:t.sm_classes,namespaces:t.namespaces,enums:t.enums,singletons:t.singletons,isAPILoaded:t.isLoaded})}setSelectedAPI(t){this.setState({selectedAPIurl:t.selectedAPIurl,selectedAPIengine:t.selectedAPIengine,selectedAPIversion:t.selectedAPIversion})}setToC(t){this.setState({toc:t})}render(){return H.jsxs("main",{children:[H.jsx(GI,{}),H.jsx("div",{className:"mt-5",children:H.jsxs("div",{className:"row no-gutters",children:[H.jsx("div",{tabIndex:"-1",className:"sidebar position-fixed col-md-3 d-md-block d-none",children:H.jsx(CT,{mobile:!1,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),H.jsxs("div",{id:"content-container",className:"row",children:[H.jsx("div",{id:"content",className:"col-lg-9 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4",children:H.jsxs(qE,{children:[H.jsx(fo,{path:"/",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav})}),H.jsx(fo,{path:"/Resources",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav})}),H.jsx(fo,{path:"/:group/:page",element:H.jsx(AE,{hideMobileNav:this.hideMobileNav,setToC:this.setToC})}),H.jsx(fo,{path:"/LuaAPI",element:H.jsx(Z1,{hideMobileNav:this.hideMobileNav,...this.state,parentCallback:this.getClasses})})]})}),H.jsx($L,{toc:this.state.toc,mobile_nav:this.state.mobile_nav})]})]})}),H.jsx("div",{id:"mobileNav",className:"sidebar collapse no-transition w-100 h-100 d-md-none",children:H.jsx(CT,{mobile:!0,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),H.jsxs("button",{id:"mobileNavToggle",className:"btn btn-dark d-md-none",type:"button",onClick:this.handleMobileNavToggle,"data-bs-toggle":"collapse","aria-controls":"navbarNav","aria-expanded":"false","aria-label":"Toggle navigation",children:[H.jsx("div",{className:this.state.mobile_nav?"x bar1":"bar1"}),H.jsx("div",{className:this.state.mobile_nav?"x bar2":"bar2"}),H.jsx("div",{className:this.state.mobile_nav?"x bar3":"bar3"})]})]})}}const iU=FI(aU),rU=fO.createRoot(document.body);rU.render(H.jsx(DI,{basename:"/Lua-For-SM5/",children:H.jsx(iU,{})}));
