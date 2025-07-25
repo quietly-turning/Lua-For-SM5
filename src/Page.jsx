@@ -35,6 +35,13 @@ function Page(props){
 
 		// highlight code blocks
 		document.querySelectorAll("pre code").forEach(block => {
+			// delete the `data-highlighted` attr from each <code class="hljs" data-highlighted="yes">
+			// browser caching(?) may cause hljs blocks to be reused(?)
+			// I was seeing:
+			//      Element previously highlighted. To highlight again, first unset `dataset.highlighted`.
+			delete block.dataset.highlighted
+
+			// use hljs to syntax highlight this <code> element
 			hljs.highlightElement(block)
 		})
 
