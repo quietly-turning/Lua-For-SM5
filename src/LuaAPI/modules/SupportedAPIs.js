@@ -29,6 +29,10 @@ const supportedAPIs = [
     },
     versions: [
       {
+        name: "v1.2.0",
+        githash: "5c737928d93778c2c9f68e276052b220b43a468f",
+      },
+      {
         name: "v1.1.0",
         githash: "159391b8a244cffdde9366b97e6a2d03f9cfb6b8",
       },
@@ -92,7 +96,7 @@ const getAPIdocURL = (_engineStr=default_engineString, _versionStr=default_versi
 
   const version_info = supportedAPIsMap[engineStr][versionStr]
 
-	return `${url_base}${version_info.github_user}/${version_info.github_project}/${version_info.githash}/Docs/Luadoc/`
+  return `${url_base}${version_info.github_user}/${version_info.github_project}/${version_info.githash}/Docs/Luadoc/`
 }
 
 const default_url = getAPIdocURL(default_engineString, default_versionString)
