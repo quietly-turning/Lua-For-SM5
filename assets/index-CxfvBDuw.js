@@ -79,7 +79,742 @@ https://github.com/highlightjs/highlight.js/issues/2277`),On=Oe,Xt=nt),Dt===void
 			though not easy to follow along with.
 		</li>
 	</ul>
-</div>`,"/Actors/Actor":`<h1>Actor</h1>
+</div>`,"/Best-Practices/Command-Chaining":`<h1>Command-Chaining</h1>
+
+<p>In StepMania 5, commands applied to actors can be chained, resulting in a more clean and terse syntax than was possible before.</p>
+
+<p>The following two syntaxes produce the same results:</p>
+
+<span class="CodeExample-Title">Long Form</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      self:zoomto(100,200)
+      self:xy(_screen.cx, 100)
+      self:diffuse(Color.Green)
+      self:linear(1)
+      self:y(_screen.h-100)
+   end
+}
+</code></pre>
+
+<span class="CodeExample-Title">Condensed Via Command Chaining</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
+          :linear(1):y(_screen.h-100)
+   end
+}
+</code></pre>
+
+<p>While commands <em>can</em> be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.</p>`,"/Best-Practices/Debugging":`<h1>Debugging</h1>
+
+<p>Using <a data-component="Link" href="/Singletons/SCREENMAN">SCREENMAN</a>&apos;s <code>SystemMessage()</code> method may perhaps be the most tried-and-true means of quickly displaying debugging output to the Screen.  <code>SystemMessage()</code> accepts a string as an argument and displays it at the top of the screen for a few seconds.</p>
+
+<p>Let&apos;s jump into a simple example from ScreenGameplay where we listen for and print out JudgmentMessages.  A <em>Judgment</em> is how each step is evaluated as it passes in Gameplay.  Each Judgment has a corresponding JudgmentMessage broadcast by the engine that contains information about that Judgment.</p>
+
+<span class="CodeExample-Title">Using SystemMessage() to print debug output</span>
+<pre><code class="lua">
+-- Since the engine only broadcasts JudgmentMessages to ScreenGameplay,
+-- this example only makes sense and does anything in ScreenGameplay.
+
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- Note that JudgementMessages will be broadcast for any human players,
+      -- but to keep this example simple, we'll limit it to PLAYER_1.
+      if params.Player == PLAYER_1 then
+
+         -- This SystemMessage will display each judgment in string
+         -- form at the top of the screen as it occurs.
+         -- So, if a note passes and the player misses it,
+         -- "TapNoteScore_Miss"  would be displayed at the
+         -- top of the screen.
+         --
+         -- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
+         -- would display "TapNoteScore_W1".
+         -- (Note that the "W" is for window, as in "timing window.")
+         --
+         -- Hold notes have their own, separate judgment system.
+         -- So, when a hold note is judged, a JudgmentMessage will be
+         -- broadcast, but the TapNoteScore parameter will be nil.
+         -- Account for that here with a logical or statement that tries
+         -- params.HoldNoteScore if params.TapNoteScore is nil.
+         SCREENMAN:SystemMessage( params.TapNoteScore or params.HoldNoteScore )
+      end
+   end
+}
+</code></pre>
+
+<h2 id="using-systemmessage">Using SystemMessage() to display Table output</h2>
+
+<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
+
+<p>The function defined in <strong>SL-Utilities.lua</strong> that is relevant here is <code>SM()</code>  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme&apos;s Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.</p>
+
+<span class="CodeExample-Title">Using SM() to display a small Lua table</span>
+<pre><code class="lua">
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- Again, limit to  PLAYER_1 for a more simple example.
+      if params.Player == PLAYER_1 then
+         -- SystemMessage a stringified table of note columns
+         -- as each judgment occurs
+         SM( params.Notes )
+      end
+   end
+}
+</code></pre>
+
+<p>The screenshot below shows that columns 4 and 1 (a left-right jump) were just missed.</p>
+
+<p>
+   <img class="img-fluid"
+      src="/Lua-For-SM5/img/using-SM-to-debug-table.png"
+      alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"
+   />
+</p>
+
+<h2 id="using-trace">Knowing when to use Trace()</h2>
+<p>
+   <code>SystemMessage()</code> is not the only debugging tool available in StepMania.
+   <code>SystemMessage()</code> has limited usefulness since large Lua tables can
+   easily contain more data than StepMania&apos;s window can reasonably display.  In
+   such situations, a proper Lua <code>Trace()</code> is preferred.  Output from
+   <code>Trace()</code> is written to <em>Logs/Log.txt</em>
+</p>
+
+<h2 id="helper-functions-from-fallback">Helper Functions from <em>_fallback</em></h2>
+<p>
+   StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code>
+   function to assist with recursively printing deeply nested Lua tables to the Log.txt
+   file.  Here is the example from above, reworked to to use <code>rec_print_table()</code>
+   to write the entire params table to file.
+</p>
+
+<span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
+<pre><code class="lua">
+return Def.Actor{
+   JudgmentMessageCommand=function(self, params)
+      -- recursive print the entire table of JudgmentMessage parameters
+      -- to Logs/Log.txt.  This would be more information than could fit
+      -- onscreen at a single moment.
+      rec_print_table( params )
+   end
+}
+</code></pre>`,"/Singletons/SOUND":`<h1>SOUND Singleton</h1>
+
+<p>
+   The SOUND singleton can be used to play audio files from a theme
+   or simfile and has some capabilities that a
+   <a data-component="Link" href="/Actors/Sound">Sound actor</a> lacks.
+</p>
+
+<h2 id="looping-audio">SOUND can be used to loop audio files cleanly</h2>
+
+<p>
+   Namely, SOUND can be used to easily and cleanly loop audio files via
+   the <code>PlayMusicPart()</code> method.  Additionally, SOUND has some
+   helpful methods like <code>DimMusic()</code> and <code>StopMusic()</code>
+   that might make it especially interesting from the perspective of a simfile
+   mini-game.
+</p>
+
+<p>
+   Here's a simple example that could be called from within a simfile&apos;s BGCHANGE
+   or FGCHANGE script.  It assumes that there is a file <em>love-is-war.ogg</em> located
+   in the root of the song directory.  This example uses <code>PlayMusicPart()</code>
+   which accepts eight arguments:
+</p>
+
+<ol>
+	<li><strong>music_path</strong> (string) – the path to the audio file you want to load</li>
+	<li><strong>music_start</strong> (float) – how many seconds into the file you want playback to start</li>
+	<li><strong>music_length</strong> (float) – how many seconds of the file you want to play</li>
+	<li><strong>fade_in</strong> (float) – how many seconds should the file fade in over</li>
+	<li><strong>fade_out</strong> (float) – how many seconds should the file fade out over</li>
+	<li><strong>loop</strong> (boolean) – set to <code>true</code> if you want the audio file to loop until told to stop</li>
+	<li><strong>apply_rate</strong> (boolean) – should this audio file follow the engine&apos;s internal sense of music rate?</li>
+	<li><strong>align_beat</strong> (boolean) – if <code>true</code> or <code>nil</code>, the playback duration is automatically adjusted to cover an integer number of beats</li>
+</ol>
+
+<span class="CodeExample-Title">Simple usage of SOUND singleton:</span>
+<pre><code class="lua">
+return Def.Actor{
+   Name="BGM",
+   OnCommand=function(self, params)
+      local directory = GAMESTATE:GetCurrentSong():GetSongDir()
+      local path = directory .. "love-is-war.ogg"
+
+      -- love-is-war.ogg is 4 minutes and 10 seconds in duration.
+      -- We want it to loop.
+      SOUND:PlayMusicPart(path, 0, 250.4, 0, 0, true, true, true)
+
+      -- Wait 10 seconds, then queue a command where we'll
+      -- lower the playback volume
+      self:sleep(10):queuecommand("LowerPlaybackVolume")
+   end,
+
+   LowerPlaybackVolumeCommand=function(self)
+      -- Lower the volume to 33% for a duration of 10 seconds.
+      SOUND:DimMusic(0.33, 10)
+   end,
+
+   OffCommand=function(self)
+      -- We don't want this audio to continue playing past
+      -- ScreenGameplay, so, when this actor's OffCommand
+      -- is triggered, stop the SOUND singleton.
+      SOUND:StopMusic()
+   end
+}
+</code></pre>
+
+<h2 id="SOUND-or-def.sound">SOUND or Def.Sound&#123;&#125; ?</h2>
+
+<p>
+   Of course, the SOUND singleton lacks some of the special features that
+   a <a data-component="Link" href="/Actors/Sound">Sound actor</a> possesses.
+</p>
+
+<p>
+   Only one sound can be played via SOUND at any given moment, while there can be
+   multiple <em>Sound</em> actors loaded simultaneously.  Furthermore, SOUND has no
+   control over playback pitch or stereo panning.  Thus, both the SOUND singleton
+   and <em>Sound</em> actors have unique and valid use cases.
+</p>`,"/Singletons/SCREENMAN":`<h1>SCREENMAN Singleton</h1>
+
+<p>
+   The SCREENMAN (short for <em>Screen Manager</em>) singleton is primarily used
+   in conjunction with its <code>GetTopScreen()</code> method to do just that –
+   get the screen that is currently on the top of StepMania&apos;s screen stack.
+   (This typically means the current screen.)
+</p>
+
+<p>
+   SCREENMAN also has a some other methods which are worth knowing, namely
+   <code>SystemMessage()</code>.   As we&apos;ll demonstrate in
+   <a data-component="Link" href="/Best-Practices/Debugging">the chapter on Debugging</a>,
+   <code>SystemMessage()</code>  can be handy for quick debugging.
+</p>
+
+<h2 id="GetTopScreen">GetTopScreen()</h2>
+
+<p>
+   Within the context of theming and simfile scripting, calling
+   <code>SCREENMAN:GetTopScreen()</code> will return the screen currently
+   being displayed in the form of a <em>screen</em> object.  For example,
+   calling it on ScreenGameplay will get you the gameplay screen in the
+   form of a screen object.  Calling it on ScreenPlayerOptions wil do similarly
+   but return the player options screen.
+</p>
+
+<p>
+   While there are some methods available to <em>all</em>
+   <a data-component="Link" href="/LuaAPI#Screens">screen classes</a> (like
+   <code>AddInputCallback()</code> which is covered in <a data-component="Link" href="/Theming/Arbitrary-Input">Handling
+   Arbitrary Input</a>), there are many more that depend on the class of the current Screen.
+   A screen object of class <em>ScreenGameplay</em> will have the method <code>GetLifeMeter()</code>
+   which returns a <a data-component="Link" href="/LuaAPI#Classes-LifeMeter">LifeMeter</a> object.
+   A screen object of class <em>ScreenSelectMusic</em> will have the method <code>GetMusicWheel()</code>
+   which returns a <a data-component="Link" href="/LuaAPI#Classes-MusicWheel">MusicWheel</a> object.
+</p>
+
+<h2 id="example-usage">Example Usage</h2>
+
+<p>
+   Here is a small example that uses <code>GetTopScreen()</code> on ScreenSelectMusic
+   to get a Lua reference to the MusicWheel and change the current sort of that MusicWheel.
+   In order for this code to work, it must be called from a theme&apos;s ScreenSelectMusic.
+</p>
+
+<span class="CodeExample-Title">Using SCREENMAN:GetTopScreen() to get ScreenSelectMusic</span>
+<pre><code class="lua">
+return Actor{
+   -- InitCommand happens before the screen we want is the TopScreen,
+   -- so calling GetTopScreen() during an InitCommand would fetch the
+   -- screen being transitioned out of that is about to be destroyed.
+   -- It WILL be ready by the time OnCommand is called, however.
+
+   OnCommand=function(self)
+      -- Since this Lua is being called on ScreenSelectMusic
+      -- the topscreen variable will be a screen object of ScreenSelectMusic.
+      local topscreen = SCREENMAN:GetTopScreen()
+
+      -- Get a Lua reference to the engine's MusicWheel
+      -- This is a Lua object of type "MusicWheel"
+      local MusicWheel = topscreen:GetMusicWheel()
+
+      -- Change the current sort of the MusicWheel.
+      -- Fot a full list of available sorts, check the SortOrder enum
+      -- as documented in the Lua API.
+      MusicWheel:ChangeSort("SortOrder_Artist")
+   end
+}
+</code></pre>
+
+<p>
+   Again, there are many custom methods that belong to the many different classes
+   of screens, more than can be reasonably documented here.  For a full list, please
+   refer to the various screen classes documented in the
+   <a data-component="Link" href="/LuaAPI">SM5 Lua API</a>.  This currently includes
+   everything from <strong>Class Screen</strong>:<em>ActorFrame</em> down to
+   <strong>Class ScreenWithMenuElementsSimple</strong>:<em>ScreenWithMenuElements</em>
+   (with the exception of ScreenManager itself, of course!).
+</p>`,"/Introduction/Foreword":`<h1>What are Actors?</h1>
+
+<h2 id="tables-within-tables">Tables Within Tables Within...</h2>
+
+<p>An Actor is the most basic unit of StepMania scripting.  Virtually everything else that you work with in SM5 Lua, be it a Sprite, a BitmapText, or an ActorMultiVertex, is built on top of the foundation that Actor provides.</p>
+
+<p>From a scripter&#8217;s perspective, an Actor is a Lua table with a few special properties that the StepMania engine will look for.  Other StepMania elements that derive from Actor are also really just Lua tables as well.</p>
+
+<p>So if you are familiar with <em>ActorFrames</em>, the StepMania element that serves as a container for manipulating multiple Actors simultaneously within itself, you can start to appreciate how an ActorFrame is a table that contains Actors which are tables.</p>
+
+<p>It&#8217;s tables all the way down.</p>
+
+<h2 id="types-of-actors">Types of Actors</h2>
+
+<p>There are 43 specialized types of Actors available to StepMania&#8217;s Lua scripting interface.  Each type has unique methods available to it and a unique use-case.  For example,</p>
+
+<ul>
+	<li><code>Quad</code> actors are quadrilaterals that you can programmatically manipulate</li>
+	<li><code>BitmapText</code> actors are used to draw text to the screen</li>
+	<li><code>ActorMultiVertex</code> actors are arbitrary polygons that you can programmatically manipulate</li>
+	<li><code>Sprite</code> actors are used to load visual assets like png images or avi movies</li>
+	<li><code>ActorFrame</code> actors serve as containers for other actors, and are useful when you want to manipulate a group of actors simultaneously, rather than individually</li>
+	<li>etc.</li>
+</ul>
+
+<p>For a complete list of SM5 Actor types, see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
+
+<hr />
+<h2 id="example-StepMania-Lua-script">Example StepMania Lua Script</h2>
+
+<p>The most commonly used Actors will each be discussed in detail in the chapters under <strong>Actors</strong> in the navigation menu.  For now, we&#8217;ll start by looking at a simple Lua script for StepMania 5.</p>
+
+
+<span class="CodeExample-Title">A Simple SM5 Lua Script:</span>
+<pre><code class="lua">
+-- start by defining an ActorFrame
+-- call it ExampleAF (example ActorFrame)
+local ExampleAF = Def.ActorFrame{
+   OnCommand=function(self)
+      self:Center():sleep(9999)
+   end,
+
+   -- since Actors are just Lua tables
+   -- we can nest them directly inside
+   -- the parent ActorFrame table like this
+   Def.Quad{
+      InitCommand=function(self)
+         self:zoomto(50,137)
+      end
+   },
+
+   -- note that since these are elements in
+   -- a Lua table, everything is comma-delimited
+   Def.BitmapText{
+      Font="Common Normal",
+      Text="Eat Poptarts."
+   }
+}
+
+
+-- since ExampleAF is an indexed Lua table, we can also
+-- add elements to its next index externally like this:
+ExampleAF[#ExampleAF + 1] = Def.Sprite{
+   Texture="chrismarks.png"
+}
+
+-- Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
+-- sort of Actor. Typically, we end up returning an ActorFrame.
+return ExampleAF
+</code></pre>
+
+
+<h2 id="only-one-actor-returned-per-file">Only one Actor can be returned per file.</h2>
+
+<p>
+   The StepMania engine expects one Actor to be returned per Lua file,
+   yet the example above features four Actors:
+</p>
+
+<ul>
+	<li>1 ActorFrame</li>
+	<li>1 Quad</li>
+	<li>1 BitmapText</li>
+	<li>1 Sprite</li>
+</ul>
+
+<p>
+   How do we make this work?
+</p>
+
+<p>
+   The solution reveals a prominent design paradigm
+   in StepMania scripting – put all other Actors inside
+   the ActorFrame and return the ActorFrame.  An ActorFrame
+   is just one type of Actor, and any valid Actor may be returned.
+</p>
+
+<p>
+   If your Lua file is <em>very</em> simple, you may only have one
+   Actor, maybe a Sprite or a Quad.  In such situations, it is not
+   necessary to wrap the single Actor in an ActorFrame;
+   <em>any valid StepMania Actor may be returned.</em>
+</p>
+
+<p>
+   Still, most files end up being complex enough to warrant
+   using an ActorFrame.
+</p>`,"/Introduction/Lua":`<h1>Differences between Lua 5.0 and Lua 5.1</h1>
+
+<p>SM3.95 used <a href="http://www.lua.org/versions.html#5.0">Lua 5.0</a>, while SM5 currently uses <a href="http://www.lua.org/versions.html#5.1">Lua 5.1</a>.
+The primary differences that will likely impact your scripting experience are:</p>
+
+
+<h2 id="modulus-operator">Modulus Operator as %</h2>
+
+<p>Lua 5.0 required <code>math.mod()</code> to perform modulo operations, while Lua 5.1 introduced a proper modulus operator.</p>
+
+<span class="CodeExample-Title">Modulus operator example:</span>
+<pre><code class="lua">
+local teamdragonforce = 3 % 2
+print(teamdragonforce)
+-- output: 1
+</code></pre>
+
+
+<h2 id="table-size-operator">Table Size Operator as &#35;</h2>
+
+<p>Lua 5.0 required the  <code>table.getn()</code> function to determine the size of an indexed table, while Lua 5.1 introduced a simple operator for this common task.</p>
+
+<span class="CodeExample-Title">Indexed table size operator:</span>
+<pre><code class="lua">
+-- this table is indexed, so the # operator works
+local StomperZ = { "fast", "brutal", "bearlike" }
+print(#StomperZ)
+-- output: 3
+
+-- this table is key/value, so the # operator does NOT work
+local NotIndexed = {
+   blah = "fast",
+   nah = "brutal",
+   whatever = "bearlike"
+}
+print(#NotIndexed)
+-- output: 0
+</code></pre>
+
+
+
+<h2 id="simple-for-loop">Simple For Loop Deprecation</h2>
+
+<p>For the official explanation, read <a href="http://www.luafaq.org/#T1.13">http://www.luafaq.org/#T1.13</a></p>
+
+<hr />
+
+<h2 id="xml-converted-to-lua">XML in SM3.95 converted to Lua in SM5</h2>
+
+<p>A typical SM3.95 XML file would feature an ActorFrame element which would contain various children Actors.  This model is conceptually the same in SM5, but uses <code>.lua</code> files instead of <code>.xml</code> files.  So, where Actors were represented by <em>XML elements</em> in SM3.95, they are <strong>Lua tables</strong> in SM5.</p>
+
+
+
+<h2 id="example-SM3.95-file">An Example SM3.95 XML File</h2>
+
+<p>SM3.95 had 17 unique Actor classes, each of which could be invoked with a corresponding XML element.</p>
+
+<p>A simple XML file containing some Actors commonly used in SM3.95 might look like:</p>
+
+<span class="CodeExample-Title">A typical SM3.95 XML script:</span>
+<pre><code class="xml">
+&lt;!-- ActorFrame is an Actor --&gt;
+&lt;ActorFrame OnCommand=&quot;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999&quot;&gt;
+&lt;children&gt;
+
+&lt;!-- Quad is an Actor --&gt;
+&lt;Quad
+   InitCommand=&quot;zoomto,50,137&quot;
+/&gt;
+
+&lt;!-- BitmapText is also an Actor --&gt;
+&lt;BitmapText
+  File=&quot;_eurostile normal&quot;
+  Text=&quot;Eat Poptarts.&quot;
+/&gt;
+
+&lt;!-- Sprite is, that&#x27;s right, an Actor --&gt;
+&lt;Sprite
+  Texture=&quot;chrismarks.png&quot;
+  Frame0000=&quot;0&quot;
+/&gt;
+
+&lt;/children&gt;
+&lt;/ActorFrame&gt;
+</code></pre>
+
+
+<h2 id="example-SM5-file">The Example File Converted to SM5 Lua</h2>
+
+<p>In SM5, these same Actors exist (and quite a few more; 43 in total!), but the means of invoking them has changed since pure Lua files have replaced XML.  For a complete list of SM5 Actors, see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
+
+<p>The most commonly used Actors will each be discussed in detail in the following sections.  For now, we&apos;ll start by looking at the <em>SimpleExample.xml</em> if we were to convert it to SM5 Lua:</p>
+
+<span class="CodeExample-Title">The same script written in SM5 Lua:</span>
+<pre><code class="lua">
+--start by defining an ActorFrame
+--we'll call it ExampleAF (example ActorFrame)
+local ExampleAF = Def.ActorFrame{
+   OnCommand=function(self)
+      self:Center():sleep(9999)
+   end,
+
+   -- since Actors are just Lua tables
+   -- we can nest them directly inside
+   -- the parent ActorFrame table like this
+   Def.Quad{
+      InitCommand=function(self)
+        self:zoomto(50,137)
+      end
+   },
+
+   -- note that since these are elements in
+   -- a Lua table, everything is comma-delimited
+   Def.BitmapText{
+      Font="Common Normal",
+      Text="Eat Poptarts."
+   }
+}
+
+--since ExampleAF is an indexed Lua table, we can also
+--add elements to its next index externally like this:
+ExampleAF[#ExampleAF + 1] = Def.Sprite{
+   Texture="chrismarks.png"
+}
+
+--Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
+--sort of Actor. Typically, we end up returning an ActorFrame.
+return ExampleAF
+</code></pre>
+
+
+
+<h2 id="dynamically-adding-actors">Dynamically Adding Actors in SM5</h2>
+<p>
+   We can take advantage of the idea that SM5 uses
+   the Lua rather than XML to dynamically add actors
+   to an ActorFrame.  Depending on the scenario and
+   the number of Actors being added to an ActorFrame,
+   this can <em>greatly</em> reduce the lines of code
+   you&apos;ll need to write.
+</p>
+
+<p>
+   Imagine that you have a single png asset, <em>dog.png</em>
+   and you want five instances of it to appear on the screen.
+   You&apos;d like the end result to look like this:
+</p>
+
+<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/dogs.png" /></p>
+
+<p>
+   The basic idea is the same regardless of whether you are using
+   SM3.95 or SM5: you&apos;ll need to define five
+   <Link to="/Def.Sprite">Sprite Actors</Link> within your main
+   ActorFrame.  To achieve this in SM3.95&apos;s XML, you could do
+   something like this:
+</p>
+
+<span class="CodeExample-Title">Five Dogs in XML:</span>
+<pre><code class="xml">
+&lt;ActorFrame OnCommand=&quot;sleep,9999&quot;&gt;
+&lt;children&gt;
+   &lt;Sprite
+      Name=&quot;sprite 1&quot;
+      Texture=&quot;./dog.png&quot;
+      InitCommand=&quot;x,50;y,50&quot;
+   /&gt;
+   &lt;Sprite
+      Name=&quot;sprite 2&quot;
+      Texture=&quot;./dog.png&quot;
+      InitCommand=&quot;x,150;y,150&quot;
+   /&gt;
+   &lt;Sprite
+      Name=&quot;sprite 3&quot;
+      Texture=&quot;./dog.png&quot;
+      InitCommand=&quot;x,250;y,250&quot;
+   /&gt;
+   &lt;Sprite
+      Name=&quot;sprite 4&quot;
+      Texture=&quot;./dog.png&quot;
+      InitCommand=&quot;x,350;y,350&quot;
+   /&gt;
+   &lt;Sprite
+      Name=&quot;sprite 5&quot;
+      Texture=&quot;./dog.png&quot;
+      InitCommand=&quot;x,450;y,450&quot;
+   /&gt;
+&lt;/children&gt;
+&lt;/ActorFrame&gt;
+</code></pre>
+
+<p>That&apos;s about 30 lines of code already to basically do nearly the same thing five times.  If you&apos;re thinking that a <strong>loop</strong> might be handy here, you&apos;re on <em>exactly</em> the right track!  Let&apos;s rewrite that XML to be Lua for SM5.</p>
+
+<span class="CodeExample-Title">Five Dogs in Lua:</span>
+<pre><code class="lua">
+local af = Def.ActorFrame{
+   OnCommand=function(self) self:sleep(999) end
+}
+
+-- loop from 0 to 4 and add a Sprite Actor to the af ActorFrame each time
+for i=0,4 do
+   af[#af+1] = LoadActor("./dog.png")..{
+      Name="sprite " .. i+1,
+      InitCommand=function(self)
+         self:xy(i*100+50, i*100+50)
+      end
+   }
+end
+
+return af
+</code></pre>
+
+<p>
+   We were able to accomplish the same effect using
+   a <strong>numerical for loop</strong> in SM5&apos;s
+   Lua in only 15 lines!
+</p>
+
+<p>
+   This is a modest improvement already, but imagine
+   if we wanted to add 100 or even 1000 instances of
+   <em>dog.png</em> to the screen.  With XML, it is necessary
+   to explicitly define each Actor you want in your main
+   ActorFrame, while with Lua, it is only necessary to
+   increase the loop&apos;s stop value from <code>4</code>
+   to a different number.
+</p>`,"/Introduction/Mod-Chart-Setup":`<h1>Setting Up a "Mod" Chart</h1>
+<p>
+   StepMania simfiles can be scripted to enhance gameplay using Lua and the SM5 API.
+   This chapter will briefly demonstrate how to prepare a simfile for such scripting.
+</p>
+<p class="alert alert-warning">
+   This chapter is a work-in-progress!
+</p>
+<h2 id="loading-scripts-through-FGCHANGES">Loading Lua Script Through <code>FGCHANGES</code></h2>
+<p>
+   In StepMania, stepcharts can load Lua code as a "foreground animation" through the
+   <code>FGCHANGES</code> field in a stepchart's .ssc file.  StepMania's built-in stepchart
+   editor does not have any way to configure the <code>FGCHANGES</code> field directly, so
+   you'll need to open your stepchart's .ssc file in a text editor and add the line yourself.
+</p>
+<p>
+   The <code>FGCHANGES</code> field in your .ssc file accepts several arguments delimited by equals
+   signs. The first two are the most important:
+</p>
+<ul>
+   <li>the beat in Gameplay at which you want the Lua file to be activated</li>
+   <li>a path to the Lua file where you will be writing your code</li>
+</ul>
+<p>
+   So, for example, if you named your script <em>default.lua</em> and wanted it to trigger
+   at beat 4, you would need to change your .ssc file to include:
+</p>
+<pre><code>#FGCHANGES: 4.000=./default.lua=1.000=0=0=1=====;</code></pre>
+<p>
+   The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and
+   <code>1</code>s) are
+   <a href="https://github.com/stepmania/stepmania/wiki/sm#bgchanges">
+      various flags that are basically vestiges
+   </a>
+   from SM3.9 that are necessary to include but will have no impact on your Lua.
+   For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.
+</p>
+
+<h2 id="FGCHANGES-must-animate">FGCHANGES <em>must</em> be constantly animating</h2>
+<p>
+   Any Lua-based actors loaded as FGCHANGES will be marked as done/complete by the engine
+   as soon as no actors are actively <a data-component="Link" href="/Theming/Simple-Tweens">tweening</a>
+   in some way.
+</p>
+<p>
+   A common strategy is to ensure that this doesn't occur prematurely is to add a
+   dummy keep-alive Actor that does nothing but sleep for as long as you want
+   the overall Lua file to persist for. That might look like:
+</p>
+<pre><code class="lua">
+-- a Lua file can only return one Actor
+-- the common strategy is to return one ActorFrame that contains many sub-Actors
+return Def.ActorFrame{
+   -- keep-alive Actor
+   -- this will allow the file and all its actors to persist for 999 seconds
+   -- or, until the end of the stepchart, whichever comes first
+   Def.Actor{ OnCommand=function(self) self:sleep(999) end },
+
+   -- the Sprite Actor
+   Def.Sprite{
+      Texture="awesome.png",
+      OnCommand=function(self)
+         self:Center():FullScreen():sleep(3):diffusealpha(0)
+      end
+   }
+}
+</code></pre>
+<p>
+   In the example above, the the Sprite has a <code>sleep(3)</code> tween,
+   so it would appear on the screen for 3 seconds at beat 4 (specified by the .sm file)
+   and then have an alpha of <code>0</code> applied, causing it to be effectively invisible.
+</p>
+
+<h2 id="common-gotchas">Common Gotchas</h2>
+<p>
+   If you are testing this in SM5's editor, you'll need to ensure that you have
+   <strong>Show Background Changes</strong> enabled, otherwise neither BGCHANGES
+   nor FGCHANGES will appear.
+</p>
+<p>
+   SM5's Lua error reporting interface is invaluable when scripting things like this.
+   You can toggle it on/off by holding <kbd>F3</kbd> and tapping <kbd>F6</kbd> then tapping <kbd>8</kbd>
+</p>
+<p>
+   Finally, if there are no Lua errors, and you still can't get anything to appear,
+   you may need to reload your stepchart.
+</p>`,"/Introduction/Supported-File-Extensions":`<h1>Supported File Extensions</h1>
+
+<p>In StepMania 5, the supported file extensions are listed in <a href="https://github.com/stepmania/stepmania/blob/5_1-new/src/ActorUtil.cpp#L521-L572">/src/ActorUtil.cpp</a>:</p>
+
+<ul>
+	<li><strong>Images:</strong> bmp, gif, jpeg, jpg, png</li>
+	<li><strong>Audio:</strong> mp3, oga, ogg, wav</li>
+	<li><strong>Video:</strong> avi, f4v, flv, mkv, mp4, mpeg, mpg, mov, ogv, webm, wmv</li>
+	<li><strong>3D Models:</strong> txt</li>
+</ul>
+
+<hr />
+
+<h2 id="extra-notes">Extra Notes on Filetypes</h2>
+
+<h4>Images:</h4>
+
+<p><em>.png</em> files with even dimensions are strongly preferred.</p>
+
+<h4>Audio:</h4>
+
+<p><em>.ogg</em> files are strongly preferred; variable-bitrate mp3 files <a href="https://github.com/stepmania/stepmania/issues/369">are buggy</a>.</p>
+
+<h4>Video:</h4>
+
+<p>SM5 supports a broad array of codecs and containers via <a href="https://www.ffmpeg.org/">ffmpeg</a>.</p>
+
+<p>Please note that you cannot play audio from video files. One workaround is to extract the audio from the video, and play it at the same time as the video.</p>
+
+<p>You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The <em>.avi</em> container in conjunction with the h264 codec works great.  As of this writing, the <strong>h265 codec is not supported</strong> by SM5&apos;s version of ffmpeg.</p>
+
+<p><a href="https://handbrake.fr/">Handbrake</a> is a useful, free application you can use to resize your videos and convert them to one of the aforementioned formats with the h264 codec.</p>
+
+<h4>3D Models:</h4>
+
+<p>3D Models still rely on MilkShape 3D ASCII text as they have since StepMania 3.9.  Documentation is scarce at best.  Sorry.</p>`,"/Actors/Actor":`<h1>Actor</h1>
 
 <p>
    The <strong>Actor</strong> class is the most generic and lightweight StepMania Actor; all other Actors inherit from it (directly or eventually). Using an Actor object directly is not generally helpful; it can't <em>do</em> very much. The <code>LoadActor()</code> helper function <a data-component="Link" href="/Actors/LoadActor">discussed later</a> is far more flexible and useful!
@@ -105,21 +840,7 @@ return Def.Actor{
 <p>
    For another example, see: <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/00fdf7112b0050d229679c39d777dfca5f0bb11a/BGAnimations/ScreenGameplay%20overlay/ReceptorArrowsPosition.lua#L25-L40">./Simply Love/BGAnimations/ScreenGameplay overlay/ReceptorArrowsPosition.lua</a>
 </p>
-`,"/Actors/ActorFrameTexture":`<h1>ActorFrameTexture</h1>
-
-<p><em>ActorFrameTexture</em> actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a <code>visible(false)</code> command, and StepMania will have that many fewer actors to process every draw cycle.</p>
-
-<p>This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.</p>
-
-<p>For now, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua">Mad Matt&apos;s writeup</a>.</p>`,"/Actors/ActorMultiVertex":`<h1>ActorMultiVertex</h1>
-
-<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
-
-<p>An <em>ActorMultiVertex</em> actor has seven possible <a data-component="Link" href="/LuaAPI#Enums-DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
-
-<p>For example, calling <code>self:SetDrawState({Mode="DrawMode_Quads"})</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/quietl-turning/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
-
-<p>Another <em>ActorMultiVertex</em> DrawMode is <code>DrawMode_LineStrip</code>, in which your table of vertex data will be rendered as a single, continuous line.  An example of <code>DrawMode_LineStrip</code> in action can be seen in <a href="https://www.youtube.com/watch?v=hKd4xkULxFk">this scripted simfile</a> from the U.P.S. 2 pack.</p>`,"/Actors/BitmapText":`<h1>BitmapText</h1>
+`,"/Actors/BitmapText":`<h1>BitmapText</h1>
 
 <h2 id="features-and-attributes">BitmapText Features and Attributes</h2>
 <p><em>BitmapText</em> Actors are used to display text on the screen.</p>
@@ -288,7 +1009,21 @@ return Def.ActorFrame{
    global Lua namespace with an abundance of single-use variables.  In this regard,
    it can be helpful to know as many ways to pass those local variables (between
    files, between functions, etc.) as possible.
-</p>`,"/Actors/LoadActor":`<h1>LoadActor()</h1>
+</p>`,"/Actors/ActorMultiVertex":`<h1>ActorMultiVertex</h1>
+
+<p> What <code>Def.Quad</code> does for quadrilaterals, <em>ActorMultiVertex</em> does for arbitrary polygons.  For documentation, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/ScreenAMVTest%20overlay.lua">kyzentun&apos;s writeup</a>.</p>
+
+<p>An <em>ActorMultiVertex</em> actor has seven possible <a data-component="Link" href="/LuaAPI#Enums-DrawMode">DrawModes</a>.  Each DrawMode has a distinct visual style and each will require you to format your table of vertex data a little differently.</p>
+
+<p>For example, calling <code>self:SetDrawState({Mode="DrawMode_Quads"})</code> on an ActorMultiVertex will cause it to render every four vertices as a quadrilateral.  Simply Love uses an <em>ActorMultiVertex</em> in <code>DrawMode_Quads</code> to <a href="https://github.com/quietl-turning/Simply-Love-SM5/blob/01c5764200ac790fa7d7e4a539afb402ba33cc16/BGAnimations/ScreenEvaluation%20common/PerPlayer/ScatterPlot.lua#L55-L79">render its ScatterPlot</a> on ScreenEvaluation.  Each judgment from Gameplay <a href="https://i.imgur.com/JK5Li2w.png">is rendered</a> as a quadrilateral within a single <code>Def.ActorMultiVertex</code> actor.  This is more efficient than drawing additional <code>Def.Quad</code> actors for each judgment.</p>
+
+<p>Another <em>ActorMultiVertex</em> DrawMode is <code>DrawMode_LineStrip</code>, in which your table of vertex data will be rendered as a single, continuous line.  An example of <code>DrawMode_LineStrip</code> in action can be seen in <a href="https://www.youtube.com/watch?v=hKd4xkULxFk">this scripted simfile</a> from the U.P.S. 2 pack.</p>`,"/Actors/ActorFrameTexture":`<h1>ActorFrameTexture</h1>
+
+<p><em>ActorFrameTexture</em> actors can be used to take what would otherwise be an ActorFrame of children Sprites, BitmapTexts, etc., and render them directly to a unique texture that can be loaded into a single Sprite actor.  At that point, the original ActorFrameTexture can be cut out of the render pipeline with a <code>visible(false)</code> command, and StepMania will have that many fewer actors to process every draw cycle.</p>
+
+<p>This is a more abstract and advanced topic, but it can help cut down on the overhead of having StepMania keep track of many, many actors where a single sprite might suffice.</p>
+
+<p>For now, please refer to <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/Examples/Example_Actors/ActorFrameTexture.lua">Mad Matt&apos;s writeup</a>.</p>`,"/Actors/LoadActor":`<h1>LoadActor()</h1>
 
 <p><em>LoadActor()</em> is a helper function with some extremely useful properties that make it a staple of any SM5 Lua scripting endeavor.</p>
 
@@ -377,216 +1112,7 @@ return Def.Quad{
       self:setsize( this_box.w, this_box.h  )
    end
 }
-</code></pre>`,"/Actors/Sound":`<h1>Sound</h1>
-
-<p>A <em>Sound</em> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
-
-<p class="alert alert-warning">
-If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <a data-component="Link" href="/Singletons/SOUND">SOUND</a>.
-</p>
-
-<span class="CodeExample-Title">Minimal Example:</span>
-<pre><code class="lua">
-Def.Sound{
-   -- Note that you must tell the sound actor to play()
-   File="filepath.ogg",
-
-   OnCommand=function(self)
-      self:play()
-   end
-}
-</code></pre>
-
-<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
-
-<ul>
-<li>
-	<p>
-		<strong>SupportPan</strong> Set this to <code>true</code> if you intend to have the sound played solely through the left (for <code>PLAYER_1</code>) or the right (for <code>PLAYER_2</code>) audio channel.  This is accomplished with the <code>playforplayer()</code> method.
-	</p>
-</li>
-
-<li>
-	<p>
-		<strong>SupportRateChanging</strong> Set this to <code>true</code> if you intend to manipulate the pitch and/or speed of the underlying RageSound.
-	</p>
-</li>
-<li>
-	<p>
-		<strong>IsAction</strong> Set this to <code>true</code> if you are want this Sound actor to be muted as a <em>theme action</em> via <kbd>F3</kbd>+<kbd>A</kbd>.  This can be useful to keep themers sane while they are repeatedly debugging a single screen over and over again.
-	</p>
-</li>
-</ul>
-
-<span class="CodeExample-Title">SupportPan Example:</span>
-<pre><code class="lua">
--- this Sound actor will play the current theme's
--- "common start" sound first for PLAYER_1, then
--- wait two seconds, and then play it for PLAYER_2
-
-Def.Sound{
-   File=THEME:GetPathS("common", "start"),
-   Name="SFX_With_Pan",
-
-   SupportPan=true,
-   SupportRateChanging=true,
-   IsAction=false,
-
-   OnCommand=function(self)
-      -- play the sound out of the left channel
-      self:playforplayer(PLAYER_1)
-      self:queuecommand("PlayAgain")
-   end,
-   PlayAgainCommand=function(self)
-      self:sleep(2)
-
-      -- play the sound out of the right channel
-      self:playforplayer(PLAYER_2)
-   end
-}
-</code></pre>
-
-
-<span class="CodeExample-Title">SupportRateChanging Example:</span>
-<pre><code class="lua">
--- variables local to this file
-local ragesound_file
-local current_pitch = 1
-
--- this Sound actor will play the same audio file
--- three times sequentially, each time with a higher pitch
-Def.Sound{
-   File=THEME:GetPathS("common", "start"),
-   Name="SFX_With_Pitch",
-   SupportRateChanging=true,
-
-   OnCommand=function(self)
-      self:queuecommand("Play")
-   end,
-   PlayCommand=function(self)
-
-      -- get the underlying sound file data
-      ragesound_file = self:get()
-
-      -- RageSound:pitch() take a float where
-      -- 1.0 is "normal", 2.0 is twice as high as normal, etc.
-      ragesound_file:pitch( current_pitch )
-
-      -- play the sound file using both stereo channels
-      self:play()
-
-      -- increment current_pitch
-      current_pitch = current_pitch + 1
-
-      -- prevent infinite looping
-      if current_pitch < 4 then
-         -- sleep for two seconds and do it again
-         self:sleep(2):queuecommand("Play")
-      end
-   end
-}
-</code></pre>`,"/Actors/Quad":`<h1>Quad</h1>
-
-<h2 id="simple-example">Quad Features</h2>
-<p><em>Quad</em> actors are programmatically drawn <em>quad</em>rilaterals that can have properties like size, position, and color.  If you don&apos;t specify, Quad actors are white and have a height and width of 0 by default.</p>
-
-<span class="CodeExample-Title">A very simple Quad example:</span>
-<pre><code class="lua">
--- a white quad with height and width of 100px
-Def.Quad{
-   Name="WhiteQuad",
-   InitCommand=function(self)
-      self:zoomto(100,100)
-   end
-}
-</code></pre>
-
-<p>A common question that people new to StepMania scripting have is:</p>
-
-<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
-
-<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor objects</a>.</p>
-
-<h2 id="more-advanced-example"">A More Advanced Example</h2>
-
-<p>Since Quads are fairly simple, let&apos;s use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth in the Command Chaining section.</p>
-
-<span class="CodeExample-Title">Three Quads with animation:</span>
-<pre><code class="lua">
--- let's assume this file is being called via FGCHANGES from a simfile.
--- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
--- are cleared from memory as the engine assumes they are "done."
--- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
-
-return Def.ActorFrame{
-   -- the OnCommand here applies to the primary ActorFrame
-   OnCommand=function(self)
-      self:sleep(9999)
-   end,
-
-   -- a red quad that accelerates from offscreen-left to offscreen-right
-   -- this makes use of the _screen and Color aliases
-   Def.Quad{
-      Name="RedQuad",
-      InitCommand=function(self)
-         self:zoomto(100,100):diffuse(Color.Red)
-      end,
-      OnCommand=function(self)
-         self:xy( -100, _screen.cy )
-             :accelerate( 2 ):x( _screen.w + 100 )
-      end
-   },
-
-   -- a blue quad that decelerates from offscreen-top to offscreen-bottom
-   -- this makes use of the xy() command, which is new to SM5
-   -- as well as command-chaining (read more on the next page!)
-   Def.Quad{
-      Name="BlueQuad",
-      InitCommand=function(self)
-         self:zoomto( 100, 100 ):diffuse( Color.Blue )
-      end,
-      OnCommand=function(self)
-         self:xy( _screen.cx, -100)
-             :decelerate( 2 ):y( _screen.h + 100 )
-             :queuecommand( "TriggerSpin" )
-      end,
-      TriggerSpinCommand=function(self)
-         local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
-         greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
-      end
-   },
-
-   -- a green quad that waits for the two quads above to finish tweening,
-   -- then grows out of the center of the screen while spinning
-
-   -- NOTE: We can't apply tween-based commands and actor effects like spin()
-   -- simultaneously.
-   -- zoomto() will override spin() for the duration of its linear tween.
-   -- The way to achive the effect of spinning toward the viewer is to
-   -- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
-   Def.ActorFrame{
-      Name="GreenQuadAF",
-      InitCommand=function(self)
-         self:Center()
-             :spin():effectmagnitude(0,0,180)
-      end,
-
-      Def.Quad{
-         Name="GreenQuad",
-         InitCommand=function(self)
-            self:zoomto(0,0):diffuse(Color.Green)
-         end,
-         GrowCommand=function(self)
-            self:linear(5):zoomto(_screen.w, _screen.h)
-         end,
-      }
-   }
-}
-</code></pre>
-
-<h2 id="fallback-theme-has-helpful-aliases">The <em>_fallback</em> theme has some helpful aliases.</h2>
-
-<p>This example also uses a few helper tables defined in SM5&apos;s <em>_fallback</em> theme such as the <code>Color</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua">02 Colors.lua</a>  and the <code>_screen</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua">01 alias.lua</a>.</p>`,"/Actors/Model":`<h1>Model</h1>
+</code></pre>`,"/Actors/Model":`<h1>Model</h1>
 
 <p class="alert alert-info"><em>This article was graciously contributed by <a href="https://github.com/JoseVarelaP">JoseVarelaP</a>!</em></p>
 
@@ -748,6 +1274,215 @@ Def.Model {
 
       -- finally, set the Cull Mode to none
       self:cullmode("CullMode_None")
+   end
+}
+</code></pre>`,"/Actors/Quad":`<h1>Quad</h1>
+
+<h2 id="simple-example">Quad Features</h2>
+<p><em>Quad</em> actors are programmatically drawn <em>quad</em>rilaterals that can have properties like size, position, and color.  If you don&apos;t specify, Quad actors are white and have a height and width of 0 by default.</p>
+
+<span class="CodeExample-Title">A very simple Quad example:</span>
+<pre><code class="lua">
+-- a white quad with height and width of 100px
+Def.Quad{
+   Name="WhiteQuad",
+   InitCommand=function(self)
+      self:zoomto(100,100)
+   end
+}
+</code></pre>
+
+<p>A common question that people new to StepMania scripting have is:</p>
+
+<p><strong>Where are those commands like</strong> <code>zoomto()</code> <strong>coming from?</strong></p>
+
+<p>Keeping in mind that a <em>Quad</em> is a specific type of StepMania <em>Actor</em>, we can look to StepMania&apos;s Lua API for a complete list of methods available to all <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor objects</a>.</p>
+
+<h2 id="more-advanced-example"">A More Advanced Example</h2>
+
+<p>Since Quads are fairly simple, let&apos;s use another example to animate some Quads.  This example makes use of a new-to-SM5 feature, command-chaining, which is discussed more in-depth in the Command Chaining section.</p>
+
+<span class="CodeExample-Title">Three Quads with animation:</span>
+<pre><code class="lua">
+-- let's assume this file is being called via FGCHANGES from a simfile.
+-- Like in SM3.95, Actors from FGCHANGES that are not actively tweening
+-- are cleared from memory as the engine assumes they are "done."
+-- To counteract this, we'll apply a sleep() tween to the parent ActorFrame
+
+return Def.ActorFrame{
+   -- the OnCommand here applies to the primary ActorFrame
+   OnCommand=function(self)
+      self:sleep(9999)
+   end,
+
+   -- a red quad that accelerates from offscreen-left to offscreen-right
+   -- this makes use of the _screen and Color aliases
+   Def.Quad{
+      Name="RedQuad",
+      InitCommand=function(self)
+         self:zoomto(100,100):diffuse(Color.Red)
+      end,
+      OnCommand=function(self)
+         self:xy( -100, _screen.cy )
+             :accelerate( 2 ):x( _screen.w + 100 )
+      end
+   },
+
+   -- a blue quad that decelerates from offscreen-top to offscreen-bottom
+   -- this makes use of the xy() command, which is new to SM5
+   -- as well as command-chaining (read more on the next page!)
+   Def.Quad{
+      Name="BlueQuad",
+      InitCommand=function(self)
+         self:zoomto( 100, 100 ):diffuse( Color.Blue )
+      end,
+      OnCommand=function(self)
+         self:xy( _screen.cx, -100)
+             :decelerate( 2 ):y( _screen.h + 100 )
+             :queuecommand( "TriggerSpin" )
+      end,
+      TriggerSpinCommand=function(self)
+         local greenquad_af = self:GetParent():GetChild( "GreenQuadAF" )
+         greenquad_af:GetChild( "GreenQuad" ):queuecommand( "Grow" )
+      end
+   },
+
+   -- a green quad that waits for the two quads above to finish tweening,
+   -- then grows out of the center of the screen while spinning
+
+   -- NOTE: We can't apply tween-based commands and actor effects like spin()
+   -- simultaneously.
+   -- zoomto() will override spin() for the duration of its linear tween.
+   -- The way to achive the effect of spinning toward the viewer is to
+   -- wrap the Quad in an ActorFrame, spin the ActorFrame, and zoom the Quad.
+   Def.ActorFrame{
+      Name="GreenQuadAF",
+      InitCommand=function(self)
+         self:Center()
+             :spin():effectmagnitude(0,0,180)
+      end,
+
+      Def.Quad{
+         Name="GreenQuad",
+         InitCommand=function(self)
+            self:zoomto(0,0):diffuse(Color.Green)
+         end,
+         GrowCommand=function(self)
+            self:linear(5):zoomto(_screen.w, _screen.h)
+         end,
+      }
+   }
+}
+</code></pre>
+
+<h2 id="fallback-theme-has-helpful-aliases">The <em>_fallback</em> theme has some helpful aliases.</h2>
+
+<p>This example also uses a few helper tables defined in SM5&apos;s <em>_fallback</em> theme such as the <code>Color</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Colors.lua">02 Colors.lua</a>  and the <code>_screen</code> table from <a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/01%20alias.lua">01 alias.lua</a>.</p>`,"/Actors/Sound":`<h1>Sound</h1>
+
+<p>A <em>Sound</em> actor can be used to load and play sound files.  It supports panning between the left/right stereo channels and is intended for single-use sound effects.</p>
+
+<p class="alert alert-warning">
+If you need to play an audio file that you want to be cleanly <strong>looped</strong>, you&#8217;ll have better luck using the <code>SOUND:PlayMusicPart()</code> singleton method which is documented in <a data-component="Link" href="/Singletons/SOUND">SOUND</a>.
+</p>
+
+<span class="CodeExample-Title">Minimal Example:</span>
+<pre><code class="lua">
+Def.Sound{
+   -- Note that you must tell the sound actor to play()
+   File="filepath.ogg",
+
+   OnCommand=function(self)
+      self:play()
+   end
+}
+</code></pre>
+
+<p><em>Sound</em> actors have three unique attributes: <code>SupportPan</code>, <code>SupportRateChanging</code>, and <code>IsAction</code></p>
+
+<ul>
+<li>
+	<p>
+		<strong>SupportPan</strong> Set this to <code>true</code> if you intend to have the sound played solely through the left (for <code>PLAYER_1</code>) or the right (for <code>PLAYER_2</code>) audio channel.  This is accomplished with the <code>playforplayer()</code> method.
+	</p>
+</li>
+
+<li>
+	<p>
+		<strong>SupportRateChanging</strong> Set this to <code>true</code> if you intend to manipulate the pitch and/or speed of the underlying RageSound.
+	</p>
+</li>
+<li>
+	<p>
+		<strong>IsAction</strong> Set this to <code>true</code> if you are want this Sound actor to be muted as a <em>theme action</em> via <kbd>F3</kbd>+<kbd>A</kbd>.  This can be useful to keep themers sane while they are repeatedly debugging a single screen over and over again.
+	</p>
+</li>
+</ul>
+
+<span class="CodeExample-Title">SupportPan Example:</span>
+<pre><code class="lua">
+-- this Sound actor will play the current theme's
+-- "common start" sound first for PLAYER_1, then
+-- wait two seconds, and then play it for PLAYER_2
+
+Def.Sound{
+   File=THEME:GetPathS("common", "start"),
+   Name="SFX_With_Pan",
+
+   SupportPan=true,
+   SupportRateChanging=true,
+   IsAction=false,
+
+   OnCommand=function(self)
+      -- play the sound out of the left channel
+      self:playforplayer(PLAYER_1)
+      self:queuecommand("PlayAgain")
+   end,
+   PlayAgainCommand=function(self)
+      self:sleep(2)
+
+      -- play the sound out of the right channel
+      self:playforplayer(PLAYER_2)
+   end
+}
+</code></pre>
+
+
+<span class="CodeExample-Title">SupportRateChanging Example:</span>
+<pre><code class="lua">
+-- variables local to this file
+local ragesound_file
+local current_pitch = 1
+
+-- this Sound actor will play the same audio file
+-- three times sequentially, each time with a higher pitch
+Def.Sound{
+   File=THEME:GetPathS("common", "start"),
+   Name="SFX_With_Pitch",
+   SupportRateChanging=true,
+
+   OnCommand=function(self)
+      self:queuecommand("Play")
+   end,
+   PlayCommand=function(self)
+
+      -- get the underlying sound file data
+      ragesound_file = self:get()
+
+      -- RageSound:pitch() take a float where
+      -- 1.0 is "normal", 2.0 is twice as high as normal, etc.
+      ragesound_file:pitch( current_pitch )
+
+      -- play the sound file using both stereo channels
+      self:play()
+
+      -- increment current_pitch
+      current_pitch = current_pitch + 1
+
+      -- prevent infinite looping
+      if current_pitch < 4 then
+         -- sleep for two seconds and do it again
+         self:sleep(2):queuecommand("Play")
+      end
    end
 }
 </code></pre>`,"/Actors/Sprite":`<h1>Sprite</h1>
@@ -1012,742 +1747,9 @@ af[#af+1] = Def.Sprite{
 
 return af
 </code></pre>
-`,"/Introduction/Lua":`<h1>Differences between Lua 5.0 and Lua 5.1</h1>
+`,"/Theming/Hacking-on-an-Existing-Theme":`<h1>Hacking On An Existing Theme</h1>
 
-<p>SM3.95 used <a href="http://www.lua.org/versions.html#5.0">Lua 5.0</a>, while SM5 currently uses <a href="http://www.lua.org/versions.html#5.1">Lua 5.1</a>.
-The primary differences that will likely impact your scripting experience are:</p>
-
-
-<h2 id="modulus-operator">Modulus Operator as %</h2>
-
-<p>Lua 5.0 required <code>math.mod()</code> to perform modulo operations, while Lua 5.1 introduced a proper modulus operator.</p>
-
-<span class="CodeExample-Title">Modulus operator example:</span>
-<pre><code class="lua">
-local teamdragonforce = 3 % 2
-print(teamdragonforce)
--- output: 1
-</code></pre>
-
-
-<h2 id="table-size-operator">Table Size Operator as &#35;</h2>
-
-<p>Lua 5.0 required the  <code>table.getn()</code> function to determine the size of an indexed table, while Lua 5.1 introduced a simple operator for this common task.</p>
-
-<span class="CodeExample-Title">Indexed table size operator:</span>
-<pre><code class="lua">
--- this table is indexed, so the # operator works
-local StomperZ = { "fast", "brutal", "bearlike" }
-print(#StomperZ)
--- output: 3
-
--- this table is key/value, so the # operator does NOT work
-local NotIndexed = {
-   blah = "fast",
-   nah = "brutal",
-   whatever = "bearlike"
-}
-print(#NotIndexed)
--- output: 0
-</code></pre>
-
-
-
-<h2 id="simple-for-loop">Simple For Loop Deprecation</h2>
-
-<p>For the official explanation, read <a href="http://www.luafaq.org/#T1.13">http://www.luafaq.org/#T1.13</a></p>
-
-<hr />
-
-<h2 id="xml-converted-to-lua">XML in SM3.95 converted to Lua in SM5</h2>
-
-<p>A typical SM3.95 XML file would feature an ActorFrame element which would contain various children Actors.  This model is conceptually the same in SM5, but uses <code>.lua</code> files instead of <code>.xml</code> files.  So, where Actors were represented by <em>XML elements</em> in SM3.95, they are <strong>Lua tables</strong> in SM5.</p>
-
-
-
-<h2 id="example-SM3.95-file">An Example SM3.95 XML File</h2>
-
-<p>SM3.95 had 17 unique Actor classes, each of which could be invoked with a corresponding XML element.</p>
-
-<p>A simple XML file containing some Actors commonly used in SM3.95 might look like:</p>
-
-<span class="CodeExample-Title">A typical SM3.95 XML script:</span>
-<pre><code class="xml">
-&lt;!-- ActorFrame is an Actor --&gt;
-&lt;ActorFrame OnCommand=&quot;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;sleep,9999&quot;&gt;
-&lt;children&gt;
-
-&lt;!-- Quad is an Actor --&gt;
-&lt;Quad
-   InitCommand=&quot;zoomto,50,137&quot;
-/&gt;
-
-&lt;!-- BitmapText is also an Actor --&gt;
-&lt;BitmapText
-  File=&quot;_eurostile normal&quot;
-  Text=&quot;Eat Poptarts.&quot;
-/&gt;
-
-&lt;!-- Sprite is, that&#x27;s right, an Actor --&gt;
-&lt;Sprite
-  Texture=&quot;chrismarks.png&quot;
-  Frame0000=&quot;0&quot;
-/&gt;
-
-&lt;/children&gt;
-&lt;/ActorFrame&gt;
-</code></pre>
-
-
-<h2 id="example-SM5-file">The Example File Converted to SM5 Lua</h2>
-
-<p>In SM5, these same Actors exist (and quite a few more; 43 in total!), but the means of invoking them has changed since pure Lua files have replaced XML.  For a complete list of SM5 Actors, see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
-
-<p>The most commonly used Actors will each be discussed in detail in the following sections.  For now, we&apos;ll start by looking at the <em>SimpleExample.xml</em> if we were to convert it to SM5 Lua:</p>
-
-<span class="CodeExample-Title">The same script written in SM5 Lua:</span>
-<pre><code class="lua">
---start by defining an ActorFrame
---we'll call it ExampleAF (example ActorFrame)
-local ExampleAF = Def.ActorFrame{
-   OnCommand=function(self)
-      self:Center():sleep(9999)
-   end,
-
-   -- since Actors are just Lua tables
-   -- we can nest them directly inside
-   -- the parent ActorFrame table like this
-   Def.Quad{
-      InitCommand=function(self)
-        self:zoomto(50,137)
-      end
-   },
-
-   -- note that since these are elements in
-   -- a Lua table, everything is comma-delimited
-   Def.BitmapText{
-      Font="Common Normal",
-      Text="Eat Poptarts."
-   }
-}
-
---since ExampleAF is an indexed Lua table, we can also
---add elements to its next index externally like this:
-ExampleAF[#ExampleAF + 1] = Def.Sprite{
-   Texture="chrismarks.png"
-}
-
---Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
---sort of Actor. Typically, we end up returning an ActorFrame.
-return ExampleAF
-</code></pre>
-
-
-
-<h2 id="dynamically-adding-actors">Dynamically Adding Actors in SM5</h2>
-<p>
-   We can take advantage of the idea that SM5 uses
-   the Lua rather than XML to dynamically add actors
-   to an ActorFrame.  Depending on the scenario and
-   the number of Actors being added to an ActorFrame,
-   this can <em>greatly</em> reduce the lines of code
-   you&apos;ll need to write.
-</p>
-
-<p>
-   Imagine that you have a single png asset, <em>dog.png</em>
-   and you want five instances of it to appear on the screen.
-   You&apos;d like the end result to look like this:
-</p>
-
-<p><img alt="" class="img-fluid" src="/Lua-For-SM5/img/dogs.png" /></p>
-
-<p>
-   The basic idea is the same regardless of whether you are using
-   SM3.95 or SM5: you&apos;ll need to define five
-   <Link to="/Def.Sprite">Sprite Actors</Link> within your main
-   ActorFrame.  To achieve this in SM3.95&apos;s XML, you could do
-   something like this:
-</p>
-
-<span class="CodeExample-Title">Five Dogs in XML:</span>
-<pre><code class="xml">
-&lt;ActorFrame OnCommand=&quot;sleep,9999&quot;&gt;
-&lt;children&gt;
-   &lt;Sprite
-      Name=&quot;sprite 1&quot;
-      Texture=&quot;./dog.png&quot;
-      InitCommand=&quot;x,50;y,50&quot;
-   /&gt;
-   &lt;Sprite
-      Name=&quot;sprite 2&quot;
-      Texture=&quot;./dog.png&quot;
-      InitCommand=&quot;x,150;y,150&quot;
-   /&gt;
-   &lt;Sprite
-      Name=&quot;sprite 3&quot;
-      Texture=&quot;./dog.png&quot;
-      InitCommand=&quot;x,250;y,250&quot;
-   /&gt;
-   &lt;Sprite
-      Name=&quot;sprite 4&quot;
-      Texture=&quot;./dog.png&quot;
-      InitCommand=&quot;x,350;y,350&quot;
-   /&gt;
-   &lt;Sprite
-      Name=&quot;sprite 5&quot;
-      Texture=&quot;./dog.png&quot;
-      InitCommand=&quot;x,450;y,450&quot;
-   /&gt;
-&lt;/children&gt;
-&lt;/ActorFrame&gt;
-</code></pre>
-
-<p>That&apos;s about 30 lines of code already to basically do nearly the same thing five times.  If you&apos;re thinking that a <strong>loop</strong> might be handy here, you&apos;re on <em>exactly</em> the right track!  Let&apos;s rewrite that XML to be Lua for SM5.</p>
-
-<span class="CodeExample-Title">Five Dogs in Lua:</span>
-<pre><code class="lua">
-local af = Def.ActorFrame{
-   OnCommand=function(self) self:sleep(999) end
-}
-
--- loop from 0 to 4 and add a Sprite Actor to the af ActorFrame each time
-for i=0,4 do
-   af[#af+1] = LoadActor("./dog.png")..{
-      Name="sprite " .. i+1,
-      InitCommand=function(self)
-         self:xy(i*100+50, i*100+50)
-      end
-   }
-end
-
-return af
-</code></pre>
-
-<p>
-   We were able to accomplish the same effect using
-   a <strong>numerical for loop</strong> in SM5&apos;s
-   Lua in only 15 lines!
-</p>
-
-<p>
-   This is a modest improvement already, but imagine
-   if we wanted to add 100 or even 1000 instances of
-   <em>dog.png</em> to the screen.  With XML, it is necessary
-   to explicitly define each Actor you want in your main
-   ActorFrame, while with Lua, it is only necessary to
-   increase the loop&apos;s stop value from <code>4</code>
-   to a different number.
-</p>`,"/Introduction/Foreword":`<h1>What are Actors?</h1>
-
-<h2 id="tables-within-tables">Tables Within Tables Within...</h2>
-
-<p>An Actor is the most basic unit of StepMania scripting.  Virtually everything else that you work with in SM5 Lua, be it a Sprite, a BitmapText, or an ActorMultiVertex, is built on top of the foundation that Actor provides.</p>
-
-<p>From a scripter&#8217;s perspective, an Actor is a Lua table with a few special properties that the StepMania engine will look for.  Other StepMania elements that derive from Actor are also really just Lua tables as well.</p>
-
-<p>So if you are familiar with <em>ActorFrames</em>, the StepMania element that serves as a container for manipulating multiple Actors simultaneously within itself, you can start to appreciate how an ActorFrame is a table that contains Actors which are tables.</p>
-
-<p>It&#8217;s tables all the way down.</p>
-
-<h2 id="types-of-actors">Types of Actors</h2>
-
-<p>There are 43 specialized types of Actors available to StepMania&#8217;s Lua scripting interface.  Each type has unique methods available to it and a unique use-case.  For example,</p>
-
-<ul>
-	<li><code>Quad</code> actors are quadrilaterals that you can programmatically manipulate</li>
-	<li><code>BitmapText</code> actors are used to draw text to the screen</li>
-	<li><code>ActorMultiVertex</code> actors are arbitrary polygons that you can programmatically manipulate</li>
-	<li><code>Sprite</code> actors are used to load visual assets like png images or avi movies</li>
-	<li><code>ActorFrame</code> actors serve as containers for other actors, and are useful when you want to manipulate a group of actors simultaneously, rather than individually</li>
-	<li>etc.</li>
-</ul>
-
-<p>For a complete list of SM5 Actor types, see <a href="https://github.com/stepmania/stepmania/blob/master/Docs/Themerdocs/actordef.txt">./Docs/ThemerDocs/actordef.txt</a></p>
-
-<hr />
-<h2 id="example-StepMania-Lua-script">Example StepMania Lua Script</h2>
-
-<p>The most commonly used Actors will each be discussed in detail in the chapters under <strong>Actors</strong> in the navigation menu.  For now, we&#8217;ll start by looking at a simple Lua script for StepMania 5.</p>
-
-
-<span class="CodeExample-Title">A Simple SM5 Lua Script:</span>
-<pre><code class="lua">
--- start by defining an ActorFrame
--- call it ExampleAF (example ActorFrame)
-local ExampleAF = Def.ActorFrame{
-   OnCommand=function(self)
-      self:Center():sleep(9999)
-   end,
-
-   -- since Actors are just Lua tables
-   -- we can nest them directly inside
-   -- the parent ActorFrame table like this
-   Def.Quad{
-      InitCommand=function(self)
-         self:zoomto(50,137)
-      end
-   },
-
-   -- note that since these are elements in
-   -- a Lua table, everything is comma-delimited
-   Def.BitmapText{
-      Font="Common Normal",
-      Text="Eat Poptarts."
-   }
-}
-
-
--- since ExampleAF is an indexed Lua table, we can also
--- add elements to its next index externally like this:
-ExampleAF[#ExampleAF + 1] = Def.Sprite{
-   Texture="chrismarks.png"
-}
-
--- Every Lua Theme/BGCHANGE/FGCHANGE file in SM5 must return some
--- sort of Actor. Typically, we end up returning an ActorFrame.
-return ExampleAF
-</code></pre>
-
-
-<h2 id="only-one-actor-returned-per-file">Only one Actor can be returned per file.</h2>
-
-<p>
-   The StepMania engine expects one Actor to be returned per Lua file,
-   yet the example above features four Actors:
-</p>
-
-<ul>
-	<li>1 ActorFrame</li>
-	<li>1 Quad</li>
-	<li>1 BitmapText</li>
-	<li>1 Sprite</li>
-</ul>
-
-<p>
-   How do we make this work?
-</p>
-
-<p>
-   The solution reveals a prominent design paradigm
-   in StepMania scripting – put all other Actors inside
-   the ActorFrame and return the ActorFrame.  An ActorFrame
-   is just one type of Actor, and any valid Actor may be returned.
-</p>
-
-<p>
-   If your Lua file is <em>very</em> simple, you may only have one
-   Actor, maybe a Sprite or a Quad.  In such situations, it is not
-   necessary to wrap the single Actor in an ActorFrame;
-   <em>any valid StepMania Actor may be returned.</em>
-</p>
-
-<p>
-   Still, most files end up being complex enough to warrant
-   using an ActorFrame.
-</p>`,"/Introduction/Supported-File-Extensions":`<h1>Supported File Extensions</h1>
-
-<p>In StepMania 5, the supported file extensions are listed in <a href="https://github.com/stepmania/stepmania/blob/5_1-new/src/ActorUtil.cpp#L521-L572">/src/ActorUtil.cpp</a>:</p>
-
-<ul>
-	<li><strong>Images:</strong> bmp, gif, jpeg, jpg, png</li>
-	<li><strong>Audio:</strong> mp3, oga, ogg, wav</li>
-	<li><strong>Video:</strong> avi, f4v, flv, mkv, mp4, mpeg, mpg, mov, ogv, webm, wmv</li>
-	<li><strong>3D Models:</strong> txt</li>
-</ul>
-
-<hr />
-
-<h2 id="extra-notes">Extra Notes on Filetypes</h2>
-
-<h4>Images:</h4>
-
-<p><em>.png</em> files with even dimensions are strongly preferred.</p>
-
-<h4>Audio:</h4>
-
-<p><em>.ogg</em> files are strongly preferred; variable-bitrate mp3 files <a href="https://github.com/stepmania/stepmania/issues/369">are buggy</a>.</p>
-
-<h4>Video:</h4>
-
-<p>SM5 supports a broad array of codecs and containers via <a href="https://www.ffmpeg.org/">ffmpeg</a>.</p>
-
-<p>Please note that you cannot play audio from video files. One workaround is to extract the audio from the video, and play it at the same time as the video.</p>
-
-<p>You are generally safe to use HD video without performance issues if the computer is from the last six or seven years. The <em>.avi</em> container in conjunction with the h264 codec works great.  As of this writing, the <strong>h265 codec is not supported</strong> by SM5&apos;s version of ffmpeg.</p>
-
-<p><a href="https://handbrake.fr/">Handbrake</a> is a useful, free application you can use to resize your videos and convert them to one of the aforementioned formats with the h264 codec.</p>
-
-<h4>3D Models:</h4>
-
-<p>3D Models still rely on MilkShape 3D ASCII text as they have since StepMania 3.9.  Documentation is scarce at best.  Sorry.</p>`,"/Introduction/Mod-Chart-Setup":`<h1>Setting Up a "Mod" Chart</h1>
-<p>
-   StepMania simfiles can be scripted to enhance gameplay using Lua and the SM5 API.
-   This chapter will briefly demonstrate how to prepare a simfile for such scripting.
-</p>
-<p class="alert alert-warning">
-   This chapter is a work-in-progress!
-</p>
-<h2 id="loading-scripts-through-FGCHANGES">Loading Lua Script Through <code>FGCHANGES</code></h2>
-<p>
-   In StepMania, stepcharts can load Lua code as a "foreground animation" through the
-   <code>FGCHANGES</code> field in a stepchart's .ssc file.  StepMania's built-in stepchart
-   editor does not have any way to configure the <code>FGCHANGES</code> field directly, so
-   you'll need to open your stepchart's .ssc file in a text editor and add the line yourself.
-</p>
-<p>
-   The <code>FGCHANGES</code> field in your .ssc file accepts several arguments delimited by equals
-   signs. The first two are the most important:
-</p>
-<ul>
-   <li>the beat in Gameplay at which you want the Lua file to be activated</li>
-   <li>a path to the Lua file where you will be writing your code</li>
-</ul>
-<p>
-   So, for example, if you named your script <em>default.lua</em> and wanted it to trigger
-   at beat 4, you would need to change your .ssc file to include:
-</p>
-<pre><code>#FGCHANGES: 4.000=./default.lua=1.000=0=0=1=====;</code></pre>
-<p>
-   The other arguments (the <code>1.000</code> and subsequent <code>0</code>s and
-   <code>1</code>s) are
-   <a href="https://github.com/stepmania/stepmania/wiki/sm#bgchanges">
-      various flags that are basically vestiges
-   </a>
-   from SM3.9 that are necessary to include but will have no impact on your Lua.
-   For FGCHANGES, you can just copy/paste them into your .sm file for each FGCHANGE.
-</p>
-
-<h2 id="FGCHANGES-must-animate">FGCHANGES <em>must</em> be constantly animating</h2>
-<p>
-   Any Lua-based actors loaded as FGCHANGES will be marked as done/complete by the engine
-   as soon as no actors are actively <a data-component="Link" href="/Theming/Simple-Tweens">tweening</a>
-   in some way.
-</p>
-<p>
-   A common strategy is to ensure that this doesn't occur prematurely is to add a
-   dummy keep-alive Actor that does nothing but sleep for as long as you want
-   the overall Lua file to persist for. That might look like:
-</p>
-<pre><code class="lua">
--- a Lua file can only return one Actor
--- the common strategy is to return one ActorFrame that contains many sub-Actors
-return Def.ActorFrame{
-   -- keep-alive Actor
-   -- this will allow the file and all its actors to persist for 999 seconds
-   -- or, until the end of the stepchart, whichever comes first
-   Def.Actor{ OnCommand=function(self) self:sleep(999) end },
-
-   -- the Sprite Actor
-   Def.Sprite{
-      Texture="awesome.png",
-      OnCommand=function(self)
-         self:Center():FullScreen():sleep(3):diffusealpha(0)
-      end
-   }
-}
-</code></pre>
-<p>
-   In the example above, the the Sprite has a <code>sleep(3)</code> tween,
-   so it would appear on the screen for 3 seconds at beat 4 (specified by the .sm file)
-   and then have an alpha of <code>0</code> applied, causing it to be effectively invisible.
-</p>
-
-<h2 id="common-gotchas">Common Gotchas</h2>
-<p>
-   If you are testing this in SM5's editor, you'll need to ensure that you have
-   <strong>Show Background Changes</strong> enabled, otherwise neither BGCHANGES
-   nor FGCHANGES will appear.
-</p>
-<p>
-   SM5's Lua error reporting interface is invaluable when scripting things like this.
-   You can toggle it on/off by holding <kbd>F3</kbd> and tapping <kbd>F6</kbd> then tapping <kbd>8</kbd>
-</p>
-<p>
-   Finally, if there are no Lua errors, and you still can't get anything to appear,
-   you may need to reload your stepchart.
-</p>`,"/Best-Practices/Command-Chaining":`<h1>Command-Chaining</h1>
-
-<p>In StepMania 5, commands applied to actors can be chained, resulting in a more clean and terse syntax than was possible before.</p>
-
-<p>The following two syntaxes produce the same results:</p>
-
-<span class="CodeExample-Title">Long Form</span>
-<pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      self:zoomto(100,200)
-      self:xy(_screen.cx, 100)
-      self:diffuse(Color.Green)
-      self:linear(1)
-      self:y(_screen.h-100)
-   end
-}
-</code></pre>
-
-<span class="CodeExample-Title">Condensed Via Command Chaining</span>
-<pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      self:zoomto(100,200):xy(_screen.cx, 100):diffuse(Color.Green)
-          :linear(1):y(_screen.h-100)
-   end
-}
-</code></pre>
-
-<p>While commands <em>can</em> be chained ad infinitum, an appropriate rule of thumb is to chain contextually-related commands together, and start a new line when a new context arises.  For example, consider starting with a tween command and then successively chaining the commands that are to be tweened.</p>`,"/Best-Practices/Debugging":`<h1>Debugging</h1>
-
-<p>Using <a data-component="Link" href="/Singletons/SCREENMAN">SCREENMAN</a>&apos;s <code>SystemMessage()</code> method may perhaps be the most tried-and-true means of quickly displaying debugging output to the Screen.  <code>SystemMessage()</code> accepts a string as an argument and displays it at the top of the screen for a few seconds.</p>
-
-<p>Let&apos;s jump into a simple example from ScreenGameplay where we listen for and print out JudgmentMessages.  A <em>Judgment</em> is how each step is evaluated as it passes in Gameplay.  Each Judgment has a corresponding JudgmentMessage broadcast by the engine that contains information about that Judgment.</p>
-
-<span class="CodeExample-Title">Using SystemMessage() to print debug output</span>
-<pre><code class="lua">
--- Since the engine only broadcasts JudgmentMessages to ScreenGameplay,
--- this example only makes sense and does anything in ScreenGameplay.
-
-return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- Note that JudgementMessages will be broadcast for any human players,
-      -- but to keep this example simple, we'll limit it to PLAYER_1.
-      if params.Player == PLAYER_1 then
-
-         -- This SystemMessage will display each judgment in string
-         -- form at the top of the screen as it occurs.
-         -- So, if a note passes and the player misses it,
-         -- "TapNoteScore_Miss"  would be displayed at the
-         -- top of the screen.
-         --
-         -- A W1 judgment (Marvelous in DDR, Fantastic in ITG, etc.)
-         -- would display "TapNoteScore_W1".
-         -- (Note that the "W" is for window, as in "timing window.")
-         --
-         -- Hold notes have their own, separate judgment system.
-         -- So, when a hold note is judged, a JudgmentMessage will be
-         -- broadcast, but the TapNoteScore parameter will be nil.
-         -- Account for that here with a logical or statement that tries
-         -- params.HoldNoteScore if params.TapNoteScore is nil.
-         SCREENMAN:SystemMessage( params.TapNoteScore or params.HoldNoteScore )
-      end
-   end
-}
-</code></pre>
-
-<h2 id="using-systemmessage">Using SystemMessage() to display Table output</h2>
-
-<p><code>SystemMessage()</code> displays strings, not tables, so if in our debugging endeavors we want such functionality, we&apos;ll have to enhance SystemMessage some with custom Lua.  The <em>Simply Love</em> theme for SM5 <a href="https://github.com/quietly-turning/Simply-Love-SM5/blob/master/Scripts/06%20SL-Utilities.lua">includes some helper functions</a>.  As the author of that theme, I encourage you to use that code in your own scripting/theming endeavors.  One way to do this is to include a copy of <strong>SL-Utilities.lua</strong> in the <em>./Scripts</em> directory of your current theme.</p>
-
-<p>The function defined in <strong>SL-Utilities.lua</strong> that is relevant here is <code>SM()</code>  which is short for SystemMessage.  Assuming that SL-Utilities.lua is copied into the current theme&apos;s Scripts directory and loaded (by restarting StepMania or pressing <kbd>Control</kbd> <kbd>F2</kbd>), this example will print table of the which steps were just judged in a JudgmentMessage.</p>
-
-<span class="CodeExample-Title">Using SM() to display a small Lua table</span>
-<pre><code class="lua">
-return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- Again, limit to  PLAYER_1 for a more simple example.
-      if params.Player == PLAYER_1 then
-         -- SystemMessage a stringified table of note columns
-         -- as each judgment occurs
-         SM( params.Notes )
-      end
-   end
-}
-</code></pre>
-
-<p>The screenshot below shows that columns 4 and 1 (a left-right jump) were just missed.</p>
-
-<p>
-   <img class="img-fluid"
-      src="/Lua-For-SM5/img/using-SM-to-debug-table.png"
-      alt="a screenshot demonstrating how to use the SM helper function to debug a Lua table"
-   />
-</p>
-
-<h2 id="using-trace">Knowing when to use Trace()</h2>
-<p>
-   <code>SystemMessage()</code> is not the only debugging tool available in StepMania.
-   <code>SystemMessage()</code> has limited usefulness since large Lua tables can
-   easily contain more data than StepMania&apos;s window can reasonably display.  In
-   such situations, a proper Lua <code>Trace()</code> is preferred.  Output from
-   <code>Trace()</code> is written to <em>Logs/Log.txt</em>
-</p>
-
-<h2 id="helper-functions-from-fallback">Helper Functions from <em>_fallback</em></h2>
-<p>
-   StepMania&apos;s <em>_fallback</em> theme includes a  <code>rec_print_table()</code>
-   function to assist with recursively printing deeply nested Lua tables to the Log.txt
-   file.  Here is the example from above, reworked to to use <code>rec_print_table()</code>
-   to write the entire params table to file.
-</p>
-
-<span class="CodeExample-Title">Using rec_print_table() to log a large Lua table</span>
-<pre><code class="lua">
-return Def.Actor{
-   JudgmentMessageCommand=function(self, params)
-      -- recursive print the entire table of JudgmentMessage parameters
-      -- to Logs/Log.txt.  This would be more information than could fit
-      -- onscreen at a single moment.
-      rec_print_table( params )
-   end
-}
-</code></pre>`,"/Singletons/SCREENMAN":`<h1>SCREENMAN Singleton</h1>
-
-<p>
-   The SCREENMAN (short for <em>Screen Manager</em>) singleton is primarily used
-   in conjunction with its <code>GetTopScreen()</code> method to do just that –
-   get the screen that is currently on the top of StepMania&apos;s screen stack.
-   (This typically means the current screen.)
-</p>
-
-<p>
-   SCREENMAN also has a some other methods which are worth knowing, namely
-   <code>SystemMessage()</code>.   As we&apos;ll demonstrate in
-   <a data-component="Link" href="/Best-Practices/Debugging">the chapter on Debugging</a>,
-   <code>SystemMessage()</code>  can be handy for quick debugging.
-</p>
-
-<h2 id="GetTopScreen">GetTopScreen()</h2>
-
-<p>
-   Within the context of theming and simfile scripting, calling
-   <code>SCREENMAN:GetTopScreen()</code> will return the screen currently
-   being displayed in the form of a <em>screen</em> object.  For example,
-   calling it on ScreenGameplay will get you the gameplay screen in the
-   form of a screen object.  Calling it on ScreenPlayerOptions wil do similarly
-   but return the player options screen.
-</p>
-
-<p>
-   While there are some methods available to <em>all</em>
-   <a data-component="Link" href="/LuaAPI#Screens">screen classes</a> (like
-   <code>AddInputCallback()</code> which is covered in <a data-component="Link" href="/Theming/Arbitrary-Input">Handling
-   Arbitrary Input</a>), there are many more that depend on the class of the current Screen.
-   A screen object of class <em>ScreenGameplay</em> will have the method <code>GetLifeMeter()</code>
-   which returns a <a data-component="Link" href="/LuaAPI#Classes-LifeMeter">LifeMeter</a> object.
-   A screen object of class <em>ScreenSelectMusic</em> will have the method <code>GetMusicWheel()</code>
-   which returns a <a data-component="Link" href="/LuaAPI#Classes-MusicWheel">MusicWheel</a> object.
-</p>
-
-<h2 id="example-usage">Example Usage</h2>
-
-<p>
-   Here is a small example that uses <code>GetTopScreen()</code> on ScreenSelectMusic
-   to get a Lua reference to the MusicWheel and change the current sort of that MusicWheel.
-   In order for this code to work, it must be called from a theme&apos;s ScreenSelectMusic.
-</p>
-
-<span class="CodeExample-Title">Using SCREENMAN:GetTopScreen() to get ScreenSelectMusic</span>
-<pre><code class="lua">
-return Actor{
-   -- InitCommand happens before the screen we want is the TopScreen,
-   -- so calling GetTopScreen() during an InitCommand would fetch the
-   -- screen being transitioned out of that is about to be destroyed.
-   -- It WILL be ready by the time OnCommand is called, however.
-
-   OnCommand=function(self)
-      -- Since this Lua is being called on ScreenSelectMusic
-      -- the topscreen variable will be a screen object of ScreenSelectMusic.
-      local topscreen = SCREENMAN:GetTopScreen()
-
-      -- Get a Lua reference to the engine's MusicWheel
-      -- This is a Lua object of type "MusicWheel"
-      local MusicWheel = topscreen:GetMusicWheel()
-
-      -- Change the current sort of the MusicWheel.
-      -- Fot a full list of available sorts, check the SortOrder enum
-      -- as documented in the Lua API.
-      MusicWheel:ChangeSort("SortOrder_Artist")
-   end
-}
-</code></pre>
-
-<p>
-   Again, there are many custom methods that belong to the many different classes
-   of screens, more than can be reasonably documented here.  For a full list, please
-   refer to the various screen classes documented in the
-   <a data-component="Link" href="/LuaAPI">SM5 Lua API</a>.  This currently includes
-   everything from <strong>Class Screen</strong>:<em>ActorFrame</em> down to
-   <strong>Class ScreenWithMenuElementsSimple</strong>:<em>ScreenWithMenuElements</em>
-   (with the exception of ScreenManager itself, of course!).
-</p>`,"/Singletons/SOUND":`<h1>SOUND Singleton</h1>
-
-<p>
-   The SOUND singleton can be used to play audio files from a theme
-   or simfile and has some capabilities that a
-   <a data-component="Link" href="/Actors/Sound">Sound actor</a> lacks.
-</p>
-
-<h2 id="looping-audio">SOUND can be used to loop audio files cleanly</h2>
-
-<p>
-   Namely, SOUND can be used to easily and cleanly loop audio files via
-   the <code>PlayMusicPart()</code> method.  Additionally, SOUND has some
-   helpful methods like <code>DimMusic()</code> and <code>StopMusic()</code>
-   that might make it especially interesting from the perspective of a simfile
-   mini-game.
-</p>
-
-<p>
-   Here's a simple example that could be called from within a simfile&apos;s BGCHANGE
-   or FGCHANGE script.  It assumes that there is a file <em>love-is-war.ogg</em> located
-   in the root of the song directory.  This example uses <code>PlayMusicPart()</code>
-   which accepts eight arguments:
-</p>
-
-<ol>
-	<li><strong>music_path</strong> (string) – the path to the audio file you want to load</li>
-	<li><strong>music_start</strong> (float) – how many seconds into the file you want playback to start</li>
-	<li><strong>music_length</strong> (float) – how many seconds of the file you want to play</li>
-	<li><strong>fade_in</strong> (float) – how many seconds should the file fade in over</li>
-	<li><strong>fade_out</strong> (float) – how many seconds should the file fade out over</li>
-	<li><strong>loop</strong> (boolean) – set to <code>true</code> if you want the audio file to loop until told to stop</li>
-	<li><strong>apply_rate</strong> (boolean) – should this audio file follow the engine&apos;s internal sense of music rate?</li>
-	<li><strong>align_beat</strong> (boolean) – if <code>true</code> or <code>nil</code>, the playback duration is automatically adjusted to cover an integer number of beats</li>
-</ol>
-
-<span class="CodeExample-Title">Simple usage of SOUND singleton:</span>
-<pre><code class="lua">
-return Def.Actor{
-   Name="BGM",
-   OnCommand=function(self, params)
-      local directory = GAMESTATE:GetCurrentSong():GetSongDir()
-      local path = directory .. "love-is-war.ogg"
-
-      -- love-is-war.ogg is 4 minutes and 10 seconds in duration.
-      -- We want it to loop.
-      SOUND:PlayMusicPart(path, 0, 250.4, 0, 0, true, true, true)
-
-      -- Wait 10 seconds, then queue a command where we'll
-      -- lower the playback volume
-      self:sleep(10):queuecommand("LowerPlaybackVolume")
-   end,
-
-   LowerPlaybackVolumeCommand=function(self)
-      -- Lower the volume to 33% for a duration of 10 seconds.
-      SOUND:DimMusic(0.33, 10)
-   end,
-
-   OffCommand=function(self)
-      -- We don't want this audio to continue playing past
-      -- ScreenGameplay, so, when this actor's OffCommand
-      -- is triggered, stop the SOUND singleton.
-      SOUND:StopMusic()
-   end
-}
-</code></pre>
-
-<h2 id="SOUND-or-def.sound">SOUND or Def.Sound&#123;&#125; ?</h2>
-
-<p>
-   Of course, the SOUND singleton lacks some of the special features that
-   a <a data-component="Link" href="/Actors/Sound">Sound actor</a> possesses.
-</p>
-
-<p>
-   Only one sound can be played via SOUND at any given moment, while there can be
-   multiple <em>Sound</em> actors loaded simultaneously.  Furthermore, SOUND has no
-   control over playback pitch or stereo panning.  Thus, both the SOUND singleton
-   and <em>Sound</em> actors have unique and valid use cases.
-</p>`,"/Theming/Arbitrary-Input":`<div>
+<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Arbitrary-Input":`<div>
 
 <h1>Handling Arbitrary Input</h1>
 
@@ -1951,9 +1953,7 @@ return Def.ActorFrame{
 </code></pre>
 
 </div>
-`,"/Theming/Hacking-on-an-Existing-Theme":`<h1>Hacking On An Existing Theme</h1>
-
-<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Keyboard-Commands":`<h1>Keyboard Commands</h1>
+`,"/Theming/Keyboard-Commands":`<h1>Keyboard Commands</h1>
 
 <p>
    The StepMania engine provides some keyboard commands specifically to help
