@@ -1953,229 +1953,7 @@ return Def.ActorFrame{
 </div>
 `,"/Theming/Hacking-on-an-Existing-Theme":`<h1>Hacking On An Existing Theme</h1>
 
-<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Simple-Tweens":`<h1>Simple Tweens</h1>
-
-<h2 id="animate-things-from-one-state-another">
-   Animate from one state to another
-</h2>
-<p>
-   A <em>tween</em> is a process in computer animation in which an object
-   is manipulated (translated, transformed, altered, etc.) from a starting
-   state to an ending state. In the context of StepMania scripting, tweens
-   are used to visually animate Actors.
-</p>
-<p>
-   Using StepMania's Lua API, you can use tweens for many tasks, including
-   (but not limited to):
-</p>
-<ul>
-   <li>
-      make a <a data-component="Link" href="/Actors/Sprite">Sprite Actor</a>
-      grow to be twice as large by tweening <code>zoom(2)</code>
-   </li>
-   <li>
-      make the entire Screen Actor appear to “fade out” by tweening
-      <code>diffuse(0,0,0,0)</code>
-   </li>
-   <li>
-      gradually make a <a data-component="Link" href="/Actors/BitmapText">BitmapText Actor</a>
-      by tweening <code>diffusealpha(0)</code>
-   </li>
-   <li>
-      move a <a data-component="Link" href="/Actors/Quad">Quad Actor</a>
-      diagonally 100 pixels down and 100 pixels right by tweening
-      <code>xy(100,100)</code>
-   </li>
-   <li>
-      etc.
-   </li>
-</ul>
-<p>
-   This tutorial lists the types of simple tweens available through the
-   <a data-component="Link" href="/LuaAPI">Lua API</a>, discusses how to use
-   tweens, and concludes with a full example.
-</p>
-<p>
-   To learn more about Actors and Lua scripting in StepMania, check out the
-   <a data-component="Link" href="/Introduction/Foreword">What Are Actors?</a>
-   tutorial. To learn more about what Actor methods are available for tweening,
-   refer to the <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor
-   subsection</a> of the Lua API.
-</p>
-
-<hr />
-<h2 id="tweens-defined-by-the-engine">
-   Tweens Defined by the Engine
-</h2>
-<p>
-   The StepMania engine defines four simple tweens directly:
-   <em>linear</em>, <em>accelerate</em>, <em>decelerate</em>, and <em>spring</em>.
-</p>
-<ul>
-   <li>
-      <code>linear()</code> - Execute following commands steadily, at a constant rate.
-   </li>
-   <li>
-      <code>accelerate()</code> - Starts slow and progressively speeds up.
-   </li>
-   <li>
-      <code>decelerate()</code> - Starts fast and progressively slows down.
-   </li>
-   <li>
-      <code>spring()</code> - Rapidly shoots beyond the desired end state, then
-      springs back into place.
-   </li>
-</ul>
-<p>
-   For completion's sake, it is worth noting here that <code>sleep()</code>
-   is also a tween, even though most Lua scripters working with StepMania
-   don't think of it as such. <code>sleep()</code> will wait for the
-   specified duration, then execute all following commands at once.
-</p>
-
-<hr />
-<h2 id="tweens-defined-by-fallback-theme">
-   Tweens Defined by the <em>_fallback</em> theme
-</h2>
-<p>
-   The engine also defines a fifth tween type, <em>bezier</em>, which allows
-   scripters to custom define more complex tweens. Indeed, the <em>_fallback</em>
-   theme uses the <code>bezier()</code> tween type to predefine a few extra
-   tweens for us that are simple to use.
-</p>
-<ul>
-   <li>
-      <code>smooth()</code> - Slow to start, fast in the middle, slow to finish.
-   </li>
-   <li>
-      <code>bouncebegin()</code> - Briefly inverts the tween at first, giving
-      the appearance of bouncing to start.
-   </li>
-   <li>
-      <code>bounceend()</code> - Briefly inverts the tween at the end, giving
-      the appearance of bouncing to end.
-   </li>
-   <li>
-      <code>drop()</code> - Slows as it approaches its end state, then briefly
-      accelerates the final few frames.
-   </li>
-</ul>
-<p>
-   If you are interested in learning more about <code>bezier()</code> tweens,
-   you can inspect
-   <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong>
-   in the _fallback theme's Scripts directory to see how <em>smooth</em>,
-   <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.
-</p>
-
-<hr />
-<h2 id="how-to-use-tweens">
-   How to Use Tweens
-</h2>
-<p>
-   Knowing <em>what</em> we can use is great, but it's only half the picture.
-   If you apply a tween to an Actor without any further commands, it won't
-   <em>do</em> anything. Tweens need additional commands to execute over the
-   course of their duration in order to animate in any meaningful way.
-</p>
-<p>
-   Each of the tweens listed above takes a single argument: a <em>number</em>
-   representing a duration in seconds for long the StepMania engine should
-   tween the methods that immediately follow for.
-</p>
-<p>
-   Let's illustrate what we mean by this with some examples.
-</p><span class="CodeExample-Title">Tween a quad to become twice as large:</span>
-<pre><code class="lua">
-Def.Quad{
-OnCommand=function(self)
-   -- draw a Quad in center of the screen, make it 100x100 pixels,
-   -- and make it red
-   self:Center():zoomto(100,100):diffuse(1,0,0,1)
-
-   -- over a duration of 3 seconds, have the
-   -- quad zoom to be twice its initial size
-   self:linear(3):zoom(2)
-end
-}
-</code></pre>
-<p>
-   The next example is somewhat more fun in that it appears to spin the entire
-   screen around, but it also illustrates a “gotcha” with tweening that you
-   should be aware of.
-</p>
-
-<span class="CodeExample-Title">Rotate the entire Screen on the z-axis:</span>
-<pre><code class="lua">
-Def.Actor{
-   OnCommand=function(self)
-      -- get the current Screen object using SCREENMAN
-      local screen = SCREENMAN:GetTopScreen()
-
-      -- over a duration of 2 seconds, have
-      -- the entire screen rotate 360 degrees
-      -- clockwise on the z-axis
-      screen:accelerate(2):rotationz(360)
-
-      -- wait one second
-      screen:sleep(1)
-
-      -- This should spin the screen around again, right?
-      -- Not quite. The screen's z-rotation is already set
-      -- to 360, so this will have no visible effect.
-      screen:accelerate(2):rotationz(360)
-
-      -- This, however, will because it adds more rotation
-      -- to the current state, rather than the initial state.
-      screen:accelerate(2):addrotationz(360)
-   end
-}
-</code></pre>
-<p>
-   Can you tween more than one property of an actor at once? Absolutely.
-</p>
-<p>
-   The next example demonstrates that it is possible to tween multiple methods with a single tween. After calling a tween method, all methods following it will be tweened until the next tween method is encountered.
-</p><span class="CodeExample-Title">Move a quad across the screen while fading it out:</span>
-<pre><code class="lua">
-Def.Quad{
-   OnCommand=function(self)
-      -- draw a Quad at the top-left of the screen, which is the
-      -- default draw position if no x or y coordinates are specified,
-      -- and make it 100x100 pixels
-      self:zoomto(100,100)
-
-      -- over a duration of 2 seconds, have the
-      -- quad move to the bottom-right of the screen,
-      -- and fade out by tweening the alpha channel to 0
-      -- This comprises one full tween.
-      self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
-
-      -- Here is a second, unique tween that tweens three methods
-      -- to change the color, xy-position, and y-rotation of the Quad.
-      -- Note that line breaks are fine.
-      self:accelerate(3)
-          :diffuse(1,0,0,1)
-          :xy( _screen.cx, _screen.cy )
-          :addrotationy(1080)
-   end
-}
-</code></pre>
-
-<hr />
-<h2 id="example-code">
-   Tweens in Motion
-</h2>
-<p>
-   Reading about tweens is good, but a visual is worth a thousand words.
-   Here is a scripted simfile you can run in StepMania 5 that briefly
-   demonstrates each of these tweens, one after another.
-</p>
-<p>
-   You can download that here! <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a>
-</p>
-
-`,"/Theming/Keyboard-Commands":`<h1>Keyboard Commands</h1>
+<p class="alert alert-info">This page hasn't been written yet! 😩</p>`,"/Theming/Keyboard-Commands":`<h1>Keyboard Commands</h1>
 
 <p>
    The StepMania engine provides some keyboard commands specifically to help
@@ -2405,4 +2183,226 @@ ShowRandom=true
    As a themer, being able to zoom out and see more than the player normally would can
    help you ensure <em>the thing you're animating is where it needs to be.</em>
 </p>
+`,"/Theming/Simple-Tweens":`<h1>Simple Tweens</h1>
+
+<h2 id="animate-things-from-one-state-another">
+   Animate from one state to another
+</h2>
+<p>
+   A <em>tween</em> is a process in computer animation in which an object
+   is manipulated (translated, transformed, altered, etc.) from a starting
+   state to an ending state. In the context of StepMania scripting, tweens
+   are used to visually animate Actors.
+</p>
+<p>
+   Using StepMania's Lua API, you can use tweens for many tasks, including
+   (but not limited to):
+</p>
+<ul>
+   <li>
+      make a <a data-component="Link" href="/Actors/Sprite">Sprite Actor</a>
+      grow to be twice as large by tweening <code>zoom(2)</code>
+   </li>
+   <li>
+      make the entire Screen Actor appear to “fade out” by tweening
+      <code>diffuse(0,0,0,0)</code>
+   </li>
+   <li>
+      gradually make a <a data-component="Link" href="/Actors/BitmapText">BitmapText Actor</a>
+      by tweening <code>diffusealpha(0)</code>
+   </li>
+   <li>
+      move a <a data-component="Link" href="/Actors/Quad">Quad Actor</a>
+      diagonally 100 pixels down and 100 pixels right by tweening
+      <code>xy(100,100)</code>
+   </li>
+   <li>
+      etc.
+   </li>
+</ul>
+<p>
+   This tutorial lists the types of simple tweens available through the
+   <a data-component="Link" href="/LuaAPI">Lua API</a>, discusses how to use
+   tweens, and concludes with a full example.
+</p>
+<p>
+   To learn more about Actors and Lua scripting in StepMania, check out the
+   <a data-component="Link" href="/Introduction/Foreword">What Are Actors?</a>
+   tutorial. To learn more about what Actor methods are available for tweening,
+   refer to the <a data-component="Link" href="/LuaAPI#Actors-Actor">Actor
+   subsection</a> of the Lua API.
+</p>
+
+<hr />
+<h2 id="tweens-defined-by-the-engine">
+   Tweens Defined by the Engine
+</h2>
+<p>
+   The StepMania engine defines four simple tweens directly:
+   <em>linear</em>, <em>accelerate</em>, <em>decelerate</em>, and <em>spring</em>.
+</p>
+<ul>
+   <li>
+      <code>linear()</code> - Execute following commands steadily, at a constant rate.
+   </li>
+   <li>
+      <code>accelerate()</code> - Starts slow and progressively speeds up.
+   </li>
+   <li>
+      <code>decelerate()</code> - Starts fast and progressively slows down.
+   </li>
+   <li>
+      <code>spring()</code> - Rapidly shoots beyond the desired end state, then
+      springs back into place.
+   </li>
+</ul>
+<p>
+   For completion's sake, it is worth noting here that <code>sleep()</code>
+   is also a tween, even though most Lua scripters working with StepMania
+   don't think of it as such. <code>sleep()</code> will wait for the
+   specified duration, then execute all following commands at once.
+</p>
+
+<hr />
+<h2 id="tweens-defined-by-fallback-theme">
+   Tweens Defined by the <em>_fallback</em> theme
+</h2>
+<p>
+   The engine also defines a fifth tween type, <em>bezier</em>, which allows
+   scripters to custom define more complex tweens. Indeed, the <em>_fallback</em>
+   theme uses the <code>bezier()</code> tween type to predefine a few extra
+   tweens for us that are simple to use.
+</p>
+<ul>
+   <li>
+      <code>smooth()</code> - Slow to start, fast in the middle, slow to finish.
+   </li>
+   <li>
+      <code>bouncebegin()</code> - Briefly inverts the tween at first, giving
+      the appearance of bouncing to start.
+   </li>
+   <li>
+      <code>bounceend()</code> - Briefly inverts the tween at the end, giving
+      the appearance of bouncing to end.
+   </li>
+   <li>
+      <code>drop()</code> - Slows as it approaches its end state, then briefly
+      accelerates the final few frames.
+   </li>
+</ul>
+<p>
+   If you are interested in learning more about <code>bezier()</code> tweens,
+   you can inspect
+   <strong><a href="https://github.com/stepmania/stepmania/blob/master/Themes/_fallback/Scripts/02%20Actor.lua">02 Actor.lua</a></strong>
+   in the _fallback theme's Scripts directory to see how <em>smooth</em>,
+   <em>bouncebegin</em>, <em>bounceend</em>, and <em>drop</em> are defined in Lua.
+</p>
+
+<hr />
+<h2 id="how-to-use-tweens">
+   How to Use Tweens
+</h2>
+<p>
+   Knowing <em>what</em> we can use is great, but it's only half the picture.
+   If you apply a tween to an Actor without any further commands, it won't
+   <em>do</em> anything. Tweens need additional commands to execute over the
+   course of their duration in order to animate in any meaningful way.
+</p>
+<p>
+   Each of the tweens listed above takes a single argument: a <em>number</em>
+   representing a duration in seconds for long the StepMania engine should
+   tween the methods that immediately follow for.
+</p>
+<p>
+   Let's illustrate what we mean by this with some examples.
+</p><span class="CodeExample-Title">Tween a quad to become twice as large:</span>
+<pre><code class="lua">
+Def.Quad{
+OnCommand=function(self)
+   -- draw a Quad in center of the screen, make it 100x100 pixels,
+   -- and make it red
+   self:Center():zoomto(100,100):diffuse(1,0,0,1)
+
+   -- over a duration of 3 seconds, have the
+   -- quad zoom to be twice its initial size
+   self:linear(3):zoom(2)
+end
+}
+</code></pre>
+<p>
+   The next example is somewhat more fun in that it appears to spin the entire
+   screen around, but it also illustrates a “gotcha” with tweening that you
+   should be aware of.
+</p>
+
+<span class="CodeExample-Title">Rotate the entire Screen on the z-axis:</span>
+<pre><code class="lua">
+Def.Actor{
+   OnCommand=function(self)
+      -- get the current Screen object using SCREENMAN
+      local screen = SCREENMAN:GetTopScreen()
+
+      -- over a duration of 2 seconds, have
+      -- the entire screen rotate 360 degrees
+      -- clockwise on the z-axis
+      screen:accelerate(2):rotationz(360)
+
+      -- wait one second
+      screen:sleep(1)
+
+      -- This should spin the screen around again, right?
+      -- Not quite. The screen's z-rotation is already set
+      -- to 360, so this will have no visible effect.
+      screen:accelerate(2):rotationz(360)
+
+      -- This, however, will because it adds more rotation
+      -- to the current state, rather than the initial state.
+      screen:accelerate(2):addrotationz(360)
+   end
+}
+</code></pre>
+<p>
+   Can you tween more than one property of an actor at once? Absolutely.
+</p>
+<p>
+   The next example demonstrates that it is possible to tween multiple methods with a single tween. After calling a tween method, all methods following it will be tweened until the next tween method is encountered.
+</p><span class="CodeExample-Title">Move a quad across the screen while fading it out:</span>
+<pre><code class="lua">
+Def.Quad{
+   OnCommand=function(self)
+      -- draw a Quad at the top-left of the screen, which is the
+      -- default draw position if no x or y coordinates are specified,
+      -- and make it 100x100 pixels
+      self:zoomto(100,100)
+
+      -- over a duration of 2 seconds, have the
+      -- quad move to the bottom-right of the screen,
+      -- and fade out by tweening the alpha channel to 0
+      -- This comprises one full tween.
+      self:decelerate(2):xy( _screen.w, _screen.h ):diffusealpha(0)
+
+      -- Here is a second, unique tween that tweens three methods
+      -- to change the color, xy-position, and y-rotation of the Quad.
+      -- Note that line breaks are fine.
+      self:accelerate(3)
+          :diffuse(1,0,0,1)
+          :xy( _screen.cx, _screen.cy )
+          :addrotationy(1080)
+   end
+}
+</code></pre>
+
+<hr />
+<h2 id="example-code">
+   Tweens in Motion
+</h2>
+<p>
+   Reading about tweens is good, but a visual is worth a thousand words.
+   Here is a scripted simfile you can run in StepMania 5 that briefly
+   demonstrates each of these tweens, one after another.
+</p>
+<p>
+   You can download that here! <a href="/downloads/Simple-Tweens.zip">Simple-Tweens.zip</a>
+</p>
+
 `};function CE(i){let t=jr();const r=function(s){if(s.type==="tag"&&s.name==="a"&&s.attribs&&s.attribs["data-component"]==="Link")return q.jsx(VE,{to:s.attribs.href,children:s.children[0].data})};return pe.useEffect(()=>{i.hideMobileNav(),window.scrollTo({top:0,left:0,behavior:"instant"}),document.querySelectorAll("pre code").forEach(p=>{delete p.dataset.highlighted,_A.highlightElement(p)});const s=bt.parseHTML(BR[t.pathname]),c=Array.from(bt("h2").find(s).prevObject).map(p=>{const E=bt(p);return{text:E.text(),id:E.attr("id")}});i.setToC&&i.setToC(c)},[t.pathname]),q.jsx("div",{children:mU(BR[t.pathname],{replace:r})})}function FR(i,t){var r=Object.keys(i);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(i);t&&(s=s.filter(function(c){return Object.getOwnPropertyDescriptor(i,c).enumerable})),r.push.apply(r,s)}return r}function fU(i){for(var t=1;t<arguments.length;t++){var r=arguments[t]!=null?arguments[t]:{};t%2?FR(Object(r),!0).forEach(function(s){gU(i,s,r[s])}):Object.getOwnPropertyDescriptors?Object.defineProperties(i,Object.getOwnPropertyDescriptors(r)):FR(Object(r)).forEach(function(s){Object.defineProperty(i,s,Object.getOwnPropertyDescriptor(r,s))})}return i}function gU(i,t,r){return t in i?Object.defineProperty(i,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):i[t]=r,i}function PE(){return PE=Object.assign?Object.assign.bind():function(i){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var s in r)Object.prototype.hasOwnProperty.call(r,s)&&(i[s]=r[s])}return i},PE.apply(this,arguments)}function EU(i,t){if(i==null)return{};var r={},s=Object.keys(i),c,p;for(p=0;p<s.length;p++)c=s[p],!(t.indexOf(c)>=0)&&(r[c]=i[c]);return r}function hU(i,t){if(i==null)return{};var r=EU(i,t),s,c;if(Object.getOwnPropertySymbols){var p=Object.getOwnPropertySymbols(i);for(c=0;c<p.length;c++)s=p[c],!(t.indexOf(s)>=0)&&Object.prototype.propertyIsEnumerable.call(i,s)&&(r[s]=i[s])}return r}var SU=["aria-label","aria-labelledby","tabIndex","className","fill","size","verticalAlign","id","title","style"],bU={small:16,medium:32,large:64};function hA(i,t,r){var s=r(),c=Object.keys(s),p=yo.forwardRef(function(E,S){var b=E["aria-label"],h=E["aria-labelledby"],v=E.tabIndex,R=E.className,D=R===void 0?"":R,P=E.fill,x=P===void 0?"currentColor":P,w=E.size,L=w===void 0?16:w,F=E.verticalAlign,K=F===void 0?"text-bottom":F,W=E.id,ne=E.title,B=E.style,Y=hU(E,SU),f=bU[L]||L,ie=TU(c,f),ae=s[ie].width,Re=f*(ae/ie),ye=s[ie].path,Ve=b||h,Pe=Ve?"img":void 0;return yo.createElement("svg",PE({ref:S},Y,{"aria-hidden":Ve?void 0:"true",tabIndex:v,focusable:v>=0?"true":"false","aria-label":b,"aria-labelledby":h,className:"".concat(t," ").concat(D).trim(),role:Pe,viewBox:"0 0 ".concat(ae," ").concat(ie),width:Re,height:f,fill:x,id:W,display:"inline-block",overflow:"visible",style:fU({verticalAlign:K},B)}),ne?yo.createElement("title",null,ne):null,ye)});return p.displayName=i,p}function TU(i,t){return i.map(function(r){return parseInt(r,10)}).reduce(function(r,s){return s<=t?s:r},i[0])}var SA=hA("LinkIcon","octicon octicon-link",function(){return{16:{width:16,path:yo.createElement("path",{d:"m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"})},24:{width:24,path:yo.createElement(yo.Fragment,null,yo.createElement("path",{d:"M14.78 3.653a3.936 3.936 0 1 1 5.567 5.567l-3.627 3.627a3.936 3.936 0 0 1-5.88-.353.75.75 0 0 0-1.18.928 5.436 5.436 0 0 0 8.12.486l3.628-3.628a5.436 5.436 0 1 0-7.688-7.688l-3 3a.75.75 0 0 0 1.06 1.061l3-3Z"}),yo.createElement("path",{d:"M7.28 11.153a3.936 3.936 0 0 1 5.88.353.75.75 0 0 0 1.18-.928 5.436 5.436 0 0 0-8.12-.486L2.592 13.72a5.436 5.436 0 1 0 7.688 7.688l3-3a.75.75 0 1 0-1.06-1.06l-3 3a3.936 3.936 0 0 1-5.567-5.568l3.627-3.627Z"}))}}}),vU=hA("LogoGithubIcon","octicon octicon-logo-github",function(){return{16:{width:45,path:yo.createElement("path",{d:"M10.906 13.298V5.741h2.125v7.557h-2.125Zm6.28 0c-1.412 0-1.963-.605-1.963-1.882v-3.9h-1.345V5.741h1.345V4.235l2.124-.498v2.004h1.574v1.775h-1.574v3.429c0 .417.188.578.605.578h.969v1.775h-1.735Zm14.711.135c-1.654 0-2.555-.915-2.555-2.582v-5.11h2.138v4.545c0 .928.417 1.439 1.211 1.439.914 0 1.613-.847 1.613-2.004v-3.98h2.139v7.557h-2.139v-1.277c-.403.82-1.371 1.412-2.407 1.412Zm10.126 0c-1.103 0-2.044-.592-2.42-1.439v1.304h-2.125V2.756h2.138v4.37c.363-.915 1.345-1.56 2.407-1.56 1.991 0 3.08 1.425 3.08 3.94 0 2.488-1.13 3.927-3.08 3.927Zm-.753-1.789c1.036 0 1.641-.82 1.641-2.138 0-1.331-.605-2.151-1.641-2.151-.955 0-1.654.86-1.654 2.044v.121c0 1.223.699 2.124 1.654 2.124ZM26.075 2.756v4.276h-4.008V2.756h-2.286v10.542h2.286V9.076h4.008v4.222h2.286V2.756h-2.286ZM5.083 13.5C1.963 13.5 0 11.362 0 8.013c0-3.348 2.004-5.459 5.177-5.459 2.582 0 4.142 1.102 4.64 2.958l-2.313.552c-.283-1.009-1.09-1.56-2.327-1.56-1.842 0-2.837 1.21-2.837 3.509 0 2.3.968 3.537 2.783 3.537 1.668 0 2.663-1.022 2.663-2.757V8.39l.592.82H4.935V7.274h5.164v1.224c0 3.213-1.869 5.002-5.016 5.002Zm6.885-8.472c.713 0 1.264-.551 1.264-1.264S12.681 2.5 11.968 2.5s-1.264.551-1.264 1.264.551 1.264 1.264 1.264Z"})},24:{width:68,path:yo.createElement("path",{d:"M16.442 19.707V8.714h3.204v10.993h-3.204Zm9.469 0c-2.129 0-2.96-.881-2.96-2.739v-5.672h-2.028V8.714h2.028V6.523l3.203-.723v2.914h2.372v2.582h-2.372v4.988c0 .606.284.841.912.841h1.46v2.582h-2.615Zm22.18.195c-2.494 0-3.852-1.33-3.852-3.755V8.714h3.223v6.611c0 1.35.629 2.093 1.825 2.093 1.379 0 2.433-1.232 2.433-2.914v-5.79h3.223v10.993H51.72v-1.859c-.609 1.194-2.068 2.054-3.629 2.054Zm15.266 0c-1.662 0-3.081-.86-3.649-2.093v1.898h-3.203V4.372h3.223v6.357c.548-1.33 2.027-2.269 3.629-2.269 3.001 0 4.643 2.073 4.643 5.731 0 3.618-1.703 5.711-4.643 5.711Zm-1.135-2.601c1.561 0 2.473-1.193 2.473-3.11 0-1.937-.912-3.13-2.473-3.13-1.44 0-2.494 1.252-2.494 2.973v.176c0 1.78 1.054 3.091 2.494 3.091ZM39.312 4.372v6.22H33.27v-6.22h-3.447v15.335h3.447v-6.142h6.042v6.142h3.446V4.372h-3.446ZM7.664 20C2.96 20 0 16.89 0 12.02c0-4.871 3.021-7.942 7.806-7.942 3.892 0 6.244 1.604 6.994 4.303l-3.487.802c-.426-1.467-1.642-2.269-3.507-2.269-2.778 0-4.278 1.761-4.278 5.106 0 3.344 1.459 5.144 4.197 5.144 2.514 0 4.014-1.487 4.014-4.01v-.587l.892 1.193h-5.19v-2.816h7.785v1.78c0 4.674-2.818 7.276-7.562 7.276Zm10.38-12.323c1.075 0 1.906-.802 1.906-1.838C19.95 4.802 19.119 4 18.044 4c-1.074 0-1.906.802-1.906 1.839 0 1.036.832 1.838 1.906 1.838Z"})}}});class Ec extends pe.Component{constructor(t){super(t);const r=this.props.grouping||"",s=this.props.level>2?"-":"",c=this.props.name||"";this.id=r+s+c,this.updateHash=this.updateHash.bind(this)}updateHash(){window.location.hash=`#${this.id}`}generateBase(t){if(t!==void 0)return` : <a title="${this.props.name} inherits from ${t.name}" href="#${t.grouping}-${t.name}"> ${t.name} </a>`}render(){const t=`h${this.props.level}`;let r="API-Category-Header";return t==="h3"&&(r=r+" sticky"),q.jsxs(t,{id:this.props.name,className:r,children:[q.jsx("span",{className:"octicon-link",onClick:()=>this.updateHash(),children:q.jsx(SA,{size:"medium"})}),this.props.name,this.props.smclass.base&&q.jsx("span",{className:"base",dangerouslySetInnerHTML:{__html:this.generateBase(this.props.smclass.base)}}),q.jsx("hr",{})]})}}class hc extends pe.Component{render(){return q.jsx("div",{className:"description",dangerouslySetInnerHTML:{__html:this.props.desc}})}}class bA extends pe.Component{constructor(t){super(t);const r=this.props.sm_class!==void 0?"-"+this.props.sm_class:"",s="-"+this.props.method.name;if(this.id=this.props.grouping+r+s,this.updateHash=this.updateHash.bind(this),this.props.method.url!==void 0){let c=0;for(const R of Li){if(R.name==this.props.selectedAPI.engineName)break;c=c+1}let p=0;for(const R of Li[c].versions){if(R.name==this.props.selectedAPI.versionName)break;p=p+1}const E=Li[c].github.user,S=Li[c].github.project,b=Li[c].versions[p].githash,v=`https://github.com/${E}/${S}/tree/`+b+this.props.method.url;this.github_anchor=q.jsx("a",{className:"logo-github",href:v,target:"_blank",rel:"noopener noreferrer",children:q.jsx(vU,{})})}else this.github_anchor=""}updateHash(){window.location.hash="#"+this.id}render(){return q.jsxs("div",{id:this.id,className:"method",children:[q.jsxs("div",{className:"method-signature",children:[q.jsx("span",{className:"octicon-link",onClick:this.updateHash,children:q.jsx(SA,{})}),q.jsxs("span",{children:[this.props.method.name,"(",q.jsx("code",{children:this.props.method.arguments}),")"]}),this.github_anchor]}),q.jsxs("span",{className:"method-return",children:[q.jsx("em",{children:"return: "})," ",q.jsx("span",{dangerouslySetInnerHTML:{__html:this.props.method.return}}),"  "]}),q.jsx("span",{className:"description description",dangerouslySetInnerHTML:{__html:this.props.method.desc}})]})}}class yU extends pe.Component{constructor(t){super(t);const r=this.props.smclass.name,s=this.props.grouping;this.methods=this.props.smclass.methods.map(function(c,p){return q.jsx(bA,{grouping:s,sm_class:r,method:c,...t},r+"-"+c.name+p)})}render(){return q.jsxs("div",{id:this.props.grouping+"-"+this.props.smclass.name,className:"section-child",children:[q.jsx(Ec,{grouping:this.props.grouping,name:this.props.smclass.name,smclass:this.props.smclass,level:3}),this.props.smclass.desc!=""&&q.jsx(hc,{desc:this.props.smclass.desc}),this.methods]})}}class hu extends pe.Component{constructor(t){super(t),this.smclasses=this.props.data.map(function(r,s){return q.jsx(yU,{grouping:r.grouping,smclass:r,...t},r.name)})}render(){return this.smclasses.length<1?q.jsx("section",{}):q.jsxs("section",{children:[q.jsx(Ec,{name:this.props.name,smclass:{},level:2}),q.jsx(hc,{desc:this.props.desc}),q.jsx("div",{children:this.smclasses})]})}}class CU extends pe.Component{constructor(t){super(t),this.updateHash=this.updateHash.bind(this),this.values=this.props.values.map(function(r,s){return q.jsxs("tr",{children:[q.jsx("td",{children:r.name}),q.jsx("td",{children:r.value})]},"enum-"+r.name+"-"+s)})}updateHash(){window.location.hash="#Enums-"+this.props.name}render(){return q.jsxs("div",{id:"Enums-"+this.props.name,className:"section-child",children:[q.jsx(Ec,{name:this.props.name,grouping:"Enums",smclass:{},level:3}),q.jsx(hc,{desc:this.props.desc}),q.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[q.jsx("thead",{className:"table-primary",children:q.jsxs("tr",{children:[q.jsx("th",{children:q.jsx("strong",{children:this.props.name})}),q.jsx("th",{style:{width:"15%"},children:"Value"})]})}),q.jsx("tbody",{children:this.values})]})]})}}class RU extends pe.Component{constructor(t){super(t),this.enums=this.props.data.map(function(r,s){return q.jsx(CU,{name:r.name,desc:r.desc,values:r.values},r.name)})}render(){return q.jsxs("section",{children:[q.jsx(Ec,{name:this.props.name,smclass:{},level:2}),q.jsx(hc,{desc:this.props.desc}),q.jsx("div",{children:this.enums})]})}}class NU extends pe.Component{constructor(t){super(t),this.funcs=this.props.data.map(function(r,s){return q.jsx(bA,{grouping:r.grouping,method:r,url:!0,...t},r.name)})}render(){return q.jsxs("section",{children:[q.jsx(Ec,{name:this.props.name,className:"sticky",smclass:{},level:2}),q.jsx(hc,{desc:this.props.desc}),q.jsx("div",{children:this.funcs})]})}}class AU extends pe.Component{constructor(t){super(t),this.constants=this.props.data.map(function(r,s){return q.jsxs("tr",{children:[q.jsx("td",{children:r.name}),q.jsx("td",{children:r.value})]},"constant-"+r.name)})}render(){return q.jsxs("section",{children:[q.jsx(Ec,{name:this.props.name,smclass:{},level:2}),q.jsx(hc,{desc:this.props.desc}),q.jsxs("table",{className:"table table-hover table-sm table-bordered",children:[q.jsx("thead",{className:"table-primary",children:q.jsxs("tr",{children:[q.jsx("th",{children:"Lua Variable"}),q.jsx("th",{children:"Value"})]})}),q.jsx("tbody",{children:this.constants})]})]})}}function bi(i,t){if(i===void 0)return"";const r=[];for(const s of i.find("Link")){const c={f:bt(s).attr("function"),c:bt(s).attr("class"),t:bt(s).text()};if(c.c===void 0&&c.f!==void 0){const p=i.parent().attr("name"),E=c.t!==""?c.t:c.f;if(p){for(const S in t.sections)if(t[t.sections[S]][p]){r.push(`<a href="#${t.sections[S]}-${p}-${c.f}">${E}</a>`);break}}else r.push(`<a href="#GlobalFunctions-${c.f}">${E}</a>`)}else if(c.c!==void 0&&c.f===void 0){const p=c.t!==""?c.t:c.c;let E=`<a href='#${c.c}'>${p}</a>`;for(const S in t.sections)if(t[t.sections[S]][c.c]){E=`<a href='#${t.sections[S]}-${c.c}'>${p}</a>`;break}r.push(E)}else if((c.c==="GLOBAL"||c.c==="ENUM")&&c.f!==void 0){const p=c.t!==""?c.t:c.f;c.c==="GLOBAL"?r.push(`<a href='#GlobalFunctions-${c.f}'>${p}</a>`):c.c==="ENUM"&&r.push(`<a href='#Enums-${c.f}'>${p}</a>`)}else if(c.c!==void 0&&c.f!==void 0){let p;for(const E in t.sections)if(t[t.sections[E]][c.c]){let S;t.sections[E]==="Singletons"?S=c.t!==""?c.t:`${t.Singletons[c.c]}:${c.f}()`:S=c.t!==""?c.t:`${c.c}.${c.f}()`,p=`<a href='#${t.sections[E]}-${c.c}-${c.f}'>${S}</a>`;break}p===void 0&&(p="<code>"+(c.t!==""?c.t:c.c+"."+c.f+"()")+"</code>"),r.push(p)}}return i.find("Link").each(function(s,c){bt(this).replaceWith(r[s])}),i.find("pre code").each(function(s,c){bt(c).replaceWith("<code class='lua'>"+c.textContent.trim()+"</code>")}),(i.html()||"").trim()}function OU(i){if(i===void 0)return"";if(i==="void")return i;const t=i.match(/{(.+)}/);t&&(i=t[1]);let r;const s=["Classes","Actors","Screens","Enums"];for(const c in s)if(this[s[c]][i]){r=`<a href='#${s[c]}-${i}'>${i}</a>`;break}return r===void 0&&(r=i),(t?"{ ":"")+r+(t?" }":"")}class IU extends pe.Component{constructor(t){super();const r=new URLSearchParams(window.location.search),s=r.get("engine"),c=r.get("version");if(er[s]&&er[s][c]){const p=ec(s,c);this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:p,engineName:s,versionName:c}}}else this.state={isLoaded:!1,yOffset:0,selectedAPI:{url:LE,engineName:Li[0].name,versionName:Li[0].versions[0].name}};this.docs={github:{}},this.sections=["Actors","Screens","Classes","Singletons","Namespaces","Enums"];for(const p in this.sections)this[this.sections[p]]={};this.fetchAndParseXML=this.fetchAndParseXML.bind(this),this.bubbleDataUp=this.bubbleDataUp.bind(this),this.getReturnValue=OU.bind(this),this.scroll_window_after_hashchange()}componentDidUpdate(){if(this.scroll_window_after_hashchange(),this.props.selectedAPIurl!==void 0&&this.state.selectedAPI.url!==this.props.selectedAPIurl){const t=this;this.setState({selectedAPI:{url:this.props.selectedAPIurl,engineName:this.props.selectedAPIengine,versionName:this.props.selectedAPIversion}},()=>{t.fetchAndParseXML()})}}componentDidMount(){this.fetchAndParseXML()}fetchAndParseXML(){const t=this;for(const s in this.sections)this[this.sections[s]]={};t.setState({isLoaded:!1,G:null});const r=this.state.selectedAPI.url;bt.when(bt.get(r+"LuaDocumentation.xml",s=>{t.docs.luadoc=bt(bt.parseXML(s)).children()}),bt.get(r+"Lua.xml",s=>{t.docs.luadotxml=bt(bt.parseXML(s)).children()}),bt.get(`./Luadoc++/${this.state.selectedAPI.engineName}/${this.state.selectedAPI.versionName}.json`).done(s=>{typeof s=="object"?t.docs.github.funcdefs=s:t.docs.github.funcdefs={}}).fail(()=>{t.docs.github.funcdefs={}})).then(function(){const s={classes:t.docs.luadoc.children("Classes"),actors:t.docs.luadoc.children("Actors"),screens:t.docs.luadoc.children("Screens"),namespaces:t.docs.luadoc.children("Namespaces"),enums:t.docs.luadoc.children("Enums"),singletons:t.docs.luadoc.children("Singletons"),global_functions:t.docs.luadoc.children("GlobalFunctions"),constants:t.docs.luadoc.children("Constants")},c=Array.from(t.docs.luadotxml.children("Classes").children("Class")),p=Array.from(t.docs.luadotxml.children("Namespaces").children("Namespace")),E=Array.from(t.docs.luadotxml.children("Enums").children("Enum")),S=Array.from(t.docs.luadotxml.children("Singletons").children("Singleton")),b=Array.from(t.docs.luadotxml.children("GlobalFunctions").children("Function")),h=Array.from(t.docs.luadotxml.children("Constants").children("Constant")),v=function(D){return function(P,x){return bt(P).attr(D).toUpperCase()<bt(x).attr(D).toUpperCase()?-1:bt(P).attr(D).toUpperCase()>bt(x).attr(D).toUpperCase()?1:0}};c.sort(v("name")),p.sort(v("name")),E.sort(v("name")),S.sort(v("class")),S.forEach(D=>t.Singletons[D.attributes.class.textContent]=D.attributes.name.textContent),p.forEach(D=>t.Namespaces[D.attributes[0].nodeValue]=!0),E.forEach(D=>t.Enums[D.attributes.name.textContent]=!0),c.forEach(D=>{const P=D.attributes.name.textContent;if(P in t.Singletons)return;const w=bt(s.classes).find("Class[name="+P+"]").attr("grouping")||"SMClass",L={Actor:"Actors",Screen:"Screens",SMClass:"Classes"};t[L[w]][P]=!0}),t.bubbleDataUp();const R=[{data:[],desc:bi(s.actors.children("Description"),t)},{data:[],desc:bi(s.screens.children("Description"),t)},{data:[],desc:bi(s.classes.children("Description"),t)},{data:[],desc:bi(s.namespaces.children("Description"),t)},{data:[],desc:bi(s.enums.children("Description"),t)},{data:[],desc:bi(s.singletons.children("Description"),t)},{data:[],desc:bi(s.global_functions.children("Description"),t)},{data:[],desc:bi(s.constants.children("Description"),t)}];c.forEach(function(D){const P=bt(D).attr("name");if(t.Singletons[P])return;const x=bt(s.classes).find("Class[name="+P+"]");let w=Array.from(bt(D).find("Function"));w.sort(function(Y,f){return Y.attributes.name.textContent.toUpperCase()<f.attributes.name.textContent.toUpperCase()?-1:Y.attributes.name.textContent.toUpperCase()>f.attributes.name.textContent.toUpperCase()?1:0});const L=w.map(function(Y,f){const ie=bt(Y).attr("name"),ae=bt(x).find("Function[name="+ie+"]");return{name:ie,return:t.getReturnValue(ae.attr("return")),arguments:ae.attr("arguments")||"",desc:bi(ae,t),url:t.docs.github.funcdefs[P]&&t.docs.github.funcdefs[P][ie]}}),F=x.attr("grouping")||"SMClass",K={Actor:0,Screen:1,SMClass:2},W={Actor:"Actors",Screen:"Screens",SMClass:"Classes"},ne=bt(D).attr("base");let B;if(ne!==void 0){const Y=bt(s.classes).find("Class[name="+ne+"]");B=W[Y.attr("grouping")||"SMClass"]}R[K[F]].data.push({name:P,base:D.attributes.base!==void 0?{name:ne,grouping:B}:void 0,desc:bi(x.find("Description"),t),methods:L,grouping:W[F]})}),p.forEach(function(D){const P=bt(D).attr("name"),x=bt(s.namespaces).find("Namespace[name="+P+"]"),w=[];bt(D).children("Function").each(function(L,F){const K=bt(F).attr("name"),W=bt(s.namespaces).find("Function[name="+K+"]");w.push({name:bt(F).attr("name"),return:t.getReturnValue(W.attr("return")),arguments:W.attr("arguments")||"",desc:bi(W,t)})}),R[3].data.push({name:P,methods:w,desc:bi(x.find("Description"),t),grouping:"Namespaces"})}),E.forEach(function(D){const P=bt(D).attr("name"),x=bt(s.enums).find("Enum[name="+P+"]"),w=[];bt(D).children("EnumValue").each(function(L,F){w.push({name:bt(F).attr("name"),value:bt(F).attr("value")})}),R[4].data.push({name:P,values:w,desc:bi(x.find("Description"),t)})}),S.forEach(function(D){const P=bt(D).attr("class"),x=bt(s.classes).find("Class[name="+P+"]"),w=Array.from(x.find("Function")).map(function(L,F){const K=bt(L).attr("name"),W=bt(x).find("Function[name="+K+"]");return{name:K,return:t.getReturnValue(W.attr("return")),arguments:W.attr("arguments")||"",desc:bi(W,t),url:t.docs.github.funcdefs[P]&&t.docs.github.funcdefs[P][K]}});R[5].data.push({name:P,methods:w,desc:bi(x.find("Description"),t),grouping:"Singletons"})}),b.forEach(function(D){const P=bt(D).attr("name"),x=bt(s.global_functions).find("Function[name="+P+"]");x.attr("theme")!=="default"&&R[6].data.push({name:P,return:t.getReturnValue(x.attr("return")),arguments:x.attr("arguments"),desc:bi(x,t),theme:x.attr("theme")||"",url:t.docs.github.funcdefs.GlobalFunctions&&t.docs.github.funcdefs.GlobalFunctions[P],grouping:"GlobalFunctions"})}),h.forEach(function(D){R[7].data.push({name:bt(D).attr("name"),value:bt(D).attr("value")||""})}),t.setState({isLoaded:!0,G:R},()=>{t.bubbleDataUp()})}).then(function(){t.scroll_window_after_hashchange()}).then(()=>{document.querySelectorAll("pre code").forEach(s=>{_A.highlightElement(s)})})}bubbleDataUp(){this.props.parentCallback({actors:Object.keys(this.Actors),screens:Object.keys(this.Screens),sm_classes:Object.keys(this.Classes),namespaces:Object.keys(this.Namespaces),enums:Object.keys(this.Enums),singletons:Object.keys(this.Singletons),isLoaded:this.state.isLoaded})}updateHash(t){window.location.hash="#"+t}scroll_window_after_hashchange(t){if(t=t??window.location.hash,t){const s=(t.match(/-/g)||[]).length;t=t.replace("#","");const c=document.getElementById(t);if(c){const p=c.offsetTop;if(p){const E=s>1?108:60,S=s>0&&t.substring(0,15)==="GlobalFunctions"?40:0,b=p-E-S;this.state.yOffset!==b&&(this.setState({yOffset:b}),window.scrollTo(0,b),this.props?.mobile_nav===!0&&this.props?.hideMobileNav())}}}const r=document.getElementById("navbarNav")?.classList;r?.contains("show")&&r?.remove("show")}headerUI(){let t;return this.state.selectedAPI.engineName&&this.state.selectedAPI.versionName&&(t=`${this.state.selectedAPI.engineName} ${this.state.selectedAPI.versionName}`),q.jsx("section",{children:q.jsxs("h1",{children:[t??"SM5"," Lua API"]})})}contentUI(){return this.state===void 0||this.state.isLoaded===!1?null:q.jsxs("section",{children:[q.jsx(hu,{name:"Actors",desc:this.state.G[0].desc,data:this.state.G[0].data,...this.state}),q.jsx(hu,{name:"Screens",desc:this.state.G[1].desc,data:this.state.G[1].data,...this.state}),q.jsx(hu,{name:"Classes",desc:this.state.G[2].desc,data:this.state.G[2].data,...this.state}),q.jsx(hu,{name:"Singletons",desc:this.state.G[5].desc,data:this.state.G[5].data,...this.state}),q.jsx(hu,{name:"Namespaces",desc:this.state.G[3].desc,data:this.state.G[3].data,...this.state}),q.jsx(RU,{name:"Enums",desc:this.state.G[4].desc,data:this.state.G[4].data}),q.jsx(NU,{name:"GlobalFunctions",desc:this.state.G[6].desc,data:this.state.G[6].data,...this.state}),q.jsx(AU,{name:"Constants",desc:this.state.G[7].desc,data:this.state.G[7].data})]})}render(){return q.jsxs("div",{className:"LuaAPI ps-md-4",children:[this.headerUI(),this.contentUI()]})}}var DU=dA();const oh=uc(DU);function MU(i){const t="\\[=*\\[",r="\\]=*\\]",s={begin:t,end:r,contains:["self"]},c=[i.COMMENT("--(?!"+t+")","$"),i.COMMENT("--"+t,r,{contains:[s],relevance:10})];return{name:"Lua",aliases:["pluto"],keywords:{$pattern:i.UNDERSCORE_IDENT_RE,literal:"true false nil",keyword:"and break do else elseif end for goto if in local not or repeat return then until while",built_in:"_G _ENV _VERSION __index __newindex __mode __call __metatable __tostring __len __gc __add __sub __mul __div __mod __pow __concat __unm __eq __lt __le assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring module next pairs pcall print rawequal rawget rawset require select setfenv setmetatable tonumber tostring type unpack xpcall arg self coroutine resume yield status wrap create running debug getupvalue debug sethook getmetatable gethook setmetatable setlocal traceback setfenv getinfo setupvalue getlocal getregistry getfenv io lines write close flush open output type read stderr stdin input stdout popen tmpfile math log max acos huge ldexp pi cos tanh pow deg tan cosh sinh random randomseed frexp ceil floor rad abs sqrt modf asin min mod fmod log10 atan2 exp sin atan os exit setlocale date getenv difftime remove time clock tmpname rename execute package preload loadlib loaded loaders cpath config path seeall string sub upper len gfind rep find match char dump gmatch reverse byte format gsub lower table setn insert getn foreachi maxn foreach concat sort remove"},contains:c.concat([{className:"function",beginKeywords:"function",end:"\\)",contains:[i.inherit(i.TITLE_MODE,{begin:"([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*"}),{className:"params",begin:"\\(",endsWithParent:!0,contains:c}].concat(c)},i.C_NUMBER_MODE,i.APOS_STRING_MODE,i.QUOTE_STRING_MODE,{className:"string",begin:t,end:r,contains:[s],relevance:5}])}}function xU(i){const t=i.regex,r={className:"number",relevance:0,variants:[{begin:/([+-]+)?[\d]+_[\d_]+/},{begin:i.NUMBER_RE}]},s=i.COMMENT();s.variants=[{begin:/;/,end:/$/},{begin:/#/,end:/$/}];const c={className:"variable",variants:[{begin:/\$[\w\d"][\w\d_]*/},{begin:/\$\{(.*?)\}/}]},p={className:"literal",begin:/\bon|off|true|false|yes|no\b/},E={className:"string",contains:[i.BACKSLASH_ESCAPE],variants:[{begin:"'''",end:"'''",relevance:10},{begin:'"""',end:'"""',relevance:10},{begin:'"',end:'"'},{begin:"'",end:"'"}]},S={begin:/\[/,end:/\]/,contains:[s,p,c,E,r,"self"],relevance:0},b=/[A-Za-z0-9_-]+/,h=/"(\\"|[^"])*"/,v=/'[^']*'/,R=t.either(b,h,v),D=t.concat(R,"(\\s*\\.\\s*",R,")*",t.lookahead(/\s*=\s*[^#\s]/));return{name:"TOML, also INI",aliases:["toml"],case_insensitive:!0,illegal:/\S/,contains:[s,{className:"section",begin:/\[+/,end:/\]+/},{begin:D,className:"attr",starts:{end:/$/,contains:[s,S,p,c,E,r]}}]}}function wU(i){const t=i.regex,r=t.concat(/[\p{L}_]/u,t.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),s=/[\p{L}0-9._:-]+/u,c={className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},p={begin:/\s/,contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]},E=i.inherit(p,{begin:/\(/,end:/\)/}),S=i.inherit(i.APOS_STRING_MODE,{className:"string"}),b=i.inherit(i.QUOTE_STRING_MODE,{className:"string"}),h={endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",begin:s,relevance:0},{begin:/=\s*/,relevance:0,contains:[{className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[c]},{begin:/'/,end:/'/,contains:[c]},{begin:/[^\s"'=<>`]+/}]}]}]};return{name:"HTML, XML",aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,relevance:10,contains:[p,b,S,E,{begin:/\[/,end:/\]/,contains:[{className:"meta",begin:/<![a-z]/,end:/>/,contains:[p,E,b,S]}]}]},i.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,relevance:10},c,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,relevance:10,contains:[b]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[h],starts:{end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[h],starts:{end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{className:"tag",begin:/<>|<\/>/},{className:"tag",begin:t.concat(/</,t.lookahead(t.concat(r,t.either(/\/>/,/>/,/\s/)))),end:/\/?>/,contains:[{className:"name",begin:r,relevance:0,starts:h}]},{className:"tag",begin:t.concat(/<\//,t.lookahead(t.concat(r,/>/))),contains:[{className:"name",begin:r,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}}oh.registerLanguage("javascript",MU);oh.registerLanguage("javascript",xU);oh.registerLanguage("javascript",wU);class LU extends pe.Component{constructor(t){super(t),this.handleMobileNavToggle=this.handleMobileNavToggle.bind(this),this.hideMobileNav=this.hideMobileNav.bind(this),this.showMobileNav=this.showMobileNav.bind(this),this.getClasses=this.getClasses.bind(this),this.setSelectedAPI=this.setSelectedAPI.bind(this),this.setToC=this.setToC.bind(this),this.state={mobile_nav:!1,isAPILoaded:!1}}handleMobileNavToggle(){this.state.mobile_nav?this.hideMobileNav():this.showMobileNav()}showMobileNav(){this.setState({mobile_nav:!0}),(document.getElementById("mobileNav")?.classList).add("show")}hideMobileNav(){this.setState({mobile_nav:!1});const t=document.getElementById("mobileNav")?.classList,r=document.getElementById("navbarNav")?.classList;t.remove("show"),r.remove("show")}getClasses(t){this.setState({actors:t.actors,screens:t.screens,sm_classes:t.sm_classes,namespaces:t.namespaces,enums:t.enums,singletons:t.singletons,isAPILoaded:t.isLoaded})}setSelectedAPI(t){this.setState({selectedAPIurl:t.selectedAPIurl,selectedAPIengine:t.selectedAPIengine,selectedAPIversion:t.selectedAPIversion})}setToC(t){this.setState({toc:t})}render(){return q.jsxs("main",{children:[q.jsx(bD,{}),q.jsx("div",{className:"mt-5",children:q.jsxs("div",{className:"row no-gutters",children:[q.jsx("div",{tabIndex:"-1",className:"sidebar position-fixed col-md-3 d-md-block d-none",children:q.jsx(GT,{mobile:!1,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),q.jsxs("div",{id:"content-container",className:"row",children:[q.jsx("div",{id:"content",className:"col-lg-9 col-md-12 ps-lg-4 pe-lg-4 ps-md-5 pe-md-5 p-4",children:q.jsxs(GE,{children:[q.jsx(Co,{path:"/",element:q.jsx(CE,{hideMobileNav:this.hideMobileNav})}),q.jsx(Co,{path:"/Resources",element:q.jsx(CE,{hideMobileNav:this.hideMobileNav})}),q.jsx(Co,{path:"/:group/:page",element:q.jsx(CE,{hideMobileNav:this.hideMobileNav,setToC:this.setToC})}),q.jsx(Co,{path:"/LuaAPI",element:q.jsx(IU,{hideMobileNav:this.hideMobileNav,...this.state,parentCallback:this.getClasses})})]})}),q.jsx(yP,{toc:this.state.toc,mobile_nav:this.state.mobile_nav})]})]})}),q.jsx("div",{id:"mobileNav",className:"sidebar collapse no-transition w-100 h-100 d-md-none",children:q.jsx(GT,{mobile:!0,setSelectedAPI:this.setSelectedAPI,actors:this.state.actors,screens:this.state.screens,smClasses:this.state.sm_classes,namespaces:this.state.namespaces,enums:this.state.enums,singletons:this.state.singletons,isAPILoaded:this.state.isAPILoaded})}),q.jsxs("button",{id:"mobileNavToggle",className:"btn btn-dark d-md-none",type:"button",onClick:this.handleMobileNavToggle,"data-bs-toggle":"collapse","aria-controls":"navbarNav","aria-expanded":"false","aria-label":"Toggle navigation",children:[q.jsx("div",{className:this.state.mobile_nav?"x bar1":"bar1"}),q.jsx("div",{className:this.state.mobile_nav?"x bar2":"bar2"}),q.jsx("div",{className:this.state.mobile_nav?"x bar3":"bar3"})]})]})}}const PU=SD(LU),kU=HO.createRoot(document.body);kU.render(q.jsx(uD,{basename:"/Lua-For-SM5/",children:q.jsx(PU,{})}));
